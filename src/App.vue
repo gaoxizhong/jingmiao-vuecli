@@ -30,3 +30,19 @@
   }
 }
 </style>
+<script>
+export default {
+  data() {
+    return {
+        isCollapse: false
+    };
+  },
+    
+  methods: {
+
+  },
+  created(){
+    
+  }
+}
+</script>

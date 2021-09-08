@@ -1,6 +1,8 @@
 <template>
   <el-container style="height:100%;">
-    <el-aside width="auto">左侧</el-aside>
+    <el-aside width="auto">
+      <CommonAside></CommonAside>
+    </el-aside>
     <el-container>
       <el-header>头部</el-header>
       <el-main>主题</el-main>
@@ -9,9 +11,12 @@
 </template>
 
 <script>
+import CommonAside from "../components/CommonAside"
 export default {
   name: 'Main',
-  components: {}
+  components: {
+    CommonAside
+  }
 }
 </script>
 <style lang="scss" scoped>
