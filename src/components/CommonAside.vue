@@ -1,43 +1,49 @@
 <template>
     <el-menu
-    class="el-menu-vertical-demo" 
-    @open="handleOpen" 
-    @close="handleClose" 
-    :collapse="isCollapse">
-        <h3 class="menu-h3">菁苗科技</h3>
+    class="el-menu-vertical-demo"
+    @open="handleOpen"
+    @close="handleClose"
+    :collapse="isCollapse"
+    :background-color="menuBackgroundColor"
+    :text-color="menuTextColor"
+    unique-opened
+    >
+      <h3 class="menu-h3">菁苗健康</h3>
 
-        <el-submenu  :index=" index + '' " v-for="(item,index) in menu" :key="index">
-            <!-- 一级标题 -->
-            <template slot="title">
-                <i class="el-icon-location"></i>
-                <span slot="title">{{item.category_name}}</span>
-            </template>
-            <!-- 二级标题 -->
-            <el-submenu :index=" index + '' + '-' + idx + '' " v-for="(item_2,idx) in item.child" :key="idx">
-                <span slot="title">{{item_2.category_name}}</span>
-            <!-- 三级标题 -->
-                <el-menu-item :index=" index + '' + '-' + idx + ''+ '-' + idxx + ''" v-for="(item_3,idxx) in item_2.child" :key="idxx">{{item_3.category_name}}</el-menu-item>
-            </el-submenu>
+      <el-submenu  :index=" index + '' " v-for="(item,index) in menu" :key="index">
+          <!-- 一级标题 -->
+          <template slot="title">
+              <i class="el-icon-location"></i>
+              <span slot="title">{{item.category_name}}</span>
+          </template>
+          <!-- 二级标题 -->
+          <el-submenu :index=" index + '' + '-' + idx + '' " v-for="(item_2,idx) in item.child" :key="idx">
+              <span slot="title">{{item_2.category_name}}</span>
+          <!-- 三级标题 -->
+              <el-menu-item :index=" index + '' + '-' + idx + ''+ '-' + idxx + ''" v-for="(item_3,idxx) in item_2.child" :key="idxx">{{item_3.category_name}}</el-menu-item>
+          </el-submenu>
 
-        </el-submenu>
+      </el-submenu>
 
     </el-menu>
 </template>
 <style>
 
-    .el-menu-vertical-demo:not(.el-menu--collapse) {
-        width: 200px;
-        min-height: 400px;
-    }
-    .menu-h3{
-        height:60px;
-        line-height: 60px;
-    }
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
+  .menu-h3{
+    height:60px;
+    line-height: 60px;
+  }
 </style>
 <script>
 export default {
     data() {
     return {
+        menuBackgroundColor:'#fff',
+        menuTextColor:'#303133',
         isCollapse: false,
         menu: [
             {

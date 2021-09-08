@@ -8,6 +8,11 @@
 *{
   padding: 0;
   margin: 0;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  box-sizing: border-box;
+}
+a{
+  text-decoration: none;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -29,6 +34,7 @@
     }
   }
 }
+
 </style>
 <script>
 export default {
@@ -37,12 +43,12 @@ export default {
         isCollapse: false
     };
   },
-    
+
   methods: {
 
   },
   created(){
-    
+
   }
 }
 </script>

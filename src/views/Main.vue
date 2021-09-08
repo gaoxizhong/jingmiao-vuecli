@@ -4,18 +4,23 @@
       <CommonAside></CommonAside>
     </el-aside>
     <el-container>
-      <el-header>头部</el-header>
+      <el-header>
+        <CommonHeader></CommonHeader>
+      </el-header>
       <el-main>主题</el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import CommonAside from "../components/CommonAside"
+import CommonAside from "../components/CommonAside";
+import CommonHeader from "../components/CommonHeader"
+
 export default {
   name: 'Main',
   components: {
-    CommonAside
+    CommonAside,
+    CommonHeader
   }
 }
 </script>
