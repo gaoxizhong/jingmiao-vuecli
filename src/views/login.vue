@@ -20,7 +20,7 @@
         <el-input type="text" v-model="user_text" placeholder="请输入公司名称"></el-input>
         <el-input v-model="user_telephone" placeholder="请输入手机号"></el-input>
         <el-input type="password" v-model="user_password" placeholder="请输入密码"></el-input>
-        <button type="button">注册</button>
+        <button type="button" @click="RegisterUserInfo()">注册</button>
       </form>
     </div>
     <div class="form-container sign-in-container">
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import {RegisterUserInfo} from '@/api/data'
 export default {
   data() {
     return {
@@ -65,7 +66,8 @@ export default {
       is_sign: false
     }
   },
-
+  mounted(){
+  },
   created(){
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
@@ -78,14 +80,22 @@ export default {
     signUp(){
       this.is_sign = true;
     },
+    RegisterUserInfo(){
+        console.log(1)
+
+      RegisterUserInfo().then( res =>{
+
+      }).catch(e =>{
+        console.log(e)
+      })
+
+    }
   },
-
-
-
 
 }
 
 </script>
+
 <style lang="scss" scoped>
   h1 {
     font-weight: bold;
