@@ -2,7 +2,7 @@ export default {
     title:'admin',
     baseURL: {
         // 开发
-        dev: '/api/',
+        dev: '/api',
         // 生产
         pro: ''
     }

@@ -8,14 +8,13 @@
 *{
   padding: 0;
   margin: 0;
-  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-family:serif;
   box-sizing: border-box;
 }
 a{
   text-decoration: none;
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

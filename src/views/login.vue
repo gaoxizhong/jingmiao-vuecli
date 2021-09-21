@@ -1,36 +1,24 @@
 <template>
   <div :style="`height:${viewHeight}px;`" class="page-box">
-    <!-- <el-container style="height:100%;">
-      <el-aside width="200px" height="100%">Aside</el-aside>
-    </el-container> -->
-    <!-- <div class="le-box"></div>
-    <div class="login-box">
-      <div class="le-login-img"></div>
-      <div class="ri-login-info">
-        <div>注册</div>
-        <div></div>
-      </div>
-    </div> -->
-
   <div :class="is_sign?'right-panel-active':'' " class="container" id="container" >
     <div class="form-container sign-up-container">
-      <form action="#">
+      <form @submit.prevent="RegisterUserInfo" autocomplete="off">
         <h1>创建一个新账号</h1>
         <span>请使用您的手机号进行注册</span>
-        <el-input type="text" v-model="user_text" placeholder="请输入公司名称"></el-input>
-        <el-input v-model="user_telephone" placeholder="请输入手机号"></el-input>
-        <el-input type="password" v-model="user_password" placeholder="请输入密码"></el-input>
-        <button type="button" @click="RegisterUserInfo()">注册</button>
+        <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入企业名称"></el-input>
+        <el-input v-model="newuser.phone" name="phone" placeholder="请输入手机号"></el-input>
+        <el-input type="password" v-model="newuser.password" name="password" placeholder="请输入密码"></el-input>
+        <button type="submit">注册</button>
       </form>
     </div>
     <div class="form-container sign-in-container">
-      <form action="#">
+      <form @submit.prevent="LoginUserInfo" autocomplete="off">
         <h1>登录</h1>
         <span>使用您的账号登录</span>
-        <el-input v-model="user_telephone" placeholder="请输入手机号"></el-input>
-        <el-input type="password" v-model="user_password" placeholder="请输入密码"></el-input>
+        <el-input v-model="user.phone" type="tel" name="phone" placeholder="请输入手机号"></el-input>
+        <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"></el-input>
         <a href="#">如没有账号，请先注册</a>
-        <button type="button">登录</button>
+        <button type="submit">登录</button>
       </form>
     </div>
     <div class="overlay-container">
@@ -41,7 +29,7 @@
           <button class="ghost" id="signIn"  @click="signIn()">登录</button>
         </div>
         <div class="overlay-panel overlay-right">
-          <h1>您好, 朋友!</h1>
+          <h1>菁苗健康</h1>
           <p>输入您的个人详细信息进行注册</p>
           <button class="ghost" id="signUp" @click="signUp()">注册</button>
         </div>
@@ -54,19 +42,25 @@
 </template>
 
 <script>
-import {RegisterUserInfo} from '@/api/data'
+import {RegisterUserInfo,LoginUserInfo} from '@/api/data'
 export default {
   data() {
     return {
       viewHeight:'',
       viewWidth:'',
-      user_text:'',
-      user_telephone:'',
-      user_password:'',
+      newuser: {
+        company_name: '',
+        phone: '',
+        password:'',
+      },
+      user: {
+        phone: '',
+        password:'',
+      },
       is_sign: false
     }
   },
-  mounted(){
+  mounted(){ // 可以当做初始化后加载，只加载一次
   },
   created(){
     let getViewportSize = this.$getViewportSize();
@@ -80,13 +74,88 @@ export default {
     signUp(){
       this.is_sign = true;
     },
-    RegisterUserInfo(){
-        console.log(1)
-
-      RegisterUserInfo().then( res =>{
-
+    // 注册用户信息
+    RegisterUserInfo(e){
+        console.log(e)
+      let that = this;
+      let newuser = that.newuser;
+        if(newuser.company_name == ''){
+          this.$message.error({
+              message:'请输入企业名称'
+            })
+            return
+        }
+        if(newuser.phone ==''){
+          this.$message.error({
+              message:'请输入手机号'
+            })
+            return
+        }
+        if(newuser.password ==''){
+          this.$message.error({
+              message:'请输入密码'
+            })
+            return
+        }
+      console.log(newuser)
+      RegisterUserInfo(newuser).then( res =>{
+        if(res.data.code == 0){
+          that.$message.success({
+            message:'注册成功'
+          })
+          this.is_sign = false;
+        }else{
+          that.$message.error({
+            message: res.data.msg
+          })
+        }
       }).catch(e =>{
         console.log(e)
+      })
+
+    },
+    // 用户登录
+    LoginUserInfo(e){
+        console.log(e)
+      let that = this;
+      let user = that.user;
+        if(user.phone ==''){
+          that.$message.error({
+              message:'请输入手机号'
+            })
+            return
+        }
+      if(user.password ==''){
+        that.$message.error({
+            message:'请输入密码'
+          })
+          return
+      }
+      LoginUserInfo(user).then( res =>{
+        if(res.data.code == 0){
+          let data = res.data.data;
+          that.$message.success({
+            message:'登录成功',
+            duration: 1500,
+            onClose(){
+              // 执行 actions 操作,,属于异步操作
+              // 存储token到ls
+              // const { token } = data.token;
+              // window.localStorage.setItem('setToken',token);
+              window.localStorage.setItem('setUser',data);
+              that.$store.dispatch("setUser",data)
+              that.$store.dispatch("setIsAuthenticated",true)
+              that.$router.push('/Main');
+            }
+          });
+        }else{
+          this.$message.error({
+            message: res.data.msg
+          });
+        }
+      }).catch(e =>{
+        console.log(e)
+        this.$message.error('账号或密码错误');
       })
 
     }

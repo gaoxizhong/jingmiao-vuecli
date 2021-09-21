@@ -3,10 +3,9 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import http from 'axios'
+import http from './api/axios'
 
-import { Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input } from 'element-ui';
-
+import { Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col  } from 'element-ui';
 Vue.config.productionTip = false
 Vue.use(Button);
 Vue.use(Select);
@@ -19,8 +18,12 @@ Vue.use(MenuItem);
 Vue.use(MenuItemGroup);
 Vue.use(Submenu);
 Vue.use(Input);
+Vue.use(Option);
+Vue.use(Row);
+Vue.use(Col);
 
 Vue.prototype.$http = http;
+Vue.prototype.$message = Message;
 Vue.prototype.$getViewportSize = function() {
   return {
     width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,

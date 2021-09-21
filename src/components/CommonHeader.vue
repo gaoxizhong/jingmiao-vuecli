@@ -9,9 +9,7 @@
     </div>
     <div class="r-content" v-if="userInfo">
       <span style="color: #fff;">{{userInfo.tl}}</span>
-       <router-link to="/Login">
-        <span style="color: #fff;font-size: 14px;">退出</span>
-      </router-link>
+      <span style="color: #fff;font-size: 14px;" @click="toLogin">退出</span>
     </div>
   </header>
 </template>
@@ -58,6 +56,11 @@ export default {
       userInfo:{
         tl: '15210022053'
       }
+    }
+  },
+  methods:{
+    toLogin(){
+      this.$router.push({name: 'Login'});
     }
   }
 }

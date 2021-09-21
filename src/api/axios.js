@@ -3,8 +3,9 @@
 import axios from 'axios'
 import config from './config'
 // 设置配置 根据开发和生产环境不一样
-const baseURL = process.env.NODE_ENV === 'development'? config.baseURL.dev : config.baseURL.pro;
+// const baseURL = process.env.NODE_ENV === 'development'? config.baseURL.dev : config.baseURL.pro;
 
+const baseURL = config.baseURL.dev;
 
 class HttpRequst {
 
@@ -27,6 +28,10 @@ class HttpRequst {
         // 添加请求拦截器
         axios.interceptors.request.use(function (config) {
             // 在发送请求之前做些什么
+            // 设置统一的header
+            if(localStorage.setToken){
+              config.headers.Authorization = localStorage.setToken
+            }
             console.log('拦截处理请求');
             return config;
         }, function (error) {
