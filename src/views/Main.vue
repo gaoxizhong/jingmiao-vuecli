@@ -8,8 +8,9 @@
         <CommonHeader></CommonHeader>
       </el-header>
       <el-main>
-        <CommonSujectList v-if="is_list" @chenglistId="chenglistId($event)"></CommonSujectList>
-        <ArticleDetails :_id='id' v-if="is_article"></ArticleDetails>
+        <!-- <CommonSujectList v-if="is_list" @chenglistId="chenglistId($event)"></CommonSujectList>
+        <ArticleDetails :_id='id' v-if="is_article"></ArticleDetails> -->
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
@@ -18,16 +19,16 @@
 <script>
 import CommonAside from "../components/CommonAside";
 import CommonHeader from "../components/CommonHeader";
-import CommonSujectList from "../components/CommonSujectList"
-import ArticleDetails from "../components/ArticleDetails"
+// import CommonSujectList from "../components/CommonSujectList"
+// import ArticleDetails from "../components/ArticleDetails"
 import {WesternMedicine} from '@/api/data'
 export default {
   name: 'Main',
   components: {
     CommonAside,
     CommonHeader,
-    CommonSujectList,
-    ArticleDetails
+    // CommonSujectList,
+    // ArticleDetails
   },
   data(){
     return {

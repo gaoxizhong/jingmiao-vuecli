@@ -17,7 +17,11 @@ const routes = [
   {
     path:'/Main',
     name:'Main',
-    component: Main
+    component: Main,
+    children: [
+      {path:'Home',name:'列表',component:()=>import('@/views/Home')},
+      {path:'article',name:'详情',component:()=>import('@/views/Details')}
+    ]
   }
 ]
 

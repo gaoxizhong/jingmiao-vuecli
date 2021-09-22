@@ -66,7 +66,8 @@ export default {
     },
     menu_btn(){
       let isCollapse = this.$store.state.isCollapse;
-      this.$store.dispatch("menu_btn",!isCollapse)
+      this.$store.dispatch("menuBtn",!isCollapse);
+      console.log(isCollapse)
     }
 
   }

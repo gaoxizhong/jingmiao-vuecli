@@ -8,7 +8,8 @@
         :text-color="menuTextColor"
         unique-opened
     >
-        <h3 class="menu-h3">菁苗健康</h3>
+        <h3 class="menu-h3" v-show="!isCollapse">菁苗健康</h3>
+        <h3 class="menu-h3" v-show="isCollapse">菁苗</h3>
         <el-submenu  :index="item.knowledge_base_name" v-for="(item,index) in datalist" :key="index">
             <!-- 一级标题 -->
             <template slot="title">
@@ -45,14 +46,12 @@
   }
 </style>
 <script>
-import {WesternMedicine} from '@/api/data'
 export default {
     props:['datalist'],
     data() {
         return {
             menuBackgroundColor:'#fff',
             menuTextColor:'#303133',
-            isCollapse: false,
         }
     },
     watch:{
@@ -62,8 +61,7 @@ export default {
         }
     },
     mounted(){
-       let isCollapse = this.$store.state.isCollapse;
-        this.isCollapse = isCollapse;
+
     },
     created(){
 
@@ -87,6 +85,9 @@ export default {
         },
         hasChild() {
             return this.menu.filter( (item) => item.child)
+        },
+        isCollapse() {
+          return this.$store.state.isCollapse
         }
 
     }

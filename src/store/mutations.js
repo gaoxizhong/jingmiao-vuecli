@@ -16,7 +16,7 @@ export const delToken = (state) =>{
   state.token = ''
   sessionStorage.removeItem('token')
 }
-export const menu_btn = (state,isCollapse) =>{
+export const menuBtn = (state,isCollapse) =>{
   state.isCollapse = isCollapse
 }
 
