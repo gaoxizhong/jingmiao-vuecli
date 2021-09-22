@@ -5,9 +5,15 @@ export const setIsAuthenticated = ({commit},data) =>{
 export const setUser = ({commit},data) =>{
   commit('setUser',data);
 }
+export const getlist_id = ({commit},data) =>{
+  commit('getlist_id',data);
+}
 export const setToken = ({commit},data) =>{
   commit('setToken',data);
 }
 export const delToken = ({commit},data) =>{
   commit('delToken',data);
+}
+export const menu_btn = ({commit},data) =>{
+  commit('menu_btn',data);
 }

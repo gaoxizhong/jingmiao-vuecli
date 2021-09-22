@@ -1,134 +1,85 @@
 <template>
     <el-menu
-    class="el-menu-vertical-demo"
-    @open="handleOpen"
-    @close="handleClose"
-    :collapse="isCollapse"
-    :background-color="menuBackgroundColor"
-    :text-color="menuTextColor"
-    unique-opened
+        class="el-menu-vertical-demo"
+        @open="handleOpen"
+        @close="handleClose"
+        :collapse="isCollapse"
+        :background-color="menuBackgroundColor"
+        :text-color="menuTextColor"
+        unique-opened
     >
-      <h3 class="menu-h3">菁苗健康</h3>
-
-      <el-submenu  :index=" index + '' " v-for="(item,index) in menu" :key="index">
-          <!-- 一级标题 -->
-          <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">{{item.category_name}}</span>
-          </template>
-          <!-- 二级标题 -->
-          <el-submenu :index=" index + '' + '-' + idx + '' " v-for="(item_2,idx) in item.child" :key="idx">
-              <span slot="title">{{item_2.category_name}}</span>
-          <!-- 三级标题 -->
-              <el-menu-item :index=" index + '' + '-' + idx + ''+ '-' + idxx + ''" v-for="(item_3,idxx) in item_2.child" :key="idxx">{{item_3.category_name}}</el-menu-item>
-          </el-submenu>
-
-      </el-submenu>
-
+        <h3 class="menu-h3">菁苗健康</h3>
+        <el-submenu  :index="item.knowledge_base_name" v-for="(item,index) in datalist" :key="index">
+            <!-- 一级标题 -->
+            <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title">{{item.knowledge_base_name}}</span>
+            </template>
+            <!-- 二级标题 -->
+            <el-submenu :index="item_2.department.name" v-for="(item_2,idx) in item.data" :key="idx" >
+                <span slot="title" :data-name='item_2.department.name' :data-sickNess='item_2.sickNess' @click="clickItem_2($event)">{{item_2.department.name}}</span>
+            <!-- 三级标题 -->
+                <el-menu-item :index="item_3.name" v-for="(item_3,idxx) in item_2.sickNess" :key="idxx">{{item_3.name}}</el-menu-item>
+            </el-submenu>
+        </el-submenu>
     </el-menu>
+
 </template>
 <style>
 
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
+    width: 230px;
     min-height: 400px;
     height: 100%;
+  }
+  .el-menu{
+      height: 100%;
   }
   .menu-h3{
     height:60px;
     line-height: 60px;
   }
+  .el-submenu__title{
+    display: flex;
+    align-items: center;
+  }
 </style>
 <script>
+import {WesternMedicine} from '@/api/data'
 export default {
+    props:['datalist'],
     data() {
-    return {
-        menuBackgroundColor:'#fff',
-        menuTextColor:'#303133',
-        isCollapse: false,
-        menu: [
-            {
-                id:1,
-                category_name:'中医知识库',
-                child:[
-                    {
-                        id:1,
-                        category_name:'疾病',
-                        child:[
-                            {
-                                id:1,
-                                category_name:'泌尿科',
-                            },
-                            {
-                                id:2,
-                                category_name:'泌尿科',
-                            },
-                            {
-                                id:3,
-                                category_name:'泌尿科',
-                            },
-                            {
-                                id:4,
-                                category_name:'泌尿科',
-                            },
-                            {
-                                id:5,
-                                category_name:'泌尿科',
-                            }
-                        ]
-                    },
-                    {
-                        id:2,
-                        category_name:'疾病',
-                        child:[
-                            {
-                                id:1,
-                                category_name:'泌尿科',
-                            }
-                        ]
-                    },
-                    {
-                        id:3,
-                        category_name:'疾病',
-                        child:[
-                            {
-                                id:1,
-                                category_name:'泌尿科',
-                            }
-                        ]
-                    },
-                ]
-            },
-            {
-                id:2,
-                category_name:'西医知识库',
-                child:[
-                    {
-                        id:1,
-                        category_name:'疾病',
-                        child:[
-                            {
-                                id:1,
-                                category_name:'泌尿科',
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id:3,
-                category_name:'其他知识库'
-            }
-        ]
-    }
+        return {
+            menuBackgroundColor:'#fff',
+            menuTextColor:'#303133',
+            isCollapse: false,
+        }
+    },
+    watch:{
+        datalist(datalist){
+        this.datalist = datalist
+        console.log(datalist)
+        }
+    },
+    mounted(){
+       let isCollapse = this.$store.state.isCollapse;
+        this.isCollapse = isCollapse;
+    },
+    created(){
+
     },
     methods: {
+
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
         handleClose(key, keyPath) {
             console.log(key, keyPath);
-        }
+        },
+        clickItem_2(e){
+            console.log(e)
+            console.log(1)
+        },
     },
     computed: {
         noChild() {
@@ -137,6 +88,7 @@ export default {
         hasChild() {
             return this.menu.filter( (item) => item.child)
         }
+
     }
 
 }

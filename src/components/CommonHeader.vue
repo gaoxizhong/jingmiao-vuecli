@@ -1,14 +1,14 @@
 <template>
   <header>
     <div class="l-content">
-      <el-button plain icon="el-icon-menu" size="mini"></el-button>
+      <el-button plain icon="el-icon-menu" size="mini" @click="menu_btn()"></el-button>
       <div class="l-content-title">
         <h2>菁苗健康</h2>
         <p>中医数字化健康平台</p>
       </div>
     </div>
-    <div class="r-content" v-if="userInfo">
-      <span style="color: #fff;">{{userInfo.tl}}</span>
+    <div class="r-content" v-if="phone">
+      <span style="color: #fff;">{{ phone }}</span>
       <span style="color: #fff;font-size: 14px;" @click="toLogin">退出</span>
     </div>
   </header>
@@ -43,6 +43,7 @@
     height: 100%;
     display: flex;
     align-items: center;
+    padding-right: 32px;
   }
   .r-content span{
     margin: 0 10px;
@@ -50,18 +51,24 @@
 </style>
 <script>
 export default {
-
   data() {
     return {
-      userInfo:{
-        tl: '15210022053'
-      }
+      phone:''
     }
+  },
+  mounted(){
+    let phone = window.localStorage.getItem('setUser');
+    this.phone = phone;
   },
   methods:{
     toLogin(){
       this.$router.push({name: 'Login'});
+    },
+    menu_btn(){
+      let isCollapse = this.$store.state.isCollapse;
+      this.$store.dispatch("menu_btn",!isCollapse)
     }
+
   }
 }
 </script>

@@ -142,8 +142,8 @@ export default {
               // 存储token到ls
               // const { token } = data.token;
               // window.localStorage.setItem('setToken',token);
-              window.localStorage.setItem('setUser',data);
-              that.$store.dispatch("setUser",data)
+              window.localStorage.setItem('setUser',data.phone);
+              that.$store.dispatch("setUser",data.phone)
               that.$store.dispatch("setIsAuthenticated",true)
               that.$router.push('/Main');
             }

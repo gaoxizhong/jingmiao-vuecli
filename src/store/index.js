@@ -8,7 +8,9 @@ Vue.use(Vuex)
 const state ={
   isAuthenticated: false,  // 是否授权认证
   suer: {},   // 用户信息存储,
-  token:''
+  token:'',
+  list_id:'',
+  isCollapse: false // 左侧折叠状态
 }
 export default new Vuex.Store({
   state,

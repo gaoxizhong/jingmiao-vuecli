@@ -37,9 +37,10 @@ a{
 </style>
 <script>
 export default {
+  name:'app',
   data() {
     return {
-        isCollapse: false
+        isCollapse: false,
     };
   },
 

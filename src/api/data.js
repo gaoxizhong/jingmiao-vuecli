@@ -16,3 +16,11 @@ export const LoginUserInfo = (params) =>{
     data: params
   })
 }
+//  首页左侧列表
+export const WesternMedicine = (params) =>{
+  return axios.request({
+    url:'/zsk/index',
+    method: 'get',
+    data: params
+  })
+}

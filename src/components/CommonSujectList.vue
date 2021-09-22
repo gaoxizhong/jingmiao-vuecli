@@ -15,10 +15,18 @@
       </div>
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
-          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
+          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.id)">
             <div class="items-title">{{item.title}}</div>
             <div class="tags-list-box">
-              <div></div>
+              <div class="options-class tags-list-items">临床表现</div>
+              <div class="tags-list-items">病因</div>
+              <div class="tags-list-items">并发症</div>
+              <div class="tags-list-items">辅助检查</div>
+              <div class="tags-list-items">诊断</div>
+              <div class="tags-list-items">治疗</div>
+            </div>
+            <div class="tags-list-info">
+              按时打卡十九大；是啊；了山东矿机啊；熟练度静安寺的；了静安寺；的氨基酸对啊圣诞节按时；了大口径啊了山东矿机阿斯兰的卡就了的撒；达拉斯雕刻机啊；是的卡萨丁喀什；收到了 阿萨德；阿萨德
             </div>
           </div>
         </el-col>
@@ -58,9 +66,44 @@
     background: #f4f4f4;
   }
   .items-title{
-    font-size: 14px;
+    font-size: 16px;
     text-align: left;
     color: #29bbff;
+  }
+  .tags-list-box{
+    width: 100%;
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+  }
+  .tags-list-items{
+    font-size: 14px;
+    padding: 0 8px;
+    position: relative;
+  }
+  .tags-list-items::after{
+    content: '';
+    width: 1px;
+    height: 96%;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background: #dbdbdb;
+  }
+  .tags-list-items.options-class{
+    color: #29bbff;
+  }
+  .tags-list-info{
+    padding: 0 8px 10px 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-align: left;
+    line-height: 1.6;
   }
 </style>
 <script>
@@ -90,11 +133,20 @@
         ]
       }
     },
+    created(){
+
+    },
     methods:{
       getInputBtn(){
         let that = this;
         console.log(that.select)
         console.log(that.input3)
+      },
+      getarticle(_id){
+        let that = this;
+        let id = _id;
+        that.$store.dispatch("getlist_id",id); // 获取 vuex 储存的状态或变量
+        that.$emit('chenglistId',id);
       }
     }
   }
