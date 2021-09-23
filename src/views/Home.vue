@@ -107,6 +107,7 @@
   }
 </style>
 <script>
+import {getHomeRightList} from '@/api/data'
   export default {
     props:['datalist'],
     data() {
@@ -127,17 +128,17 @@
 
 
     created(){
-     
-    },
-    actived(){
-        console.log("actived")  
-        this.name = this.$route.query.name,  //接受参数关键代码
-        console.log(this.name)  
-
+        this.select = this.$route.query.name,  //接受参数关键代码
+        console.log(this.select)
     },
     mounted(){
 
     },
+    updated() {
+        console.log('updated')
+        // this.input3 = this.$route.query.name,  //接受参数关键代码
+        // console.log(this.input3)
+     },
     methods:{
       getInputBtn(){
         let that = this;
@@ -149,17 +150,35 @@
         let id = _id;
         that.$store.dispatch("getlist_id",id); // 获取 vuex 储存的状态或变量
         that.$emit('chenglistId',id);
-      }
+      },
+      getHomeRightList(_data){
+        let that = this;
+        let data = _data;
+        getHomeRightList({name:data}).then( res =>{
+          if(res.data.code == 0){
+            this.getListInfo=res.data.data
+          }else{
+          this.$message.error({
+              message: res.data.msg
+          });
+          }
+        }).catch(e =>{
+            console.log(e)
+        })
+      },
     },
     computed: {
         sickNess() {
-          console.log(this.$store.state.sickNess1)
+          this.sickNess1 = this.$store.state.sickNess1
+          this.select = this.sickNess1.department.name
+          console.log(this.sickNess1.department.name)
+          // this.getHomeRightList(this.sickNess1.department.name);
           return this.$store.state.sickNess1
         },
-        isCollapse() {
-          console.log(this.$store.state.isCollapse)
-          return this.$store.state.isCollapse
-        }
+        // isCollapse() {
+        //   console.log(this.$store.state.isCollapse)
+        //   return this.$store.state.isCollapse
+        // }
 
     }
   }

@@ -60,17 +60,33 @@ export default {
     watch:{
         datalist(datalist){
         this.datalist = datalist;
-        console.log(datalist)
+        //  let sickNess1 = this.datalist[0].data[0];
+        // console.log(sickNess1)
+        //   this.$store.dispatch("sickNess",sickNess1);
+        this.aa();
         }
     },
     mounted(){
 
     },
     created(){
-        
+
     },
     methods: {
+       aa(){
+         let arryinfo = this.datalist;
+         console.log(arryinfo)
+          let sickNess1 = arryinfo[0].data[0];
+          this.$store.dispatch("sickNess",sickNess1);
+          this.$router.replace({  //核心语句
+                path:'/Home',   //跳转的路径
+                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                name:sickNess1.department.name,
+                }
+            })
+         console.log(this.datalist)
 
+       },
        handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -84,11 +100,12 @@ export default {
             let index = e.$attrs.itemindex;
             let idx = e.$attrs.idx;
             let sickNess1 = arryinfo[index].data[idx];
-
-            this.$router.push({  //核心语句
-                path:'/Main/Home',   //跳转的路径
+            this.$store.dispatch("sickNess",sickNess1);
+            this.$emit('sickNess')
+            this.$router.replace({  //核心语句
+                path:'/Home',   //跳转的路径
                 query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                name, 
+                name,
                 }
             })
         },
@@ -96,7 +113,7 @@ export default {
             // this.$router.push({  //核心语句
             //     path:'/Main/Details',   //跳转的路径
             //     query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            //     id:'1', 
+            //     id:'1',
             //     }
             // })
             let arryinfo = this.datalist;

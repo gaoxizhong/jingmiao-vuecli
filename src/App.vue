@@ -41,6 +41,7 @@ export default {
   data() {
     return {
         isCollapse: false,
+        is_view: true
     };
   },
 

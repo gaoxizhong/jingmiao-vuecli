@@ -8,7 +8,7 @@
         <CommonHeader></CommonHeader>
       </el-header>
       <el-main>
-        <router-view />
+        <router-view v-if="is_view"/>
         <!-- <Home v-if="is_list"></Home> -->
         <!-- <div class="content-box" v-if="is_list">
           <div class="inside-content-box">
@@ -134,47 +134,55 @@ export default {
         {id:5,name:'治疗'},
       ],
       hove_id: 0,
-      itemIndex: 0
+      itemIndex: 0,
+      is_view: true
     }
   },
   mounted(){
     let that = this;
-    that.WesternMedicine();
-      console.log(this.$store.state.sickNess1)
+    console.log(2)
 
   },
   created(){
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
-      console.log(this.$store.state.sickNess1)
-
+    this.WesternMedicine();
   },
+
   methods: {
     // 获取左侧信息
     WesternMedicine(){
       let that = this;
       WesternMedicine({}).then( res =>{
-          if(res.data.code == 0){
+        if(res.data.code == 0){
           let datalist = res.data.data;
           this.datalist = datalist;
-          this.sickNess1 = datalist[0].data[0];
+          let sickNess1 = datalist[0].data[0];
+          this.sickNess1 = sickNess1;
           this.select = datalist[0].data[0].department.name
-          }else{
-          this.$message.error({
-              message: res.data.msg
-          });
-          }
+          console.log(sickNess1)
+          this.$store.dispatch("sickNess",sickNess1);
+        }else{
+        this.$message.error({
+            message: res.data.msg
+        });
+        }
       }).catch(e =>{
           console.log(e)
       })
     },
-    setsickNess(data){
-      console.log(data)
-      let sickNess1 = data;
-      this.sickNess1 = sickNess1;
-      this.select =sickNess1.department.name,
-      this.hove_id = 0;
+    setsickNess(){
+      this.is_view = false;
+      // 在组件移除后，重新渲染组件
+      // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
+      this.$nextTick(() => {
+          this.is_view = true
+      })
+      // let sickNess1 = data;
+      // this.sickNess1 = sickNess1;
+      // this.select =sickNess1.department.name,
+      // this.hove_id = 0;
     },
     iconClick(e){
       console.log(e)
@@ -210,7 +218,7 @@ export default {
     height: auto;
     box-sizing: border-box;
     background: #fff;
-    
+
   }
   .inside-content-box{
     width: 100%;

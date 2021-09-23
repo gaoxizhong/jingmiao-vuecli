@@ -24,3 +24,11 @@ export const WesternMedicine = (params) =>{
     data: params
   })
 }
+//  首页右侧列表
+export const getHomeRightList = (params) =>{
+  return axios.request({
+    url:'/zsk/department/SickNess',
+    method: 'post',
+    data: params
+  })
+}
