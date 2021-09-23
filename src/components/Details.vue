@@ -41,13 +41,13 @@
 </template>
 <style scoped>
   .content-box{
-    padding: 30rpx 20prx;
+    padding: 30px 10px;
     width: 100%;
     height: 100%;
     box-sizing: border-box;
     flex:1;
   }
-  .inside-content-box{
+  .inside-content-box2{
     width: 100%;
     height: 100%;
     background: #fff;
@@ -96,11 +96,13 @@
     data() {
       return {
         input3:'',
-        activeName: '1'
+        activeName: '1',
+        id:'',
       }
     },
-    created(){
-
+    created(){  //生命周期里接收参数
+        this.id = this.$route.query.id,  //接受参数关键代码
+        console.log(this.id)  
     },
     methods:{
       getInputBtn(){

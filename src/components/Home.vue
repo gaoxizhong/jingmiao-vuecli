@@ -3,7 +3,7 @@
      <div class="inside-content-box">
       <div  class="el-input-box">
         <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-          <el-select class="el-select-box" v-model="select" slot="prepend" placeholder="请选择">
+          <el-select class="el-select-box" v-model="select" slot="prepend">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -15,7 +15,7 @@
       </div>
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
-          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.id)">
+          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.id)" :sickNess1='sickNess1'>
             <div class="items-title">{{item.title}}</div>
             <div class="tags-list-box">
               <div class="options-class tags-list-items">临床表现</div>
@@ -95,7 +95,7 @@
     color: #29bbff;
   }
   .tags-list-info{
-    padding: 0 8px 10px 8px;
+    overflow: hidden;
     box-sizing: border-box;
     font-size: 14px;
     text-overflow: ellipsis;
@@ -108,32 +108,25 @@
 </style>
 <script>
   export default {
+    props:['datalist'],
     data() {
       return {
         input3:'',
         select: '请选择',
-        options:[{label:'餐厅',value:1},{label:'医院',value:2},{label:'停车场',value:3},{label:'停车场123123',value:4}],
-        getListInfo:[
-          {id:1,title:'膀胱糖尿病'},
-          {id:2,title:'糖尿病'},
-          {id:3,title:'糖尿病'},
-          {id:4,title:'糖尿病'},
-          {id:1,title:'膀胱糖尿病'},
-          {id:2,title:'糖尿病'},
-          {id:3,title:'糖尿病'},
-          {id:4,title:'糖尿病'},
-          {id:1,title:'膀胱糖尿病'},
-          {id:2,title:'糖尿病'},
-          {id:3,title:'糖尿病'},
-          {id:4,title:'糖尿病'},
-          {id:1,title:'膀胱糖尿病'},
-          {id:2,title:'糖尿病'},
-          {id:3,title:'糖尿病'},
-          {id:4,title:'糖尿病'}
-        ]
+        options:[{label:'疾病',value:1},{label:'药品',value:2}],
+        getListInfo:[],
+      }
+    },
+    watch:{
+      datalist(datalist){
+      this.datalist = datalist;
+      console.log(datalist)
       }
     },
     created(){
+
+    },
+    mounted(){
 
     },
     methods:{
@@ -148,6 +141,17 @@
         that.$store.dispatch("getlist_id",id); // 获取 vuex 储存的状态或变量
         that.$emit('chenglistId',id);
       }
+    },
+    computed: {
+        sickNess() {
+          console.log(this.$store.state.sickNess1)
+          return this.$store.state.sickNess1
+        },
+        isCollapse() {
+          console.log(this.$store.state.isCollapse)
+          return this.$store.state.isCollapse
+        }
+
     }
   }
 </script>

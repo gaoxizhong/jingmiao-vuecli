@@ -17,3 +17,12 @@ export const delToken = ({commit},data) =>{
 export const menuBtn = ({commit},data) =>{
   commit('menuBtn',data);
 }
+export const sickNess = ({commit},data) =>{
+  commit('sickNess',data);
+}
+export const sickIndex = ({commit},data) =>{
+  commit('sickIndex',data);
+}
+export const sickIdx = ({commit},data) =>{
+  commit('sickIdx',data);
+}

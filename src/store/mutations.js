@@ -19,4 +19,12 @@ export const delToken = (state) =>{
 export const menuBtn = (state,isCollapse) =>{
   state.isCollapse = isCollapse
 }
-
+export const sickNess = (state,sickNess1) =>{
+  state.sickNess1 = sickNess1
+}
+export const sickIndex = (state,index) =>{
+  state.index = index
+}
+export const sickIdx = (state,idx) =>{
+  state.idx = idx
+}

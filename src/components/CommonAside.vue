@@ -6,22 +6,23 @@
         :collapse="isCollapse"
         :background-color="menuBackgroundColor"
         :text-color="menuTextColor"
+        default-active="0-0"
         unique-opened
     >
         <h3 class="menu-h3" v-show="!isCollapse">菁苗健康</h3>
         <h3 class="menu-h3" v-show="isCollapse">菁苗</h3>
-        <el-submenu  :index="item.knowledge_base_name" v-for="(item,index) in datalist" :key="index">
+        <el-submenu  :index="`${index}`" v-for="(item,index) in datalist" :key="index">
             <!-- 一级标题 -->
             <template slot="title">
                 <i class="el-icon-location"></i>
                 <span slot="title">{{item.knowledge_base_name}}</span>
             </template>
             <!-- 二级标题 -->
-            <el-submenu :index="item_2.department.name" v-for="(item_2,idx) in item.data" :key="idx" >
-                <span slot="title" :data-name='item_2.department.name' :data-sickNess='item_2.sickNess' @click="clickItem_2($event)">{{item_2.department.name}}</span>
-            <!-- 三级标题 -->
-                <el-menu-item :index="item_3.name" v-for="(item_3,idxx) in item_2.sickNess" :key="idxx">{{item_3.name}}</el-menu-item>
-            </el-submenu>
+            <el-menu-item style="width:100%;height:100%;" :index="`${index}-${idx}`" v-for="(item_2,idx) in item.data" :key="idx" :itemindex="index" :idx="idx" :name='item_2.department.name' @click="clickItem_2($event)">{{item_2.department.name}}</el-menu-item>
+            <!-- <el-submenu :index="`${index}-${idx}`" v-for="(item_2,idx) in item.data" :key="idx" >
+                <span slot="title" :data-name='item_2.department.name' :data-index="index" :data-idx="idx" @click="clickItem_2($event)" style="padding-left:30px;width:100%;height:100%;text-align:left;">{{item_2.department.name}}</span>
+                <el-menu-item style="width:100%;height:100%;" :index="`${index}-${idx}-${idxx}`" v-for="(item_3,idxx) in item_2.sickNess" :key="idxx" :idxx="idxx" :name3='item_3.name' @click="clickItem_3($event)">{{item_3.name}}</el-menu-item>
+            </el-submenu> -->
         </el-submenu>
     </el-menu>
 
@@ -43,6 +44,8 @@
   .el-submenu__title{
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    padding-left: 20px !important;
   }
 </style>
 <script>
@@ -56,7 +59,7 @@ export default {
     },
     watch:{
         datalist(datalist){
-        this.datalist = datalist
+        this.datalist = datalist;
         console.log(datalist)
         }
     },
@@ -64,11 +67,11 @@ export default {
 
     },
     created(){
-
+        
     },
     methods: {
 
-        handleOpen(key, keyPath) {
+       handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
         handleClose(key, keyPath) {
@@ -76,8 +79,30 @@ export default {
         },
         clickItem_2(e){
             console.log(e)
-            console.log(1)
+            let name = e.$attrs.name;
+            let arryinfo = this.datalist;
+            let index = e.$attrs.itemindex;
+            let idx = e.$attrs.idx;
+            let sickNess1 = arryinfo[index].data[idx];
+
+            this.$router.push({  //核心语句
+                path:'/Main/Home',   //跳转的路径
+                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                name, 
+                }
+            })
         },
+        clickItem_3(e){
+            // this.$router.push({  //核心语句
+            //     path:'/Main/Details',   //跳转的路径
+            //     query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+            //     id:'1', 
+            //     }
+            // })
+            let arryinfo = this.datalist;
+            let idxx = e.$attrs.idxx;
+            this.$emit("clickItem_3",idxx);
+        }
     },
     computed: {
         noChild() {
@@ -87,9 +112,10 @@ export default {
             return this.menu.filter( (item) => item.child)
         },
         isCollapse() {
-          return this.$store.state.isCollapse
-        }
+          console.log(this.$store.state.isCollapse)
 
+          return this.$store.state.isCollapse
+        },
     }
 
 }

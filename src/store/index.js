@@ -10,7 +10,10 @@ const state ={
   suer: {},   // 用户信息存储,
   token:'',
   list_id:'',
-  isCollapse: false // 左侧折叠状态
+  isCollapse: false, // 左侧折叠状态
+  sickNess1:{},
+  index: 0,
+  idx: 0
 }
 export default new Vuex.Store({
   state,

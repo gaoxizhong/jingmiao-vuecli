@@ -31,6 +31,7 @@ Vue.prototype.$getViewportSize = function() {
     height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight,
   }
 }
+
 new Vue({
   router,
   store,
