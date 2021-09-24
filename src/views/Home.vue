@@ -15,10 +15,10 @@
       </div>
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
-          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.id)" :sickNess1='sickNess1'>
-            <div class="items-title">{{item.title}}</div>
+          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.id)">
+            <div class="items-title">{{item.name}}</div>
             <div class="tags-list-box">
-              <div class="options-class tags-list-items">临床表现</div>
+              <div class="active tags-list-items">临床表现</div>
               <div class="tags-list-items">病因</div>
               <div class="tags-list-items">并发症</div>
               <div class="tags-list-items">辅助检查</div>
@@ -91,7 +91,7 @@
     transform: translateY(-50%);
     background: #dbdbdb;
   }
-  .tags-list-items.options-class{
+  .tags-list-items.active{
     color: #29bbff;
   }
   .tags-list-info{
@@ -128,16 +128,17 @@ import {getHomeRightList} from '@/api/data'
 
 
     created(){
-        this.select = this.$route.query.name,  //接受参数关键代码
-        console.log(this.select)
+        // this.select = this.$route.query.name;  //接受参数关键代码
+        // console.log(this.select)
+        // this.getHomeRightList(this.select);
     },
     mounted(){
-
+        this.select = this.$route.query.name;  //接受参数关键代码
+        console.log(this.select)
+        this.getHomeRightList(this.select);
     },
     updated() {
         console.log('updated')
-        // this.input3 = this.$route.query.name,  //接受参数关键代码
-        // console.log(this.input3)
      },
     methods:{
       getInputBtn(){
@@ -150,11 +151,18 @@ import {getHomeRightList} from '@/api/data'
         let id = _id;
         that.$store.dispatch("getlist_id",id); // 获取 vuex 储存的状态或变量
         that.$emit('chenglistId',id);
+        this.$router.replace({  //核心语句
+            path:'/Details',   //跳转的路径
+            query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+            id,
+            }
+        })
       },
+      // 获取科室下列表
       getHomeRightList(_data){
         let that = this;
         let data = _data;
-        getHomeRightList({name:data}).then( res =>{
+        getHomeRightList({'name':data}).then( res =>{
           if(res.data.code == 0){
             this.getListInfo=res.data.data
           }else{
@@ -169,12 +177,12 @@ import {getHomeRightList} from '@/api/data'
     },
     computed: {
         sickNess() {
-          this.sickNess1 = this.$store.state.sickNess1
-          this.select = this.sickNess1.department.name
-          console.log(this.sickNess1.department.name)
+          // this.select = this.$store.state.sickNess1
+          this.name = this.$store.state.sickNess1
+          console.log(this.$store.state.sickNess1)
           // this.getHomeRightList(this.sickNess1.department.name);
           return this.$store.state.sickNess1
-        },
+        }
         // isCollapse() {
         //   console.log(this.$store.state.isCollapse)
         //   return this.$store.state.isCollapse

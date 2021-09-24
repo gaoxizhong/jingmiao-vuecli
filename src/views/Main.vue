@@ -141,13 +141,12 @@ export default {
   mounted(){
     let that = this;
     console.log(2)
-
+    this.WesternMedicine();
   },
   created(){
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
-    this.WesternMedicine();
   },
 
   methods: {
@@ -158,11 +157,11 @@ export default {
         if(res.data.code == 0){
           let datalist = res.data.data;
           this.datalist = datalist;
-          let sickNess1 = datalist[0].data[0];
-          this.sickNess1 = sickNess1;
-          this.select = datalist[0].data[0].department.name
-          console.log(sickNess1)
-          this.$store.dispatch("sickNess",sickNess1);
+          let name = datalist[0].data[0].department.name;
+          this.name = name;
+          // this.select = datalist[0].data[0].department.name
+          console.log(name)
+          this.$store.dispatch("sickNess",name);
         }else{
         this.$message.error({
             message: res.data.msg
