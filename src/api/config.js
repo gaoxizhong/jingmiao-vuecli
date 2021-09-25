@@ -2,8 +2,8 @@ export default {
     title:'admin',
     baseURL: {
         // 开发
-        dev: '/api',
+        dev: 'https://repair.qdy0707.top/jmjk/',
         // 生产
-        pro: '/api'
+        pro: 'https://repair.qdy0707.top/jmjk/'
     }
 }
