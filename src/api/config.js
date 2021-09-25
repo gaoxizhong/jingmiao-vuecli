@@ -4,6 +4,6 @@ export default {
         // 开发
         dev: '/api',
         // 生产
-        pro: ''
+        pro: '/api'
     }
 }

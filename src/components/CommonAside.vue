@@ -6,7 +6,7 @@
         :collapse="isCollapse"
         :background-color="menuBackgroundColor"
         :text-color="menuTextColor"
-        default-active="0-0"
+        default-active="0-0-0"
         unique-opened
     >
         <h3 class="menu-h3" v-show="!isCollapse">菁苗健康</h3>
@@ -18,11 +18,11 @@
                 <span slot="title">{{item.knowledge_base_name}}</span>
             </template>
             <!-- 二级标题 -->
-            <el-menu-item style="width:100%;height:100%;" :index="`${index}-${idx}`" v-for="(item_2,idx) in item.data" :key="idx" :itemindex="index" :idx="idx" :name='item_2.department.name' @click="clickItem_2($event)">{{item_2.department.name}}</el-menu-item>
-            <!-- <el-submenu :index="`${index}-${idx}`" v-for="(item_2,idx) in item.data" :key="idx" >
-                <span slot="title" :data-name='item_2.department.name' :data-index="index" :data-idx="idx" @click="clickItem_2($event)" style="padding-left:30px;width:100%;height:100%;text-align:left;">{{item_2.department.name}}</span>
-                <el-menu-item style="width:100%;height:100%;" :index="`${index}-${idx}-${idxx}`" v-for="(item_3,idxx) in item_2.sickNess" :key="idxx" :idxx="idxx" :name3='item_3.name' @click="clickItem_3($event)">{{item_3.name}}</el-menu-item>
-            </el-submenu> -->
+            <!-- <el-menu-item style="width:100%;height:100%;" :index="`${index}-${idx}`" v-for="(item_2,idx) in item.data" :key="idx" :itemindex="index" :idx="idx" :name='item_2.department.name' @click="clickItem_2($event)">{{item_2.department.name}}</el-menu-item> -->
+            <el-submenu :index="`${index}-${idx}`" v-for="(item_2,idx) in item.data" :key="idx" >
+                <span slot="title" :data-index="index" :data-idx="idx" style="padding-left:30px;width:100%;height:100%;text-align:left;">{{item_2.departmentLevel1.name}}</span>
+                <el-menu-item style="width:100%;height:100%;" :index="`${index}-${idx}-${idxx}`" v-for="(item_3,idxx) in item_2.departmentLevel2.name" :key="idxx" :idxx="idxx" :name='item_3.departmentLevel2' @click="clickItem_2($event)">{{item_3.departmentLevel2}}</el-menu-item>
+            </el-submenu>
         </el-submenu>
     </el-menu>
 
@@ -71,16 +71,23 @@ export default {
     },
     methods: {
        aa(){
-         let arryinfo = this.datalist;
+         let arryinfo = this.datalist[0].data[0].departmentLevel2.name[0];
          console.log(arryinfo)
-          let name = arryinfo[0].data[0].department.name;
+          let name = arryinfo.departmentLevel2;
           this.$store.dispatch("sickNess",name);
-          this.$router.replace({  //核心语句
-                path:'/Home',   //跳转的路径
-                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                name:name,
-                }
+          let is_details = window.localStorage.getItem('is_details');
+          console.log(is_details)
+          if(is_details == 1){
+            return
+          }else{
+            this.$router.replace({  //核心语句
+              path:'/Home',   //跳转的路径
+              query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+              name:name,
+              }
             })
+          }
+
          console.log(this.datalist)
 
        },
@@ -92,13 +99,11 @@ export default {
         },
         clickItem_2(e){
             console.log(e)
+             window.localStorage.setItem('is_details',0);
             let name = e.$attrs.name;
-            let arryinfo = this.datalist;
-            let index = e.$attrs.itemindex;
-            let idx = e.$attrs.idx;
             // let sickNess1 = arryinfo[index].data[idx];
             this.$store.dispatch("sickNess",name);
-            console.log( this.$store.state.sickNess1)
+            // console.log( this.$store.state.sickNess1)
             this.$emit('sickNess')
             this.$router.replace({  //核心语句
                 path:'/Home',   //跳转的路径

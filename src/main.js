@@ -5,7 +5,7 @@ import router from './router'
 import store from './store'
 import http from './api/axios'
 
-import { Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem   } from 'element-ui';
+import { Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
 Vue.config.productionTip = false
 Vue.use(Button);
 Vue.use(Select);
@@ -23,8 +23,13 @@ Vue.use(Row);
 Vue.use(Col);
 Vue.use(Collapse);
 Vue.use(CollapseItem);
+Vue.use(Dropdown);
+Vue.use(DropdownMenu);
+Vue.use(Empty);
+
 Vue.prototype.$http = http;
 Vue.prototype.$message = Message;
+Vue.prototype.$loading = Loading.service;
 Vue.prototype.$getViewportSize = function() {
   return {
     width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,

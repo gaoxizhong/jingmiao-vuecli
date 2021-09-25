@@ -26,15 +26,22 @@ const routes = [
     component: Main,
     // redirect: {name: 'home'},
     children: [
-      {path:'/Home',name:'home',component:()=>import('@/views/Home')},
-      // {path:'Details',name:'详情',component:()=>import('@/views/Details')}
+      { path: '/Home',
+       name: 'home',
+       component: () => import('@/views/Home'),
+      meta: {
+        keepAlive: true,
+        scollTopPosition: 0
+      }
+       },
+      { path: '/Details', name: '详情', component: () => import('@/views/Details') }
     ]
   }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+  // mode: 'history',
+  // base: process.env.BASE_URL,
   routes
 })
 

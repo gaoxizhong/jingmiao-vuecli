@@ -138,6 +138,7 @@ export default {
             message:'登录成功',
             duration: 1500,
             onClose(){
+              window.localStorage.setItem('is_details',0);
               // 执行 actions 操作,,属于异步操作
               // 存储token到ls
               // const { token } = data.token;

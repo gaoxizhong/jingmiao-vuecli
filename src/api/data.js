@@ -32,3 +32,19 @@ export const getHomeRightList = (params) =>{
     data: params
   })
 }
+//  详情页右侧列表
+export const getSickNess = (params) =>{
+  return axios.request({
+    url:'/zsk/SickNess/detail',
+    method: 'post',
+    data: params
+  })
+}
+//  列表页搜索
+export const getSearch = (params) =>{
+  return axios.request({
+    url:'/zsk/search',
+    method: 'post',
+    data: params
+  })
+}
