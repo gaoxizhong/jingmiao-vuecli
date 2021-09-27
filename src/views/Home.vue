@@ -2,15 +2,8 @@
    <div class="content-box">
      <div class="inside-content-box" id="inside-content-box">
        <el-row>
-         <el-col :span="18" :offset="3">
+         <el-col :span="16" :offset="4">
           <div class="el-input-box el-col">
-            <el-select class="el-select-box" v-model="select_1" slot="prepend" style="width:140px;" @change="selectchange">
-              <el-option
-                v-for="item in options_1"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"></el-option>
-            </el-select>
             <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
               <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
                 <el-option
@@ -29,13 +22,27 @@
         <el-col :span="18" :offset="3">
           <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.sickness_name)">
             <div class="items-title">{{item.sickness_name}}</div>
-            <div class="tags-list-box">
-              <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text,'1')">{{item.symptom.name}}</div>
-              <div :class="[{ active: item.pathogenesis.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pathogenesis',item.pathogenesis.text,'2')">{{item.pathogenesis.name}}</div>
-              <div :class="[{ active: item.complicationsOverview.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'complicationsOverview',item.complicationsOverview.text,'3')">{{item.complicationsOverview.name}}</div>
-              <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text,'4')">{{item.inspection.name}}</div>
-              <div :class="[{ active: item.diagnostiCtriage.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'diagnostiCtriage',item.diagnostiCtriage.text,'5')">{{item.diagnostiCtriage.name}}</div>
-              <div :class="[{ active: item.treatmenCommonSense.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'treatmenCommonSense',item.treatmenCommonSense.text,'6')">{{item.treatmenCommonSense.name}}</div>
+            <div class="tags-list-box" v-if=" tag == 'sickness' || tag == 'disease' ">
+              <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
+              <div :class="[{ active: item.pathogenesis.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pathogenesis',item.pathogenesis.text)">{{item.pathogenesis.name}}</div>
+              <div :class="[{ active: item.complicationsOverview.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'complicationsOverview',item.complicationsOverview.text)">{{item.complicationsOverview.name}}</div>
+              <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
+              <div :class="[{ active: item.diagnostiCtriage.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'diagnostiCtriage',item.diagnostiCtriage.text)">{{item.diagnostiCtriage.name}}</div>
+              <div :class="[{ active: item.treatmenCommonSense.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'treatmenCommonSense',item.treatmenCommonSense.text)">{{item.treatmenCommonSense.name}}</div>
+            </div>
+            <!-- 药品 -->
+            <div class="tags-list-box" v-if=" tag == 'medicine' ">
+               <div :class="[{ active: item.majorConstituent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'majorConstituent',item.majorConstituent.text)">{{item.majorConstituent.name}}</div>
+               <div :class="[{ active: item.indication.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indication',item.indication.text)">{{item.indication.name}}</div>
+               <div :class="[{ active: item.notes.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'notes',item.notes.text)">{{item.notes.name}}</div>
+               <div :class="[{ active: item.pinyi.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pinyi',item.pinyi.text)">{{item.pinyi.name}}</div>
+            </div>
+             <!-- 检查 -->
+            <div class="tags-list-box" v-if=" tag == 'inspection' ">
+               <div :class="[{ active: item.annotation.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'annotation',item.annotation.text)">{{item.annotation.name}}</div>
+               <div :class="[{ active: item.clinicalSignificance.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'clinicalSignificance',item.clinicalSignificance.text)">{{item.clinicalSignificance.name}}</div>
+               <div :class="[{ active: item.principle.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'principle',item.principle.text)">{{item.principle.name}}</div>
+               <div :class="[{ active: item.reagent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'reagent',item.reagent.text)">{{item.reagent.name}}</div>
             </div>
             <div class="tags-list-info">{{item.text?item.text:'暂无'}}</div>
           </div>
@@ -57,7 +64,7 @@
     height: auto;
     background: #fff;
     box-sizing: border-box;
-    padding: 20px 30px 0 30px;
+    padding: 20px 30px;
   }
   .el-input-box{
     display: flex;
@@ -130,14 +137,11 @@ import {getHomeRightList,getSearch} from '@/api/data'
         select_name:'',
         selectSearchChange:'',
         options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'}],
-        select_1: '科普',
-        selectcheng:'sickness',
-        options_1:[{label:'科普',value:'sickness'},{label:'医疗',value:'dissease'}],
+        tag:'',
         getListInfo:[],
         name:'',
         pn: 1,
         hove_index: 0,
-        is_tags: '1',
         is_debug: true
       }
     },
@@ -154,14 +158,13 @@ import {getHomeRightList,getSearch} from '@/api/data'
     created(){
       console.log('created')
         this.select_name = this.$route.query.name;  //接受参数关键代码
+        this.tag = this.$route.query.tag;
         console.log(this.select_name)
-        this.getHomeRightList(this.select_name);
+        console.log(this.tag)
+        this.getHomeRightList();
     },
     mounted(){
       console.log('mounted')
-        // this.select_name = this.$route.query.name;  //接受参数关键代码
-        // console.log(this.select_name)
-        // this.getHomeRightList();
     },
     updated() {
         console.log('updated')
@@ -192,7 +195,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         });
        getSearch({
           tag: that.selectSearchChange,
-          search:'搜索',
+          search: that.input3,
           pn: 1
        }).then(res =>{
           loading.close();
@@ -200,8 +203,16 @@ import {getHomeRightList,getSearch} from '@/api/data'
            console.log(1)
             let getListInfo = res.data.data;
             for(var i = 0;i<getListInfo.length;i++){
+
               getListInfo[i].index = i;
-              getListInfo[i].text = getListInfo[i].symptom.text
+              if(that.tag == "sickness" || that.tag == "disease"){
+                  getListInfo[i].text = getListInfo[i].symptom.text
+                }else if(that.tag == "medicine"){
+                  getListInfo[i].text = getListInfo[i].majorConstituent.text
+                }else if(that.tag == "inspection"){
+                  getListInfo[i].text = getListInfo[i].annotation.text
+                }
+
             }
           if(that.selectSearchChange == 'medicine'){
                 that.is_debug = false
@@ -234,14 +245,14 @@ import {getHomeRightList,getSearch} from '@/api/data'
       getarticle(_name){
         let that = this;
         let name = _name;
+        let tag = that.tag;
         let is_debug = that.is_debug;
-        // that.$store.dispatch("getlist_id",id); // 获取 vuex 储存的状态或变量
-        // that.$emit('chenglistId',name);
         if(is_debug){
             this.$router.push({  //核心语句
               path:'/Details',   //跳转的路径
               query:{           //路由传参时push和query搭配使用 ，作用时传递参数
               name,
+              tag,
               }
           })
           return
@@ -256,7 +267,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         let that = this;
         let pearms = {
           'department':that.select_name,
-          'tag': that.selectcheng,
+          'tag': that.tag,
           'pn': that.pn
         }
         const loading = this.$loading({
@@ -272,7 +283,13 @@ import {getHomeRightList,getSearch} from '@/api/data'
             let getListInfo = res.data.data;
             for(var i = 0;i<getListInfo.length;i++){
               getListInfo[i].index = i;
-              getListInfo[i].text = getListInfo[i].symptom.text
+              if(that.tag == "sickness" || that.tag == "disease"){
+                getListInfo[i].text = getListInfo[i].symptom.text
+              }else if(that.tag == "medicine"){
+                getListInfo[i].text = getListInfo[i].majorConstituent.text
+              }else if(that.tag == "inspection"){
+                getListInfo[i].text = getListInfo[i].annotation.text
+              }
             }
             this.getListInfo= getListInfo;
             console.log(this.getListInfo)
@@ -295,74 +312,132 @@ import {getHomeRightList,getSearch} from '@/api/data'
             console.log(e)
         })
       },
-      clickTags(e,_type,_text,_is_tags){
+      // 列表小分类标签
+      clickTags(e,_type,_text){
         let index = e.target.dataset.index;
         let type = _type;
         let text = _text;
         let getListInfo = this.getListInfo;
         getListInfo[index].text = text;
-        if(type == 'symptom'){
-          getListInfo[index].symptom.active = true;
-          getListInfo[index].pathogenesis.active = false;
-          getListInfo[index].complicationsOverview.active = false;
-          getListInfo[index].inspection.active = false;
-          getListInfo[index].diagnostiCtriage.active = false;
-          getListInfo[index].treatmenCommonSense.active = false;
-          return
+        if(this.tag == "sickness" || this.tag == "disease"){
+          if(type == 'symptom'){
+            getListInfo[index].symptom.active = true;
+            getListInfo[index].pathogenesis.active = false;
+            getListInfo[index].complicationsOverview.active = false;
+            getListInfo[index].inspection.active = false;
+            getListInfo[index].diagnostiCtriage.active = false;
+            getListInfo[index].treatmenCommonSense.active = false;
+            return
+          }
+          if(type == 'pathogenesis'){
+            getListInfo[index].symptom.active = false;
+            getListInfo[index].pathogenesis.active = true;
+            getListInfo[index].complicationsOverview.active = false;
+            getListInfo[index].inspection.active = false;
+            getListInfo[index].diagnostiCtriage.active = false;
+            getListInfo[index].treatmenCommonSense.active = false;
+            return
+          }
+          if(type == 'complicationsOverview'){
+            getListInfo[index].symptom.active = false;
+            getListInfo[index].pathogenesis.active = false;
+            getListInfo[index].complicationsOverview.active = true;
+            getListInfo[index].inspection.active = false;
+            getListInfo[index].diagnostiCtriage.active = false;
+            getListInfo[index].treatmenCommonSense.active = false;
+            return
+          }
+          if(type == 'inspection'){
+            getListInfo[index].symptom.active = false;
+            getListInfo[index].pathogenesis.active = false;
+            getListInfo[index].complicationsOverview.active = false;
+            getListInfo[index].inspection.active = true;
+            getListInfo[index].diagnostiCtriage.active = false;
+            getListInfo[index].treatmenCommonSense.active = false;
+            return
+          }
+          if(type == 'diagnostiCtriage'){
+            getListInfo[index].symptom.active = false;
+            getListInfo[index].pathogenesis.active = false;
+            getListInfo[index].complicationsOverview.active = false;
+            getListInfo[index].inspection.active = false;
+            getListInfo[index].diagnostiCtriage.active = true;
+            getListInfo[index].treatmenCommonSense.active = false;
+            return
+          }
+          if(type == 'treatmenCommonSense'){
+            getListInfo[index].symptom.active = false;
+            getListInfo[index].pathogenesis.active = false;
+            getListInfo[index].complicationsOverview.active = false;
+            getListInfo[index].inspection.active = false;
+            getListInfo[index].diagnostiCtriage.active = false;
+            getListInfo[index].treatmenCommonSense.active = true;
+            return
+          }
         }
-        if(type == 'pathogenesis'){
-          getListInfo[index].symptom.active = false;
-          getListInfo[index].pathogenesis.active = true;
-          getListInfo[index].complicationsOverview.active = false;
-          getListInfo[index].inspection.active = false;
-          getListInfo[index].diagnostiCtriage.active = false;
-          getListInfo[index].treatmenCommonSense.active = false;
-          return
+        // 药品
+        if(this.tag == "medicine"){
+          if(type == 'pinyi'){
+            getListInfo[index].pinyi.active = true;
+            getListInfo[index].indication.active = false;
+            getListInfo[index].majorConstituent.active = false;
+            getListInfo[index].notes.active = false;
+            return
+          }
+          if(type == 'indication'){
+            getListInfo[index].pinyi.active = false;
+            getListInfo[index].indication.active = true;
+            getListInfo[index].majorConstituent.active = false;
+            getListInfo[index].notes.active = false;
+            return
+          }
+          if(type == 'majorConstituent'){
+            getListInfo[index].pinyi.active = false;
+            getListInfo[index].indication.active = false;
+            getListInfo[index].majorConstituent.active = true;
+            getListInfo[index].notes.active = false;
+            return
+          }
+          if(type == 'notes'){
+            getListInfo[index].pinyi.active = false;
+            getListInfo[index].indication.active = false;
+            getListInfo[index].majorConstituent.active = false;
+            getListInfo[index].notes.active = true;
+            return
+          }
         }
-        if(type == 'complicationsOverview'){
-          getListInfo[index].symptom.active = false;
-          getListInfo[index].pathogenesis.active = false;
-          getListInfo[index].complicationsOverview.active = true;
-          getListInfo[index].inspection.active = false;
-          getListInfo[index].diagnostiCtriage.active = false;
-          getListInfo[index].treatmenCommonSense.active = false;
-          return
+        // 检查
+        if(this.tag == "inspection"){
+          if(type == 'annotation'){
+            getListInfo[index].annotation.active = true;
+            getListInfo[index].clinicalSignificance.active = false;
+            getListInfo[index].principle.active = false;
+            getListInfo[index].reagent.active = false;
+            return
+          }
+          if(type == 'clinicalSignificance'){
+            getListInfo[index].annotation.active = false;
+            getListInfo[index].clinicalSignificance.active = true;
+            getListInfo[index].principle.active = false;
+            getListInfo[index].reagent.active = false;
+            return
+          }
+          if(type == 'principle'){
+            getListInfo[index].annotation.active = false;
+            getListInfo[index].clinicalSignificance.active = false;
+            getListInfo[index].principle.active = true;
+            getListInfo[index].reagent.active = false;
+            return
+          }
+          if(type == 'reagent'){
+            getListInfo[index].annotation.active = false;
+            getListInfo[index].clinicalSignificance.active = false;
+            getListInfo[index].principle.active = false;
+            getListInfo[index].reagent.active = true;
+            return
+          }
         }
-        if(type == 'inspection'){
-          getListInfo[index].symptom.active = false;
-          getListInfo[index].pathogenesis.active = false;
-          getListInfo[index].complicationsOverview.active = false;
-          getListInfo[index].inspection.active = true;
-          getListInfo[index].diagnostiCtriage.active = false;
-          getListInfo[index].treatmenCommonSense.active = false;
-          return
-        }
-        if(type == 'diagnostiCtriage'){
-          getListInfo[index].symptom.active = false;
-          getListInfo[index].pathogenesis.active = false;
-          getListInfo[index].complicationsOverview.active = false;
-          getListInfo[index].inspection.active = false;
-          getListInfo[index].diagnostiCtriage.active = true;
-          getListInfo[index].treatmenCommonSense.active = false;
-          return
-        }
-        if(type == 'treatmenCommonSense'){
-          getListInfo[index].symptom.active = false;
-          getListInfo[index].pathogenesis.active = false;
-          getListInfo[index].complicationsOverview.active = false;
-          getListInfo[index].inspection.active = false;
-          getListInfo[index].diagnostiCtriage.active = false;
-          getListInfo[index].treatmenCommonSense.active = true;
-          return
-        }
-        this.is_tags = _is_tags;
         this.getListInfo= getListInfo;
-
-      },
-      selectchange(e){
-        console.log(e)
-        this.selectcheng = e;
-         this.getHomeRightList();
       },
       searchDownChange(e){
         console.log(e)

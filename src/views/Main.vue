@@ -42,17 +42,6 @@ export default {
       select: '请选择',
       options:[{label:'疾病',value:1},{label:'药品',value:2}],
       sickNess1:[],
-      activeName:'1',
-      iconList:[
-        {id:1,name:'临床表现'},
-        {id:2,name:'病因'},
-        {id:3,name:'并发症'},
-        {id:4,name:'辅助检查'},
-        {id:5,name:'诊断'},
-        {id:5,name:'治疗'},
-      ],
-      hove_id: 0,
-      itemIndex: 0,
       is_view: true
     }
   },
@@ -73,16 +62,14 @@ export default {
       await  WesternMedicine({}).then( res =>{
         if(res.data.code == 0){
           let datalist = res.data.data;
-          let name = datalist[0].data[0].departmentLevel2.name[0].departmentLevel2;
           this.datalist = datalist;
-          this.name = name;
           this.$store.dispatch("sickNess",name);
           this.setsickNess();
         }else if(res.data.code == 1){
           this.$message.error({
               message: res.data.msg
           });
-          this.$router.push('/Login');
+          // this.$router.push('/');
           return
         }else{
            this.$message.error({
@@ -100,12 +87,6 @@ export default {
       this.$nextTick(() => {
           this.is_view = true
       })
-    },
-    iconClick(e){
-      console.log(e)
-      let hove_id = e.target.dataset.index;
-      this.hove_id = hove_id;
-      this.itemIndex = e.target.dataset.itemIndex
     },
   },
 }
