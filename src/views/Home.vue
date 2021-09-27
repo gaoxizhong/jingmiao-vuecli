@@ -136,13 +136,12 @@ import {getHomeRightList,getSearch} from '@/api/data'
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'}],
+        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}],
         tag:'',
         getListInfo:[],
         name:'',
         pn: 1,
         hove_index: 0,
-        is_debug: true
       }
     },
     watch:{
@@ -200,6 +199,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
        }).then(res =>{
           loading.close();
          if(res.data.code == 0){
+           that.tag= that.selectSearchChange;
            console.log(1)
             let getListInfo = res.data.data;
             for(var i = 0;i<getListInfo.length;i++){
@@ -213,9 +213,6 @@ import {getHomeRightList,getSearch} from '@/api/data'
                   getListInfo[i].text = getListInfo[i].annotation.text
                 }
 
-            }
-          if(that.selectSearchChange == 'medicine'){
-                that.is_debug = false
             }
             this.getListInfo= getListInfo;
             console.log(this.getListInfo)
@@ -246,21 +243,13 @@ import {getHomeRightList,getSearch} from '@/api/data'
         let that = this;
         let name = _name;
         let tag = that.tag;
-        let is_debug = that.is_debug;
-        if(is_debug){
-            this.$router.push({  //核心语句
-              path:'/Details',   //跳转的路径
-              query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-              name,
-              tag,
-              }
-          })
-          return
-        }else{
-          return
-        }
-
-
+        this.$router.push({  //核心语句
+          path:'/Details',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+            name,
+            tag,
+          }
+        })
       },
       // 获取科室下列表
       getHomeRightList(){

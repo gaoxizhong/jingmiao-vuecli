@@ -44,8 +44,8 @@
 													<template v-if="item_4.departmentLevel2.name">
 														<el-submenu :index="`${index}-${idx_2}-${idx_3}-${idx_4}`" :key="idx_4">
 															<template slot="title">
-                                                                <i class="el-icon-document"></i>
-                                                                <span slot="title">{{ item_4.departmentLevel1 }}</span>
+                                <i class="el-icon-document"></i>
+                                <span slot="title">{{ item_4.departmentLevel1 }}</span>
 															</template>
 															<el-menu-item v-for="(item_5,idx_5) in item_4.departmentLevel2.name" :key="idx_5" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item>
 														</el-submenu>
@@ -141,7 +141,6 @@ export default {
     methods: {
        aa(){
           let arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
-        //  let arryinfo = this.datalist[0].data[0].departmentLevel2.name[0];
          console.log(arryinfo)
           let name = arryinfo.departmentLevel2;
           let tag = arryinfo.tag;

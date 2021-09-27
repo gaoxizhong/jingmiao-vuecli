@@ -63,13 +63,12 @@ export default {
         if(res.data.code == 0){
           let datalist = res.data.data;
           this.datalist = datalist;
-          this.$store.dispatch("sickNess",name);
           this.setsickNess();
         }else if(res.data.code == 1){
           this.$message.error({
               message: res.data.msg
           });
-          // this.$router.push('/');
+          this.$router.push('/');
           return
         }else{
            this.$message.error({
