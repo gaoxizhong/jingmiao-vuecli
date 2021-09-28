@@ -17,7 +17,6 @@
           </div>
          </el-col>
        </el-row>
-
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
           <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.sickness_name)">
@@ -29,20 +28,6 @@
               <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
               <div :class="[{ active: item.diagnostiCtriage.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'diagnostiCtriage',item.diagnostiCtriage.text)">{{item.diagnostiCtriage.name}}</div>
               <div :class="[{ active: item.treatmenCommonSense.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'treatmenCommonSense',item.treatmenCommonSense.text)">{{item.treatmenCommonSense.name}}</div>
-            </div>
-            <!-- 药品 -->
-            <div class="tags-list-box" v-if=" tag == 'medicine' ">
-               <div :class="[{ active: item.majorConstituent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'majorConstituent',item.majorConstituent.text)">{{item.majorConstituent.name}}</div>
-               <div :class="[{ active: item.indication.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indication',item.indication.text)">{{item.indication.name}}</div>
-               <div :class="[{ active: item.notes.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'notes',item.notes.text)">{{item.notes.name}}</div>
-               <div :class="[{ active: item.pinyi.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pinyi',item.pinyi.text)">{{item.pinyi.name}}</div>
-            </div>
-             <!-- 检查 -->
-            <div class="tags-list-box" v-if=" tag == 'inspection' ">
-               <div :class="[{ active: item.annotation.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'annotation',item.annotation.text)">{{item.annotation.name}}</div>
-               <div :class="[{ active: item.clinicalSignificance.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'clinicalSignificance',item.clinicalSignificance.text)">{{item.clinicalSignificance.name}}</div>
-               <div :class="[{ active: item.principle.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'principle',item.principle.text)">{{item.principle.name}}</div>
-               <div :class="[{ active: item.reagent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'reagent',item.reagent.text)">{{item.reagent.name}}</div>
             </div>
             <div class="tags-list-info">{{item.text?item.text:'暂无'}}</div>
           </div>
@@ -127,7 +112,7 @@
   }
 </style>
 <script>
-import {getHomeRightList,getSearch} from '@/api/data'
+import {getzyHomeRightList,getSearch} from '@/api/data'
   export default {
     data() {
       return {
@@ -135,7 +120,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}],
+        options:[{label:'疾病',value:'sickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}],
         tag:'',
         getListInfo:[],
         name:'',
@@ -152,7 +137,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         this.tag = this.$route.query.tag;
         console.log(this.select_name)
         console.log(this.tag)
-        this.getHomeRightList();
+        this.getzyHomeRightList();
     },
     mounted(){
       console.log('mounted')
@@ -244,10 +229,9 @@ import {getHomeRightList,getSearch} from '@/api/data'
         })
       },
       // 获取科室下列表
-      getHomeRightList(){
+      getzyHomeRightList(){
         let that = this;
         let pearms = {
-          'department':that.select_name,
           'tag': that.tag,
           'pn': that.pn
         }
@@ -258,18 +242,14 @@ import {getHomeRightList,getSearch} from '@/api/data'
           background: 'rgba(0, 0, 0, 0.1)',
           target:document.querySelector('.content-box'),
         });
-        getHomeRightList(pearms).then( res =>{
+        getzyHomeRightList(pearms).then( res =>{
           loading.close();
           if(res.data.code == 0){
             let getListInfo = res.data.data;
             for(var i = 0;i<getListInfo.length;i++){
               getListInfo[i].index = i;
-              if(that.tag == "sickness" || that.tag == "disease"){
+              if(that.tag == "sickness"){
                 getListInfo[i].text = getListInfo[i].symptom.text
-              }else if(that.tag == "medicine"){
-                getListInfo[i].text = getListInfo[i].majorConstituent.text
-              }else if(that.tag == "inspection"){
-                getListInfo[i].text = getListInfo[i].annotation.text
               }
             }
             that.getListInfo= getListInfo;
@@ -279,9 +259,6 @@ import {getHomeRightList,getSearch} from '@/api/data'
             that.$message.error({
                 message: res.data.msg,
             });
-            // setTimeout(function(){
-            //    that.$router.push('/');
-            // },1500)
             return
           }else{
             that.$message.error({
@@ -310,114 +287,9 @@ import {getHomeRightList,getSearch} from '@/api/data'
             getListInfo[index].treatmenCommonSense.active = false;
             return
           }
-          if(type == 'pathogenesis'){
-            getListInfo[index].symptom.active = false;
-            getListInfo[index].pathogenesis.active = true;
-            getListInfo[index].complicationsOverview.active = false;
-            getListInfo[index].inspection.active = false;
-            getListInfo[index].diagnostiCtriage.active = false;
-            getListInfo[index].treatmenCommonSense.active = false;
-            return
-          }
-          if(type == 'complicationsOverview'){
-            getListInfo[index].symptom.active = false;
-            getListInfo[index].pathogenesis.active = false;
-            getListInfo[index].complicationsOverview.active = true;
-            getListInfo[index].inspection.active = false;
-            getListInfo[index].diagnostiCtriage.active = false;
-            getListInfo[index].treatmenCommonSense.active = false;
-            return
-          }
-          if(type == 'inspection'){
-            getListInfo[index].symptom.active = false;
-            getListInfo[index].pathogenesis.active = false;
-            getListInfo[index].complicationsOverview.active = false;
-            getListInfo[index].inspection.active = true;
-            getListInfo[index].diagnostiCtriage.active = false;
-            getListInfo[index].treatmenCommonSense.active = false;
-            return
-          }
-          if(type == 'diagnostiCtriage'){
-            getListInfo[index].symptom.active = false;
-            getListInfo[index].pathogenesis.active = false;
-            getListInfo[index].complicationsOverview.active = false;
-            getListInfo[index].inspection.active = false;
-            getListInfo[index].diagnostiCtriage.active = true;
-            getListInfo[index].treatmenCommonSense.active = false;
-            return
-          }
-          if(type == 'treatmenCommonSense'){
-            getListInfo[index].symptom.active = false;
-            getListInfo[index].pathogenesis.active = false;
-            getListInfo[index].complicationsOverview.active = false;
-            getListInfo[index].inspection.active = false;
-            getListInfo[index].diagnostiCtriage.active = false;
-            getListInfo[index].treatmenCommonSense.active = true;
-            return
-          }
+
         }
-        // 药品
-        if(this.tag == "medicine"){
-          if(type == 'pinyi'){
-            getListInfo[index].pinyi.active = true;
-            getListInfo[index].indication.active = false;
-            getListInfo[index].majorConstituent.active = false;
-            getListInfo[index].notes.active = false;
-            return
-          }
-          if(type == 'indication'){
-            getListInfo[index].pinyi.active = false;
-            getListInfo[index].indication.active = true;
-            getListInfo[index].majorConstituent.active = false;
-            getListInfo[index].notes.active = false;
-            return
-          }
-          if(type == 'majorConstituent'){
-            getListInfo[index].pinyi.active = false;
-            getListInfo[index].indication.active = false;
-            getListInfo[index].majorConstituent.active = true;
-            getListInfo[index].notes.active = false;
-            return
-          }
-          if(type == 'notes'){
-            getListInfo[index].pinyi.active = false;
-            getListInfo[index].indication.active = false;
-            getListInfo[index].majorConstituent.active = false;
-            getListInfo[index].notes.active = true;
-            return
-          }
-        }
-        // 检查
-        if(this.tag == "inspection"){
-          if(type == 'annotation'){
-            getListInfo[index].annotation.active = true;
-            getListInfo[index].clinicalSignificance.active = false;
-            getListInfo[index].principle.active = false;
-            getListInfo[index].reagent.active = false;
-            return
-          }
-          if(type == 'clinicalSignificance'){
-            getListInfo[index].annotation.active = false;
-            getListInfo[index].clinicalSignificance.active = true;
-            getListInfo[index].principle.active = false;
-            getListInfo[index].reagent.active = false;
-            return
-          }
-          if(type == 'principle'){
-            getListInfo[index].annotation.active = false;
-            getListInfo[index].clinicalSignificance.active = false;
-            getListInfo[index].principle.active = true;
-            getListInfo[index].reagent.active = false;
-            return
-          }
-          if(type == 'reagent'){
-            getListInfo[index].annotation.active = false;
-            getListInfo[index].clinicalSignificance.active = false;
-            getListInfo[index].principle.active = false;
-            getListInfo[index].reagent.active = true;
-            return
-          }
-        }
+
         this.getListInfo= getListInfo;
       },
       searchDownChange(e){
@@ -430,7 +302,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
     },
     beforeRouteEnter (to, from, next) {
       next(vm =>{
-        if(from.path === "/Home"){
+        if(from.path === "/zyHome"){
           document.getElementById('inside-content-box').scrollTop = to.meta.scollTopPosition;
         }
       });

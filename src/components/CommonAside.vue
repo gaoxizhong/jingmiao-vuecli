@@ -67,9 +67,9 @@
 				</template>
 				<!-- 如果第一层没有子菜单 -->
 				<template v-else>
-					<el-menu-item :index="`${index}`" :key="index">
-						<i :class="item.icon"></i>
-						<span slot="title">{{ item.knowledge_base_name }}</span>
+					<el-menu-item :index="`${index}`" :key="index" style="text-align:left; padding-left:20px !important;">
+						<i class="el-icon-location"></i>
+						<span slot="title" >{{ item.knowledge_base_name }}</span>
 					</el-menu-item>
 				</template>
 			</template>
@@ -124,6 +124,7 @@ export default {
         return {
             menuBackgroundColor:'#fff',
             menuTextColor:'#303133',
+            oneColumn: 0
         }
     },
     watch:{
@@ -139,6 +140,10 @@ export default {
 
     },
     methods: {
+      // 点击左侧一级栏目
+      clickItem_1(e){
+        console.log(e)
+      },
        aa(){
           let arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
          console.log(arryinfo)
@@ -163,7 +168,12 @@ export default {
 
        },
        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
+          if(key == 0){
+           this.oneColumn = key;
+          }
+          if(key == 1){
+           this.oneColumn = key;
+          }
         },
         handleClose(key, keyPath) {
             console.log(key, keyPath);
@@ -171,31 +181,37 @@ export default {
         clickItem_2(e){
             console.log(e)
              window.localStorage.setItem('is_details',0);
-            let name = e.$attrs.name;
-            let tag = e.$attrs.tag;
-            // let sickNess1 = arryinfo[index].data[idx];
-            this.$store.dispatch("sickNess",name);
-            // console.log( this.$store.state.sickNess1)
-            this.$emit('sickNess')
-            this.$router.replace({  //核心语句
-                path:'/Home',   //跳转的路径
-                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                name,
-                tag,
-                }
-            })
+             if(this.oneColumn == 0){
+               console.log(0)
+                let name = e.$attrs.name;
+                let tag = e.$attrs.tag;
+                this.$store.dispatch("sickNess",name);
+                this.$emit('sickNess')
+                this.$router.replace({  //核心语句
+                    path:'/Home',   //跳转的路径
+                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                      name,
+                      tag,
+                    }
+                })
+              return
+             }
+            if(this.oneColumn == 1){
+               console.log(1)
+                let name = e.$attrs.name;
+                let tag = e.$attrs.tag;
+                this.$store.dispatch("sickNess",name);
+                this.$emit('sickNess')
+                this.$router.replace({  //核心语句
+                    path:'/zyHome',   //跳转的路径
+                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                      name,
+                      tag,
+                    }
+                })
+              return
+             }
         },
-        clickItem_3(e){
-            // this.$router.push({  //核心语句
-            //     path:'/Main/Details',   //跳转的路径
-            //     query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            //     id:'1',
-            //     }
-            // })
-            let arryinfo = this.datalist;
-            let idx_3 = e.$attrs.idx_3;
-            this.$emit("clickItem_3",idx_3);
-        }
     },
     computed: {
         noChild() {

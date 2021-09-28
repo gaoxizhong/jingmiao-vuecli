@@ -27,14 +27,23 @@ const routes = [
     // redirect: {name: 'home'},
     children: [
       { path: '/Home',
-       name: 'home',
-       component: () => import('@/views/Home'),
-      meta: {
-        keepAlive: true,
-        scollTopPosition: 0
-      }
+        name: 'home',
+        component: () => import('@/views/Home'),
+          meta: {
+            keepAlive: true,
+            scollTopPosition: 0
+          }
        },
-      { path: '/Details', name: '详情', component: () => import('@/views/Details') }
+      { path: '/zyHome',
+        name: 'zyHome',
+        component: () => import('@/views/zyHome'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0
+        }
+      },
+      { path: '/Details', name: 'Details', component: () => import('@/views/Details') },
+
     ]
   }
 ]
