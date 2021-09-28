@@ -4,7 +4,7 @@
        <a href="#" class="el-icon-back box2-span" @click="fanhui_btn()"></a>
         <el-row>
          <el-col :span="18" :offset="3">
-            <gSearch></gSearch>
+            <gSearch :type="type"></gSearch>
          </el-col>
        </el-row>
       <el-row class="home" :gutter="20" style="padding-top:10px;">
@@ -109,14 +109,18 @@ import {getSickNess} from '@/api/data'
         id:'',
         name_1:'',
         getinfo:{},
-        tag:''
+        tag:'',
       }
+    },
+    beforeCreate(){
+
     },
     created(){  //生命周期里接收参数
         this.name_1 = this.$route.query.name,  //接受参数关键代码
-        this.tag = this.$route.query.tag,  //接受参数关键代码
+        this.tag = this.$route.query.tag,
+        this.type = this.$route.query.type,
+        console.log(this.type)
         window.localStorage.setItem("is_details",1);
-        console.log(this.name_1)
     },
     mounted(){
         this.getSickNess();

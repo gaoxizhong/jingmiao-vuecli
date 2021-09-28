@@ -2,7 +2,7 @@
   <div class="el-input-box">
     <el-select class="el-select-box" v-model="select_1" slot="prepend" style="width:140px;" @change="selectchange">
         <el-option
-        v-for="item in options_1"
+        v-for="item in options"
         :key="item.value"
         :label="item.label"
         :value="item.value"></el-option>
@@ -15,14 +15,28 @@
 
 <script>
 export default {
+    props:['type'],
     data(){
         return {
             input3:'',
             select_1:'请选择',
-            options_1:[{label:'科普',value:'sickness'},{label:'医疗',value:'dissease'}],
+            options:[],
             selectcheng:'',
-            tag:''
+            tag:'',
         }
+    },
+    created(){
+      this.type = this.type;
+      console.log(this.type)
+      if(this.type == 'xy'){
+        this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}]
+      }
+      if(this.type == 'zy'){
+        this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}]
+      }
+    },
+    mounted(){
+
     },
     methods:{
         selectchange(e){
@@ -32,7 +46,7 @@ export default {
 
         },
     }
-    
+
 }
 </script>
 

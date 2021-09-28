@@ -19,15 +19,48 @@
        </el-row>
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
-          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.sickness_name)">
-            <div class="items-title">{{item.sickness_name}}</div>
-            <div class="tags-list-box" v-if=" tag == 'sickness' || tag == 'disease' ">
+          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.name)">
+            <div class="items-title">{{item.name}}</div>
+            <!-- 中医库--疾病 -->
+            <div class="tags-list-box" v-if=" tag == 'sickness'">
+              <div :class="[{ active: item.tongueCondition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'tongueCondition',item.tongueCondition.text)">{{item.tongueCondition.name}}</div>
               <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
-              <div :class="[{ active: item.pathogenesis.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pathogenesis',item.pathogenesis.text)">{{item.pathogenesis.name}}</div>
-              <div :class="[{ active: item.complicationsOverview.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'complicationsOverview',item.complicationsOverview.text)">{{item.complicationsOverview.name}}</div>
-              <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
-              <div :class="[{ active: item.diagnostiCtriage.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'diagnostiCtriage',item.diagnostiCtriage.text)">{{item.diagnostiCtriage.name}}</div>
-              <div :class="[{ active: item.treatmenCommonSense.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'treatmenCommonSense',item.treatmenCommonSense.text)">{{item.treatmenCommonSense.name}}</div>
+              <div :class="[{ active: item.pulseCondition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pulseCondition',item.pulseCondition.text)">{{item.pulseCondition.name}}</div>
+              <div :class="[{ active: item.source.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'source',item.source.text)">{{item.source.name}}</div>
+              <div :class="[{ active: item.dietTherapy.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'dietTherapy',item.dietTherapy.text)">{{item.dietTherapy.name}}</div>
+            </div>
+            <!-- 中医库--中药 -->
+            <div class="tags-list-box" v-if=" tag == 'zy'">
+              <div :class="[{ active: item.toxicity.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'toxicity',item.toxicity.text)">{{item.toxicity.name}}</div>
+              <div :class="[{ active: item.source.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'source',item.source.text)">{{item.source.name}}</div>
+              <div :class="[{ active: item.pharmacology.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pharmacology',item.pharmacology.text)">{{item.pharmacology.name}}</div>
+              <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
+              <div :class="[{ active: item.includedIn.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'includedIn',item.includedIn.text)">{{item.includedIn.name}}</div>
+            </div>
+            <!-- 中医库--中成药 -->
+            <div class="tags-list-box" v-if=" tag == 'zcy'">
+              <div :class="[{ active: item.classification.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'classification',item.classification.text)">{{item.classification.name}}</div>
+              <div :class="[{ active: item.efficacy.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'efficacy',item.efficacy.text)">{{item.efficacy.name}}</div>
+              <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
+              <div :class="[{ active: item.source.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'source',item.source.text)">{{item.source.name}}</div>
+            </div>
+             <!-- 中医库--方剂 -->
+            <div class="tags-list-box" v-if=" tag == 'fj'">
+              <div :class="[{ active: item.composition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'composition',item.composition.text)">{{item.composition.name}}</div>
+              <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
+              <div :class="[{ active: item.medicinalCrop.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'medicinalCrop',item.medicinalCrop.text)">{{item.medicinalCrop.name}}</div>
+            </div>
+            <!-- 中医库--药膳 -->
+            <div class="tags-list-box" v-if=" tag == 'ys'">
+              <div :class="[{ active: item.composition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'composition',item.composition.text)">{{item.composition.name}}</div>
+            </div>
+            <!-- 中医库--体质 -->
+            <div class="tags-list-box" v-if=" tag == 'tz'">
+              <div :class="[{ active: item.overallFeature.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'overallFeature',item.overallFeature.text)">{{item.overallFeature.name}}</div>
+              <div :class="[{ active: item.tendency.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'tendency',item.tendency.text)">{{item.tendency.name}}</div>
+              <div :class="[{ active: item.psychologicalFeature.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'psychologicalFeature',item.psychologicalFeature.text)">{{item.psychologicalFeature.name}}</div>
+              <div :class="[{ active: item.notEat.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'notEat',item.notEat.text)">{{item.notEat.name}}</div>
+              <div :class="[{ active: item.meridianHealth.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'meridianHealth',item.meridianHealth.text)">{{item.meridianHealth.name}}</div>
             </div>
             <div class="tags-list-info">{{item.text?item.text:'暂无'}}</div>
           </div>
@@ -182,14 +215,17 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
             for(var i = 0;i<getListInfo.length;i++){
 
               getListInfo[i].index = i;
-              if(that.tag == "sickness" || that.tag == "disease"){
+              if(that.tag == "sickness"){
                   getListInfo[i].text = getListInfo[i].symptom.text
-                }else if(that.tag == "medicine"){
-                  getListInfo[i].text = getListInfo[i].majorConstituent.text
-                }else if(that.tag == "inspection"){
-                  getListInfo[i].text = getListInfo[i].annotation.text
+                }else if(that.tag == "zy"){
+                  getListInfo[i].text = getListInfo[i].toxicity.text
+                }else if(that.tag == "zcy"){
+                  getListInfo[i].text = getListInfo[i].classification.text
+                }else if(that.tag == "fj" || that.tag == "ys" ){
+                  getListInfo[i].text = getListInfo[i].composition.text
+                }else if(that.tag == "tz"){
+                  getListInfo[i].text = getListInfo[i].overallFeature.text
                 }
-
             }
             this.getListInfo= getListInfo;
             console.log(this.getListInfo)
@@ -225,6 +261,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             name,
             tag,
+            type:'zy'
           }
         })
       },
@@ -249,8 +286,17 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
             for(var i = 0;i<getListInfo.length;i++){
               getListInfo[i].index = i;
               if(that.tag == "sickness"){
-                getListInfo[i].text = getListInfo[i].symptom.text
+                  getListInfo[i].text = getListInfo[i].symptom.text
+                }else if(that.tag == "zy"){
+                  getListInfo[i].text = getListInfo[i].toxicity.text
+                }else if(that.tag == "zcy"){
+                  getListInfo[i].text = getListInfo[i].classification.text
+                }else if(that.tag == "fj" || that.tag == "ys" ){
+                  getListInfo[i].text = getListInfo[i].composition.text
+                }else if(that.tag == "tz"){
+                  getListInfo[i].text = getListInfo[i].overallFeature.text
               }
+
             }
             that.getListInfo= getListInfo;
             console.log(that.getListInfo)
@@ -277,19 +323,190 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
         let text = _text;
         let getListInfo = this.getListInfo;
         getListInfo[index].text = text;
-        if(this.tag == "sickness" || this.tag == "disease"){
+        // 疾病
+        if(this.tag == "sickness"){
+          if(type == 'tongueCondition'){
+            getListInfo[index].tongueCondition.active = true;
+            getListInfo[index].symptom.active = false;
+            getListInfo[index].pulseCondition.active = false;
+            getListInfo[index].source.active = false;
+            getListInfo[index].dietTherapy.active = false;
+            return
+          }
           if(type == 'symptom'){
+            getListInfo[index].tongueCondition.active = false;
             getListInfo[index].symptom.active = true;
-            getListInfo[index].pathogenesis.active = false;
-            getListInfo[index].complicationsOverview.active = false;
-            getListInfo[index].inspection.active = false;
-            getListInfo[index].diagnostiCtriage.active = false;
-            getListInfo[index].treatmenCommonSense.active = false;
+            getListInfo[index].pulseCondition.active = false;
+            getListInfo[index].source.active = false;
+            getListInfo[index].dietTherapy.active = false;
+            return
+          }
+          if(type == 'pulseCondition'){
+            getListInfo[index].tongueCondition.active = false;
+            getListInfo[index].symptom.active = false;
+            getListInfo[index].pulseCondition.active = true;
+            getListInfo[index].source.active = false;
+            getListInfo[index].dietTherapy.active = false;
+            return
+          }
+          if(type == 'source'){
+            getListInfo[index].tongueCondition.active = false;
+            getListInfo[index].symptom.active = false;
+            getListInfo[index].pulseCondition.active = false;
+            getListInfo[index].source.active = true;
+            getListInfo[index].dietTherapy.active = false;
+            return
+          }
+          if(type == 'dietTherapy'){
+            getListInfo[index].tongueCondition.active = false;
+            getListInfo[index].symptom.active = false;
+            getListInfo[index].pulseCondition.active = false;
+            getListInfo[index].source.active = false;
+            getListInfo[index].dietTherapy.active = true;
+            return
+          }
+        }
+        // 中药
+        if(this.tag == "zy"){
+          if(type == 'toxicity'){
+            getListInfo[index].toxicity.active = true;
+            getListInfo[index].source.active = false;
+            getListInfo[index].pharmacology.active = false;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].includedIn.active = false;
+            return
+          }
+          if(type == 'source'){
+            getListInfo[index].toxicity.active = false;
+            getListInfo[index].source.active = true;
+            getListInfo[index].pharmacology.active = false;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].includedIn.active = false;
+            return
+          }
+          if(type == 'pharmacology'){
+            getListInfo[index].toxicity.active = false;
+            getListInfo[index].source.active = false;
+            getListInfo[index].pharmacology.active = true;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].includedIn.active = false;
+            return
+          }
+          if(type == 'indications'){
+            getListInfo[index].toxicity.active = false;
+            getListInfo[index].source.active = false;
+            getListInfo[index].pharmacology.active = false;
+            getListInfo[index].indications.active = true;
+            getListInfo[index].includedIn.active = false;
+            return
+          }
+          if(type == 'includedIn'){
+            getListInfo[index].toxicity.active = false;
+            getListInfo[index].source.active = false;
+            getListInfo[index].pharmacology.active = false;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].includedIn.active = true;
+            return
+          }
+        }
+        // 中成药
+        if(this.tag == "zcy"){
+          if(type == 'classification'){
+            getListInfo[index].classification.active = true;
+            getListInfo[index].efficacy.active = false;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].source.active = false;
+            return
+          }
+          if(type == 'efficacy'){
+            getListInfo[index].classification.active = false;
+            getListInfo[index].efficacy.active = true;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].source.active = false;
+            return
+          }
+          if(type == 'indications'){
+            getListInfo[index].classification.active = false;
+            getListInfo[index].efficacy.active = false;
+            getListInfo[index].indications.active = true;
+            getListInfo[index].source.active = false;
+            return
+          }
+          if(type == 'source'){
+            getListInfo[index].classification.active = false;
+            getListInfo[index].efficacy.active = false;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].source.active = true;
             return
           }
 
         }
+        // 体质
+        if(this.tag == "tz"){
+          if(type == 'overallFeature'){
+            getListInfo[index].overallFeature.active = true;
+            getListInfo[index].tendency.active = false;
+            getListInfo[index].psychologicalFeature.active = false;
+            getListInfo[index].notEat.active = false;
+            getListInfo[index].meridianHealth.active = false;
+            return
+          }
+          if(type == 'tendency'){
+            getListInfo[index].overallFeature.active = false;
+            getListInfo[index].tendency.active = true;
+            getListInfo[index].psychologicalFeature.active = false;
+            getListInfo[index].notEat.active = false;
+            getListInfo[index].meridianHealth.active = false;
+            return
+          }
+          if(type == 'psychologicalFeature'){
+            getListInfo[index].overallFeature.active = false;
+            getListInfo[index].tendency.active = false;
+            getListInfo[index].psychologicalFeature.active = true;
+            getListInfo[index].notEat.active = false;
+            getListInfo[index].meridianHealth.active = false;
+            return
+          }
+          if(type == 'notEat'){
+            getListInfo[index].overallFeature.active = false;
+            getListInfo[index].tendency.active = false;
+            getListInfo[index].psychologicalFeature.active = false;
+            getListInfo[index].notEat.active = true;
+            getListInfo[index].meridianHealth.active = false;
+            return
+          }
+          if(type == 'meridianHealth'){
+            getListInfo[index].overallFeature.active = false;
+            getListInfo[index].tendency.active = false;
+            getListInfo[index].psychologicalFeature.active = false;
+            getListInfo[index].notEat.active = false;
+            getListInfo[index].meridianHealth.active = true;
+            return
+          }
 
+
+        }
+        // 方剂
+        if(this.tag == "fj"){
+          if(type == 'composition'){
+            getListInfo[index].composition.active = true;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].medicinalCrop.active = false;
+            return
+          }
+          if(type == 'indications'){
+            getListInfo[index].composition.active = false;
+            getListInfo[index].indications.active = true;
+            getListInfo[index].medicinalCrop.active = false;
+            return
+          }
+          if(type == 'medicinalCrop'){
+            getListInfo[index].composition.active = false;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].medicinalCrop.active = true;
+            return
+          }
+        }
         this.getListInfo= getListInfo;
       },
       searchDownChange(e){

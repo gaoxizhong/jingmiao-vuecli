@@ -2,7 +2,7 @@
    <div class="content-box">
      <div class="inside-content-box" id="inside-content-box">
        <el-row>
-         <el-col :span="16" :offset="4">
+         <el-col :span="13" :offset="5">
           <div class="el-input-box el-col">
             <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
               <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
@@ -240,6 +240,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             name,
             tag,
+            type:'xy'
           }
         })
       },
