@@ -177,7 +177,7 @@ import {getSickNess} from '@/api/data'
               })
             }
             that.getinfo= getinfo_arr;
-            for(let i=1; i<= that.getinfo.length ;i++){
+            for(let i=0; i<= that.getinfo.length ;i++){
               that.activeName.push(i)
             }
             console.log(this.activeName)
@@ -258,6 +258,6 @@ import {getSickNess} from '@/api/data'
     }
 
 
-    
+
   }
 </script>

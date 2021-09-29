@@ -28,3 +28,6 @@ export const sickIndex = (state,index) =>{
 export const sickIdx = (state,idx) =>{
   state.idx = idx
 }
+export const inputName = (state,input_name) =>{
+  state.input_name = input_name
+}

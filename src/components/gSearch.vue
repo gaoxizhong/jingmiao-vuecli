@@ -7,23 +7,26 @@
       :label="item.label"
       :value="item.value"></el-option>
     </el-select>
-    <el-autocomplete class="inline-input input-with-select" v-model="input3" :fetch-suggestions="querySearch"  placeholder="请输入内容" :trigger-on-focus="false" clearable>
+    <!-- <el-autocomplete class="inline-input input-with-select" v-model="input3" :fetch-suggestions="querySearch"  placeholder="请输入内容" :trigger-on-focus="false" clearable>
       <el-button
         slot="append"
         type="success"
         icon="el-icon-search"
         @click="query"
       >搜索</el-button>
-    </el-autocomplete>
+      </el-autocomplete> -->
+      <el-input placeholder="请输入内容" v-model="input_name" class="input-with-select">
+        <el-button slot="append" type="success" icon="el-icon-search" @click="getD3Search"></el-button>
+      </el-input>
   </div>
 </template>
 
 <script>
+import {getD3Search} from '@/api/data'
 export default {
     props:['type'],
     data(){
         return {
-            input3:'',
             select_1:'请选择',
             options:[],
             selectcheng:'',
@@ -45,7 +48,7 @@ export default {
     },
     mounted(){
       this.$emit('getData', this.data)
-      this.results = this.loadAll()
+      // this.results = this.loadAll()
     },
     methods:{
       selectchange(e){
@@ -53,31 +56,51 @@ export default {
           this.selectcheng = e;
           this.tag = e;
       },
-      query () {
-        if (this.data.length <= 20) {
-          this.data = require('../data/top5.json')
-        } else {
-          this.data = require('../data/records.json')
+      getD3Search() {
+        let that = this;
+        let pearms = {
+          'input3':that.input_name,
+          'tag': that.tag
         }
+        getD3Search(pearms).then( res =>{
+          if(res.data.code == 0){
+            let data = res.data.data;
+            this.data = data;
+          }else{
+            this.$message.error({
+                message: res.data.msg
+            });
+          }
+        }).catch(e =>{
+            console.log(e)
+        })
+        // if (this.data.length <= 20) {
+        //   this.data = require('../data/top5.json')
+        // } else {
+        //   this.data = require('../data/records.json')
+        // }
         this.$emit('getData', this.data)
       },
-      querySearch (queryString, cb) {
-        var res = this.results
-        var results = queryString ? res.filter(this.createFilter(queryString)) : res
-        // 调用 callback 返回建议列表的数据
-        cb(results)
-      },
-      createFilter (queryString) {
-        return (res) => {
-          return (res.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1)
-        }
-      },
+      // querySearch (queryString, cb) {
+      //   console.log(1)
+      // },
+      // createFilter (queryString) {
+      //   return (res) => {
+      //     return (res.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1)
+      //   }
+      // },
       // 模拟加载数据
-      loadAll () {
-        return [
-          
-        ]
-      },
+      // loadAll () {
+      //   return [
+
+      //   ]
+      // },
+    },
+    computed:{
+      input_name(){
+        console.log(this.$store.state.input_name)
+        return this.$store.state.input_name
+      }
     }
 
 }

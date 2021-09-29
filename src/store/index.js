@@ -13,7 +13,8 @@ const state ={
   isCollapse: false, // 左侧折叠状态
   sickNess1:{},
   index: 0,
-  idx: 0
+  idx: 0,
+  input_name: '', // 详情页搜索
 }
 export default new Vuex.Store({
   state,

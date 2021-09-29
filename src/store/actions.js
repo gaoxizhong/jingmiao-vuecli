@@ -26,3 +26,7 @@ export const sickIndex = ({commit},data) =>{
 export const sickIdx = ({commit},data) =>{
   commit('sickIdx',data);
 }
+export const inputName = ({commit},data) =>{
+  commit('inputName',data);
+}
+

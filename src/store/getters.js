@@ -6,6 +6,8 @@ export const isCollapse = state => state.isCollapse;
 export const sickNess1 = state => state.sickNess1;
 export const index = state => state.index;
 export const idx = state => state.idx;
+export const input_name = state => state.input_name;
+
 
 
 

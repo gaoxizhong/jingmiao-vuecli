@@ -221,8 +221,6 @@ export default {
             return this.menu.filter( (item) => item.child)
         },
         isCollapse() {
-          console.log(this.$store.state.isCollapse)
-
           return this.$store.state.isCollapse
         },
     }
