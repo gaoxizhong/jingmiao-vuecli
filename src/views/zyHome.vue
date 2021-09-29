@@ -22,7 +22,7 @@
           <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.name)">
             <div class="items-title">{{item.name}}</div>
             <!-- 中医库--疾病 -->
-            <div class="tags-list-box" v-if=" tag == 'sickness'">
+            <div class="tags-list-box" v-if=" tag == 'zysickness'">
               <div :class="[{ active: item.tongueCondition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'tongueCondition',item.tongueCondition.text)">{{item.tongueCondition.name}}</div>
               <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
               <div :class="[{ active: item.pulseCondition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pulseCondition',item.pulseCondition.text)">{{item.pulseCondition.name}}</div>
@@ -153,7 +153,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'疾病',value:'sickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}],
+        options:[{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}],
         tag:'',
         getListInfo:[],
         name:'',
@@ -215,7 +215,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
             for(var i = 0;i<getListInfo.length;i++){
 
               getListInfo[i].index = i;
-              if(that.tag == "sickness"){
+              if(that.tag == "zysickness"){
                   getListInfo[i].text = getListInfo[i].symptom.text
                 }else if(that.tag == "zy"){
                   getListInfo[i].text = getListInfo[i].toxicity.text
@@ -285,7 +285,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
             let getListInfo = res.data.data;
             for(var i = 0;i<getListInfo.length;i++){
               getListInfo[i].index = i;
-              if(that.tag == "sickness"){
+              if(that.tag == "zysickness"){
                   getListInfo[i].text = getListInfo[i].symptom.text
                 }else if(that.tag == "zy"){
                   getListInfo[i].text = getListInfo[i].toxicity.text
@@ -324,7 +324,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
         let getListInfo = this.getListInfo;
         getListInfo[index].text = text;
         // 疾病
-        if(this.tag == "sickness"){
+        if(this.tag == "zysickness"){
           if(type == 'tongueCondition'){
             getListInfo[index].tongueCondition.active = true;
             getListInfo[index].symptom.active = false;
