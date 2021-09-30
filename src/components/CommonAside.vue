@@ -47,7 +47,22 @@
                                 <i class="el-icon-document"></i>
                                 <span slot="title">{{ item_4.departmentLevel1 }}</span>
 															</template>
-															<el-menu-item v-for="(item_5,idx_5) in item_4.departmentLevel2.name" :key="idx_5" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item>
+                              <template v-for="(item_5,idx_5) in item_4.departmentLevel2.name">
+                              <!-- 如果第五层有子菜单，则继续循环 -->
+													    <template v-if="item_5.subordinate">
+														    <el-submenu :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5">
+															   <template slot="title">
+                                   <i class="el-icon-document"></i>
+                                   <span slot="title">{{ item_5.departmentLevel2 }}</span>
+															   </template>
+                              
+															   <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag'  @click="clickItem_2($event)">{{ item_6.name }}</el-menu-item>
+														    </el-submenu>
+													    </template>
+													    <!-- 如果第五层没有子菜单 -->
+													     <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item>
+												      </template>
+															<!-- <el-menu-item v-for="(item_5,idx_5) in item_4.departmentLevel2.name" :key="idx_5" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item> -->
 														</el-submenu>
 													</template>
 													<!-- 如果第四层没有子菜单 -->

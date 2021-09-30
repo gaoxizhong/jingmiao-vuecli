@@ -104,8 +104,7 @@
 }
 .gContainer {
   position: relative;
-  border: 2px #494949 solid;
-  background-color: #bacbe0;
+  background-color: #f6faff;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -2,8 +2,8 @@
   <div style="width:100%;height:100%;">
     <!-- 绘制模式选择 -->
     <div id="mode">
-      <h3>文字搜索</h3>
-      <div class="gState" style="margin-bottom: 20px;">
+      <h3>关系文字显示</h3>
+      <div class="gState" style="margin: 20px 0;">
         <span
           @click="changeTextState(0)"
           :class="{ active: isShowText }"
@@ -12,11 +12,11 @@
         <span
           @click="changeTextState(2)"
           :class="{ active: textState === 2 }"
-          style="border-top-left-radius:0;border-bottom-left-radius:0;position:relative;left:-5px;"
+          style="border-top-left-radius:0;border-bottom-left-radius:0;position:relative;"
         >隐藏</span>
       </div>
       <!-- <el-input @input="searchKeyWords" v-model="keywords" clearable placeholder="请输入内容" /> -->
-      <p class="font-sky" style="text-align: left;">
+      <!-- <p class="font-sky" style="text-align: left;">
         <strong>节点个数：{{ nodes.length }}</strong>
         <br>
         <strong>关系个数：{{ links.length }}</strong>
@@ -26,7 +26,7 @@
         <strong>图密度：{{ gDensity }}</strong>
         <br>
         <strong>稀疏度：{{ gSparsity }}</strong>
-      </p>
+      </p> -->
     </div>
     <svg
       id="svg"
@@ -1080,7 +1080,7 @@ svg {
   }
   &.active {
     stroke: $activeColor;
-    stroke-width: 3px;
+    stroke-width: 1px;
   }
   &.hide {
     display: none !important;
@@ -1124,7 +1124,7 @@ svg {
   }
 }
 .linkTexts text {
-  stroke: #ecddd8b2; // #bbb
+  stroke: #333; // #bbb
   stroke-opacity: 1;
   &.active {
     stroke: $activeColor;
@@ -1152,10 +1152,10 @@ svg {
   position: absolute;
   // left: 50px;
   // bottom: 30px;
-  left: 3vw;
+  left: 1.5vw;
   bottom: 2vw;
   text-align: left;
-  color: #f2f2f2;
+  color: #333;
   font-size: 14px;
   font-weight: bold;
   & > div {
@@ -1182,7 +1182,7 @@ svg {
   .gState span {
     display: inline-block;
     border: 1px solid #fff;
-    color: #fff;
+    color: #409eff;
     padding: 6px 10px;
     border-radius: 4px;
     font-size: 14px;
@@ -1192,14 +1192,14 @@ svg {
     -moz-transition: color, background-color .3s;
     -webkit-transition: color, background-color .3s;
     ~ .active, ~ :hover {
-      background-color: #fff;
-      color: #333;
+      background-color: #409eff;
+      color: #fff;
       cursor: pointer;
     }
   }
   .gState span.active, .gState span:hover {
-    background-color: #fff;
-    color: #333;
+    background-color: #409eff;
+    color: #fff;
     cursor: pointer;
   }
 }
