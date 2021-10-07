@@ -4,7 +4,17 @@
        <a href="#" class="el-icon-back box2-span" @click="fanhui_btn()"></a>
         <el-row>
          <el-col :span="14" :offset="4">
-            <gSearch :type="type" @getData="update"></gSearch>
+          <el-input placeholder="请输入内容" v-model="name_1" class="input-with-select">
+            <el-select class="el-select-box" v-model="select_1" slot="prepend" style="width:140px;" @change="selectchange">
+              <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"></el-option>
+            </el-select>
+              <!-- <el-button slot="append" type="success" icon="el-icon-search" @click="getD3Search"></el-button> -->
+              <el-button slot="append" type="success" icon="el-icon-search" @click="getSickNess"></el-button>
+            </el-input>
          </el-col>
        </el-row>
       <el-row class="home" :gutter="20" style="padding-top:10px;">
@@ -69,10 +79,6 @@
     height: 100%;
 
   }
-  .el-select-box{
-    width: auto;
-    min-width: 120px;
-  }
   .col-left-title{
     width: 100%;
     font-weight: 600;
@@ -111,13 +117,20 @@
   justify-content: center;
   overflow: hidden;
 }
+  .el-select-box{
+    width: auto;
+    min-width: 120px;
+  }
+  .input-with-select{
+    flex: 1;
+  }
 </style>
 <script>
-import {getSickNess} from '@/api/data'
+import {getSickNess,getD3Search} from '@/api/data'
   export default {
     name: 'Details',
     components: {
-      gSearch:require('../components/gSearch.vue').default,
+      // gSearch:require('../components/gSearch.vue').default,
       d3graph:require('../components/d3graph.vue').default
     },
     data() {
@@ -127,12 +140,18 @@ import {getSickNess} from '@/api/data'
         name_1:'',
         getinfo:{},
         tag:'',
+        select_1:'请选择',
+        options:[],
+        selectcheng:'',
+        results: [],
+            // 后台请求到的json数据
+        json: require('../data/top1.json'),
         data: {
           nodes: [],
           links: []
         },
         names: ['企业', '贸易类型', '地区', '国家'],
-        labels: ['Enterprise', 'Type', 'Region', 'Country'],
+        labels: ['tag', 'Type', 'Region', 'Country'],
         linkTypes: ['', 'type', 'locate', 'export']
       }
     },
@@ -144,10 +163,20 @@ import {getSickNess} from '@/api/data'
         this.tag = this.$route.query.tag,
         this.type = this.$route.query.type,
         console.log(this.type)
+        if(this.type == 'xy'){
+          console.log(1)
+          this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}]
+        }
+        if(this.type == 'zy'){
+          console.log(1)
+          this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}]
+        }
         window.localStorage.setItem("is_details",1);
     },
     mounted(){
         this.getSickNess();
+        this.getD3Search();
+
     },
     methods:{
       // 获取文章详情
@@ -179,7 +208,6 @@ import {getSickNess} from '@/api/data'
             for(let i=0; i<= that.getinfo.length ;i++){
               that.activeName.push(i)
             }
-            console.log(this.activeName)
           }else if(res.data.code == 1){
             this.$message.error({
                 message: res.data.msg,
@@ -203,6 +231,43 @@ import {getSickNess} from '@/api/data'
         this.$router.go(-1)
       },
 
+
+      // ===============================
+      selectchange(e){
+          console.log(e)
+          this.selectcheng = e;
+          this.tag = e;
+      },
+            getD3Search() {
+        let that = this;
+        let pearms = {
+          'input3':that.input_name,
+          'tag': that.tag
+        }
+        // this.$emit('getData', this.data)
+
+        getD3Search(pearms).then( res =>{
+          if(res.data.code == 0){
+            let data = res.data.data;
+            // that.json = data;
+            that.update (that.json);
+
+          }else{
+            this.$message.error({
+                message: res.data.msg
+            });
+          }
+        }).catch(e =>{
+            console.log(e)
+        })
+        // if (this.data.length <= 20) {
+        //   this.data = require('../data/top5.json')
+        // } else {
+        //   this.data = require('../data/records.json')
+        // }
+      },
+      // ===============================
+
       // 知识图谱 视图更新
       update (json) {
         console.log('update')
@@ -216,21 +281,14 @@ import {getSickNess} from '@/api/data'
         const links = [] // 存放节点和关系
         const nodeSet = [] // 存放去重后nodes的id
 
-        // 使用vue直接通过require获取本地json，不再需要使用d3.json获取数据
-        // d3.json('./../data/records.json', function (error, data) {
-        //   if (error) throw error
-        //   graph = data
-        //   console.log(graph[0].p)
-        // })
-
+        // 重新更改data格式
         for (let item of json) {
           for (let segment of item.p.segments) {
-            // 重新更改data格式
             if (nodeSet.indexOf(segment.start.identity) == -1) {
               nodeSet.push(segment.start.identity)
               nodes.push({
                 id: segment.start.identity,
-                label: segment.start.labels[0],
+                label: segment.start.labels,
                 properties: segment.start.properties
               })
             }
@@ -238,7 +296,7 @@ import {getSickNess} from '@/api/data'
               nodeSet.push(segment.end.identity)
               nodes.push({
                 id: segment.end.identity,
-                label: segment.end.labels[0],
+                label: segment.end.labels,
                 properties: segment.end.properties
               })
             }
@@ -250,6 +308,34 @@ import {getSickNess} from '@/api/data'
             })
           }
         }
+
+
+          // nodeSet.push(json.name)
+          // nodes.push({
+          //   id: 'a',
+          //   label: 'a',
+          //   properties:{
+          //     "name": json.name
+          //   }
+          // })
+          // for (let item of json.m) {
+          //     nodeSet.push(item.end)
+          //     nodes.push({
+          //       id: item.end,
+          //       label: item.end,
+          //       properties: {
+          //         "name": item.end
+          //       }
+          //     })
+          //   links.push({
+          //     source: 'a',
+          //     target: item.end,
+          //     type: item.type,
+          //     properties: {
+          //       "name": item.type
+          //     }
+          //   })
+          // }
         console.log(nodes)
         console.log(links)
         this.data = { nodes, links }

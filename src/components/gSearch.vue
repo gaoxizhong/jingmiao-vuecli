@@ -62,10 +62,12 @@ export default {
           'input3':that.input_name,
           'tag': that.tag
         }
+        this.$emit('getData', this.data)
+
         getD3Search(pearms).then( res =>{
           if(res.data.code == 0){
             let data = res.data.data;
-            this.data = data;
+            that.data = data;
           }else{
             this.$message.error({
                 message: res.data.msg
@@ -79,7 +81,6 @@ export default {
         // } else {
         //   this.data = require('../data/records.json')
         // }
-        this.$emit('getData', this.data)
       },
       // querySearch (queryString, cb) {
       //   console.log(1)

@@ -31,11 +31,10 @@
     <svg
       id="svg"
       width="100%"
-      height="750"
+      height="600"
     ></svg>
     <!-- 绘制图例 -->
-    <div id="indicator">
-      <!-- 利用item 遍历一个数组 利用index 遍历另外一个数组 -->
+    <!-- <div id="indicator">
       <div v-for="(name, index) in names" :key="index">
         <span
           @click="hideNodeOfType"
@@ -46,7 +45,7 @@
         ></span>
         {{ name }}
       </div>
-    </div>
+    </div> -->
     <!-- 绘制右边显示结果 -->
     <!-- <div id="info" v-show="selectNodeData.name !== undefined">
       <el-card
@@ -222,13 +221,13 @@ export default {
       dialogFormVisible: false,
       isEdit: true,
       // 节点属性对应的标签名称
-      nodeObjMap: {
-        'address': '注册地址',
-        'captial': '注册资本',
-        'credit_code': '信用代码',
-        'name': '节点名称',
-        'setup_time': '注册日期'
-      }
+      // nodeObjMap: {
+      //   'address': '注册地址',
+      //   'captial': '注册资本',
+      //   'credit_code': '信用代码',
+      //   'name': '节点名称',
+      //   'setup_time': '注册日期'
+      // }
     }
   },
   computed: {

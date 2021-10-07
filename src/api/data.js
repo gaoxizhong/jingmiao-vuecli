@@ -59,7 +59,7 @@ export const getSearch = (params) =>{
 //  详情页知识图谱搜索
 export const getD3Search = (params) =>{
   return axios.request({
-    url:'/zsk/SickNess/detail',
+    url:'/zsk/detailGraph',
     method: 'post',
     data: params
   })

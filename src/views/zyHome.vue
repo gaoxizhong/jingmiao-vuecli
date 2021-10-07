@@ -19,11 +19,11 @@
        </el-row>
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
-          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.name)">
-            <div class="items-title">{{item.name}}</div>
+          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name  )">
+            <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}</div>
             <!-- 中医库--疾病 -->
             <div class="tags-list-box" v-if=" tag == 'zysickness'">
-              <div :class="[{ active: item.tongueCondition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'tongueCondition',item.tongueCondition.text)">{{item.tongueCondition.name}}</div>
+              <div :class="[{ active: item.apparatus.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'apparatus',item.apparatus.text)">{{item.apparatus.name}}</div>
               <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
               <div :class="[{ active: item.pulseCondition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pulseCondition',item.pulseCondition.text)">{{item.pulseCondition.name}}</div>
               <div :class="[{ active: item.source.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'source',item.source.text)">{{item.source.name}}</div>
@@ -145,7 +145,7 @@
   }
 </style>
 <script>
-import {getzyHomeRightList,getSearch} from '@/api/data'
+import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
   export default {
     data() {
       return {
@@ -216,7 +216,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
 
               getListInfo[i].index = i;
               if(that.tag == "zysickness"){
-                  getListInfo[i].text = getListInfo[i].symptom.text
+                  getListInfo[i].text = getListInfo[i].apparatus.text
                 }else if(that.tag == "zy"){
                   getListInfo[i].text = getListInfo[i].toxicity.text
                 }else if(that.tag == "zcy"){
@@ -279,42 +279,74 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
           background: 'rgba(0, 0, 0, 0.1)',
           target:document.querySelector('.content-box'),
         });
-        getzyHomeRightList(pearms).then( res =>{
-          loading.close();
-          if(res.data.code == 0){
-            let getListInfo = res.data.data;
-            for(var i = 0;i<getListInfo.length;i++){
-              getListInfo[i].index = i;
-              if(that.tag == "zysickness"){
-                  getListInfo[i].text = getListInfo[i].symptom.text
-                }else if(that.tag == "zy"){
-                  getListInfo[i].text = getListInfo[i].toxicity.text
-                }else if(that.tag == "zcy"){
-                  getListInfo[i].text = getListInfo[i].classification.text
-                }else if(that.tag == "fj" || that.tag == "ys" ){
-                  getListInfo[i].text = getListInfo[i].composition.text
-                }else if(that.tag == "tz"){
-                  getListInfo[i].text = getListInfo[i].overallFeature.text
-              }
-
-            }
-            that.getListInfo= getListInfo;
-            console.log(that.getListInfo)
-
-          }else if(res.data.code == 1){
-            that.$message.error({
-                message: res.data.msg,
-            });
-            return
-          }else{
-            that.$message.error({
-                message: res.data.msg
-            });
-          }
-        }).catch(e =>{
+        if(that.tag == 'zysickness' || that.tag == 'zcy'){
+          pearms.department = that.select_name;
+          getHomeRightList(pearms).then( res =>{
             loading.close();
-            console.log(e)
-        })
+            if(res.data.code == 0){
+              let getListInfo = res.data.data;
+              for(var i = 0;i<getListInfo.length;i++){
+                getListInfo[i].index = i;
+                if(that.tag == "zysickness"){
+                    getListInfo[i].text = getListInfo[i].apparatus.text
+                  }else if(that.tag == "zcy"){
+                    getListInfo[i].text = getListInfo[i].classification.text
+                  }
+              }
+              that.getListInfo= getListInfo;
+              console.log(that.getListInfo)
+            }else if(res.data.code == 1){
+              that.$message.error({
+                  message: res.data.msg,
+              });
+              return
+            }else{
+              that.$message.error({
+                  message: res.data.msg
+              });
+            }
+          }).catch(e =>{
+              loading.close();
+              console.log(e)
+          })
+
+        }else{
+          getzyHomeRightList(pearms).then( res =>{
+            loading.close();
+            if(res.data.code == 0){
+              let getListInfo = res.data.data;
+              for(var i = 0;i<getListInfo.length;i++){
+                getListInfo[i].index = i;
+                  if(that.tag == "zy"){
+                    getListInfo[i].text = getListInfo[i].toxicity.text
+                  }else if(that.tag == "fj" || that.tag == "ys" ){
+                    getListInfo[i].text = getListInfo[i].composition.text
+                  }else if(that.tag == "tz"){
+                    getListInfo[i].text = getListInfo[i].overallFeature.text
+                }
+              }
+              that.getListInfo= getListInfo;
+              console.log(that.getListInfo)
+            }else if(res.data.code == 1){
+              that.$message.error({
+                  message: res.data.msg,
+              });
+              return
+            }else{
+              that.$message.error({
+                  message: res.data.msg
+              });
+            }
+          }).catch(e =>{
+              loading.close();
+              console.log(e)
+          })
+        }
+
+
+
+
+
       },
       // 列表小分类标签
       clickTags(e,_type,_text){
@@ -325,8 +357,8 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
         getListInfo[index].text = text;
         // 疾病
         if(this.tag == "zysickness"){
-          if(type == 'tongueCondition'){
-            getListInfo[index].tongueCondition.active = true;
+          if(type == 'apparatus'){
+            getListInfo[index].apparatus.active = true;
             getListInfo[index].symptom.active = false;
             getListInfo[index].pulseCondition.active = false;
             getListInfo[index].source.active = false;
@@ -334,7 +366,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
             return
           }
           if(type == 'symptom'){
-            getListInfo[index].tongueCondition.active = false;
+            getListInfo[index].apparatus.active = false;
             getListInfo[index].symptom.active = true;
             getListInfo[index].pulseCondition.active = false;
             getListInfo[index].source.active = false;
@@ -342,7 +374,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
             return
           }
           if(type == 'pulseCondition'){
-            getListInfo[index].tongueCondition.active = false;
+            getListInfo[index].apparatus.active = false;
             getListInfo[index].symptom.active = false;
             getListInfo[index].pulseCondition.active = true;
             getListInfo[index].source.active = false;
@@ -350,7 +382,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
             return
           }
           if(type == 'source'){
-            getListInfo[index].tongueCondition.active = false;
+            getListInfo[index].apparatus.active = false;
             getListInfo[index].symptom.active = false;
             getListInfo[index].pulseCondition.active = false;
             getListInfo[index].source.active = true;
@@ -358,7 +390,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
             return
           }
           if(type == 'dietTherapy'){
-            getListInfo[index].tongueCondition.active = false;
+            getListInfo[index].apparatus.active = false;
             getListInfo[index].symptom.active = false;
             getListInfo[index].pulseCondition.active = false;
             getListInfo[index].source.active = false;
@@ -519,6 +551,7 @@ import {getzyHomeRightList,getSearch} from '@/api/data'
     },
     beforeRouteEnter (to, from, next) {
       next(vm =>{
+        console.log(from.path)
         if(from.path === "/zyHome"){
           document.getElementById('inside-content-box').scrollTop = to.meta.scollTopPosition;
         }

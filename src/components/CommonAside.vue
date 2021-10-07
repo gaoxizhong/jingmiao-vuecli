@@ -55,7 +55,7 @@
                                    <i class="el-icon-document"></i>
                                    <span slot="title">{{ item_5.departmentLevel2 }}</span>
 															   </template>
-                              
+
 															   <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag'  @click="clickItem_2($event)">{{ item_6.name }}</el-menu-item>
 														    </el-submenu>
 													    </template>
@@ -71,7 +71,7 @@
 											</el-submenu>
 										</template>
 										<!-- 如果第三层没有子菜单 -->
-										<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}`" :key="idx_3">{{ item_3.name }}</el-menu-item>
+										<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}`" :key="idx_3" :name='item_3.name' :tag='item_3.tag'  @click="clickItem_2($event)">{{ item_3.name }}</el-menu-item>
 									</template>
 								</el-submenu>
 							</template>
