@@ -37,7 +37,7 @@
               :data="data"
               :names="names"
               :labels="labels"
-              :linkTypes="linkTypes" 
+              :linkTypes="linkTypes"
               @getData="getD3name"
             />
           </div>
@@ -146,7 +146,7 @@ import {getSickNess,getD3Search} from '@/api/data'
         selectcheng:'',
         results: [],
             // 后台请求到的json数据
-        json: require('../data/top1.json'),
+        // json: require('../data/top1.json'),
         data: {
           nodes: [],
           links: []

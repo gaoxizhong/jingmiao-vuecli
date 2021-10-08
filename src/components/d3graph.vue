@@ -101,7 +101,8 @@
 
 <script>
 import * as d3 from 'd3'
-import install from '@/plugins/d3-context-menu'
+// import install from '@/plugins/d3-context-menu'
+import install from '../assets/js/d3-context-menu'
 install(d3) // 为d3注册右键菜单插件
 export default {
   name: 'd3graph',
@@ -154,8 +155,7 @@ export default {
             console.log(d)
             let name_1 = d.properties.name;
             this.$emit('getData', name_1)
-          },
-          disabled: false // optional, defaults to false
+          }
         },
         {
           title: '隐藏节点',
@@ -613,7 +613,7 @@ export default {
           switch(d.label){
             case _this.labels[0]: break;
             case _this.labels[1]: size = 14; break;
-            case _this.labels[2]: size = 13; break;
+            case _this.labels[2]: size = 12; break;
             default: size = 13; break;
           }
           return size * 2
@@ -664,7 +664,7 @@ export default {
             }
           }
         })
-        .on('contextmenu', d3.contextMenu(this.menu))
+        // node.on('contextmenu', d3.contextMenu(this.menu));
         // .on('contextmenu', function (d, i) {
         //   // 阻止默认右键菜单的弹出
         //   d3.event.preventDefault()
@@ -729,7 +729,7 @@ export default {
             }
           }
         })
-        .on('contextmenu', d3.contextMenu(this.menu))
+        // .on('contextmenu', d3.contextMenu(this.menu))
         // .call(d3.drag()
         //   .on("start", dragstarted)
         //   .on("drag", dragged)
@@ -1061,7 +1061,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/plugins/d3-context-menu';
+@import '../assets/css/d3-context-menu.scss';
 $opacity: 0.15;  /* 显示的不透明度 */
 $activeColor: #1E90FF;  /* 激活的颜色 */
 svg {
