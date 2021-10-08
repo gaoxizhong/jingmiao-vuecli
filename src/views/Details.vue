@@ -37,7 +37,8 @@
               :data="data"
               :names="names"
               :labels="labels"
-              :linkTypes="linkTypes"
+              :linkTypes="linkTypes" 
+              @getData="getD3name"
             />
           </div>
         </el-col>
@@ -150,9 +151,9 @@ import {getSickNess,getD3Search} from '@/api/data'
           nodes: [],
           links: []
         },
-        names: ['企业', '贸易类型', '地区', '国家'],
-        labels: ['tag', 'Type', 'Region', 'Country'],
-        linkTypes: ['', 'type', 'locate', 'export']
+        names: ['名称','事物', '疾病', '药品'],
+        labels: ['SickNess','Thing', 'Disease', 'Medicine'],
+        linkTypes: ['', 'thing', 'disease', 'medicine']
       }
     },
     beforeCreate(){
@@ -174,16 +175,16 @@ import {getSickNess,getD3Search} from '@/api/data'
         window.localStorage.setItem("is_details",1);
     },
     mounted(){
-        this.getSickNess();
-        this.getD3Search();
-
+        this.getSickNess(this.name_1);
+        this.getD3Search(this.name_1);
     },
     methods:{
       // 获取文章详情
-      async getSickNess(){
+      async getSickNess(name){
         let that = this;
+        let name_1 = name;
         let pearms = {
-          'sickness':that.name_1,
+          'sickness':name_1,
           'tag': that.tag
         }
         const loading = this.$loading({
@@ -230,48 +231,47 @@ import {getSickNess,getD3Search} from '@/api/data'
       fanhui_btn(){
         this.$router.go(-1)
       },
-
-
       // ===============================
       selectchange(e){
           console.log(e)
           this.selectcheng = e;
           this.tag = e;
       },
-            getD3Search() {
+      // 获取图谱数据
+      getD3Search(name) {
         let that = this;
+        let name_1 = name;
         let pearms = {
-          'input3':that.input_name,
+          'name':name_1,
           'tag': that.tag
         }
-        // this.$emit('getData', this.data)
-
+        const loading = this.$loading({
+          lock: true,
+          text: '图谱更新中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.1)',
+          target:document.querySelector('.gContainer'),
+        });
         getD3Search(pearms).then( res =>{
+          loading.close();
           if(res.data.code == 0){
             let data = res.data.data;
-            // that.json = data;
-            that.update (that.json);
-
+            that.update (data);
           }else{
             this.$message.error({
                 message: res.data.msg
             });
           }
         }).catch(e =>{
-            console.log(e)
+          loading.close();
+          console.log(e)
         })
-        // if (this.data.length <= 20) {
-        //   this.data = require('../data/top5.json')
-        // } else {
-        //   this.data = require('../data/records.json')
-        // }
       },
       // ===============================
 
       // 知识图谱 视图更新
       update (json) {
         console.log('update')
-        console.log(json)
         this.d3jsonParser(json)
       },
       /*eslint-disable*/
@@ -282,13 +282,13 @@ import {getSickNess,getD3Search} from '@/api/data'
         const nodeSet = [] // 存放去重后nodes的id
 
         // 重新更改data格式
-        for (let item of json) {
-          for (let segment of item.p.segments) {
+
+          for (let segment of json) {
             if (nodeSet.indexOf(segment.start.identity) == -1) {
               nodeSet.push(segment.start.identity)
               nodes.push({
                 id: segment.start.identity,
-                label: segment.start.labels,
+                label: segment.start.labels[1],
                 properties: segment.start.properties
               })
             }
@@ -296,7 +296,7 @@ import {getSickNess,getD3Search} from '@/api/data'
               nodeSet.push(segment.end.identity)
               nodes.push({
                 id: segment.end.identity,
-                label: segment.end.labels,
+                label: segment.end.labels[1],
                 properties: segment.end.properties
               })
             }
@@ -307,38 +307,18 @@ import {getSickNess,getD3Search} from '@/api/data'
               properties: segment.relationship.properties
             })
           }
-        }
 
 
-          // nodeSet.push(json.name)
-          // nodes.push({
-          //   id: 'a',
-          //   label: 'a',
-          //   properties:{
-          //     "name": json.name
-          //   }
-          // })
-          // for (let item of json.m) {
-          //     nodeSet.push(item.end)
-          //     nodes.push({
-          //       id: item.end,
-          //       label: item.end,
-          //       properties: {
-          //         "name": item.end
-          //       }
-          //     })
-          //   links.push({
-          //     source: 'a',
-          //     target: item.end,
-          //     type: item.type,
-          //     properties: {
-          //       "name": item.type
-          //     }
-          //   })
-          // }
+
         console.log(nodes)
         console.log(links)
         this.data = { nodes, links }
+      },
+      getD3name(name){
+        let name_1 = name;
+        this.name_1 = name_1;
+        this.getSickNess(name_1);
+        this.getD3Search(name_1);
       }
     }
 

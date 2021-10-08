@@ -15,7 +15,7 @@
         @click="query"
       >搜索</el-button>
       </el-autocomplete> -->
-      <el-input placeholder="请输入内容" v-model="input_name" class="input-with-select">
+      <el-input placeholder="请输入内容" v-model="name_1" class="input-with-select">
         <el-button slot="append" type="success" icon="el-icon-search" @click="getD3Search"></el-button>
       </el-input>
   </div>
@@ -59,7 +59,7 @@ export default {
       getD3Search() {
         let that = this;
         let pearms = {
-          'input3':that.input_name,
+          'name':that.input_name,
           'tag': that.tag
         }
         this.$emit('getData', this.data)

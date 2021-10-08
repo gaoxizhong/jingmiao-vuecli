@@ -152,9 +152,8 @@ export default {
           title: '搜索节点',
           action: (elm, d) => {
             console.log(d)
-            let input_name = d.properties.name;
-            this.$store.dispatch("inputName",input_name);
-            console.log(this.$store.state.input_name)
+            let name_1 = d.properties.name;
+            this.$emit('getData', name_1)
           },
           disabled: false // optional, defaults to false
         },
