@@ -31,7 +31,7 @@
     <svg
       id="svg"
       width="100%"
-      height="600"
+      :height="viewHeight - 160"
     ></svg>
     <!-- 绘制图例 -->
     <!-- <div id="indicator">
@@ -101,8 +101,7 @@
 
 <script>
 import * as d3 from 'd3'
-// import install from '@/plugins/d3-context-menu'
-import install from '../assets/js/d3-context-menu'
+import install from '@/plugins/d3-context-menu'
 install(d3) // 为d3注册右键菜单插件
 export default {
   name: 'd3graph',
@@ -128,6 +127,8 @@ export default {
   },
   data () {
     return {
+      viewHeight:'',
+      viewWidth:'',
       svgDom: null, // svg的DOM元素 => d3.select('#svg1')
       keywords: '',
       nodeState: 0,
@@ -138,9 +139,9 @@ export default {
       links: [],
       /* eslint-disable */
       // 自定义图例及颜色（数组保证一一对应）
-      // colors		图例颜色（9个颜色）
+      // colors		图例颜色（8个颜色）
       // states   图例状态（on：显示 / off：不显示）
-      colors: ['#55cccc', '#aaaaff', '#4e88af', '#ca635f','#FFC0CB', '#BA55D3', '#1E90FF', '#7FFFD4','#FFFF00'],
+      colors: ['#55cccc', '#aaaaff', '#4e88af', '#ca635f','#FFC0CB', '#BA55D3', '#1E90FF', '#7FFFD4'],
       states: [],
       selectNodeData: {}, // 选中节点的详细信息展示
       isNodeClicked: false, // 是否点击（选中）节点
@@ -272,6 +273,10 @@ export default {
   },
   created () {
     // this.states = Array(this.names.length).fill('on')
+            let getViewportSize = this.$getViewportSize();
+        this.viewHeight = getViewportSize.height;
+        this.viewWidth = getViewportSize.width;
+
   },
   mounted () {
     this.d3init()
@@ -614,13 +619,15 @@ export default {
             case _this.labels[0]: break;
             case _this.labels[1]: size = 14; break;
             case _this.labels[2]: size = 12; break;
-            default: size = 13; break;
+            default: size = 12; break;
           }
           return size * 2
         })
         .attr("fill", d => {
           for (let i = 0;i < this.labels.length;i++) {
-            if (d.label === this.labels[i]) return this.colors[i]
+            if (d.label === this.labels[i]){
+                return this.colors[i]
+              }
           }
         })
         .attr("stroke", "none")
@@ -664,7 +671,7 @@ export default {
             }
           }
         })
-        // node.on('contextmenu', d3.contextMenu(this.menu));
+        // .on('contextmenu', d3.contextMenu(this.menu));
         // .on('contextmenu', function (d, i) {
         //   // 阻止默认右键菜单的弹出
         //   d3.event.preventDefault()
@@ -713,6 +720,8 @@ export default {
                 case _this.labels[0]: break;
                 case _this.labels[1]: index = 1;break;
                 case _this.labels[2]: index = 2;break;
+                case item.label == 'att': index = 7;break;
+
                 default: index = 3;break;
               }
               _this.$set(_this.selectNodeData, 'color', _this.colors[index])
@@ -1061,7 +1070,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../assets/css/d3-context-menu.scss';
+@import '@/plugins/d3-context-menu';
+
 $opacity: 0.15;  /* 显示的不透明度 */
 $activeColor: #1E90FF;  /* 激活的颜色 */
 svg {

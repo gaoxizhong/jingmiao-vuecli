@@ -19,7 +19,7 @@
        </el-row>
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
-          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name  )">
+          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name,item.dialecticalName  )">
             <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}</div>
             <!-- 中医库--疾病 -->
             <div class="tags-list-box" v-if=" tag == 'zysickness'">
@@ -252,10 +252,16 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         })
       },
       // 点击列表
-      getarticle(_name){
+      getarticle(_name,_dialecticalName){
         let that = this;
-        let name = _name;
+        let name = '';
+        let dialecticalName = _dialecticalName;
         let tag = that.tag;
+        if(tag == 'zysickness'){
+          name = dialecticalName.text
+        }else{
+          name = _name
+        }
         this.$router.push({  //核心语句
           path:'/Details',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数

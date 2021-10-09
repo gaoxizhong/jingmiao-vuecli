@@ -13,25 +13,36 @@
               :value="item.value"></el-option>
             </el-select>
               <!-- <el-button slot="append" type="success" icon="el-icon-search" @click="getD3Search"></el-button> -->
-              <el-button slot="append" type="success" icon="el-icon-search" @click="getSickNess"></el-button>
+              <el-button slot="append" type="success" icon="el-icon-search" @click="getD3name(name_1)"></el-button>
             </el-input>
          </el-col>
        </el-row>
       <el-row class="home" :gutter="20" style="padding-top:10px;">
-        <el-col :span="8">
-          <div class="col-left-title">{{name_1}}</div>
+        <el-col :span="span_left" class="dianji-show">
+          <div style="padding-bottom: 20px;">
+            <div class="col-left-title">{{name_1}}</div>
+            <div style="display: flex;align-items: center;justify-content: flex-end;padding-top:6px;">
+              <div class="dian-wo" @click="dian_wo">{{show_text}}</div>
+            </div>
+          </div>
+          <div v-show="is_show">
             <!-- 详情 -->
             <el-collapse v-model="activeName" v-for="(item,index) in getinfo" :key="index">
                 <el-collapse-item :name="index" class="minStyle">
                     <template slot="title">
                     {{item.name}}
                     </template>
-                    <div class="el-collapse-item-text">{{item.text?item.text:'暂无数据'}}</div>
+                    <div class="el-collapse-item-text" v-if=" tag == 'sickness' && item.medicine == 1">
+                      <a href="" v-for="items in item.text">{{items}} </a>
+                    </div>
+                    <div class="el-collapse-item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
                 </el-collapse-item>
             </el-collapse>
+          </div>
+
         </el-col>
         <!-- 图谱 -->
-        <el-col :span="16" class="col-right">
+        <el-col :span="span_right" class="col-right">
           <div class="gContainer">
             <d3graph
               :data="data"
@@ -78,12 +89,20 @@
   .col-right{
     box-sizing: border-box;
     height: 100%;
-
+    transition: all 1s;
+    -o-transition: all 1s;
+    -ms-transition: all 1s;
+    -moz-transition: all 1s;
+    -webkit-transition: all 1s;
   }
   .col-left-title{
     width: 100%;
     font-weight: 600;
-    padding-bottom: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
     font-size: 15px;
     color: #29bbff;
     text-align: center;
@@ -125,6 +144,23 @@
   .input-with-select{
     flex: 1;
   }
+  .dianji-show{
+    position: relative;
+    transition: all 1s;
+    -o-transition: all 1s;
+    -ms-transition: all 1s;
+    -moz-transition: all 1s;
+    -webkit-transition: all 1s;
+  }
+  .dian-wo{
+    display: inline-block;
+    border: 1px solid #409eff;
+    background: #409eff;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
 </style>
 <script>
 import {getSickNess,getD3Search} from '@/api/data'
@@ -136,6 +172,10 @@ import {getSickNess,getD3Search} from '@/api/data'
     },
     data() {
       return {
+        is_show: true,
+        show_text:'收起',
+        span_left:8,
+        span_right: 16,
         activeName: [],
         id:'',
         name_1:'',
@@ -147,12 +187,13 @@ import {getSickNess,getD3Search} from '@/api/data'
         results: [],
             // 后台请求到的json数据
         // json: require('../data/top1.json'),
+        json:[],
         data: {
           nodes: [],
           links: []
         },
         names: ['名称','事物', '疾病', '药品'],
-        labels: ['SickNess','Thing', 'Disease', 'Medicine'],
+        labels: [],
         linkTypes: ['', 'thing', 'disease', 'medicine']
       }
     },
@@ -165,20 +206,34 @@ import {getSickNess,getD3Search} from '@/api/data'
         this.type = this.$route.query.type,
         console.log(this.type)
         if(this.type == 'xy'){
-          console.log(1)
           this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}]
         }
         if(this.type == 'zy'){
-          console.log(1)
           this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}]
         }
         window.localStorage.setItem("is_details",1);
     },
     mounted(){
-        this.getSickNess(this.name_1);
-        this.getD3Search(this.name_1);
+       this.getD3name(this.name_1)
+        // this.getSickNess(this.name_1);
+        // this.getD3Search(this.name_1);
     },
     methods:{
+      dian_wo(){
+        let span_left = this.span_left;
+        if(span_left == 8){
+          this.span_left = 2;
+          this.span_right = 22;
+          this.show_text = '展开';
+          this.is_show = false;
+        }
+        if(span_left == 2){
+          this.span_left = 8;
+          this.span_right = 16;
+          this.show_text = '收起';
+          this.is_show = true;
+        }
+      },
       // 获取文章详情
       async getSickNess(name){
         let that = this;
@@ -199,13 +254,22 @@ import {getSickNess,getD3Search} from '@/api/data'
           if(res.data.code == 0){
             let getinfo = res.data.data;
             let getinfo_arr = [];
+
             for(let key in getinfo){
+              let medicine = 0;
+            if(that.tag == 'sickness' && getinfo[key].name == '相关药品'){
+                  medicine = 1;
+              }else{
+                 medicine = 0;
+              }
               getinfo_arr.push ({
+                medicine,
                 name: getinfo[key].name,
                 text: getinfo[key].text
               })
             }
             that.getinfo= getinfo_arr;
+            console.log(that.getinfo) 
             for(let i=0; i<= that.getinfo.length ;i++){
               that.activeName.push(i)
             }
@@ -245,6 +309,7 @@ import {getSickNess,getD3Search} from '@/api/data'
           'name':name_1,
           'tag': that.tag
         }
+        this.json = [];
         const loading = this.$loading({
           lock: true,
           text: '图谱更新中...',
@@ -256,13 +321,15 @@ import {getSickNess,getD3Search} from '@/api/data'
           loading.close();
           if(res.data.code == 0){
             let data = res.data.data;
-            that.update (data);
+            this.json = data;
+            that.update(this.json);
           }else{
             this.$message.error({
                 message: res.data.msg
             });
           }
         }).catch(e =>{
+          that.update(this.json);
           loading.close();
           console.log(e)
         })
@@ -277,6 +344,8 @@ import {getSickNess,getD3Search} from '@/api/data'
       /*eslint-disable*/
       // 解析json数据，主要负责数据的去重、标准化
       d3jsonParser (json) {
+        let that = this;
+        const labels = that.labels;
         const nodes =[]
         const links = [] // 存放节点和关系
         const nodeSet = [] // 存放去重后nodes的id
@@ -292,27 +361,74 @@ import {getSickNess,getD3Search} from '@/api/data'
                 properties: segment.start.properties
               })
             }
-            if (nodeSet.indexOf(segment.end.identity) == -1) {
-              nodeSet.push(segment.end.identity)
-              nodes.push({
-                id: segment.end.identity,
-                label: segment.end.labels[1],
-                properties: segment.end.properties
+            if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness' || that.tag == 'zy'){
+              if (nodeSet.indexOf(segment.end.identity) == -1) {
+                nodeSet.push(segment.end.identity)
+                nodes.push({
+                  id: segment.end.identity,
+                  label: segment.end.labels[1],
+                  properties: segment.end.properties
+                })
+              }
+              links.push({
+                source: segment.relationship.start,
+                target: segment.relationship.end,
+                type: segment.relationship.type,
+                properties: segment.relationship.properties
               })
+              if(labels.indexOf(segment.end.labels[1]) == -1) {
+                labels.push(segment.end.labels[1])
+              }
+              for( let key in segment.end.properties){
+                if (nodeSet.indexOf(`${segment.end.identity}-${key}`) == -1) {
+                  nodeSet.push(`${segment.end.identity}-${key}`)
+                  nodes.push({
+                    id: `${segment.end.identity}-${key}`,
+                    label: 'att',
+                    properties: {
+                      'name': segment.end.properties[key]
+                    }
+                  })
+                  links.push({
+                    source: segment.relationship.end,
+                    target: `${segment.end.identity}-${key}`,
+                    type: '属性',
+                    properties: {
+                      'name': '属性'
+                    }
+                  })
+                }
+              }
             }
-            links.push({
-              source: segment.relationship.start,
-              target: segment.relationship.end,
-              type: segment.relationship.type,
-              properties: segment.relationship.properties
-            })
+            if(labels.indexOf(segment.start.labels[1]) == -1) {
+              labels.push(segment.start.labels[1])
+            }
+
+            for( let key in segment.start.properties){
+              if (nodeSet.indexOf(`${segment.start.identity}-${key}`) == -1) {
+                nodeSet.push(`${segment.start.identity}-${key}`)
+                nodes.push({
+                  id: `${segment.start.identity}-${key}`,
+                  label: 'att',
+                  properties: {
+                    'name': segment.start.properties[key]
+                  }
+                })
+                links.push({
+                  source: segment.start.identity,
+                  target: `${segment.start.identity}-${key}`,
+                  type: '属性',
+                  properties: {
+                    'name': '属性'
+                  }
+                })
+              }
+            }
+
           }
-
-
-
-        console.log(nodes)
-        console.log(links)
-        this.data = { nodes, links }
+        labels.push('att');
+        that.labels = labels;
+        that.data = { nodes, links }
       },
       getD3name(name){
         let name_1 = name;

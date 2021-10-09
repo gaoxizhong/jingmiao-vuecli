@@ -150,8 +150,6 @@ import {getHomeRightList,getSearch} from '@/api/data'
       console.log('created')
         this.select_name = this.$route.query.name;  //接受参数关键代码
         this.tag = this.$route.query.tag;
-        console.log(this.select_name)
-        console.log(this.tag)
         this.getHomeRightList();
     },
     mounted(){
@@ -207,7 +205,6 @@ import {getHomeRightList,getSearch} from '@/api/data'
 
             }
             this.getListInfo= getListInfo;
-            console.log(this.getListInfo)
          }else if(res.data.code == 1){
             this.$message.error({
                 message: res.data.msg,
@@ -217,7 +214,6 @@ import {getHomeRightList,getSearch} from '@/api/data'
             },1500)
             return
           }else{
-           console.log(2)
             this.$message.error({
                 message: res.data.msg
             });
@@ -274,8 +270,6 @@ import {getHomeRightList,getSearch} from '@/api/data'
               }
             }
             that.getListInfo= getListInfo;
-            console.log(that.getListInfo)
-
           }else if(res.data.code == 1){
             that.$message.error({
                 message: res.data.msg,
