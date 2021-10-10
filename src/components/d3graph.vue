@@ -34,8 +34,8 @@
       :height="viewHeight - 160"
     ></svg>
     <!-- 绘制图例 -->
-    <!-- <div id="indicator">
-      <div v-for="(name, index) in names" :key="index">
+    <div id="indicator">
+      <div v-for="(items, index) in labels" :key="index">
         <span
           @click="hideNodeOfType"
           :data-state="states[index]"
@@ -43,9 +43,9 @@
           style="cursor: pointer;"
           :style="{ backgroundColor: states[index] === 'on' ? colors[index] : '#aaa' }"
         ></span>
-        {{ name }}
+        <!-- {{ items }} -->
       </div>
-    </div> -->
+    </div>
     <!-- 绘制右边显示结果 -->
     <!-- <div id="info" v-show="selectNodeData.name !== undefined">
       <el-card
@@ -119,9 +119,9 @@ export default {
     // 自定义图例（数组保证一一对应）
     // names		图例名称变量制作图标
     // labels		节点的标签名称（与records.json中保证相同）
-    names: {
-      type: Array
-    },
+    // names: {
+    //   type: Array
+    // },
     labels: Array,
     linkTypes: Array
   },
@@ -505,7 +505,7 @@ export default {
       this.nodeState = 0
       this.textState = 0
       // console.log(this.names)
-      this.states = Array(this.names.length).fill('on')
+      this.states = Array(this.labels.length).fill('on')
     },
     d3render () {
       var _this = this // 临时获取Vue实例，避免与d3的this指针冲突
@@ -720,7 +720,7 @@ export default {
                 case _this.labels[0]: break;
                 case _this.labels[1]: index = 1;break;
                 case _this.labels[2]: index = 2;break;
-                case item.label == 'att': index = 7;break;
+                case _this.labels.last == 'Att': index = 7;break;
 
                 default: index = 3;break;
               }
