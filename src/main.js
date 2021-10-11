@@ -5,7 +5,7 @@ import router from './router'
 import store from './store'
 import http from './api/axios'
 
-import { Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
+import { Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
 Vue.config.productionTip = false
 Vue.use(Button);
 Vue.use(Select);
@@ -31,7 +31,7 @@ Vue.use(Card);
 Vue.use(Dialog);
 Vue.use(Form);
 Vue.use(FormItem);
-
+Vue.use(Pagination);
 Vue.prototype.$http = http;
 Vue.prototype.$message = Message;
 Vue.prototype.$loading = Loading.service;

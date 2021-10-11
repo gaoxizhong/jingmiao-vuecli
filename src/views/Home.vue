@@ -1,22 +1,22 @@
 <template>
    <div class="content-box">
      <div class="inside-content-box" id="inside-content-box">
-       <el-row>
-         <el-col :span="13" :offset="5">
-          <div class="el-input-box el-col">
-            <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-              <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"></el-option>
-              </el-select>
-              <el-button slot="append" icon="el-icon-search" @click="getInputBtn()"></el-button>
-            </el-input>
-          </div>
-         </el-col>
-       </el-row>
+      <el-row>
+        <el-col :span="13" :offset="5">
+        <div class="el-input-box el-col">
+          <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+            <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search" @click="getInputBtn()"></el-button>
+          </el-input>
+        </div>
+        </el-col>
+      </el-row>
 
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
@@ -49,6 +49,18 @@
           <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
         </el-col>
       </el-row>
+      <!-- 分页展示 -->
+      <div class="pagination-box">
+        <el-pagination
+          background
+           @current-change="handleCurrentChange"
+          layout="total, prev, pager, next"
+          :total="total"
+          :page-size="pageSize"
+          :current-page='current_page'>
+        </el-pagination>
+      </div>
+
     </div>
    </div>
 </template>
@@ -125,6 +137,14 @@
     line-height: 1.6;
     color:#837f7f;
   }
+  .pagination-box{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+  }
 </style>
 <script>
 import {getHomeRightList,getSearch} from '@/api/data'
@@ -139,8 +159,10 @@ import {getHomeRightList,getSearch} from '@/api/data'
         tag:'',
         getListInfo:[],
         name:'',
-        pn: 1,
         hove_index: 0,
+        current_page:1,
+        total: 300,
+        pageSize: 30
       }
     },
     active(){
@@ -159,12 +181,19 @@ import {getHomeRightList,getSearch} from '@/api/data'
         console.log('updated')
      },
     methods:{
+      // 点击分页功能
+      handleCurrentChange(val) {
+        let that = this;
+        that.current_page = val;
+        console.log(that.current_page)
+        that.getHomeRightList();
+      },
       // 点击搜索
       getInputBtn(){
         let that = this;
         if(that.selectSearchChange == ''){
           this.$message.error({
-              message: '请先选择类型',
+            message: '请先选择类型',
           });
           return
         }
@@ -182,10 +211,11 @@ import {getHomeRightList,getSearch} from '@/api/data'
           background: 'rgba(0, 0, 0, 0.1)',
           target:document.querySelector('.content-box'),
         });
+        that.current_page = 1;
        getSearch({
           tag: that.selectSearchChange,
           search: that.input3,
-          pn: 1
+          pn: that.current_page
        }).then(res =>{
           loading.close();
          if(res.data.code == 0){
@@ -244,10 +274,15 @@ import {getHomeRightList,getSearch} from '@/api/data'
       getHomeRightList(){
         let that = this;
         let pearms = {
-          'department':that.select_name,
           'tag': that.tag,
-          'pn': that.pn
+          'pn': that.current_page
         }
+        if(that.input3){
+          pearms.department = that.input3;
+        }else{
+          pearms.department = that.select_name;
+        }
+        that.getListInfo = [];
         const loading = that.$loading({
           lock: true,
           text: 'Loading',
