@@ -31,7 +31,7 @@
     <svg
       id="svg"
       width="100%"
-      :height="viewHeight - 160"
+      :height="viewHeight - 180"
     ></svg>
     <!-- 绘制图例 -->
     <div id="indicator">
@@ -1075,7 +1075,7 @@ export default {
 $opacity: 0.15;  /* 显示的不透明度 */
 $activeColor: #1E90FF;  /* 激活的颜色 */
 svg {
-  margin: 20px 0px;
+  margin: 4px 0px;
   // border: 1px #000 solid;
 }
 /*设置节点及边的样式*/

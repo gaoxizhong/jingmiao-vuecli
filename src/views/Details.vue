@@ -32,7 +32,7 @@
                     <template slot="title">
                     {{item.name}}
                     </template>
-                    <div class="el-collapse-item-text" v-if=" tag == 'sickness' && item.medicine == 1">
+                    <div class="el-collapse-item-text" v-if=" (tag == 'sickness' || tag == 'disease') && item.medicine == 1">
                       <a style="padding:4px 10px;" @click="medicine_click($event)" :name='items' href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items}}</a>
                     </div>
                     <div class="el-collapse-item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
@@ -255,6 +255,7 @@ import {getSickNess,getD3Search} from '@/api/data'
           background: 'rgba(0, 0, 0, 0.1)',
           target:document.querySelector('.content-box'),
         });
+        that.activeName = [];
         await getSickNess(pearms).then( res =>{
           loading.close();
           if(res.data.code == 0){
@@ -263,7 +264,7 @@ import {getSickNess,getD3Search} from '@/api/data'
 
             for(let key in getinfo){
               let medicine = 0;
-            if(that.tag == 'sickness' && getinfo[key].name == '相关药品'){
+            if( (that.tag == 'sickness' && getinfo[key].name == '相关药品') || (that.tag == 'disease' && getinfo[key].name == '相关药品') ){
                   medicine = 1;
               }else{
                  medicine = 0;
