@@ -52,7 +52,6 @@
 <script>
 import * as d3 from 'd3'
 import install from '@/plugins/d3-context-menu'
-install(d3) // 为d3注册右键菜单插件
 export default {
   name: 'd3graph',
   props: {
@@ -106,6 +105,29 @@ export default {
             console.log(d)
             let name_1 = d.properties.name;
             this.$emit('getData', name_1)
+          }
+        },
+        {
+          title: '隐藏属性节点',
+          action: (elm, d) => {
+            console.log(d)
+            let name = d.properties.name;
+            // 遍历删除节点
+            this.nodes = this.nodes.filter(node => {
+              let id = node.id + '';
+              let b = id.indexOf('-');
+              let c = id.slice(0,b);
+              console.log(d)
+              if (node.label === 'Att' && c == d.id) return false
+              else return true
+            })
+            // 遍历删除关系
+            this.links = this.links.filter(link => {
+              if (link.type === 'att' && link.source.id === d.id) return false
+              else return true
+            })
+            this.d3render() // 重新渲染图
+            this.stateInit()
           }
         },
         {
@@ -227,6 +249,51 @@ export default {
     this.svgDom.selectAll('*').on('.', null)
   },
   methods: {
+    // 注册右击功能
+   contextMenu(menu, openCallback) {
+  // create the div element that will hold the context menu
+  d3.selectAll('.d3-context-menu').data([1])
+    .enter()
+    .append('div')
+    .attr('class', 'd3-context-menu')
+
+  // close menu
+  d3.select('body').on('click.d3-context-menu', function () {
+    d3.select('.d3-context-menu').style('display', 'none')
+  })
+
+  // this gets executed when a contextmenu event occurs
+  return function (event, data) {
+    console.log(event)
+    // 指向右键触发的节点
+    var elm = this
+
+    d3.selectAll('.d3-context-menu').html('')
+    var list = d3.selectAll('.d3-context-menu').append('ul')
+    list.selectAll('li').data(menu).enter()
+      .append('li')
+      .html(function (d) {
+        return d.title
+      })
+      .on('click', function (e, d) {
+        // console.log(d)
+        d.action(elm, data)
+        d3.select('.d3-context-menu').style('display', 'none')
+      })
+
+    // the openCallback allows an action to fire before the menu is displayed
+    // an example usage would be closing a tooltip
+    if (openCallback) openCallback(data)
+
+    // display context menu
+    d3.select('.d3-context-menu')
+      .style('left', (event.pageX - 2) + 'px')
+      .style('top', (event.pageY - 2) + 'px')
+      .style('display', 'block')
+
+    event.preventDefault()
+  }
+},
     // 隐藏文字
     changeTextState (state) {
       // state发生变化时才进行更新、处理
@@ -576,7 +643,7 @@ export default {
             }
           }
         })
-        // .on('contextmenu', d3.contextMenu(this.menu));
+        .on('contextmenu', _this.contextMenu(this.menu))
         // .on('contextmenu', function (d, i) {
         //   // 阻止默认右键菜单的弹出
         //   d3.event.preventDefault()
@@ -643,7 +710,7 @@ export default {
             }
           }
         })
-        // .on('contextmenu', d3.contextMenu(this.menu))
+        .on('contextmenu', _this.contextMenu(this.menu))
         // .call(d3.drag()
         //   .on("start", dragstarted)
         //   .on("drag", dragged)
@@ -1108,6 +1175,9 @@ svg {
       background-color: #409eff;
       color: #fff;
       cursor: pointer;
+    }
+    ~ .active1{
+      display: none;
     }
   }
   .gState span.active, .gState span:hover {
