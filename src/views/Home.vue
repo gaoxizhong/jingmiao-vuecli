@@ -161,8 +161,8 @@ import {getHomeRightList,getSearch} from '@/api/data'
         name:'',
         hove_index: 0,
         current_page:1,
-        total: 300,
-        pageSize: 30
+        total: 0,
+        pageSize: 20
       }
     },
     active(){
@@ -293,7 +293,8 @@ import {getHomeRightList,getSearch} from '@/api/data'
         getHomeRightList(pearms).then( res =>{
           loading.close();
           if(res.data.code == 0){
-            let getListInfo = res.data.data;
+            let getListInfo = res.data.data.list;
+            that.total = res.data.data.count;
             for(var i = 0;i<getListInfo.length;i++){
               getListInfo[i].index = i;
               if(that.tag == "sickness" || that.tag == "disease"){

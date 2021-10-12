@@ -19,7 +19,7 @@
       </el-row>
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
-          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name,item.dialecticalName  )">
+          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name,item.kgid  )">
             <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}</div>
             <!-- 中医库--疾病 -->
             <div class="tags-list-box" v-if=" tag == 'zysickness'">
@@ -179,8 +179,8 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         name:'',
         hove_index: 0,
         current_page:1,
-        total: 300,
-        pageSize: 30
+        total: 0,
+        pageSize: 20
       }
     },
     active(){
@@ -282,13 +282,13 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         })
       },
       // 点击列表
-      getarticle(_name,_dialecticalName){
+      getarticle(_name,_kgid){
         let that = this;
         let name = '';
-        let dialecticalName = _dialecticalName;
+        let kgid = _kgid;
         let tag = that.tag;
         if(tag == 'zysickness'){
-          name = dialecticalName.text
+          name = kgid.text
         }else{
           name = _name
         }
@@ -326,7 +326,8 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
           getHomeRightList(pearms).then( res =>{
             loading.close();
             if(res.data.code == 0){
-              let getListInfo = res.data.data;
+              let getListInfo = res.data.data.list;
+              that.total = res.data.data.count;
               for(var i = 0;i<getListInfo.length;i++){
                 getListInfo[i].index = i;
                 if(that.tag == "zysickness"){
@@ -356,7 +357,8 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
           getzyHomeRightList(pearms).then( res =>{
             loading.close();
             if(res.data.code == 0){
-              let getListInfo = res.data.data;
+              let getListInfo = res.data.data.list;
+              that.total = res.data.data.count;
               for(var i = 0;i<getListInfo.length;i++){
                 getListInfo[i].index = i;
                   if(that.tag == "zy"){

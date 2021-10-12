@@ -4,7 +4,7 @@
        <a href="#" class="el-icon-back box2-span" @click="fanhui_btn()"></a>
         <el-row>
          <el-col :span="14" :offset="4">
-          <el-input placeholder="请输入内容" v-model="name_1" class="input-with-select">
+          <el-input placeholder="请输入内容" v-model="name" class="input-with-select">
             <el-select class="el-select-box" v-model="select_1" slot="prepend" style="width:140px;" @change="selectchange">
               <el-option
               v-for="item in options"
@@ -20,7 +20,7 @@
       <el-row class="home" :gutter="20" style="padding-top:10px;">
         <el-col :span="span_left" class="dianji-show">
           <div style="padding-bottom: 20px;">
-            <div class="col-left-title">{{name_1}}</div>
+            <div class="col-left-title">{{name}}</div>
             <div style="display: flex;align-items: center;justify-content: flex-end;padding-top:6px;">
               <div class="dian-wo" @click="dian_wo">{{show_text}}</div>
             </div>
@@ -178,6 +178,7 @@ import {getSickNess,getD3Search} from '@/api/data'
         span_right: 16,
         activeName: [],
         id:'',
+        name:'',
         name_1:'',
         getinfo:{},
         tag:'',
@@ -201,9 +202,9 @@ import {getSickNess,getD3Search} from '@/api/data'
 
     },
     created(){  //生命周期里接收参数
-        this.name_1 = this.$route.query.name,  //接受参数关键代码
-        this.tag = this.$route.query.tag,
-        this.type = this.$route.query.type,
+        this.name_1 = this.$route.query.name;  //接受参数关键代码
+        this.tag = this.$route.query.tag;
+        this.type = this.$route.query.type;
         console.log(this.type)
         if(this.type == 'xy'){
           this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}]
@@ -211,12 +212,15 @@ import {getSickNess,getD3Search} from '@/api/data'
         if(this.type == 'zy'){
           this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}]
         }
+
+        // if( this.tag !=zysickness ){
+        //   this.name = this.$route.query.name;
+        // }
+
         window.localStorage.setItem("is_details",1);
     },
     mounted(){
        this.getD3name(this.name_1)
-        // this.getSickNess(this.name_1);
-        // this.getD3Search(this.name_1);
     },
     methods:{
       medicine_click(e){
@@ -260,8 +264,10 @@ import {getSickNess,getD3Search} from '@/api/data'
           loading.close();
           if(res.data.code == 0){
             let getinfo = res.data.data;
-            let getinfo_arr = [];
 
+            that.name = getinfo.sickness_name.text;
+
+            let getinfo_arr = [];
             for(let key in getinfo){
               let medicine = 0;
             if( (that.tag == 'sickness' && getinfo[key].name == '相关药品') || (that.tag == 'disease' && getinfo[key].name == '相关药品') ){
@@ -269,11 +275,14 @@ import {getSickNess,getD3Search} from '@/api/data'
               }else{
                  medicine = 0;
               }
-              getinfo_arr.push ({
-                medicine,
-                name: getinfo[key].name,
-                text: getinfo[key].text
-              })
+              if(getinfo[key].name != '名称'){
+                getinfo_arr.push ({
+                  medicine,
+                  name: getinfo[key].name,
+                  text: getinfo[key].text
+                })
+              }
+
             }
             that.getinfo= getinfo_arr;
             console.log(that.getinfo)
@@ -362,6 +371,53 @@ import {getSickNess,getD3Search} from '@/api/data'
 
         // 重新更改data格式
 
+        // for(let segment of json){
+
+        //   if (nodeSet.indexOf(segment.start.name) == -1) {
+        //       nodes.push({
+        //         name:segment.start.properties.name,
+        //         id:segment.start.identity
+        //       })
+        //       for( let key in segment.start.properties){
+        //         nodes.push({
+        //           name:segment.start.properties[key],
+        //           id: `${segment.start.identity}-${key}`
+        //         })
+        //         links.push({
+        //           source: segment.start.identity,
+        //           target: `${segment.start.identity}-${key}`,
+        //         })
+        //       }
+        //     }
+        //   if(segment.end){
+        //     if (nodeSet.indexOf(segment.end.name) == -1) {
+        //       nodes.push({
+        //         name:segment.end.properties.name,
+        //         id:segment.end.identity
+        //       })
+        //       for( let key in segment.end.properties){
+        //         nodes.push({
+        //           name:segment.end.properties[key],
+        //           id: `${segment.end.identity}-${key}`
+        //         })
+        //         links.push({
+        //           source: segment.end.identity,
+        //           target: `${segment.end.identity}-${key}`,
+        //         })
+        //       }
+        //     }
+        //   }
+        //   if(segment.end){
+        //     links.push({
+        //       source: segment.start.properties.name,
+        //       target: segment.end.properties.name,
+        //     })
+        //   }
+
+        // }
+
+
+
           for (let segment of json) {
             if (nodeSet.indexOf(segment.start.identity) == -1) {
               nodeSet.push(segment.start.identity)
@@ -444,7 +500,8 @@ import {getSickNess,getD3Search} from '@/api/data'
         linkTypes.push('att');
         that.linkTypes = linkTypes;
         that.labels = labels;
-        console.log(links);
+        console.log(nodes)
+        // console.log(links);
         console.log(linkTypes)
         that.data = { nodes, links }
       },
