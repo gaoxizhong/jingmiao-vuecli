@@ -46,56 +46,6 @@
         <!-- {{ items }} -->
       </div>
     </div>
-    <!-- 绘制右边显示结果 -->
-    <!-- <div id="info" v-show="selectNodeData.name !== undefined">
-      <el-card
-        :style="{ backgroundColor: selectNodeData.color }"
-        class="node-card"
-      >
-        <div slot="header" class="clearfix">
-          <span>{{ selectNodeData.name }}</span>
-          <el-button
-            @click="btnEdit"
-            style="float: right; padding: 3px 0;color: #409EFB;font-size: 15px;"
-            type="text"
-          >编辑</el-button>
-        </div>
-        <div
-          v-for="(item, key) in selectNodeData.properties" :key="item"
-        >
-          <span style="margin-right: 8px;">{{ (nodeObjMap[key] ? nodeObjMap[key] : key) + ':' }}</span>
-          <span style="text-align: right;"><b>{{ item }}</b></span>
-        </div>
-      </el-card>
-    </div> -->
-    <!-- 编辑框 -->
-    <el-dialog :visible.sync="dialogFormVisible">
-      <el-form
-        :model="temp"
-        label-position="right"
-        label-width="86px"
-        style="width: 500px; margin-left:50px;"
-      >
-        <el-form-item
-          v-for="(value, key) in temp"
-          :key="key"
-          :label="nodeObjMap[key] ? nodeObjMap[key] : key"
-        >
-          <el-input
-            v-model="temp[key]"
-            :readonly="!isEdit"
-          />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelEdit">
-          取消
-        </el-button>
-        <el-button type="primary" @click="doEdit">
-          确定
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -217,17 +167,7 @@ export default {
           }
         }
       ],
-      temp: {}, // 临时存储编辑时的节点信息
-      dialogFormVisible: false,
       isEdit: true,
-      // 节点属性对应的标签名称
-      // nodeObjMap: {
-      //   'address': '注册地址',
-      //   'captial': '注册资本',
-      //   'credit_code': '信用代码',
-      //   'name': '节点名称',
-      //   'setup_time': '注册日期'
-      // }
     }
   },
   computed: {
@@ -245,7 +185,7 @@ export default {
     gDegree () {
       return (this.links.length / this.nodes.length).toFixed(2)
     },
-    // 企业实体的平均度数
+    // 平均度数
     gMainDegree () {
       // 遍历节点
       // this.nodes.forEach(node => {
@@ -287,41 +227,6 @@ export default {
     this.svgDom.selectAll('*').on('.', null)
   },
   methods: {
-    // 编辑当前选中节点
-    btnEdit () {
-      this.temp = Object.assign({}, this.selectNodeData.properties) // copy obj
-      this.dialogFormVisible = true
-      console.log(this.selectNodeData)
-    },
-    doEdit () {
-      // console.log(this.data)
-      let i = 0
-      // 更新props的data 和 selectNodeData
-      this.selectNodeData.name = this.temp.name
-      this.selectNodeData.properties = this.temp
-      for (let node of this.data.nodes) {
-        // console.log(node.id === this.selectNodeData.id)
-        // console.log(node.id)
-        // console.log(this.selectNodeData.id)
-        if (node.id == this.selectNodeData.id) {
-          // this.$set(this.data.nodes, i, this.selectNodeData)
-          // this.$set(this.nodes, i, this.selectNodeData)
-          this.data.nodes[i].properties = this.temp
-          this.nodes[i].properties = this.temp
-          break
-        }
-        i++
-      }
-      this.dialogFormVisible = false
-      this.d3init()
-      this.$message({
-        message: '更新成功',
-        type: 'success'
-      })
-    },
-    cancelEdit () {
-      this.dialogFormVisible = false
-    },
     // 隐藏文字
     changeTextState (state) {
       // state发生变化时才进行更新、处理
