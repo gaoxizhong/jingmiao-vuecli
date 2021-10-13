@@ -3,7 +3,7 @@
     <!-- 绘制模式选择 -->
     <div id="mode">
       <h3>关系文字显示</h3>
-      <div class="gState" style="margin: 20px 0;">
+      <div class="gState" style="margin: 6px 0;">
         <span
           @click="changeTextState(0)"
           :class="{ active: isShowText }"
@@ -19,7 +19,7 @@
     <svg
       id="svg"
       width="100%"
-      :height="viewHeight - 180"
+      :height="viewHeight - 140"
     ></svg>
     <!-- 绘制图例 -->
 
@@ -41,7 +41,8 @@
 
 <script>
 import * as d3 from 'd3'
-import install from '@/plugins/d3-context-menu'
+// import install from '@/plugins/d3-context-menu'
+// install(d3)
 export default {
   name: 'd3graph',
   props: {
@@ -49,6 +50,7 @@ export default {
       type: Object,
       default: function () {
         return {
+          tag:'',
           nodes: [],
           links: []
         }
@@ -66,6 +68,7 @@ export default {
   },
   data () {
     return {
+      title:'显示节点',
       viewHeight:'',
       viewWidth:'',
       svgDom: null, // svg的DOM元素 => d3.select('#svg1')
@@ -93,43 +96,36 @@ export default {
           title: '搜索节点',
           action: (elm, d) => {
             console.log(d)
-            let name_1 = d.properties.name;
-            this.$emit('getData', name_1)
+            let name = '';
+            name = d.properties.kgid?d.properties.kgid:d.properties.name
+            this.$emit('getData', name)
           }
         },
         {
           id: 2,
-          title: '隐藏属性节点',
+          title: '',
           action: (elm, d) => {
             console.log(d)
             let name = d.properties.name;
-             d.is_show = '1';
-              // this.svgDom.select('.nodes').selectAll('circle').attr("class", d =>{})
-                this.nodes.forEach(element => {
-                    let id = element.id + '';
-                    let b = id.indexOf('-');
-                    let c = id.slice(0,b);
-                    if (element.label === 'Att' && c == d.id){
-                      element.data_type = 'is_show'
-                    }
-                });
-                this.links.forEach(element => {
-                    if (element.type === 'att' && element.source.id == d.id){
-                      element.data_type = 'is_show'
-                    }
-                });
-            // 重新渲染图
-            this.d3render()
-            // this.stateInit()
-          }
-        },
-        {
-          id: 3,
-          title: '显示属性节点',
-          action: (elm, d) => {
-            console.log(d)
-            let name = d.properties.name;
-            d.is_show = '2';
+            if(d.is_show == '2'){
+              d.is_show = '1';
+              this.title = '隐藏节点'
+              this.nodes.forEach(element => {
+                  let id = element.id + '';
+                  let b = id.indexOf('-');
+                  let c = id.slice(0,b);
+                  if (element.label === 'Att' && c == d.id){
+                    element.data_type = 'is_show'
+                  }
+              });
+              this.links.forEach(element => {
+                  if (element.type === 'att' && element.source.id == d.id){
+                    element.data_type = 'is_show'
+                  }
+              });
+            }else{
+              d.is_show = '2';
+              this.title = '显示节点'
               for( let key in d.properties){
                 this.data.nodes.push({
                     id: `${d.id}-${key}`,
@@ -147,8 +143,10 @@ export default {
                     }
                   })
               }
+            }
+
             // 重新渲染图
-            this.d3render() 
+            this.d3render()
             // this.stateInit()
           }
         },
@@ -252,6 +250,7 @@ export default {
   methods: {
     // 注册右击功能
    contextMenu(menu, openCallback) {
+     let _this = this;
      let _menu = menu;
   // create the div element that will hold the context menu
   d3.selectAll('.d3-context-menu').data([1])
@@ -266,24 +265,21 @@ export default {
 
   // this gets executed when a contextmenu event occurs
   return function (event, data) {
-    console.log(event)
-
     // 指向右键触发的节点
     var elm = this
-    console.log(data)
     if(data.label == 'Att'){
       return
     }
     if(data.is_show == '1'){
-      _menu = _menu.filter(item => {
-        return item.id != 2
-      })
+      _this.title = '显示节点'
     }else{
-      _menu = _menu.filter(item => {
-        return item.id != 3
-      })
+      _this.title = '隐藏节点'
     }
-    
+    _menu.forEach(e =>{
+      if(e.id == 2){
+        e.title = _this.title
+      }
+    })
     d3.selectAll('.d3-context-menu').html('')
     var list = d3.selectAll('.d3-context-menu').append('ul')
     list.selectAll('li').data(_menu).enter()
@@ -548,7 +544,6 @@ export default {
           _this.changeGraphStyle(name)
         })
         .on('mouseleave', event => {
-          console.log(this.isNodeClicked)
           if (!this.isNodeClicked) {
             this.clearGraphStyle()
           }
@@ -1069,7 +1064,7 @@ svg {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  top: 40PX;
+  top: 14PX;
   left: 20px;
   .gState span {
     display: inline-block;

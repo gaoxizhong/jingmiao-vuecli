@@ -45,6 +45,7 @@
         <el-col :span="span_right" class="col-right">
           <div class="gContainer">
             <d3graph
+              :tag = "tag"
               :data="data"
               :names="names"
               :labels="labels"
@@ -363,7 +364,7 @@ import {getSickNess,getD3Search} from '@/api/data'
       // 解析json数据，主要负责数据的去重、标准化
       d3jsonParser (json) {
         let that = this;
-        let _name = that.name_1;
+        let _name = that.name;
         const labels = [];
         const linkTypes = ['',];
         const nodes =[]
