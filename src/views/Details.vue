@@ -363,6 +363,7 @@ import {getSickNess,getD3Search} from '@/api/data'
       // 解析json数据，主要负责数据的去重、标准化
       d3jsonParser (json) {
         let that = this;
+        let _name = that.name_1;
         const labels = [];
         const linkTypes = ['',];
         const nodes =[]
@@ -371,69 +372,40 @@ import {getSickNess,getD3Search} from '@/api/data'
 
         // 重新更改data格式
 
-        // for(let segment of json){
-
-        //   if (nodeSet.indexOf(segment.start.name) == -1) {
-        //       nodes.push({
-        //         name:segment.start.properties.name,
-        //         id:segment.start.identity
-        //       })
-        //       for( let key in segment.start.properties){
-        //         nodes.push({
-        //           name:segment.start.properties[key],
-        //           id: `${segment.start.identity}-${key}`
-        //         })
-        //         links.push({
-        //           source: segment.start.identity,
-        //           target: `${segment.start.identity}-${key}`,
-        //         })
-        //       }
-        //     }
-        //   if(segment.end){
-        //     if (nodeSet.indexOf(segment.end.name) == -1) {
-        //       nodes.push({
-        //         name:segment.end.properties.name,
-        //         id:segment.end.identity
-        //       })
-        //       for( let key in segment.end.properties){
-        //         nodes.push({
-        //           name:segment.end.properties[key],
-        //           id: `${segment.end.identity}-${key}`
-        //         })
-        //         links.push({
-        //           source: segment.end.identity,
-        //           target: `${segment.end.identity}-${key}`,
-        //         })
-        //       }
-        //     }
-        //   }
-        //   if(segment.end){
-        //     links.push({
-        //       source: segment.start.properties.name,
-        //       target: segment.end.properties.name,
-        //     })
-        //   }
-
-        // }
-
-
 
           for (let segment of json) {
+
             if (nodeSet.indexOf(segment.start.identity) == -1) {
               nodeSet.push(segment.start.identity)
+              let is_show = '';
+              if(_name == segment.start.properties.name){
+                is_show = '2'
+              }else{
+                is_show = '1'
+              }
               nodes.push({
+                is_show: is_show,
                 id: segment.start.identity,
                 label: segment.start.labels[1],
-                properties: segment.start.properties
+                properties: segment.start.properties,
+                is_show
               })
             }
             if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness' || that.tag == 'zy'){
               if (nodeSet.indexOf(segment.end.identity) == -1) {
                 nodeSet.push(segment.end.identity)
+              let is_show = '';
+              if(_name == segment.end.properties.name){
+                is_show = '2'
+              }else{
+                is_show = '1'
+              }
                 nodes.push({
+                  is_show: is_show,
                   id: segment.end.identity,
                   label: segment.end.labels[1],
-                  properties: segment.end.properties
+                  properties: segment.end.properties,
+                  is_show
                 })
               }
               links.push({
@@ -452,12 +424,19 @@ import {getSickNess,getD3Search} from '@/api/data'
               for( let key in segment.end.properties){
                 if (nodeSet.indexOf(`${segment.end.identity}-${key}`) == -1) {
                   nodeSet.push(`${segment.end.identity}-${key}`)
+                 let data_type = '';
+                  if(_name == segment.end.properties.name){
+                    data_type = 'no_show'
+                  }else{
+                    data_type = 'is_show'
+                  }
                   nodes.push({
                     id: `${segment.end.identity}-${key}`,
                     label: 'Att',
                     properties: {
                       'name': segment.end.properties[key]
-                    }
+                    },
+                    data_type,
                   })
                   links.push({
                     source: segment.relationship.end,
@@ -465,7 +444,8 @@ import {getSickNess,getD3Search} from '@/api/data'
                     type: 'att',
                     properties: {
                       'name': '属性'
-                    }
+                    },
+                    data_type,
                   })
                 }
               }
@@ -477,12 +457,19 @@ import {getSickNess,getD3Search} from '@/api/data'
             for( let key in segment.start.properties){
               if (nodeSet.indexOf(`${segment.start.identity}-${key}`) == -1) {
                 nodeSet.push(`${segment.start.identity}-${key}`)
+                let data_type = '';
+              if(_name == segment.start.properties.name){
+                data_type = 'no_show'
+              }else{
+                data_type = 'is_show'
+              }
                 nodes.push({
                   id: `${segment.start.identity}-${key}`,
                   label: 'Att',
                   properties: {
                     'name': segment.start.properties[key]
-                  }
+                  },
+                  data_type
                 })
                 links.push({
                   source: segment.start.identity,
@@ -490,7 +477,8 @@ import {getSickNess,getD3Search} from '@/api/data'
                   type: 'att',
                   properties: {
                     'name': '属性'
-                  }
+                  },
+                  data_type
                 })
               }
             }
