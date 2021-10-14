@@ -249,63 +249,63 @@ export default {
   },
   methods: {
     // 注册右击功能
-   contextMenu(menu, openCallback) {
-     let _this = this;
-     let _menu = menu;
-  // create the div element that will hold the context menu
-  d3.selectAll('.d3-context-menu').data([1])
-    .enter()
-    .append('div')
-    .attr('class', 'd3-context-menu')
+    contextMenu(menu, openCallback) {
+      let _this = this;
+      let _menu = menu;
+      // create the div element that will hold the context menu
+      d3.selectAll('.d3-context-menu').data([1])
+        .enter()
+        .append('div')
+        .attr('class', 'd3-context-menu')
 
-  // close menu
-  d3.select('body').on('click.d3-context-menu', function () {
-    d3.select('.d3-context-menu').style('display', 'none')
-  })
-
-  // this gets executed when a contextmenu event occurs
-  return function (event, data) {
-    // 指向右键触发的节点
-    var elm = this
-    if(data.label == 'Att'){
-      return
-    }
-    if(data.is_show == '1'){
-      _this.title = '显示节点'
-    }else{
-      _this.title = '隐藏节点'
-    }
-    _menu.forEach(e =>{
-      if(e.id == 2){
-        e.title = _this.title
-      }
-    })
-    d3.selectAll('.d3-context-menu').html('')
-    var list = d3.selectAll('.d3-context-menu').append('ul')
-    list.selectAll('li').data(_menu).enter()
-      .append('li')
-      .html(function (d) {
-        return d.title
-      })
-      .on('click', function (e, d) {
-        // console.log(d)
-        d.action(elm, data)
+      // close menu
+      d3.select('body').on('click.d3-context-menu', function () {
         d3.select('.d3-context-menu').style('display', 'none')
       })
 
-    // the openCallback allows an action to fire before the menu is displayed
-    // an example usage would be closing a tooltip
-    if (openCallback) openCallback(data)
+      // this gets executed when a contextmenu event occurs
+      return function (event, data) {
+        // 指向右键触发的节点
+        var elm = this
+        if(data.label == 'Att'){
+          return
+        }
+        if(data.is_show == '1'){
+          _this.title = '显示节点'
+        }else{
+          _this.title = '隐藏节点'
+        }
+        _menu.forEach(e =>{
+          if(e.id == 2){
+            e.title = _this.title
+          }
+        })
+        d3.selectAll('.d3-context-menu').html('')
+        var list = d3.selectAll('.d3-context-menu').append('ul')
+        list.selectAll('li').data(_menu).enter()
+          .append('li')
+          .html(function (d) {
+            return d.title
+          })
+          .on('click', function (e, d) {
+            // console.log(d)
+            d.action(elm, data)
+            d3.select('.d3-context-menu').style('display', 'none')
+          })
 
-    // display context menu
-    d3.select('.d3-context-menu')
-      .style('left', (event.pageX - 2) + 'px')
-      .style('top', (event.pageY - 2) + 'px')
-      .style('display', 'block')
+        // the openCallback allows an action to fire before the menu is displayed
+        // an example usage would be closing a tooltip
+        if (openCallback) openCallback(data)
 
-    event.preventDefault()
-  }
-},
+        // display context menu
+        d3.select('.d3-context-menu')
+          .style('left', (event.pageX - 2) + 'px')
+          .style('top', (event.pageY - 2) + 'px')
+          .style('display', 'block')
+
+        event.preventDefault()
+      }
+    },
     // 隐藏文字
     changeTextState (state) {
       // state发生变化时才进行更新、处理
@@ -435,7 +435,7 @@ export default {
       this.addMarkers()
       // console.log(svg)
       // 动态变化时，不再固定宽高
-			// var width = svg.attr("width"),
+      // var width = svg.attr("width"),
       //     height = svg.attr("height")
 
       // 解析json和数据处理
