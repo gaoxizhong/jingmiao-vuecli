@@ -127,7 +127,8 @@ export default {
               d.is_show = '2';
               this.title = '显示节点'
               for( let key in d.properties){
-                this.data.nodes.push({
+                if(d.properties[key] != ""){
+                  this.data.nodes.push({
                     id: `${d.id}-${key}`,
                     label: 'Att',
                     properties: {
@@ -142,6 +143,8 @@ export default {
                       'name': '属性'
                     }
                   })
+                }
+
               }
             }
 
