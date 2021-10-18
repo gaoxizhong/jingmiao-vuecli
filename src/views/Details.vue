@@ -32,7 +32,7 @@
                     <template slot="title">
                     {{item.name}}
                     </template>
-                    <div class="el-collapse-item-text" v-if=" (tag == 'sickness' || tag == 'disease') && item.is_list == 1">
+                    <div class="el-collapse-item-text" v-if=" item.tag !='' && item.is_list == 1">
                       <a class="item-text-a" @click="medicine_click(item.tag,items)" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items}}</a>
                     </div>
                     <div class="el-collapse-item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
