@@ -375,15 +375,15 @@ import {getSickNess,getD3Search} from '@/api/data'
 
         // 重新更改data格式
 
-
           for (let segment of json) {
-
+            console.log(segment.start.properties.name.text)
+            console.log(segment.end.properties.name.text)
+            console.log(_name)
             if (nodeSet.indexOf(segment.start.identity) == -1) {
               nodeSet.push(segment.start.identity)
               let is_show = '';
-              if(_name == segment.start.properties.name){
+              if(_name == segment.start.properties.name.text){
                 is_show = '2'
-                console.log("is_show:" + is_show)
               }else{
                 is_show = '1'
               }
@@ -399,7 +399,7 @@ import {getSickNess,getD3Search} from '@/api/data'
               if (nodeSet.indexOf(segment.end.identity) == -1) {
                 nodeSet.push(segment.end.identity)
               let is_show = '';
-              if(_name == segment.end.properties.name){
+              if(_name == segment.end.properties.name.text){
                 is_show = '2'
               }else{
                 is_show = '1'
@@ -426,11 +426,11 @@ import {getSickNess,getD3Search} from '@/api/data'
               }
 
               for( let key in segment.end.properties){
-                if(segment.end.properties[key] !=""){
+                if(segment.end.properties[key].text !=""){
                   if (nodeSet.indexOf(`${segment.end.identity}-${key}`) == -1) {
                     nodeSet.push(`${segment.end.identity}-${key}`)
                     let data_type = '';
-                    if(_name == segment.end.properties.name){
+                    if(_name == segment.end.properties.name.text){
                       data_type = 'no_show'
                     }else{
                       data_type = 'is_show'
@@ -439,7 +439,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                       id: `${segment.end.identity}-${key}`,
                       label: 'Att',
                       properties: {
-                        'name': segment.end.properties[key]
+                        'name': segment.end.properties[key].text
                       },
                       data_type,
                     })
@@ -448,7 +448,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                       target: `${segment.end.identity}-${key}`,
                       type: 'att',
                       properties: {
-                        'name': '属性'
+                        'name': segment.end.properties[key].name
                       },
                       data_type,
                     })
@@ -466,9 +466,8 @@ import {getSickNess,getD3Search} from '@/api/data'
                 if (nodeSet.indexOf(`${segment.start.identity}-${key}`) == -1) {
                   nodeSet.push(`${segment.start.identity}-${key}`)
                   let data_type = '';
-                  if(_name == segment.start.properties.name){
+                  if(_name == segment.start.properties.name.text){
                     data_type = 'no_show'
-                    console.log("data_type:" + data_type)
                   }else{
                     data_type = 'is_show'
                   }
@@ -476,7 +475,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                       id: `${segment.start.identity}-${key}`,
                       label: 'Att',
                       properties: {
-                        'name': segment.start.properties[key]
+                        'name': segment.start.properties[key].text
                       },
                       data_type
                     })
@@ -485,7 +484,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                       target: `${segment.start.identity}-${key}`,
                       type: 'att',
                       properties: {
-                        'name': '属性'
+                        'name': segment.start.properties[key].name
                       },
                       data_type
                     })
@@ -500,8 +499,7 @@ import {getSickNess,getD3Search} from '@/api/data'
         that.linkTypes = linkTypes;
         that.labels = labels;
         console.log(nodes)
-        // console.log(links);
-        console.log(linkTypes)
+        console.log(links);
         that.data = { nodes, links }
       },
       getD3name(name){

@@ -97,7 +97,7 @@ export default {
           action: (elm, d) => {
             console.log(d)
             let name = '';
-            name = d.properties.kgid?d.properties.kgid:d.properties.name
+            name = d.properties.kgid?d.properties.kgid.text:d.properties.name.text
             this.$emit('getData', name)
           }
         },
@@ -106,7 +106,7 @@ export default {
           title: '',
           action: (elm, d) => {
             console.log(d)
-            let name = d.properties.name;
+            let name = d.properties.name.text;
             if(d.is_show == '2'){
               d.is_show = '1';
               this.title = '隐藏节点'
@@ -127,12 +127,12 @@ export default {
               d.is_show = '2';
               this.title = '显示节点'
               for( let key in d.properties){
-                if(d.properties[key] != ""){
+                if(d.properties[key].text != ""){
                   this.data.nodes.push({
                     id: `${d.id}-${key}`,
                     label: 'Att',
                     properties: {
-                      'name': d.properties[key]
+                      'name': d.properties[key].text
                     }
                   })
                   this.data.links.push({
@@ -140,7 +140,7 @@ export default {
                     target: `${d.id}-${key}`,
                     type: 'att',
                     properties: {
-                      'name': '属性'
+                      'name': d.properties[key].name
                     }
                   })
                 }
@@ -573,10 +573,10 @@ export default {
         .enter()
         .append("text").attr("font-size", () => 13)
         .attr("fill", () => '#fff')
-        .attr('name', d => d.properties.name)
+        .attr('name', d => d.properties.name.text?d.properties.name.text:d.properties.name)
         .attr("text-anchor", "middle")
         .attr('x', function (d) {
-          return textBreaking(d3.select(this), d.properties.name)
+          return textBreaking(d3.select(this), d.properties.name.text?d.properties.name.text:d.properties.name)
         })
         .call(this.drag(simulation))
         .on("click", nodeClick)
@@ -709,6 +709,7 @@ export default {
        * @return {void}
        */
       function textBreaking(d3text, text) {
+        console.log(text)
         const len = text.length
         if (len <= 3) {
           d3text.append('tspan')

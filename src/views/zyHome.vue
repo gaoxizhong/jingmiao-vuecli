@@ -287,7 +287,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         let name = '';
         let kgid = _kgid;
         let tag = that.tag;
-        if(tag == 'zysickness'){
+        if(tag == 'zysickness' || tag == 'zy'){
           name = kgid.text
         }else{
           name = _name
