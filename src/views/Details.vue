@@ -376,9 +376,6 @@ import {getSickNess,getD3Search} from '@/api/data'
         // 重新更改data格式
 
           for (let segment of json) {
-            console.log(segment.start.properties.name.text)
-            console.log(segment.end.properties.name.text)
-            console.log(_name)
             if (nodeSet.indexOf(segment.start.identity) == -1) {
               nodeSet.push(segment.start.identity)
               let is_show = '';
@@ -426,7 +423,7 @@ import {getSickNess,getD3Search} from '@/api/data'
               }
 
               for( let key in segment.end.properties){
-                if(segment.end.properties[key].text !=""){
+                if(segment.end.properties[key].text != ''){
                   if (nodeSet.indexOf(`${segment.end.identity}-${key}`) == -1) {
                     nodeSet.push(`${segment.end.identity}-${key}`)
                     let data_type = '';
@@ -454,7 +451,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                     })
                   }
                 }
-                
+
               }
             }
             if(labels.indexOf(segment.start.labels[1]) == -1) {
@@ -462,7 +459,7 @@ import {getSickNess,getD3Search} from '@/api/data'
             }
 
             for( let key in segment.start.properties){
-              if(segment.start.properties[key] != ''){
+              if(segment.start.properties[key].text != ''){
                 if (nodeSet.indexOf(`${segment.start.identity}-${key}`) == -1) {
                   nodeSet.push(`${segment.start.identity}-${key}`)
                   let data_type = '';
