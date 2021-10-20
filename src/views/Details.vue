@@ -13,31 +13,34 @@
               :value="item.value"></el-option>
             </el-select>
               <!-- <el-button slot="append" type="success" icon="el-icon-search" @click="getD3Search"></el-button> -->
-              <el-button slot="append" type="success" icon="el-icon-search" @click="getD3name(name_1,tag)"></el-button>
+              <el-button slot="append" type="success" icon="el-icon-search" @click="getD3name(name,tag)"></el-button>
             </el-input>
          </el-col>
        </el-row>
       <el-row class="home" :gutter="20" style="padding-top:10px;">
         <el-col :span="span_left" class="dianji-show">
           <div style="padding-bottom: 20px;">
-            <div class="col-left-title">{{name}}</div>
+            <div class="col-left-title">{{name_2}}</div>
             <div style="display: flex;align-items: center;justify-content: flex-end;padding-top:6px;">
               <div class="dian-wo" @click="dian_wo">{{show_text}}</div>
             </div>
           </div>
           <div v-show="is_show">
             <!-- 详情 -->
-            <el-collapse v-model="activeName" v-for="(item,index) in getinfo" :key="index">
-                <el-collapse-item :name="index" class="minStyle">
-                    <template slot="title">
-                    {{item.name}}
-                    </template>
-                    <div class="el-collapse-item-text" v-if=" item.tag !='' && item.is_list == 1">
-                      <a class="item-text-a" @click="medicine_click(item.tag,items)" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items}}</a>
-                    </div>
-                    <div class="el-collapse-item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
-                </el-collapse-item>
-            </el-collapse>
+            <div>
+              <el-collapse v-model="activeName" v-for="(item,index) in getinfo" :key="index">
+                  <el-collapse-item :name="index" class="minStyle">
+                      <template slot="title">
+                      {{item.name}}
+                      </template>
+                      <div class="el-collapse-item-text" v-if=" item.tag !='' && item.is_list == 1">
+                        <a class="item-text-a" @click="medicine_click(item.tag,items)" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items}}</a>
+                      </div>
+                      <div class="el-collapse-item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
+                  </el-collapse-item>
+              </el-collapse>
+            </div>
+            <div v-if="getinfo.length <= 0">暂无数据</div>
           </div>
 
         </el-col>
@@ -187,6 +190,7 @@ import {getSickNess,getD3Search} from '@/api/data'
         id:'',
         name:'',
         name_1:'',
+        name_2:'',
         getinfo:{},
         tag:'',
         select_1:'请选择',
@@ -274,19 +278,23 @@ import {getSickNess,getD3Search} from '@/api/data'
           if(res.data.code == 0){
             let getinfo = res.data.data;
             that.name = getinfo.sickness_name.text;
+            that.name_2 = getinfo.sickness_name.text;
             let getinfo_arr = [];
+
             for(let key in getinfo){
               let is_list = 0;
-              if( getinfo[key].text.name){
+              if( getinfo[key].text.name ){
                 is_list = 1;
               }
-              if(getinfo[key].name != '名称'){
+              if((getinfo[key].name != '名称' && getinfo[key].text != '' && getinfo[key].text != "[]")){
+
                 getinfo_arr.push ({
                   is_list,
                   name: getinfo[key].name,
                   text: getinfo[key].text.name ? getinfo[key].text.name : getinfo[key].text,
-                  tag: getinfo[key].text.name ? getinfo[key].text.tag : ''
+                  tag: getinfo[key].text.name ? getinfo[key].text.tag : '',
                 })
+
               }
 
             }
