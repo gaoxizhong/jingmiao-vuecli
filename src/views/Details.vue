@@ -13,7 +13,7 @@
               :value="item.value"></el-option>
             </el-select>
               <!-- <el-button slot="append" type="success" icon="el-icon-search" @click="getD3Search"></el-button> -->
-              <el-button slot="append" type="success" icon="el-icon-search" @click="getD3name(name_1)"></el-button>
+              <el-button slot="append" type="success" icon="el-icon-search" @click="getD3name(name_1,tag)"></el-button>
             </el-input>
          </el-col>
        </el-row>
@@ -50,7 +50,7 @@
               :names="names"
               :labels="labels"
               :linkTypes="linkTypes"
-              @getData="getD3name"
+              @getData="medicine_click"
             />
           </div>
         </el-col>
@@ -233,6 +233,9 @@ import {getSickNess,getD3Search} from '@/api/data'
       medicine_click(tag,name){
         this.name_1 = name;
         this.tag = tag;
+        console.log(tag)
+        console.log(name)
+
         this.getD3name(this.name_1);
       },
       dian_wo(){
@@ -388,6 +391,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                 is_show: is_show,
                 id: segment.start.identity,
                 label: segment.start.labels[1],
+                tag: segment.start.tag,
                 properties: segment.start.properties,
                 is_show
               })
@@ -405,6 +409,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                   is_show: is_show,
                   id: segment.end.identity,
                   label: segment.end.labels[1],
+                  tag: segment.end.tag,
                   properties: segment.end.properties,
                   is_show
                 })

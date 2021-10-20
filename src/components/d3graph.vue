@@ -97,8 +97,9 @@ export default {
           action: (elm, d) => {
             console.log(d)
             let name = '';
-            name = d.properties.kgid?d.properties.kgid.text:d.properties.name.text
-            this.$emit('getData', name)
+            name = d.properties.kgid?d.properties.kgid.text:d.properties.name.text;
+            let tag = d.tag;
+            this.$emit('getData',tag,name)
           }
         },
         {
@@ -272,7 +273,7 @@ export default {
         var elm = this
         if(data.label == 'Att'){
           return
-        }
+        }else{
         if(data.is_show == '1'){
           _this.title = '显示节点'
         }else{
@@ -307,6 +308,8 @@ export default {
           .style('display', 'block')
 
         event.preventDefault()
+        }
+
       }
     },
     // 隐藏文字
@@ -485,7 +488,7 @@ export default {
         .style('fill', '#fff')
         .style('font-size', '12px')
         // .style('font-weight', 'bold')
-        .text(d => d.properties.name)
+        .text(d => d.properties.name.text?d.properties.name.text:d.properties.name)
 
 
       // 添加所有的点
@@ -516,7 +519,7 @@ export default {
           }
         })
         .attr("stroke", "none")
-        .attr("name", d => d.properties.name)
+        .attr("name", d => d.properties.name.text?d.properties.name.text:d.properties.name)
         .attr("id", d => d.id)
         .call(this.drag(simulation))
         .on("click", nodeClick)
@@ -622,7 +625,7 @@ export default {
         // )
 
       // 圆增加title
-      node.append("title").text(d => d.properties.name)
+      node.append("title").text(d => d.properties.name.text?d.properties.name.text:d.properties.name)
 
       // simulation中ticked数据初始化并生成图形
       simulation.on("tick", ticked)
@@ -709,7 +712,6 @@ export default {
        * @return {void}
        */
       function textBreaking(d3text, text) {
-        console.log(text)
         const len = text.length
         if (len <= 3) {
           d3text.append('tspan')
@@ -787,7 +789,7 @@ export default {
       // 选择#svg1 .nodes中所有的circle，再增加个class
       this.svgDom.select('.nodes').selectAll('circle').attr('class', d => {
         // 节点属性name是否等于name，返回fixed（激活选中样式）
-        if(d.properties.name == name) {
+        if(d.properties.name.text?d.properties.name.text:d.properties.name == name) {
           return 'fixed'
         }
         // 当前节点返回空，否则其他节点循环判断是否被隐藏起来(CSS设置隐藏)
@@ -810,7 +812,7 @@ export default {
       this.svgDom.select('.texts').selectAll('text')
         .attr('class', d => {
           // 节点属性name是否等于name，返回fixed（激活选中样式）
-          if(d.properties.name == name) {
+          if(d.properties.name.text?d.properties.name.text:d.properties.name == name) {
             return ''
           }
           // 当前节点返回空，否则其他节点循环判断是否被隐藏起来(CSS设置隐藏)

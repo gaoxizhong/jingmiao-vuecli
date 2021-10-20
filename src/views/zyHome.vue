@@ -23,8 +23,8 @@
             <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}</div>
             <!-- 中医库--疾病 -->
             <div class="tags-list-box" v-if=" tag == 'zysickness'">
-              <div :class="[{ active: item.apparatus.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'apparatus',item.apparatus.text)">{{item.apparatus.name}}</div>
               <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
+              <div :class="[{ active: item.apparatus.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'apparatus',item.apparatus.text)">{{item.apparatus.name}}</div>
               <div :class="[{ active: item.pulseCondition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pulseCondition',item.pulseCondition.text)">{{item.pulseCondition.name}}</div>
               <div :class="[{ active: item.source.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'source',item.source.text)">{{item.source.name}}</div>
               <div :class="[{ active: item.dietTherapy.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'dietTherapy',item.dietTherapy.text)">{{item.dietTherapy.name}}</div>
