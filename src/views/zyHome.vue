@@ -246,7 +246,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
 
               getListInfo[i].index = i;
               if(that.tag == "zysickness"){
-                  getListInfo[i].text = getListInfo[i].apparatus.text
+                  getListInfo[i].text = getListInfo[i].symptom.text
                 }else if(that.tag == "zy"){
                   getListInfo[i].text = getListInfo[i].toxicity.text
                 }else if(that.tag == "zcy"){
@@ -331,7 +331,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
               for(var i = 0;i<getListInfo.length;i++){
                 getListInfo[i].index = i;
                 if(that.tag == "zysickness"){
-                    getListInfo[i].text = getListInfo[i].apparatus.text
+                    getListInfo[i].text = getListInfo[i].symptom.text
                   }else if(that.tag == "zcy"){
                     getListInfo[i].text = getListInfo[i].classification.text
                   }
