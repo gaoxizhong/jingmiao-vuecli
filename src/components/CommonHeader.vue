@@ -1,20 +1,49 @@
 <template>
   <header>
     <div class="l-content">
-      <el-button plain icon="el-icon-menu" size="mini" @click="menu_btn()"></el-button>
-      <div class="l-content-title">
+      <img src="../assets/image/header-icon.png" alt=""  @click="menu_btn()" class="header-img"></img>
+      <!-- <div class="l-content-title">
         <h2>菁苗健康</h2>
         <p>中医数字化健康平台</p>
-      </div>
+      </div> -->
     </div>
     <div class="r-content" v-if="phone">
-      <span style="color: #fff;">{{ phone }}</span>
-      <span style="color: #fff;font-size: 14px;" @click="toLogin">退出</span>
+      <span class="r-phone">{{ phone }}</span>
+      <div class="r-toLogin" @click="toLogin">
+        <img src="../assets/image/tui-icon.png" alt=""></img> 退出</div>
     </div>
   </header>
 </template>
 
 <style scoped>
+.el-button{
+  width:30px;
+  height:20px;
+}
+.el-button>img{
+  width: 100%;
+  height: 100%;
+}
+  .r-phone{
+    color: #333333;
+  }
+  .r-toLogin{
+    width: 80px;
+    height: 30px;
+    background: #EFEFEF;
+    opacity: 1;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7B7B7B;
+    font-size: 15px;
+  }
+  .r-toLogin>img{
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+  }
   header{
     width:100%;
     height: 100%;
@@ -26,6 +55,7 @@
     flex: 1;
     display: flex;
     align-items: center;
+    position: relative;
   }
   .l-content-title{
     padding-left: 20px;

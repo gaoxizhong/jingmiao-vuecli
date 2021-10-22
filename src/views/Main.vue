@@ -92,7 +92,8 @@ export default {
 </script>
 <style lang="scss" scoped>
   .el-header{
-    background: #29bbff;
+    background: #fff;
+    border-bottom: 1px solid #ececec;
   }
   .el-container{
     background: #f7f7f7;
