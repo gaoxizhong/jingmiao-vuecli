@@ -83,6 +83,10 @@
    </div>
 </template>
 <style scoped>
+  .input-with-select{
+    border-radius: 33px 0px 0px 33px;
+    overflow: hidden;
+  }
   .content-box{
     padding: 30rpx 20prx;
     width: 100%;
