@@ -1,7 +1,9 @@
 <template>
    <div class="content-box">
      <div class="inside-content-box">
-       <a href="#" class="el-icon-back box2-span" @click="fanhui_btn()"></a>
+       <a href="#" class="box2-span" @click="fanhui_btn()">
+         <img src="../assets/image/fan-left.png" alt=""> 返回
+       </a>
         <el-row>
          <el-col :span="14" :offset="4">
           <el-input placeholder="请输入内容" v-model="name" class="input-with-select">
@@ -17,36 +19,35 @@
             </el-input>
          </el-col>
        </el-row>
-      <el-row class="home" :gutter="20" style="padding-top:10px;">
-        <el-col :span="span_left" class="dianji-show">
-          <div style="padding-bottom: 20px;">
+      <el-row class="home" :gutter="20">
+        <el-col :span="span_left" class="dianji-show" :style=" `height:${viewHeight - 160}px;`">
+          <div style="padding-bottom: 6px;">
             <div class="col-left-title">{{name_2}}</div>
             <div style="display: flex;align-items: center;justify-content: flex-end;padding-top:6px;">
-              <div class="dian-wo" @click="dian_wo">{{show_text}}</div>
+              <img src="../assets/image/zedie-left.png" class="dian-wo" @click="dian_left" />
             </div>
           </div>
           <div v-show="is_show">
             <!-- 详情 -->
-            <div>
-              <el-collapse v-model="activeName" v-for="(item,index) in getinfo" :key="index">
-                  <el-collapse-item :name="index" class="minStyle">
-                      <template slot="title">
-                      {{item.name}}
-                      </template>
-                      <div class="el-collapse-item-text" v-if=" item.tag !='' && item.is_list == 1">
-                        <a class="item-text-a" @click="medicine_click(item.tag,items)" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items}}</a>
-                      </div>
-                      <div class="el-collapse-item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
-                  </el-collapse-item>
-              </el-collapse>
+            <div class="activi-box" :style="`height:${viewHeight - 240}px;`">
+              <div class="activi-1">
+                <div v-for="(item,index) in getinfo" :key="index">
+                  <div class="item-name">{{item.name}}</div>
+                  <div class="item-text" v-if=" item.tag !='' && item.is_list == 1">
+                    <a class="item-text-a" @click="medicine_click(item.tag,items)" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items}}</a>
+                  </div>
+                  <div class="item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
+                </div>
+              </div>
+              <div v-if="getinfo.length <= 0">暂无数据</div>
             </div>
-            <div v-if="getinfo.length <= 0">暂无数据</div>
           </div>
 
         </el-col>
         <!-- 图谱 -->
         <el-col :span="span_right" class="col-right">
           <div class="gContainer">
+            <img src="../assets/image/zedie-right.png" class="dian-right" @click="dian_right" />
             <d3graph
               :tag = "tag"
               :data="data"
@@ -74,6 +75,7 @@
     height: 100%;
     box-sizing: border-box;
     flex:1;
+    overflow: hidden;
   }
   .inside-content-box{
     width: 100%;
@@ -93,7 +95,7 @@
   .home{
     box-sizing: border-box;
     margin: 0 !important;
-    padding-top: 30px !important;
+    padding-top: 20px !important;
     height: 100%;
   }
   .col-right{
@@ -107,15 +109,19 @@
   }
   .col-left-title{
     width: 100%;
-    font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
-    font-size: 15px;
-    color: #29bbff;
-    text-align: center;
+    text-align: left;
+    font-size: 20px;
+    font-family: Source Han Sans CN;
+    font-weight: 600;
+    line-height: 37px;
+    color: #191919;
+    opacity: 1;
+    padding-left: 10px;
   }
   .el-collapse-item {
     text-align: left !important;
@@ -134,9 +140,20 @@
   position: absolute;
   left: 20px;
   top: 24px;
-  font-size: 30px;
-  color:#29bbff;
+  width: 80px;
+  height: 30px;
+  background: #F0F2F5;
+  opacity: 1;
+  border-radius: 18px;
   z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.box2-span img{
+  width: 10px;
+  height: 12px;
+  margin-right: 4px;
 }
 .gContainer {
   position: relative;
@@ -147,12 +164,22 @@
   justify-content: center;
   overflow: hidden;
 }
+.gContainer>img.dian-right{
+  width: 26px;
+  height: 24px;
+  position: absolute;
+  top: 15px;
+  right:2px;
+  z-index: 100;
+}
   .el-select-box{
     width: auto;
     min-width: 120px;
   }
   .input-with-select{
     flex: 1;
+    border-radius: 20px !important;
+    overflow: hidden;
   }
   .dianji-show{
     position: relative;
@@ -161,15 +188,44 @@
     -ms-transition: all 1s;
     -moz-transition: all 1s;
     -webkit-transition: all 1s;
+    background:#F7F7F7;
+    padding-top: 10px;
+    padding-right: 0 !important;
   }
   .dian-wo{
-    display: inline-block;
-    border: 1px solid #409eff;
-    background: #409eff;
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 14px;
+    width: 26px;
+    height: 24px;
+    position: absolute;
+    top: 14px;
+    right:2px;
+
+  }
+  .activi-box{
+    overflow-X: hidden;
+    overflow-Y: scroll;
+  }
+  .activi-1{
+    height: auto;
+  }
+  .item-name{
+    font-size: 16px;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    line-height: 31px;
+    color: #5578F0;
+    opacity: 1;
+    text-align: left;
+    padding-left: 10px;
+  }
+  .item-text{
+    font-size: 15px;
+    font-family: Source Han Sans CN;
+    line-height: 20px;
+    color: #707070;
+    opacity: 0.8;
+    padding: 4px 10px 4px 20px;
+    box-sizing: border-box;
+    text-align: left;
   }
 </style>
 <script>
@@ -183,7 +239,6 @@ import {getSickNess,getD3Search} from '@/api/data'
     data() {
       return {
         is_show: true,
-        show_text:'收起',
         span_left:8,
         span_right: 16,
         activeName: [],
@@ -206,13 +261,17 @@ import {getSickNess,getD3Search} from '@/api/data'
         },
         names: [],
         labels: [],
-        linkTypes: []
+        linkTypes: [],
+        viewHeight:'',
       }
     },
     beforeCreate(){
 
     },
     created(){  //生命周期里接收参数
+        let getViewportSize = this.$getViewportSize();
+        this.viewHeight = getViewportSize.height;
+        this.viewWidth = getViewportSize.width;
         this.name_1 = this.$route.query.name;  //接受参数关键代码
         this.tag = this.$route.query.tag;
         this.type = this.$route.query.type;
@@ -242,18 +301,39 @@ import {getSickNess,getD3Search} from '@/api/data'
 
         this.getD3name(this.name_1);
       },
-      dian_wo(){
+      dian_left(){
         let span_left = this.span_left;
         if(span_left == 8){
           this.span_left = 2;
           this.span_right = 22;
-          this.show_text = '展开';
           this.is_show = false;
         }
         if(span_left == 2){
           this.span_left = 8;
           this.span_right = 16;
-          this.show_text = '收起';
+          this.is_show = true;
+        }
+        if(span_left == 22){
+          this.span_left = 8;
+          this.span_right = 16;
+          this.is_show = true;
+        }
+      },
+      dian_right(){
+        let span_right = this.span_right;
+        if(span_right == 16){
+          this.span_left = 22;
+          this.span_right = 2;
+          this.is_show = true;
+        }
+        if(span_right == 22){
+          this.span_left = 22;
+          this.span_right = 2;
+          this.is_show = true;
+        }
+        if(span_right == 2){
+          this.span_left = 8;
+          this.span_right = 16;
           this.is_show = true;
         }
       },
@@ -286,7 +366,7 @@ import {getSickNess,getD3Search} from '@/api/data'
               if( getinfo[key].text.name ){
                 is_list = 1;
               }
-              if((getinfo[key].name != '名称' && getinfo[key].text != '' && getinfo[key].text != "[]")){
+              if((getinfo[key].name != '名称' && getinfo[key].text != '' && getinfo[key].text != "[]" && getinfo[key].name != "kgid")){
 
                 getinfo_arr.push ({
                   is_list,
@@ -404,7 +484,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                 is_show
               })
             }
-            if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness' || that.tag == 'zy'){
+            if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness'){
               if (nodeSet.indexOf(segment.end.identity) == -1) {
                 nodeSet.push(segment.end.identity)
               let is_show = '';

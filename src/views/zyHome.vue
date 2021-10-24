@@ -20,9 +20,9 @@
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
           <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name,item.kgid  )">
-            <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}</div>
+            <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}<div class="gengduo">更多>></div></div>
             <!-- 中医库--疾病 -->
-            <div class="tags-list-box" v-if=" tag == 'zysickness'">
+            <div class="tags-list-box" v-if=" tag == 'zysickness' || tag == 'icd10'">
               <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
               <div :class="[{ active: item.apparatus.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'apparatus',item.apparatus.text)">{{item.apparatus.name}}</div>
               <div :class="[{ active: item.pulseCondition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pulseCondition',item.pulseCondition.text)">{{item.pulseCondition.name}}</div>
@@ -83,9 +83,14 @@
    </div>
 </template>
 <style scoped>
-  .input-with-select{
-    border-radius: 33px 0px 0px 33px;
-    overflow: hidden;
+  .gengduo{
+    font-size: 14px;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    line-height: 27px;
+    color: #5578F0;
+    opacity: 1;
+    padding-left: 10px;
   }
   .content-box{
     padding: 30rpx 20prx;
@@ -104,6 +109,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 20px !important;
+    overflow: hidden;
   }
   .el-select-box{
     width: auto;
@@ -118,10 +125,12 @@
   .bg-purple-dark:nth-child(odd) {
     background: #f4f4f4;
   }
-  .items-title{
-    font-size: 16px;
+   .items-title{
+    font-size: 20px;
     text-align: left;
-    color: #29bbff;
+    font-weight: 500;
+    color: #191919;
+    display: flex;
   }
   .tags-list-box{
     width: 100%;
@@ -131,21 +140,14 @@
   }
   .tags-list-items{
     font-size: 14px;
-    padding: 0 8px;
     position: relative;
-  }
-  .tags-list-items::after{
-    content: '';
-    width: 1px;
-    height: 96%;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    background: #dbdbdb;
+    color: #5578F0;
+    border-bottom: 1px solid #5578F0;
+    margin:0 6px;
   }
   .tags-list-items.active{
-    color: #29bbff;
+    color: #333333;
+    border: none;
   }
   .tags-list-info{
     overflow: hidden;
@@ -184,7 +186,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         hove_index: 0,
         current_page:1,
         total: 0,
-        pageSize: 20
+        pageSize: 20,
       }
     },
     active(){
@@ -249,7 +251,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
             for(var i = 0;i<getListInfo.length;i++){
 
               getListInfo[i].index = i;
-              if(that.tag == "zysickness"){
+              if(that.tag == "zysickness" || that.tag == "icd10"){
                   getListInfo[i].text = getListInfo[i].symptom.text
                 }else if(that.tag == "zy"){
                   getListInfo[i].text = getListInfo[i].toxicity.text
@@ -291,7 +293,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         let name = '';
         let kgid = _kgid;
         let tag = that.tag;
-        if(tag == 'zysickness' || tag == 'zy'){
+        if(tag == 'zysickness' || tag == 'zy' || tag == 'icd10'){
           name = kgid.text
         }else{
           name = _name
@@ -321,7 +323,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
           background: 'rgba(0, 0, 0, 0.1)',
           target:document.querySelector('.content-box'),
         });
-        if(that.tag == 'zysickness' || that.tag == 'zcy'){
+        if(that.tag == 'zysickness' || that.tag == 'zcy' || that.tag == 'icd10'){
          if(that.input3){
            pearms.department = that.input3;
           }else{
@@ -334,7 +336,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
               that.total = res.data.data.count;
               for(var i = 0;i<getListInfo.length;i++){
                 getListInfo[i].index = i;
-                if(that.tag == "zysickness"){
+                if(that.tag == "zysickness" || that.tag == "icd10" ){
                     getListInfo[i].text = getListInfo[i].symptom.text
                   }else if(that.tag == "zcy"){
                     getListInfo[i].text = getListInfo[i].classification.text
@@ -399,7 +401,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         let getListInfo = this.getListInfo;
         getListInfo[index].text = text;
         // 疾病
-        if(this.tag == "zysickness"){
+        if(this.tag == "zysickness" || this.tag == "icd10"){
           if(type == 'apparatus'){
             getListInfo[index].apparatus.active = true;
             getListInfo[index].symptom.active = false;

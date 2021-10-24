@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="l-content">
-      <img src="../assets/image/header-icon.png" alt=""  @click="menu_btn()" class="header-img"></img>
+      <img src="../assets/image/header-icon.png" alt=""  @click="menu_btn()" class="header-img" />
       <!-- <div class="l-content-title">
         <h2>菁苗健康</h2>
         <p>中医数字化健康平台</p>
@@ -10,7 +10,7 @@
     <div class="r-content" v-if="phone">
       <span class="r-phone">{{ phone }}</span>
       <div class="r-toLogin" @click="toLogin">
-        <img src="../assets/image/tui-icon.png" alt=""></img> 退出</div>
+        <img src="../assets/image/tui-icon.png" alt="" /> 退出</div>
     </div>
   </header>
 </template>

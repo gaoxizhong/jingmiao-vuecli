@@ -21,7 +21,7 @@
       <el-row style="padding-top:20px;">
         <el-col :span="18" :offset="3">
           <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.sickness_name)">
-            <div class="items-title">{{item.sickness_name}}</div>
+            <div class="items-title">{{item.sickness_name}}<div class="gengduo">更多>></div></div>
             <div class="tags-list-box" v-if=" tag == 'sickness' || tag == 'disease' ">
               <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
               <div :class="[{ active: item.pathogenesis.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pathogenesis',item.pathogenesis.text)">{{item.pathogenesis.name}}</div>
@@ -65,10 +65,15 @@
    </div>
 </template>
 <style scoped>
-.input-with-select{
-  border-radius: 33px 0px 0px 33px;
-  overflow: hidden;
-}
+  .gengduo{
+    font-size: 14px;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    line-height: 27px;
+    color: #5578F0;
+    opacity: 1;
+    padding-left: 10px;
+  }
   .content-box{
     padding: 30rpx 20prx;
     width: 100%;
@@ -86,6 +91,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 20px !important;
+    overflow: hidden;
   }
   .el-select-box{
     width: auto;
@@ -101,9 +108,11 @@
     background: #f4f4f4;
   }
   .items-title{
-    font-size: 16px;
+    font-size: 20px;
     text-align: left;
-    color: #29bbff;
+    font-weight: 500;
+    color: #191919;
+    display: flex;
   }
   .tags-list-box{
     width: 100%;
@@ -113,21 +122,14 @@
   }
   .tags-list-items{
     font-size: 14px;
-    padding: 0 8px;
     position: relative;
-  }
-  .tags-list-items::after{
-    content: '';
-    width: 1px;
-    height: 96%;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    background: #dbdbdb;
+    color: #5578F0;
+    border-bottom: 1px solid #5578F0;
+    margin:0 6px;
   }
   .tags-list-items.active{
-    color: #29bbff;
+    color: #333333;
+    border: none;
   }
   .tags-list-info{
     overflow: hidden;

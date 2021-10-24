@@ -2,9 +2,10 @@
   <div style="width:100%;height:100%;">
     <!-- 绘制模式选择 -->
     <div id="mode">
-      <h3>关系文字显示</h3>
+      <div style="color:#444;font-size:15px;padding-right:10px;">关系文字显示</div>
       <div class="gState" style="margin: 6px 0;">
-        <span
+        <el-switch v-model="value" active-value="1" inactive-value="0" @change="changeTextState($event)"></el-switch>
+        <!-- <span
           @click="changeTextState(0)"
           :class="{ active: isShowText }"
           style="border-top-right-radius:0;border-bottom-right-radius:0;"
@@ -13,13 +14,13 @@
           @click="changeTextState(2)"
           :class="{ active: textState === 2 }"
           style="border-top-left-radius:0;border-bottom-left-radius:0;position:relative;"
-        >隐藏</span>
+        >隐藏</span> -->
       </div>
     </div>
     <svg
       id="svg"
       width="100%"
-      :height="viewHeight - 140"
+      :height="viewHeight - 180"
     ></svg>
     <!-- 绘制图例 -->
 
@@ -52,7 +53,7 @@ export default {
         return {
           tag:'',
           nodes: [],
-          links: []
+          links: [],
         }
       }
     },
@@ -68,6 +69,7 @@ export default {
   },
   data () {
     return {
+      value: '1',
       title:'显示节点',
       viewHeight:'',
       viewWidth:'',
@@ -314,18 +316,17 @@ export default {
     },
     // 隐藏文字
     changeTextState (state) {
+      console.log(state)
       // state发生变化时才进行更新、处理
-      if (this.textState !== state) {
         this.textState = state
         const text = d3.selectAll('.linkTexts text')
         console.log(text)
         // 根据新的节点状态，在节点上展示不同的文本信息
-        if (this.textState === 2) {
+        if (this.textState == '0') {
           text.style('display', 'none')
         } else {
           text.style('display', 'block')
         }
-      }
     },
     // 隐藏该类型的所有节点（图例）
     hideNodeOfType (event) {
@@ -569,7 +570,7 @@ export default {
       // 显示所有的文本
       // 设置大小、填充颜色、名字、text()设置文本
       // 使用 attr("text-anchor", "middle")设置文本居中
-      var text = svg.append("g")
+        var text = svg.append("g")
         .attr("class", "texts")
         .selectAll("text")
         .data(this.nodes)
@@ -955,14 +956,12 @@ $opacity: 0.15;  /* 显示的不透明度 */
 $activeColor: #1E90FF;  /* 激活的颜色 */
 svg {
   margin: 4px 0px;
-  // border: 1px #000 solid;
 }
 /*设置节点及边的样式*/
 .links line {
   stroke: #e0cac1b2; // #bbb
   stroke-opacity: 1;
   &.inactive {
-    /* display: none !important; */
     opacity: $opacity;
   }
   &.active {
@@ -977,14 +976,12 @@ svg {
   // stroke: #000;
   // stroke-width: 1.5px;
   &.fixed {
-    // fill: rgb(102, 81, 81);
     stroke: #FFC0CB;  // #888;
     stroke-width: 14px;
     stroke-opacity: $opacity + 0.3;
     border: 10px #000 solid;
   }
   &.inactive {
-    /* display: none !important; */
     opacity: $opacity;
   }
   &.active {
@@ -1009,7 +1006,6 @@ svg {
     cursor: pointer;
   }
   &.inactive {
-    /* display: none !important; */
     opacity: $opacity;
   }
 }
@@ -1023,20 +1019,17 @@ svg {
     background: red;
   }
   &.inactive {
-    /* display: none !important; */
     opacity: $opacity;
   }
 }
-// #positiveMarker path {
-//   fill: #fff;
-// }
+
 </style>
 <style lang="scss" scoped>
-@media only screen and (max-width: 1125px){
-  #info, #mode {
-    display: none !important;
-  }
-}
+// @media only screen and (max-width: 1125px){
+//   #info, #mode {
+//     display: none !important;
+//   }
+// }
 .font-sky {
   font-size: 18px;
   color: #034c6a !important;
@@ -1067,11 +1060,10 @@ svg {
 #mode {
   position: absolute;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  top: 14PX;
-  left: 20px;
+  align-items: center;
+  bottom: 10PX;
+  left: 10px;
+  width:160px;
   .gState span {
     display: inline-block;
     border: 1px solid #fff;
