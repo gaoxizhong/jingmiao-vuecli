@@ -19,7 +19,7 @@
             </el-input>
          </el-col>
        </el-row>
-      <el-row class="home" :gutter="20">
+      <el-row class="home" :gutter="24">
         <el-col :span="span_left" class="dianji-show" :style=" `height:${viewHeight - 160}px;`">
           <div style="padding-bottom: 6px;">
             <div class="col-left-title">{{name_2}}</div>

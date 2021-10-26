@@ -40,7 +40,7 @@ export const getzyHomeRightList = (params) =>{
     data: params
   })
 }
-//  详情页右侧列表
+//  详情页右侧
 export const getSickNess = (params) =>{
   return axios.request({
     url:'/zsk/SickNess/detail',
@@ -60,6 +60,22 @@ export const getSearch = (params) =>{
 export const getD3Search = (params) =>{
   return axios.request({
     url:'/zsk/detailGraph',
+    method: 'post',
+    data: params
+  })
+}
+// 文献指南右侧列表及搜索
+export const getLitgSearch = (params) =>{
+  return axios.request({
+    url:'/zsk/doc/index',
+    method: 'post',
+    data: params
+  })
+}
+// 文献指南详情
+export const getDetail = (params) =>{
+  return axios.request({
+    url:'/zsk/doc/detail',
     method: 'post',
     data: params
   })

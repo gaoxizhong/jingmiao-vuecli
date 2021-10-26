@@ -265,10 +265,10 @@ export default {
                console.log(0)
                 let name = e.$attrs.name;
                 let tag = e.$attrs.tag;
-                this.$store.dispatch("sickNess",name);
+                // this.$store.dispatch("sickNess",name);
                 this.$emit('sickNess')
                 this.$router.replace({  //核心语句
-                    path:'/Home',   //跳转的路径
+                    path:'/litgHome',   //跳转的路径
                     query:{           //路由传参时push和query搭配使用 ，作用时传递参数
                       name,
                       tag,

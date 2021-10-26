@@ -42,7 +42,16 @@ const routes = [
           scollTopPosition: 0
         }
       },
+      { path: '/litgHome',
+      name: 'litgHome',
+      component: () => import('@/views/litgHome'),
+      meta: {
+        keepAlive: true,
+        scollTopPosition: 0
+      }
+    },
       { path: '/Details', name: 'Details', component: () => import('@/views/Details') },
+      { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
 
     ]
   }

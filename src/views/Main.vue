@@ -96,7 +96,7 @@ export default {
     border-bottom: 1px solid #ececec;
   }
   .el-container{
-    background: #f7f7f7;
+    // background: #f7f7f7;
     height: 100%;
   }
   .el-main{
