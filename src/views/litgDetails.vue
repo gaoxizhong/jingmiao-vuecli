@@ -8,11 +8,100 @@
     <div class="info-box" :style="`height:${viewHeight - 130}px;`">
       <div class="info-box1">
         <div class="info-box2">
-          <div>{{infoDetail.title}}</div>
+          <div class="infoDetail-title">{{infoDetail.title}}</div>
           <div class="tap-top-span">
-            <span v-for="(items,index) in infoDetail.author">{{items.name?items.name:''}}</span>
+            <span v-for="(items,index) in infoDetail.author" :key="index">{{items.name?items.name:''}}</span>
           </div>
-          
+          <div class="info-box3">
+            <div>
+              <div class="info-box3-title">摘要:</div>
+              <div class="info-box3-text">{{ infoDetail.abstract }}</div>
+            </div>
+            <div style="padding:2px 0;">
+              <div class="info-box3-title">关键词:</div>
+              <div class="info-box3-text icon-info-keys">
+                <span v-for="(keys,index) in infoDetail.keyword" :key="index">{{keys}}</span>
+              </div>
+            </div>
+            <div>
+              <div class="info-box3-title">期刊:</div>
+              <div class="info-box3-text">{{ infoDetail.publishMagazine }}</div>
+            </div>
+          </div>
+          <!-- 参考文献 -->
+          <div class="daohang-box">
+            <div class="daohang-tags">
+              <a href="javascript:0;" :class="tagspane == 1 ?'active':''" @click="clickSpan(1)">参考文献</a>
+              <a href="javascript:0;" :class="tagspane == 2 ?'active':''" @click="clickSpan(2)">引证文献</a>
+            </div>
+            <div class="tagspane-box" v-if="tagspane == 1">
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+              <div>我是参考文献</div>
+
+            </div>
+            <div class="tagspane-box" v-if="tagspane == 2">
+              <div>我是引证文献</div>
+            </div>
+          </div>
+
+
+
+
+
+
+
         </div>
       </div>
     </div>
@@ -20,7 +109,6 @@
 </template>
 <style scoped>
 .content-box {
-  padding: 0px 10px;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -60,6 +148,7 @@
 }
 .info-box2 {
   height: auto;
+  padding-right: 12px;
 }
 .tap-top-span{
     margin: 10px 0;
@@ -71,6 +160,75 @@
     margin: 0 12px;
     color: #5578F0;
 }
+.infoDetail-title{
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 46px;
+  color: #333333;
+  opacity: 1;
+}
+.info-box3{
+  width: 100%;
+  font-size: 16px;
+}
+.info-box3>div{
+  display: flex;
+  align-items: flex-start;
+}
+.info-box3>div .info-box3-title{
+  width:auto;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 30px;
+  color: #464646;
+  text-align: left;
+}
+.info-box3>div .info-box3-text{
+  padding-left: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 30px;
+  color: #707070;
+  opacity: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  flex: 1;
+  text-align: left;
+}
+.info-box3>div .info-box3-text.icon-info-keys{
+  padding-left: 10px;
+  margin: 0 10px;
+  color: #5578F0;
+}
+.daohang-box{
+  margin-top: 60px;
+}
+.daohang-tags{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid #839BF0;
+}
+.daohang-tags>a{
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 30px;
+  color: #707070;
+  opacity: 1;
+  padding: 4px 12px;
+}
+.daohang-tags>a.active{
+  background: #839BF0;
+  color: #fff;
+}
+.tagspane-box{
+  text-align: left;
+  padding: 10px 0;
+  font-size: 15px;
+}
 </style>
 <script>
 import { getDetail } from "@/api/data";
@@ -80,7 +238,8 @@ export default {
       viewHeight: "",
       infoDetail: {},
       title: "",
-      tag: ""
+      tag: "",
+      tagspane: 1
     };
   },
   created() {
@@ -93,13 +252,20 @@ export default {
     this.getDetail(this.title);
   },
   methods: {
+    // 参考印证切换
+    clickSpan(tab){
+      this.tagspane = tab;
+    },
+    // handleClick(tab, event) {
+    //     console.log(tab, event);
+    // },
     // 返回上一步
     fanhui_btn() {
       this.$router.go(-1);
     },
 
     // 获取详情
-    async getDetail(name) {
+    getDetail(name) {
       let that = this;
       let title = name;
       let pearms = {
@@ -111,10 +277,10 @@ export default {
         text: "Loading",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.1)",
-        target: document.querySelector(".content-box")
+        target: document.querySelector("body")
       });
       that.infoDetail = {};
-      await getDetail(pearms)
+      getDetail(pearms)
         .then(res => {
           loading.close();
           if (res.data.code == 0) {

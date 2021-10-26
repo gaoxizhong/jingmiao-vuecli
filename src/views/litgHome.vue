@@ -21,12 +21,12 @@
                     <div class="tag-top-box">
                         <div style="padding-right:12px;">[期刊论文]</div>
                         <div class="tap-top-span">
-                            <span v-for="(items,index) in item.author" @click="goToauthor(items.kgid)">{{items.name?items.name:''}}</span>
+                            <span v-for="(items,index) in item.author" @click="goToauthor(items.kgid)" :key="index">{{items.name?items.name:''}}</span>
                         </div>
                     </div>
                     <div class="item-center-box">{{item.abstract}}</div>
                     <div class="key-box">
-                        <span :class="{active: index == 0 }" v-for="(keys,index) in item.keyword">{{keys}}</span>
+                        <span :class="{active: index == 0 }" v-for="(keys,idx) in item.keyword" :key="idx">{{keys}}</span>
                     </div>
                     <div class="zaixian"><i class="el-icon-reading"></i>在线阅读</div>
                 </a>
@@ -70,7 +70,7 @@ export default {
     },
     created(){
       console.log('created') //接受参数关键代码
-        // this.select_name = this.$route.query.name; 
+        // this.select_name = this.$route.query.name;
         // this.tag = this.$route.query.tag;
         this.tag = 'document';
         this.getHomeRightList();

@@ -5,8 +5,10 @@ import router from './router'
 import store from './store'
 import http from './api/axios'
 
-import { Switch,Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
+import { TabPane,Tabs,Switch,Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
 Vue.config.productionTip = false
+Vue.use(TabPane);
+Vue.use(Tabs);
 Vue.use(Button);
 Vue.use(Select);
 Vue.use(Container);

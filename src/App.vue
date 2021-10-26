@@ -8,7 +8,7 @@
 *{
   padding: 0;
   margin: 0;
-  font-family:serif;
+  font-family:Source Han Serif CN;
   box-sizing: border-box;
 }
 a{
