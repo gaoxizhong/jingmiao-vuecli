@@ -10,8 +10,8 @@
                 </div>
             </el-col>
         </el-row>
-        <el-row style="padding-top:20px;padding-right:20px;">
-            <el-col :span="18">
+        <div class="content-box1">
+            <div class="content-box1-left">
                 <div class="title-info-box">
                     <div>1</div>
                     <div style="color:#999;">找到<span style="color:#5578F0;">{{count}}</span>条结果</div>
@@ -31,11 +31,16 @@
                     <div class="zaixian"><i class="el-icon-reading"></i>在线阅读</div>
                 </a>
                 <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
-            </el-col>
-            <el-col :span="6">
-                2
-            </el-col>
-        </el-row>
+            </div>
+            <div  class="content-box1-right">
+                <div>
+                  <div class="bubble-box" style="background:#fff5f5;">
+                    <d3Bubble :data1="data1" :yData="yData" @getData="medicine_click" />
+                  </div>
+                  <div style="background:#9ffa9b;">2</div>
+                </div>
+            </div>
+        </div>
               <!-- 分页展示 -->
         <div class="pagination-box">
             <el-pagination
@@ -52,18 +57,25 @@
 </template>
 
 <script>
+import d3Bubble from "../components/d3Bubble";
 import {getLitgSearch} from '@/api/data'
 export default {
+  name: 'litgHome',
+  components: {
+    d3Bubble,
+  },
     data(){
-        return{
-            search:'',
-            // select_name:'',
-            getListInfo:[],
-            current_page:1,
-            pageSize: 10,
-            active: true,
-            count:0
-        }
+      return{
+        search:'',
+        // select_name:'',
+        getListInfo:[],
+        current_page:1,
+        pageSize: 10,
+        active: true,
+        count:0,
+        data1: {},
+        yData: [],
+      }
     },
     active(){
       console.log('active')
@@ -76,6 +88,9 @@ export default {
         this.getHomeRightList();
     },
     methods:{
+      medicine_click(){
+        console.log(1)
+      },
         // 点击作者
         goToauthor(_kgid){
             let that = this;
@@ -83,7 +98,7 @@ export default {
             let tag = that.tag;
             this.$router.push({  //核心语句
                 path:'/authorDetails',   //跳转的路径
-                query:{           
+                query:{
                     kgid,
                     tag,
                 }
@@ -232,6 +247,19 @@ export default {
         height: 100%;
         box-sizing: border-box;
     }
+    .content-box1{
+      display: flex;
+      align-items: flex-start;
+      padding-top:20px;
+      padding-right:20px;
+    }
+    .content-box1-left{
+      flex: 1;
+    }
+    .content-box1-right{
+      width: 340px;
+      height: auto;
+    }
     .el-col {
         border-radius: 4px;
     }
@@ -255,6 +283,7 @@ export default {
         align-items: center;
         justify-content: space-between;
         margin-bottom: 10px;
+        padding: 0 10px;
     }
     .item-title{
         width: auto;
@@ -338,4 +367,8 @@ export default {
     .el-icon-reading{
         margin-right: 6px;
     }
+    .bubble-box{
+      width: 100%;
+    }
+
 </style>
