@@ -8,45 +8,30 @@
     <div class="info-box" :style="`height:${viewHeight - 130}px;`">
       <div class="info-box1">
         <div class="info-box2">
-          <div class="infoDetail-title">{{infoDetail.title}}</div>
+          <div class="infoDetail-title">{{infoDetail.name}}</div>
           <div class="tap-top-span">
-            <a href="javascript:0;" v-for="(items,index) in infoDetail.author" :key="index" @click.prevent="goToauthor(items.kgid)">{{items.name?items.name:''}}</a>
+            <span>{{infoDetail.organization?infoDetail.organization:''}}</span>
           </div>
           <div class="info-box3">
-            <div>
-              <div class="info-box3-title">摘要:</div>
-              <div class="info-box3-text">{{ infoDetail.abstract }}</div>
-            </div>
-            <div style="padding:2px 0;">
-              <div class="info-box3-title">关键词:</div>
-              <div class="info-box3-text icon-info-keys">
-                <span v-for="(keys,index) in infoDetail.keyword" :key="index">{{keys}}</span>
-              </div>
-            </div>
-            <div>
-              <div class="info-box3-title">期刊:</div>
-              <div class="info-box3-text">{{ infoDetail.publishMagazine }}</div>
+            <div class="info-box3-title">作者关注领域</div>
+            <div class="info-box3-text icon-info-keys">
+                <span v-for="(keys,index) in infoDetail.focusField" :key="index">{{keys}}</span>
             </div>
           </div>
           <!-- 参考文献 -->
           <div class="daohang-box">
             <div class="daohang-tags">
-              <a href="javascript:0;" :class="tagspane == 1 ?'active':''" @click="clickSpan(1)">参考文献</a>
-              <a href="javascript:0;" :class="tagspane == 2 ?'active':''" @click="clickSpan(2)">引证文献</a>
+              <a href="javascript:0;" class="active" @click="clickSpan(1)">参考文献</a>
             </div>
-            <div class="tagspane-box" v-if="tagspane == 1">
-              <div v-if="infoDetail.similarDocument && infoDetail.similarDocument.length != 0">
-                <div v-for="{auts,index} in infoDetail.similarDocument.titles" :key="index">{{auts}}</div>
-              </div>
-              <div v-else>暂无信息...</div>
-            </div>
-            <div class="tagspane-box" v-if="tagspane == 2">
-              <div v-if="infoDetail.citationDocument && infoDetail.citationDocument.length != 0">
-                <div v-for="{auts2,idx} in infoDetail.citationDocument.titles" :key="idx">{{auts2}}</div>
-              </div>
-              <div v-else>暂无信息...</div>
+            <div class="tagspane-box">
+              <div v-for="{auts,index} in infoDetail.authorDocument" :key="index">{{auts}}</div>
             </div>
           </div>
+
+
+
+
+
 
 
         </div>
@@ -67,6 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-bottom: 80px;
 }
 .box2-span {
   width: 80px;
@@ -99,59 +85,52 @@
 }
 .tap-top-span{
     margin: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: left;
 }
-.tap-top-span>a{
-    margin: 0 12px;
+.tap-top-span>span{
     color: #5578F0;
 }
-.tap-top-span>a:hover{
-    color: #D54B4B;
-}
 .infoDetail-title{
-  font-size: 30px;
+  font-size: 44px;
   font-weight: bold;
   line-height: 46px;
   color: #333333;
   opacity: 1;
+  text-align: left;
 }
 .info-box3{
   width: 100%;
   font-size: 16px;
+  margin-top: 40px;
 }
-.info-box3>div{
-  display: flex;
-  align-items: flex-start;
-}
-.info-box3>div .info-box3-title{
+
+.info-box3>div.info-box3-title{
   width:auto;
   font-size: 16px;
   font-weight: bold;
-  line-height: 30px;
+  line-height: 36px;
   color: #464646;
   text-align: left;
 }
-.info-box3>div .info-box3-text{
-  padding-left: 20px;
+.info-box3>div.info-box3-text{
   font-size: 16px;
   font-weight: 500;
-  line-height: 30px;
   color: #707070;
   opacity: 1;
-  overflow: hidden;
+  /* overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 2; */
   flex: 1;
   text-align: left;
 }
-.info-box3>div .info-box3-text.icon-info-keys{
-  padding-left: 10px;
-  margin: 0 10px;
-  color: #5578F0;
+.info-box3>div.icon-info-keys{
+  padding-right: 10px;
+  color: #50699D;
+}
+.info-box3>div.icon-info-keys span{
+    margin: 0 8px;
 }
 .daohang-box{
   margin-top: 60px;
@@ -181,15 +160,14 @@
 }
 </style>
 <script>
-import { getDocDetail } from "@/api/data";
+import { getAuthorDetail } from "@/api/data";
 export default {
   data() {
     return {
       viewHeight: "",
       infoDetail: {},
-      title: "",
       tag: "",
-      tagspane: 1
+      kgid:""
     };
   },
   created() {
@@ -197,40 +175,22 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
-    this.title = this.$route.query.name; //接受参数关键代码
+    this.kgid = this.$route.query.kgid; //接受参数关键代码
     this.tag = this.$route.query.tag;
-    this.getDetail(this.title);
+    this.getDetail(this.kgid);
   },
   methods: {
-      // 点击作者
-      goToauthor(_kgid){
-          let kgid = _kgid;
-          let tag = tag;
-          this.$router.push({  //核心语句
-              path:'/authorDetails',   //跳转的路径
-              query:{           
-                  kgid,
-                  tag,
-              }
-          })
-      },
-    // 参考印证切换
-    clickSpan(tab){
-      this.tagspane = tab;
-    },
-
     // 返回上一步
     fanhui_btn() {
       this.$router.go(-1);
     },
 
     // 获取详情
-    getDetail(name) {
+    getDetail(_kgid) {
       let that = this;
-      let title = name;
+      let kgid = _kgid;
       let pearms = {
-        title,
-        tag: that.tag
+        kgid,
       };
       const loading = this.$loading({
         lock: true,
@@ -240,7 +200,7 @@ export default {
         target: document.querySelector("body")
       });
       that.infoDetail = {};
-      getDocDetail(pearms)
+      getAuthorDetail(pearms)
         .then(res => {
           loading.close();
           if (res.data.code == 0) {

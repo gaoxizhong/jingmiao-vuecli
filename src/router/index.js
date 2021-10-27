@@ -52,7 +52,7 @@ const routes = [
     },
       { path: '/Details', name: 'Details', component: () => import('@/views/Details') },
       { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
-
+      { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails') },
     ]
   }
 ]

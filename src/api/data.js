@@ -73,9 +73,17 @@ export const getLitgSearch = (params) =>{
   })
 }
 // 文献指南详情
-export const getDetail = (params) =>{
+export const getDocDetail = (params) =>{
   return axios.request({
     url:'/zsk/doc/detail',
+    method: 'post',
+    data: params
+  })
+}
+// 作者详情
+export const getAuthorDetail = (params) =>{
+  return axios.request({
+    url:'/zsk/author/detail',
     method: 'post',
     data: params
   })

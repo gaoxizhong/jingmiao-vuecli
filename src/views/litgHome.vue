@@ -21,7 +21,7 @@
                     <div class="tag-top-box">
                         <div style="padding-right:12px;">[期刊论文]</div>
                         <div class="tap-top-span">
-                            <span v-for="(items,index) in item.author" @click="goToauthor(items.kgid)" :key="index">{{items.name?items.name:''}}</span>
+                            <a href="javascript:0;" v-for="(items,index) in item.author" @click.stop="goToauthor(items.kgid)" :key="index">{{items.name?items.name:''}}</a>
                         </div>
                     </div>
                     <div class="item-center-box">{{item.abstract}}</div>
@@ -76,6 +76,20 @@ export default {
         this.getHomeRightList();
     },
     methods:{
+        // 点击作者
+        goToauthor(_kgid){
+            let that = this;
+            let kgid = _kgid;
+            let tag = that.tag;
+            this.$router.push({  //核心语句
+                path:'/authorDetails',   //跳转的路径
+                query:{           
+                    kgid,
+                    tag,
+                }
+            })
+            return
+        },
       // 点击分页功能
       handleCurrentChange(val) {
         let that = this;
@@ -270,11 +284,13 @@ export default {
         display: flex;
         align-items: center;
     }
-    .tap-top-span>span{
+    .tap-top-span>a{
         margin: 0 7px;
         color: #5578F0;
     }
-
+    .tap-top-span>a:hover{
+        color: #D54B4B;
+    }
     .item-center-box{
         font-size: 14px;
         font-family: Source Han Sans CN;
