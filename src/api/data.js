@@ -96,3 +96,11 @@ export const getDochots = (params) =>{
     data: params
   })
 }
+// 获取文献图谱
+export const getd3Atlas = (params) =>{
+  return axios.request({
+    url:'/zsk/author/graph',
+    method: 'post',
+    data: params
+  })
+}

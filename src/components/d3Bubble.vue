@@ -23,18 +23,9 @@ export default {
       initWidth: 340,
       initHeight: 440,
       svgDom: null, // svg的DOM元素 => d3.select('#svg1')
-      yData: [2019,2020,2021,2022],
-      links: [],
-      data1:[],
-      dataset:[
-        { x: 69, y: 45, weight: 5 },{ x: 30, y: 37, weight: 10 },
-        { x: 43, y: 10, weight: 23 },{ x: 54, y: 48, weight: 41 },
-        { x: 18, y: 18, weight: 41 },{ x: 88, y: 21, weight: 32 },
-        { x: 45, y: 48, weight: 12 },{ x: 14, y: 32, weight: 9 },
-        { x: 78, y: 18, weight: 16 },{ x: 13, y: 45, weight: 32 }
-    ]
-
-
+      yData: [],
+      nodes:[],
+      links: []
     }
   },
   computed: {
@@ -49,7 +40,7 @@ export default {
   },
   watch: {
     // 当请求到新的数据时，重新渲染
-    data1 (newData, oldData) {
+    nodes (newData, oldData) {
       console.log(newData, oldData)
       // 移除svg和元素注册事件，防止内存泄漏
       this.svgDom.on('.', null)
@@ -63,10 +54,10 @@ export default {
     this.viewWidth = getViewportSize.width;
     // 获取文献气泡图数据
     this.getDochots();
+
   },
   mounted () {
 
-    this.d3init()
   },
   beforeDestroy () {
     // 移除svg和元素注册事件，防止内存泄漏
@@ -86,7 +77,7 @@ export default {
       var initHeight = _this.initHeight;
       var padding = {
             left: 40,
-            top: 20,
+            top: 10,
             right: 0,
             bottom: 30
           }
@@ -95,7 +86,7 @@ export default {
       var svg = _this.svgDom
             .style("padding-left", padding.left)
             // .style("padding-right", padding.right)
-            // .style("padding-top", padding.top)
+            .style("padding-top", padding.top)
             // .style("padding-bottom", padding.bottom)
  
           //添加y轴坐标轴
@@ -116,7 +107,7 @@ export default {
           //添加x轴坐标轴
  
           // //x轴比例尺
-          var xData = [0,20,40,60,80,100]
+          var xData = [0,100]
           var xScale = d3.scaleBand().rangeRound([0, initWidth]).padding(1)
           .domain(xData.map(function(d) {
               return d;
@@ -132,46 +123,99 @@ export default {
  
           d3.selectAll('.domain').remove() // 删除多余的两端刻度线
 
+
+
+// ======================================================================
+
+
+              var xRange = d3.scaleLinear()
+                .range([0, 260])
+                .domain(xData,function(d){
+                  return d;
+                });
+           var yRange = d3.scaleLinear()
+                .range([360, 60])
+                .domain([d3.min(_this.nodes , function(d) {
+                  return d.year;
+                }), d3.max(_this.nodes , function(d) {
+                  return d.year;
+                })]);
+// ======================================================================
+        //添加颜色
         var colorLinear = d3.scaleLinear()
-            .domain([d3.min(_this.dataset , function (d) {
-            				  return Number(1); } ),
-                    d3.max(_this.dataset , function (d) {
-                    	 return Number(20); })])
-            .range(["red", "blue"]);
+            .domain([d3.min(_this.nodes , function (d) {
+            				  return Number(d.year); } ),
+                    d3.max(_this.nodes , function (d) {
+                    	 return Number(d.year); })])
+            .range(["#95E3E4","#F3A7A7","#A7A8F3","#5578f0"]);
  
         var radiusLinear = d3.scaleLinear()
-            .domain([d3.min(_this.dataset , function (d) {
-                  return d.weight; } ),
-            d3.max(_this.dataset , function (d) {
-                return d.weight; })])
+            .domain([d3.min(_this.nodes , function (d) {
+                  return d.count; } ),
+            d3.max(_this.nodes , function (d) {
+                return d.count; })])
 
         //添加circle包裹层，有几种类型添加几个
-          var cover = svg.append("g")
-        //添加circle
+        var cover = svg.append("g")
+          //添加circle
           cover.selectAll("circle")
-            .data(_this.dataset)
+            .data(_this.nodes)
             .enter()
             .append('circle')
             .attr('class', 'bubble')
             .attr("cx", function(d) {
-              return xScale(d.x)
+              return xRange(d.x)
             })
             .attr("cy", function(d) {
-              return yScale(d.y)
+              return yRange(d.year) + Math.round(Math.random()*60) -30
             })
             .attr("r", function(d) {
-              return d.weight
+                return Math.round(Math.random()*10) + 20
             })
             .attr("fill", function(d) {
-              return 'red'
+              return colorLinear(d.year)
+            })
+            .attr("opacity", function () {
+              let num = Math.round(Math.random() * (1 - 0) + 0) + 0.8;
+              return num;
+            })
+            .on("mouseover", function(d) {
+              let self = this;
+              d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("r", d3.select(this).attr("r") * 1.1)
+              showtext.text(function() {
+                  return d.name
+                })
+                .attr("text-anchor", "middle")
+                .attr("fill", "#666")
+
+                return false
             })
             .on("mouseout", function() {
               d3.select(this)
                 .transition()
                 .duration(100)
-                .attr("r", d3.select(this).attr("r") / 1.6)
-              showtext.text("")
+                .attr("r", d3.select(this).attr("r") / 1.1)
+                showtext.text("")
+                return false
             })
+            .on("click", nodeClick)
+          // 添加文字
+            // .append("text")
+            // .attr("font-size", 12)
+            // .style("fill", "#fff")
+            // .style("text-anchor", "middle")
+            // .text(function (d) {
+            //   return d.name;
+            // });
+          function nodeClick(event, d) {
+            event.cancelBubble = true
+            event.stopPropagation() // 阻止事件冒
+
+            return false
+          }
           //添加左侧提示部分包裹层
           let detail = cover.append("g")
           let showtext = svg.append("text")
@@ -180,7 +224,7 @@ export default {
 
     },
     // 获取文献气泡图数据
-    getDochots(){
+   async getDochots(){
     let that = this;
     let pearms = {
       // tag: that.tag,
@@ -193,10 +237,27 @@ export default {
       background: 'rgba(0, 0, 0, 0.1)',
       target:document.querySelector('.bubble-box'),
     });
-    getDochots(pearms).then( res =>{
+    await getDochots(pearms).then( res =>{
       loading.close();
       if(res.data.code == 0){
-        that.data1 = res.data.data;
+        let data = res.data.data;
+        let nodes = []; // 节点
+        let yData = [];  // 年份
+        data.forEach(el => {
+          yData.push(el.year)
+          for(let i = 0; i<el.hots.length; i++){
+            nodes.push({
+              x: (i+1)*20,
+              name: el.hots[i].name,
+              year: el.year,
+              count: el.hots[i].count
+            })
+          }
+        });
+
+        that.nodes = nodes;
+        that.yData = yData.reverse();
+        that.d3init();
       }else{
         that.$message.error({
             message: res.data.msg

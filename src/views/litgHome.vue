@@ -28,16 +28,18 @@
                     <div class="key-box">
                         <span :class="{active: index == 0 }" v-for="(keys,idx) in item.keyword" :key="idx">{{keys}}</span>
                     </div>
-                    <div class="zaixian"><i class="el-icon-reading"></i>在线阅读</div>
+                    <div class="zaixian" @click.stop="goToyuedu(item.id)"><i class="el-icon-reading"></i>在线阅读</div>
                 </a>
                 <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
             </div>
             <div  class="content-box1-right">
                 <div>
-                  <div class="bubble-box" style="background:#fff5f5;">
+                  <div class="bubble-box">
                     <d3Bubble @getData="medicine_click" />
                   </div>
-                  <div style="background:#9ffa9b;">2</div>
+                  <div class="atlas-box">
+                    <d3Atlas/> 
+                  </div>
                 </div>
             </div>
         </div>
@@ -58,11 +60,13 @@
 
 <script>
 import d3Bubble from "../components/d3Bubble";
+import d3Atlas from "../components/d3Atlas";
 import {getLitgSearch,getDochots} from '@/api/data'
 export default {
   name: 'litgHome',
   components: {
     d3Bubble,
+    d3Atlas
   },
     data(){
       return{
@@ -226,35 +230,40 @@ export default {
         this.selectSearchChange = e;
       },
       // 获取文献气泡图数据
-       getDochots(){
-        let that = this;
-        let pearms = {
-          // tag: that.tag,
-          // is_search: 'notis',
-        }
-        const loading = that.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.1)',
-          target:document.querySelector('.bubble-box'),
+      //  getDochots(){
+      //   let that = this;
+      //   let pearms = {
+      //     // tag: that.tag,
+      //     // is_search: 'notis',
+      //   }
+      //   const loading = that.$loading({
+      //     lock: true,
+      //     text: 'Loading',
+      //     spinner: 'el-icon-loading',
+      //     background: 'rgba(0, 0, 0, 0.1)',
+      //     target:document.querySelector('.bubble-box'),
+      //   });
+      //   getDochots(pearms).then( res =>{
+      //     loading.close();
+      //     if(res.data.code == 0){
+      //       that.data1 = res.data.data;
+      //     }else{
+      //       that.$message.error({
+      //           message: res.data.msg
+      //       });
+      //     }
+      //   }).catch(e =>{
+      //       loading.close();
+      //       console.log(e)
+      //   })
+      // },
+    // 点击在线阅读
+    goToyuedu(name){
+      let that = this;
+       that.$message.error({
+          message: '暂无数据'
         });
-        getDochots(pearms).then( res =>{
-          loading.close();
-          if(res.data.code == 0){
-            that.data1 = res.data.data;
-          }else{
-            that.$message.error({
-                message: res.data.msg
-            });
-          }
-        }).catch(e =>{
-            loading.close();
-            console.log(e)
-        })
-      },
-
-
+    }
 
 
     },
@@ -402,7 +411,14 @@ export default {
         margin-right: 6px;
     }
     .bubble-box{
+      background:#F7F7F7;
       width: 100%;
+    }
+    .atlas-box{
+      background:#F7F7F7;
+      width: 100%;
+      margin-top:20px;
+      padding: 10px 0;
     }
 
 </style>
