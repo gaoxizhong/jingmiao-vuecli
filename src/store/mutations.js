@@ -31,3 +31,6 @@ export const sickIdx = (state,idx) =>{
 export const inputName = (state,input_name) =>{
   state.input_name = input_name
 }
+export const hotName = (state,hot_name) =>{
+  state.hot_name = hot_name
+}

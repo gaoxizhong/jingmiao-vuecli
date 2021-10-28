@@ -10,6 +10,9 @@ import { getd3Atlas } from "../api/data";
 import * as d3 from "d3";
 export default {
   name: "d3Atlas",
+  props:{
+      hot_name:String,
+  },
   data() {
     return {
       initWidth: 340,
@@ -31,7 +34,6 @@ export default {
       ],
       labels: [],
       states: [],
-      name: "无哈"
     };
   },
   computed: {
@@ -52,14 +54,26 @@ export default {
       this.svgDom.on(".", null);
       this.svgDom.selectAll("*").on(".", null);
       this.d3init();
-    }
+    },
+    // hot_name(){
+    //   this.hot_name = this.data.hot_name;
+    //   // this.getd3Atlas(this.hot_name);
+    // }
+
+  },
+  computed:{
+    // hot_name(){
+    //     return this.$store.state.hot_name;
+    // }
   },
   created() {
     // this.states = Array(this.names.length).fill('on')
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
-    this.getd3Atlas(this.name);
+    // this.hot_name = this.$store.state.hot_name;
+    console.log(this.hot_name)
+    this.getd3Atlas(this.hot_name);
   },
   mounted() {},
   beforeDestroy() {
@@ -503,9 +517,9 @@ export default {
     // 获取图谱数据
     async getd3Atlas(name) {
       let that = this;
-      let name_1 = name;
+      let hot_name = name;
       let pearms = {
-        hot_name: name_1
+        hot_name,
       };
       this.json = [];
       const loading = this.$loading({

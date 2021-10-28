@@ -4,17 +4,24 @@
       id="svg"
       :width="initWidth"
       :height="initHeight"
-    >123</svg>
+    ></svg>
   </div>
 </template>
-<!-- this.$emit('getData',tag,name) -->
 <script>
-import {getDochots} from '../api/data'
+// import {getDochots} from '../api/data'
 import * as d3 from 'd3'
 export default {
   name: 'd3bubble',
   props: {
-    // data1: Array,
+    data: {
+      type: Object,
+      default: function () {
+        return {
+          nodes: [],
+          yData: [],
+        }
+      }
+    },
   },
   data () {
     return {
@@ -23,9 +30,8 @@ export default {
       initWidth: 340,
       initHeight: 440,
       svgDom: null, // svg的DOM元素 => d3.select('#svg1')
+      nodes: [],
       yData: [],
-      nodes:[],
-      links: []
     }
   },
   computed: {
@@ -53,11 +59,11 @@ export default {
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
     // 获取文献气泡图数据
-    this.getDochots();
+    // this.getDochots();
 
   },
   mounted () {
-
+    this.d3init();
   },
   beforeDestroy () {
     // 移除svg和元素注册事件，防止内存泄漏
@@ -69,8 +75,22 @@ export default {
     d3init () {
       var _this = this // 临时获取Vue实例，避免与d3的this指针冲突
       _this.svgDom = d3.select('#svg');  // 获取svg的DOM元素
+      _this.yData = _this.data.yData;
+      _this.nodes = _this.data.nodes;
+      console.log(_this.yData)
+      console.log(_this.nodes)
+
       let yData = _this.yData;
-      console.log(yData)
+      let nodes = _this.nodes;
+      let yData1 = yData.reverse();
+      for (let j = 0;j<=yData1.length;j++ ){
+        for(let i = 0;i<nodes.length;i++ ){
+          let year = nodes[i].year
+          if(year == yData1[j]){
+            nodes[i].y = (j+1)*60 + (Math.round(Math.random()*30) -15)
+          }
+        }
+      }
       // 渲染前清空svg内的元素
       _this.svgDom.selectAll('*').remove();
       var initWidth = _this.initWidth;
@@ -88,7 +108,7 @@ export default {
             // .style("padding-right", padding.right)
             .style("padding-top", padding.top)
             // .style("padding-bottom", padding.bottom)
- 
+
           //添加y轴坐标轴
           //y轴比例尺
           var ydata = yData
@@ -101,11 +121,11 @@ export default {
           //添加y轴
           svg.append("g")
             .attr("class", "xaxis")
-            .attr("transform", "translate(" + 0 + "," + 0 + ")")
+            .attr("transform", "translate(" + "0 ,-20" + ")")
             .call(yAxis);
- 
+
           //添加x轴坐标轴
- 
+
           // //x轴比例尺
           var xData = [0,100]
           var xScale = d3.scaleBand().rangeRound([0, initWidth]).padding(1)
@@ -114,13 +134,13 @@ export default {
             }))
           //定义x轴
           var xAxis = d3.axisBottom(xScale)
- 
+
           //添加x轴
           svg.append("g")
             .attr("class", "yaxis")
             .attr("transform", "translate(" + "0 ," + initHeight + ")")
             .call(xAxis);
- 
+
           d3.selectAll('.domain').remove() // 删除多余的两端刻度线
 
 
@@ -134,32 +154,31 @@ export default {
                   return d;
                 });
            var yRange = d3.scaleLinear()
-                .range([360, 60])
-                .domain([d3.min(_this.nodes , function(d) {
-                  return d.year;
-                }), d3.max(_this.nodes , function(d) {
-                  return d.year;
+                .range([380,40])
+                .domain([d3.min(nodes , function(d) {
+                  return d.y;
+                }), d3.max(nodes , function(d) {
+                  return d.y;
                 })]);
 // ======================================================================
         //添加颜色
         var colorLinear = d3.scaleLinear()
-            .domain([d3.min(_this.nodes , function (d) {
-            				  return Number(d.year); } ),
-                    d3.max(_this.nodes , function (d) {
-                    	 return Number(d.year); })])
-            .range(["#95E3E4","#F3A7A7","#A7A8F3","#5578f0"]);
- 
+            .domain(ydata.map(function(d) {
+              return d;
+            }))
+            .range(["#F3A7A7","#84C68B","#A7A8F3","#84BEC6"]);
+
         var radiusLinear = d3.scaleLinear()
-            .domain([d3.min(_this.nodes , function (d) {
+            .domain([d3.min(nodes , function (d) {
                   return d.count; } ),
-            d3.max(_this.nodes , function (d) {
+            d3.max(nodes , function (d) {
                 return d.count; })])
 
         //添加circle包裹层，有几种类型添加几个
         var cover = svg.append("g")
           //添加circle
           cover.selectAll("circle")
-            .data(_this.nodes)
+            .data(nodes)
             .enter()
             .append('circle')
             .attr('class', 'bubble')
@@ -167,30 +186,26 @@ export default {
               return xRange(d.x)
             })
             .attr("cy", function(d) {
-              return yRange(d.year) + Math.round(Math.random()*60) -30
+              return yRange(d.y)
             })
             .attr("r", function(d) {
-                return Math.round(Math.random()*10) + 20
+              var a =  Math.round(Math.random()*20) + 15
+                d.r = a
+                return a
             })
             .attr("fill", function(d) {
               return colorLinear(d.year)
             })
-            .attr("opacity", function () {
-              let num = Math.round(Math.random() * (1 - 0) + 0) + 0.8;
-              return num;
-            })
+            // .attr("opacity", function () {
+            //   let num = Math.round(Math.random() * (1 - 0) + 0) + 0.8;
+            //   return num;
+            // })
             .on("mouseover", function(d) {
               let self = this;
               d3.select(this)
                 .transition()
                 .duration(100)
                 .attr("r", d3.select(this).attr("r") * 1.1)
-              showtext.text(function() {
-                  return d.name
-                })
-                .attr("text-anchor", "middle")
-                .attr("fill", "#666")
-
                 return false
             })
             .on("mouseout", function() {
@@ -198,10 +213,34 @@ export default {
                 .transition()
                 .duration(100)
                 .attr("r", d3.select(this).attr("r") / 1.1)
-                showtext.text("")
                 return false
             })
-            .on("click", nodeClick)
+          .on("click", nodeClick);
+          let texts = svg.selectAll(null)
+            .data(nodes)
+            .enter()
+            .append('text')
+            .text(function (d) {
+                return d.name;
+            })
+            .attr('fill','#333')
+            .attr("class", "textcla")
+            .attr("font-size", 11)
+            // .attr("transform", "translate(-" + 14 +","+ 0 + ")")
+            .on("click", nodeClick);
+          texts.attr("x", function(d) {
+              return xRange(d.x)
+            })
+            .attr("y", function(d) {
+              return yRange(d.y)
+            })
+          texts.attr("transform", function(d) {
+          return (
+            "translate(-" + (d.r - 6) + ","+ 0 + ")"
+          );
+        });
+            // .attr("transformX","translate(-" +  d3.select(this).attr("r") + "px)")
+
           // 添加文字
             // .append("text")
             // .attr("font-size", 12)
@@ -213,14 +252,13 @@ export default {
           function nodeClick(event, d) {
             event.cancelBubble = true
             event.stopPropagation() // 阻止事件冒
-
+            let hot_name = d.name;
+            // _this.$store.dispatch("hotName",hot_name);
+            // console.log(hot_name)
+            // console.log(_this.$store.state.hot_name)
+            _this.$emit('getData',hot_name)
             return false
           }
-          //添加左侧提示部分包裹层
-          let detail = cover.append("g")
-          let showtext = svg.append("text")
-            .text("")
-            .attr("font-size", '14px')
 
     },
     // 获取文献气泡图数据
@@ -257,6 +295,9 @@ export default {
 
         that.nodes = nodes;
         that.yData = yData.reverse();
+        // let hot_name = this.$store.state.hot_name;
+        let hot_name = that.nodes[0].name;
+        that.$store.dispatch("hotName",hot_name);
         that.d3init();
       }else{
         that.$message.error({
@@ -283,4 +324,10 @@ export default {
   .bubble{
     position: absolute;
   }
+    #svg .xaxis{
+      font-size: 12px;
+  }
+  // #svg .textcla{
+  //   transform: translate(-10px,-10px);
+  // }
 </style>

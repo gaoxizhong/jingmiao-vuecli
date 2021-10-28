@@ -29,4 +29,7 @@ export const sickIdx = ({commit},data) =>{
 export const inputName = ({commit},data) =>{
   commit('inputName',data);
 }
+export const hotName = ({commit},data) =>{
+  commit('hotName',data);
+}
 

@@ -35,10 +35,10 @@
             <div  class="content-box1-right">
                 <div>
                   <div class="bubble-box">
-                    <d3Bubble @getData="medicine_click" />
+                    <d3Bubble :data='data1' v-if="is_show" @getData="bubble_click" />
                   </div>
                   <div class="atlas-box">
-                    <d3Atlas/> 
+                    <d3Atlas :hot_name='hot_name' v-if="is_Atlas"/>
                   </div>
                 </div>
             </div>
@@ -77,9 +77,14 @@ export default {
         pageSize: 10,
         active: true,
         count:0,
-        data1: [],
-        yData: [],
+        data1: {
+          nodes:[],
+          yData: [],
+        },
         tag: '',
+        hot_name:'',
+        is_show:false,
+        is_Atlas:false
       }
     },
     active(){
@@ -90,9 +95,10 @@ export default {
         // this.select_name = this.$route.query.name;
         // this.tag = this.$route.query.tag;
         this.tag = 'document';
+        this.setsickNess();
         this.getHomeRightList();
         // 获取文献气泡图数据
-        // this.getDochots();
+        this.getDochots();
     },
     methods:{
       medicine_click(){
@@ -230,41 +236,84 @@ export default {
         this.selectSearchChange = e;
       },
       // 获取文献气泡图数据
-      //  getDochots(){
-      //   let that = this;
-      //   let pearms = {
-      //     // tag: that.tag,
-      //     // is_search: 'notis',
-      //   }
-      //   const loading = that.$loading({
-      //     lock: true,
-      //     text: 'Loading',
-      //     spinner: 'el-icon-loading',
-      //     background: 'rgba(0, 0, 0, 0.1)',
-      //     target:document.querySelector('.bubble-box'),
-      //   });
-      //   getDochots(pearms).then( res =>{
-      //     loading.close();
-      //     if(res.data.code == 0){
-      //       that.data1 = res.data.data;
-      //     }else{
-      //       that.$message.error({
-      //           message: res.data.msg
-      //       });
-      //     }
-      //   }).catch(e =>{
-      //       loading.close();
-      //       console.log(e)
-      //   })
-      // },
+   async getDochots(){
+    let that = this;
+    let pearms = {
+      // tag: that.tag,
+      // is_search: 'notis',
+    }
+    const loading = that.$loading({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.1)',
+      target:document.querySelector('.bubble-box'),
+    });
+    await getDochots(pearms).then( res =>{
+        loading.close();
+        if(res.data.code == 0){
+          let data = res.data.data;
+          let nodes = []; // 节点
+          let yData = [];  // 年份
+          data.forEach(el => {
+            yData.push(el.year)
+            for(let i = 0; i<el.hots.length; i++){
+              nodes.push({
+                x: (i+1)*20,
+                name: el.hots[i].name,
+                year: el.year,
+                count: el.hots[i].count
+              })
+            }
+          });
+
+          that.data1.nodes = nodes;
+          that.data1.yData = yData.reverse();
+          // let hot_name = this.$store.state.hot_name;
+          // let hot_name = that.nodes[0].name;
+          // that.$store.dispatch("hotName",hot_name);
+          // that.d3init();
+          that.setsickNess();
+          that.setsickAtlas();
+        }else{
+          that.$message.error({
+              message: res.data.msg
+          });
+        }
+      }).catch(e =>{
+          loading.close();
+          console.log(e)
+      })
+    },
     // 点击在线阅读
     goToyuedu(name){
       let that = this;
        that.$message.error({
           message: '暂无数据'
         });
-    }
+    },
+    bubble_click(name){
+      console.log(name)
+      this.setsickAtlas();
+      this.hot_name = name;
 
+    },
+    setsickNess(){
+        this.is_show = false;
+        // 在组件移除后，重新渲染组件
+        // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
+        this.$nextTick(() => {
+            this.is_show = true
+        })
+      },
+      setsickAtlas(){
+        this.is_Atlas = false;
+        // 在组件移除后，重新渲染组件
+        // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
+        this.$nextTick(() => {
+            this.is_Atlas = true
+        })
+      }
 
     },
     beforeRouteEnter (to, from, next) {
