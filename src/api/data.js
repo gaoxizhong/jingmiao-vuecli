@@ -88,3 +88,11 @@ export const getAuthorDetail = (params) =>{
     data: params
   })
 }
+// 获取文献气泡图
+export const getDochots = (params) =>{
+  return axios.request({
+    url:'/zsk/doc/hots',
+    method: 'post',
+    data: params
+  })
+}

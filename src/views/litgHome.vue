@@ -35,7 +35,7 @@
             <div  class="content-box1-right">
                 <div>
                   <div class="bubble-box" style="background:#fff5f5;">
-                    <d3Bubble :data1="data1" :yData="yData" @getData="medicine_click" />
+                    <d3Bubble @getData="medicine_click" />
                   </div>
                   <div style="background:#9ffa9b;">2</div>
                 </div>
@@ -58,7 +58,7 @@
 
 <script>
 import d3Bubble from "../components/d3Bubble";
-import {getLitgSearch} from '@/api/data'
+import {getLitgSearch,getDochots} from '@/api/data'
 export default {
   name: 'litgHome',
   components: {
@@ -73,8 +73,9 @@ export default {
         pageSize: 10,
         active: true,
         count:0,
-        data1: {},
+        data1: [],
         yData: [],
+        tag: '',
       }
     },
     active(){
@@ -86,6 +87,8 @@ export default {
         // this.tag = this.$route.query.tag;
         this.tag = 'document';
         this.getHomeRightList();
+        // 获取文献气泡图数据
+        // this.getDochots();
     },
     methods:{
       medicine_click(){
@@ -184,8 +187,7 @@ export default {
       getHomeRightList(){
         let that = this;
         let pearms = {
-        //   'tag': that.tag,
-          tag: 'document',
+          tag: that.tag,
           is_search: 'notis',
           pn: that.current_page,
         }
@@ -222,7 +224,39 @@ export default {
       searchDownChange(e){
         console.log(e)
         this.selectSearchChange = e;
-      }
+      },
+      // 获取文献气泡图数据
+       getDochots(){
+        let that = this;
+        let pearms = {
+          // tag: that.tag,
+          // is_search: 'notis',
+        }
+        const loading = that.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.1)',
+          target:document.querySelector('.bubble-box'),
+        });
+        getDochots(pearms).then( res =>{
+          loading.close();
+          if(res.data.code == 0){
+            that.data1 = res.data.data;
+          }else{
+            that.$message.error({
+                message: res.data.msg
+            });
+          }
+        }).catch(e =>{
+            loading.close();
+            console.log(e)
+        })
+      },
+
+
+
+
     },
     beforeRouteEnter (to, from, next) {
         next(vm =>{
