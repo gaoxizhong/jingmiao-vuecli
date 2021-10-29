@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      initWidth: 340,
+      initWidth: 420,
       initHeight: 440,
       viewHeight: "",
       viewWidth: "",

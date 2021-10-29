@@ -248,12 +248,7 @@ export default {
 
        },
        handleOpen(key, keyPath) {
-          if(key == 0){
-           this.oneColumn = key;
-          }
-          if(key == 1){
-           this.oneColumn = key;
-          }
+          this.oneColumn = key;
         },
         handleClose(key, keyPath) {
             console.log(key, keyPath);
@@ -268,7 +263,7 @@ export default {
                 // this.$store.dispatch("sickNess",name);
                 this.$emit('sickNess')
                 this.$router.replace({  //核心语句
-                    path:'/litgHome',   //跳转的路径
+                    path:'/Home',   //跳转的路径
                     query:{           //路由传参时push和query搭配使用 ，作用时传递参数
                       name,
                       tag,
@@ -284,6 +279,21 @@ export default {
                 this.$emit('sickNess')
                 this.$router.replace({  //核心语句
                     path:'/zyHome',   //跳转的路径
+                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                      name,
+                      tag,
+                    }
+                })
+              return
+             }
+            if(this.oneColumn == 2){
+               console.log(2)
+                let name = e.$attrs.name;
+                let tag = e.$attrs.tag;
+                // this.$store.dispatch("sickNess",name);
+                this.$emit('sickNess')
+                this.$router.replace({  //核心语句
+                    path:'/litgHome',   //跳转的路径
                     query:{           //路由传参时push和query搭配使用 ，作用时传递参数
                       name,
                       tag,

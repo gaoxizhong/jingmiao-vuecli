@@ -17,7 +17,7 @@
               <div class="info-box3-title">摘要:</div>
               <div class="info-box3-text">{{ infoDetail.abstract }}</div>
             </div>
-            <div style="padding:2px 0;">
+            <div style="padding:2px 0;" v-if="infoDetail.keyword.length > 0">
               <div class="info-box3-title">关键词:</div>
               <div class="info-box3-text icon-info-keys">
                 <span v-for="(keys,index) in infoDetail.keyword" :key="index">{{keys}}</span>
@@ -31,18 +31,22 @@
           <!-- 参考文献 -->
           <div class="daohang-box">
             <div class="daohang-tags">
-              <a href="javascript:0;" :class="tagspane == 1 ?'active':''" @click="clickSpan(1)">参考文献</a>
-              <a href="javascript:0;" :class="tagspane == 2 ?'active':''" @click="clickSpan(2)">引证文献</a>
+              <a href="javascript:0;" :class="!tagspane?'active':''" @click="clickSpan(1)">参考文献</a>
+              <a href="javascript:0;" :class="tagspane?'active':''" @click="clickSpan(2)">引证文献</a>
             </div>
-            <div class="tagspane-box" v-if="tagspane == 1">
+            <div class="tagspane-box" v-if="!tagspane">
               <div v-if="infoDetail.similarDocument && infoDetail.similarDocument.length != 0">
-                <div v-for="{auts,index} in infoDetail.similarDocument.titles" :key="index">{{auts}}</div>
+                <a href="javascript:0;" v-for="(auts,index) in infoDetail.similarDocument.titles" :key="index" class="auts1-box" @click="clickAuts(auts)">
+                  [{{index+1}}]{{auts}}
+                </a>
               </div>
               <div v-else>暂无信息...</div>
             </div>
-            <div class="tagspane-box" v-if="tagspane == 2">
+            <div class="tagspane-box" v-if="tagspane">
               <div v-if="infoDetail.citationDocument && infoDetail.citationDocument.length != 0">
-                <div v-for="{auts2,idx} in infoDetail.citationDocument.titles" :key="idx">{{auts2}}</div>
+                <a href="javascript:0;" v-for="(auts2,idx) in infoDetail.citationDocument.titles" :key="idx" class="auts2-box" @click="clickAuts(auts2)">
+                  [{{idx+1}}]{{auts2}}
+                </a>
               </div>
               <div v-else>暂无信息...</div>
             </div>
@@ -135,7 +139,7 @@
 }
 .info-box3>div .info-box3-text{
   padding-left: 20px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 30px;
   color: #707070;
@@ -179,6 +183,14 @@
   padding: 10px 0;
   font-size: 15px;
 }
+.auts1-box,.auts2-box{
+  display: block;
+  padding: 6px 0;
+  color: #333333;
+}
+.auts1-box:hover,.auts2-box:hover{
+  color: #D54B4B;
+}
 </style>
 <script>
 import { getDocDetail } from "@/api/data";
@@ -189,7 +201,7 @@ export default {
       infoDetail: {},
       title: "",
       tag: "",
-      tagspane: 1
+      tagspane: false
     };
   },
   created() {
@@ -202,6 +214,12 @@ export default {
     this.getDetail(this.title);
   },
   methods: {
+    clickAuts(name){
+      let auts_text = name;
+      this.$message.error({
+        message: '暂无数据...'
+      });
+    },
       // 点击作者
       goToauthor(_kgid){
           let kgid = _kgid;
@@ -216,7 +234,12 @@ export default {
       },
     // 参考印证切换
     clickSpan(tab){
-      this.tagspane = tab;
+      let is_tab = tab;
+      if(is_tab == 1){
+        this.tagspane = false;
+      }else{
+        this.tagspane = true;
+      }
     },
 
     // 返回上一步

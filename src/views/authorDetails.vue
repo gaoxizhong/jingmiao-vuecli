@@ -21,10 +21,10 @@
           <!-- 参考文献 -->
           <div class="daohang-box">
             <div class="daohang-tags">
-              <a href="javascript:0;" class="active" @click="clickSpan(1)">参考文献</a>
+              <a href="javascript:0;" class="active">参考文献</a>
             </div>
             <div class="tagspane-box">
-              <div v-for="{auts,index} in infoDetail.authorDocument" :key="index">{{auts}}</div>
+              <a v-for="(auts,index) in infoDetail.authorDocument" :key="index" class="auts-box" @click="clickAuts(auts)">[{{index+1}}]{{auts}}</a>
             </div>
           </div>
 
@@ -158,6 +158,14 @@
   padding: 10px 0;
   font-size: 15px;
 }
+.auts-box{
+  display: block;
+  padding: 6px 0;
+  color: #333333;
+}
+.auts-box:hover{
+  color: #D54B4B;
+}
 </style>
 <script>
 import { getAuthorDetail } from "@/api/data";
@@ -180,6 +188,12 @@ export default {
     this.getDetail(this.kgid);
   },
   methods: {
+    clickAuts(name){
+      let auts_text = name;
+      this.$message.error({
+        message: '暂无数据...'
+      });
+    },
     // 返回上一步
     fanhui_btn() {
       this.$router.go(-1);

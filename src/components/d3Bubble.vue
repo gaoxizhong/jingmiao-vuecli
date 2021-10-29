@@ -27,7 +27,7 @@ export default {
     return {
       viewHeight:'',
       viewWidth:'',
-      initWidth: 340,
+      initWidth: 420,
       initHeight: 440,
       svgDom: null, // svg的DOM元素 => d3.select('#svg1')
       nodes: [],
@@ -96,7 +96,7 @@ export default {
       var initWidth = _this.initWidth;
       var initHeight = _this.initHeight;
       var padding = {
-            left: 40,
+            left: 44,
             top: 10,
             right: 0,
             bottom: 30
@@ -127,7 +127,7 @@ export default {
           //添加x轴坐标轴
 
           // //x轴比例尺
-          var xData = [0,100]
+          var xData = [0,40,60,80,100]
           var xScale = d3.scaleBand().rangeRound([0, initWidth]).padding(1)
           .domain(xData.map(function(d) {
               return d;
@@ -149,7 +149,7 @@ export default {
 
 
               var xRange = d3.scaleLinear()
-                .range([0, 260])
+                .range([0, 130])
                 .domain(xData,function(d){
                   return d;
                 });
@@ -225,21 +225,22 @@ export default {
             })
             .attr('fill','#333')
             .attr("class", "textcla")
+            .attr('text-anchor', 'middle')
             .attr("font-size", 11)
-            // .attr("transform", "translate(-" + 14 +","+ 0 + ")")
             .on("click", nodeClick);
-          texts.attr("x", function(d) {
-              return xRange(d.x)
-            })
-            .attr("y", function(d) {
-              return yRange(d.y)
-            })
-          texts.attr("transform", function(d) {
-          return (
-            "translate(-" + (d.r - 6) + ","+ 0 + ")"
-          );
-        });
-            // .attr("transformX","translate(-" +  d3.select(this).attr("r") + "px)")
+            texts.attr("x", function(d) {
+                return xRange(d.x)
+              })
+              .attr("y", function(d) {
+                return yRange(d.y)
+              })
+            // texts
+            // .attr("transform", function(d) {
+            //   return "translate(-" + (d.r - 6) + ","+ 0 + ")"
+            // })
+            // .attr("style", function(d) {
+            //   return "width:"+ d.r*2 + "px;"
+            // });
 
           // 添加文字
             // .append("text")

@@ -2,40 +2,51 @@
   <div class="content-box">
     <div class="inside-content-box" id="inside-content-box">
         <el-row>
-            <el-col :span="13" :offset="5">
-                <div class="el-input-box el-col">
-                    <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
-                        <el-button slot="append" icon="el-icon-search" @click="getInputBtn()" style="width:80px;"></el-button>
-                    </el-input>
-                </div>
-            </el-col>
+          <el-col :span="16" :offset="4">
+            <div class="el-input-box el-col">
+              <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
+                <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"></el-option>
+                </el-select>
+                <el-button slot="append" icon="el-icon-search" @click="getInputBtn()"></el-button>
+              </el-input>
+            </div>
+          </el-col>
         </el-row>
         <div class="content-box1">
             <div class="content-box1-left">
                 <div class="title-info-box">
-                    <div>1</div>
+                    <div></div>
                     <div style="color:#999;">找到<span style="color:#5578F0;">{{count}}</span>条结果</div>
                 </div>
                 <a href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
+                  <div v-if="tag == 'document'">
                     <div class="item-title">{{item.title}}</div>
                     <div class="tag-top-box">
-                        <div style="padding-right:12px;">[期刊论文]</div>
+                        <div style="padding-right:12px;">[作者]</div>
                         <div class="tap-top-span">
                             <a href="javascript:0;" v-for="(items,index) in item.author" @click.stop="goToauthor(items.kgid)" :key="index">{{items.name?items.name:''}}</a>
                         </div>
                     </div>
-                    <div class="item-center-box">{{item.abstract}}</div>
+                    <div class="item-center-box"><span>摘要：</span> {{item.abstract}}</div>
                     <div class="key-box">
-                        <span :class="{active: index == 0 }" v-for="(keys,idx) in item.keyword" :key="idx">{{keys}}</span>
+                        <div>关键词：</div><span :class="{active: idx == 0 }" v-for="(keys,idx) in item.keyword" :key="idx">{{keys}}</span>
                     </div>
                     <div class="zaixian" @click.stop="goToyuedu(item.id)"><i class="el-icon-reading"></i>在线阅读</div>
+                  </div>
+                  <div v-else>12</div>
                 </a>
                 <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
             </div>
-            <div  class="content-box1-right">
+            <div  class="content-box1-right" v-if="tag == 'document'">
                 <div>
                   <div class="bubble-box">
-                    <d3Bubble :data='data1' v-if="is_show" @getData="bubble_click" />
+                    <d3Bubble :data='data1' v-if="is_show && data1.nodes.length > 0" @getData="bubble_click" />
+                    <el-empty description="加载中..." v-if='!data1.nodes || data1.nodes.length <= 0'></el-empty>
                   </div>
                   <div class="atlas-box">
                     <d3Atlas :hot_name='hot_name' v-if="is_Atlas"/>
@@ -45,14 +56,14 @@
         </div>
               <!-- 分页展示 -->
         <div class="pagination-box">
-            <el-pagination
-            background
-            @current-change="handleCurrentChange"
-            layout="total, prev, pager, next"
-            :total="count"
-            :page-size="pageSize"
-            :current-page='current_page'>
-            </el-pagination>
+          <el-pagination
+          background
+          @current-change="handleCurrentChange"
+          layout="total, prev, pager, next"
+          :total="count"
+          :page-size="pageSize"
+          :current-page='current_page'>
+          </el-pagination>
         </div>
     </div>
   </div>
@@ -72,6 +83,10 @@ export default {
       return{
         search:'',
         // select_name:'',
+        select: '请选择',
+        select_name:'',
+        selectSearchChange:'',
+        options:[{label:'文献',value:'document'},{label:'指南',value:'guide'}],
         getListInfo:[],
         current_page:1,
         pageSize: 10,
@@ -93,12 +108,13 @@ export default {
     created(){
       console.log('created') //接受参数关键代码
         // this.select_name = this.$route.query.name;
-        // this.tag = this.$route.query.tag;
-        this.tag = 'document';
+        this.tag = this.$route.query.tag;
         this.setsickNess();
         this.getHomeRightList();
         // 获取文献气泡图数据
-        this.getDochots();
+        if(this.tag == 'document'){
+          this.getDochots();
+        }
     },
     methods:{
       medicine_click(){
@@ -128,6 +144,12 @@ export default {
       // 点击搜索
       getInputBtn(){
         let that = this;
+         if(that.selectSearchChange == ''){
+          this.$message.error({
+              message: '请先选择类型',
+          });
+          return
+        }
         if(that.search == ''){
           this.$message.error({
               message: '请填写内容',
@@ -144,31 +166,30 @@ export default {
         });
         that.current_page = 1;
        getLitgSearch({
-          tag: that.tag,
+          tag: that.selectSearchChange,
           search: that.search,
           pn: that.current_page,
           is_search: 'is',
        }).then(res =>{
           loading.close();
          if(res.data.code == 0){
+           that.tag= that.selectSearchChange;
            console.log(1)
-           this.$message.error({
-                message: res.data.data,
-            });
             let getListInfo = res.data.data.list;
             that.getListInfo= getListInfo;
             that.count = res.data.data.count;
+            that.getDochots();
          }else if(res.data.code == 1){
             this.$message.error({
-                message: res.data.msg,
+                message: '请求错误！',
             });
-            setTimeout(function(){
-               this.$router.push({name: 'Login'});
-            },1500)
+            // setTimeout(function(){
+            //    this.$router.push({name: 'Login'});
+            // },1500)
             return
           }else{
             this.$message.error({
-                message: res.data.msg
+                message: '请求错误！',
             });
           }
         }).catch(e =>{
@@ -184,14 +205,19 @@ export default {
         let that = this;
         let name = _name;
         let tag = that.tag;
-        this.$router.push({  //核心语句
-          path:'/litgDetails',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            name,
-            tag,
-            type:'lg'
-          }
-        })
+        if(tag == 'guide'){
+          return
+        }else{
+          this.$router.push({  //核心语句
+            path:'/litgDetails',   //跳转的路径
+            query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+              name,
+              tag,
+              type:'lg'
+            }
+          })
+        }
+
       },
       // 获取列表
       getHomeRightList(){
@@ -349,7 +375,7 @@ export default {
       flex: 1;
     }
     .content-box1-right{
-      width: 340px;
+      width: 420px;
       height: auto;
     }
     .el-col {
@@ -360,6 +386,10 @@ export default {
         align-items: center;
         justify-content: center;
         overflow: hidden;
+    }
+    .el-select-box{
+      width: auto;
+      min-width: 120px;
     }
     .bg-purple-dark{
         padding: 0 10px;
@@ -426,19 +456,25 @@ export default {
         opacity: 0.8;
         margin: 10px 0;
     }
+    .item-center-box>span{
+      font-weight: 600;
+      color: #333;
+    }
     .key-box{
         width: 100%;
         padding: 2px 0;
         font-size: 14px;
         font-family: Source Han Sans CN;
         font-weight: 400;
-        color: #777777;
-        text-decoration: underline;
         opacity: 1;
         display: flex;
         align-items: center;
+        color: #333;
     }
+
     .key-box>span{
+        text-decoration: underline;
+        color: #777777;
         padding: 1px 0;
         margin: 0 6px;
     }
@@ -462,12 +498,13 @@ export default {
     .bubble-box{
       background:#F7F7F7;
       width: 100%;
+      height: 440px;
     }
     .atlas-box{
       background:#F7F7F7;
       width: 100%;
+      height: 440px;
       margin-top:20px;
-      padding: 10px 0;
     }
 
 </style>
