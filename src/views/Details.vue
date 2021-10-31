@@ -178,7 +178,7 @@
   }
   .input-with-select{
     flex: 1;
-    border-radius: 20px !important;
+    /* border-radius: 20px !important; */
     overflow: hidden;
   }
   .dianji-show{
@@ -215,7 +215,7 @@
     color: #5578F0;
     opacity: 1;
     text-align: left;
-    padding-left: 10px;
+    padding-left: 0;
   }
   .item-text{
     font-size: 15px;
@@ -223,7 +223,7 @@
     line-height: 20px;
     color: #707070;
     opacity: 0.8;
-    padding: 4px 10px 4px 20px;
+    padding: 4px 10px 4px 10px;
     box-sizing: border-box;
     text-align: left;
   }
@@ -248,9 +248,9 @@ import {getSickNess,getD3Search} from '@/api/data'
         name_2:'',
         getinfo:{},
         tag:'',
-        select_1:'请选择',
-        options:[],
-        selectcheng:'',
+        select_1:'药品',
+        options:[{label:'药品',value:'medicine'}],
+        selectcheng:'medicine',
         results: [],
             // 后台请求到的json数据
         // json: require('../data/top1.json'),
@@ -276,12 +276,12 @@ import {getSickNess,getD3Search} from '@/api/data'
         this.tag = this.$route.query.tag;
         this.type = this.$route.query.type;
         console.log(this.type)
-        if(this.type == 'xy'){
-          this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}]
-        }
-        if(this.type == 'zy'){
-          this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}]
-        }
+        // if(this.type == 'xy'){
+        //   this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}]
+        // }
+        // if(this.type == 'zy'){
+        //   this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}]
+        // }
 
         // if( this.tag !=zysickness ){
         //   this.name = this.$route.query.name;

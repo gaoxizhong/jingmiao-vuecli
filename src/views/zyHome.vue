@@ -18,7 +18,7 @@
         </el-col>
       </el-row>
       <el-row style="padding-top:20px;">
-        <el-col :span="18" :offset="3">
+        <el-col :span="20" :offset="2">
           <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name,item.kgid  )">
             <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}<div class="gengduo">更多>></div></div>
             <!-- 中医库--疾病 -->

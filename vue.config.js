@@ -43,9 +43,16 @@ module.exports = {
 //             changeOrigin: true,
 //             ws: true,
 //             pathRewrite: {
-//                 '^/api': '/api'
+//                 '^/api': ''
 //             }
-//         }
+//         },
+//         '/pdf': {
+//           target: 'https://repair.qdy0707.top/file/',
+//           changOrigin: true,
+//           pathRewrite: {
+//               '^/pdf': ''
+//           }
+//       }
 //     }
 // }
 }

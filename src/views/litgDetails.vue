@@ -27,6 +27,7 @@
               <div class="info-box3-title">期刊:</div>
               <div class="info-box3-text">{{ infoDetail.publishMagazine }}</div>
             </div>
+            <!-- <div class="zaixian" @click.stop="goToyuedu(item.id)"><i class="el-icon-reading"></i>在线阅读</div> -->
           </div>
           <!-- 参考文献 -->
           <div class="daohang-box">
@@ -115,9 +116,9 @@
     color: #D54B4B;
 }
 .infoDetail-title{
-  font-size: 30px;
+  font-size: 26px;
   font-weight: bold;
-  line-height: 46px;
+  line-height: 30px;
   color: #333333;
   opacity: 1;
 }
@@ -144,11 +145,11 @@
   line-height: 30px;
   color: #707070;
   opacity: 1;
-  overflow: hidden;
+  /* overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 2; */
   flex: 1;
   text-align: left;
 }
@@ -191,7 +192,36 @@
 .auts1-box:hover,.auts2-box:hover{
   color: #D54B4B;
 }
+/* .info-box3>div.zaixian{
+    padding: 9px;
+    color: #5578F0;
+    border: 1px solid #5578F0;
+    font-size: 14px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100px;
+    align-items: center;
+}
+.el-icon-reading{
+    margin-right: 6px;
+} */
 </style>
+<style scoped>
+ @media only screen and (max-width: 1390px){
+  /* .info-box3 > div.zaixian {
+    padding: 6px;
+    font-size: 12px;
+    margin: 6px 0;
+    width: 78px;
+  }
+  .el-icon-reading {
+    margin-right: 0px;
+  } */
+}
+</style>
+
 <script>
 import { getDocDetail } from "@/api/data";
 export default {
@@ -214,6 +244,14 @@ export default {
     this.getDetail(this.title);
   },
   methods: {
+
+    // 点击在线阅读
+    goToyuedu(name){
+      let that = this;
+       that.$message.error({
+          message: '暂无数据'
+        });
+    },
     clickAuts(name){
       let auts_text = name;
       this.$message.error({
@@ -226,7 +264,7 @@ export default {
           let tag = tag;
           this.$router.push({  //核心语句
               path:'/authorDetails',   //跳转的路径
-              query:{           
+              query:{
                   kgid,
                   tag,
               }

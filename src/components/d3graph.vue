@@ -235,18 +235,18 @@ export default {
       // 移除svg和元素注册事件，防止内存泄漏
       this.svgDom.on('.', null)
       this.svgDom.selectAll('*').on('.', null)
-      this.d3init()
+      this.d3init();
     }
   },
   created () {
     // this.states = Array(this.names.length).fill('on')
-            let getViewportSize = this.$getViewportSize();
-        this.viewHeight = getViewportSize.height;
-        this.viewWidth = getViewportSize.width;
+      let getViewportSize = this.$getViewportSize();
+      this.viewHeight = getViewportSize.height;
+      this.viewWidth = getViewportSize.width;
 
   },
   mounted () {
-    this.d3init()
+    this.d3init();
   },
   beforeDestroy () {
     // 移除svg和元素注册事件，防止内存泄漏

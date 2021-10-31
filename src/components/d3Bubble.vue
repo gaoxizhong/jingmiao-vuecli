@@ -77,9 +77,6 @@ export default {
       _this.svgDom = d3.select('#svg');  // 获取svg的DOM元素
       _this.yData = _this.data.yData;
       _this.nodes = _this.data.nodes;
-      console.log(_this.yData)
-      console.log(_this.nodes)
-
       let yData = _this.yData;
       let nodes = _this.nodes;
       let yData1 = yData.reverse();
@@ -127,7 +124,7 @@ export default {
           //添加x轴坐标轴
 
           // //x轴比例尺
-          var xData = [0,40,60,80,100]
+          var xData = [20,70,140,210,280]
           var xScale = d3.scaleBand().rangeRound([0, initWidth]).padding(1)
           .domain(xData.map(function(d) {
               return d;
@@ -138,7 +135,7 @@ export default {
           //添加x轴
           svg.append("g")
             .attr("class", "yaxis")
-            .attr("transform", "translate(" + "0 ," + initHeight + ")")
+            .attr("transform", "translate(" + "0," + initHeight + ")")
             .call(xAxis);
 
           d3.selectAll('.domain').remove() // 删除多余的两端刻度线
@@ -149,7 +146,7 @@ export default {
 
 
               var xRange = d3.scaleLinear()
-                .range([0, 130])
+                .range([50, 220])
                 .domain(xData,function(d){
                   return d;
                 });
@@ -189,9 +186,10 @@ export default {
               return yRange(d.y)
             })
             .attr("r", function(d) {
-              var a =  Math.round(Math.random()*20) + 15
-                d.r = a
-                return a
+              // var a =  Math.round(Math.random()*20) + 15
+                // d.r = a
+                // return a
+                return d.r
             })
             .attr("fill", function(d) {
               return colorLinear(d.year)
@@ -220,13 +218,12 @@ export default {
             .data(nodes)
             .enter()
             .append('text')
-            .text(function (d) {
-                return d.name;
-            })
+
+            .text('')
             .attr('fill','#333')
             .attr("class", "textcla")
             .attr('text-anchor', 'middle')
-            .attr("font-size", 11)
+            .attr("font-size", 10)
             .on("click", nodeClick);
             texts.attr("x", function(d) {
                 return xRange(d.x)
@@ -234,6 +231,29 @@ export default {
               .attr("y", function(d) {
                 return yRange(d.y)
               })
+              let topY = -4
+              let midY = 0
+              let botY = 8
+            texts.append('tspan')
+            .attr("x", function(d) {
+                return xRange(d.x)
+              })
+            .attr("y", function(d) {
+                return yRange(d.y) + topY
+              })
+            .text(function (d) {
+              return d.name
+            })
+            texts.append('tspan')
+            .attr("x", function(d) {
+                return xRange(d.x)
+              })
+            .attr("y", function(d) {
+                return yRange(d.y) + botY
+              })
+            .text(function (d) {
+              return ('热点值：' + d.count)
+            })
             // texts
             // .attr("transform", function(d) {
             //   return "translate(-" + (d.r - 6) + ","+ 0 + ")"
@@ -259,9 +279,11 @@ export default {
             // console.log(_this.$store.state.hot_name)
             _this.$emit('getData',hot_name)
             return false
-          }
+          };
+
 
     },
+
     // 获取文献气泡图数据
    async getDochots(){
     let that = this;
@@ -309,7 +331,7 @@ export default {
         loading.close();
         console.log(e)
     })
-  },
+    },
   }
 }
 </script>

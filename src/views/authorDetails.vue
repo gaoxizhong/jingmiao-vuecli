@@ -91,7 +91,7 @@
     color: #5578F0;
 }
 .infoDetail-title{
-  font-size: 44px;
+  font-size: 26px;
   font-weight: bold;
   line-height: 46px;
   color: #333333;

@@ -2,7 +2,7 @@
    <div class="content-box">
      <div class="inside-content-box" id="inside-content-box">
       <el-row>
-        <el-col :span="13" :offset="5">
+        <el-col :span="16" :offset="4">
         <div class="el-input-box el-col">
           <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
             <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
@@ -19,7 +19,7 @@
       </el-row>
 
       <el-row style="padding-top:20px;">
-        <el-col :span="18" :offset="3">
+        <el-col :span="20" :offset="2">
           <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.sickness_name)">
             <div class="items-title">{{item.sickness_name}}<div class="gengduo">更多>></div></div>
             <div class="tags-list-box" v-if=" tag == 'sickness' || tag == 'disease' ">
@@ -91,7 +91,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 20px !important;
+    /* border-radius: 20px !important; */
     overflow: hidden;
   }
   .el-select-box{
@@ -158,10 +158,10 @@ import {getHomeRightList,getSearch} from '@/api/data'
     data() {
       return {
         input3:'',
-        select: '请选择',
+        select: '药品',
         select_name:'',
-        selectSearchChange:'',
-        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}],
+        selectSearchChange:'medicine',
+        options:[{label:'药品',value:'medicine'}],
         tag:'',
         getListInfo:[],
         name:'',

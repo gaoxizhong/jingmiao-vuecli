@@ -5,13 +5,21 @@
 </template>
 
 <script>
-import { getd3Atlas } from "../api/data";
-
+// import { getd3Atlas } from "../api/data";
 import * as d3 from "d3";
 export default {
   name: "d3Atlas",
   props:{
-      hot_name:String,
+    data: {
+      type: Object,
+      default: function () {
+        return {
+          nodes: [],
+          links: [],
+        }
+      }
+    },
+    labels: Array
   },
   data() {
     return {
@@ -32,7 +40,6 @@ export default {
         "#1E90FF",
         "#7FFFD4"
       ],
-      labels: [],
       states: [],
     };
   },
@@ -54,28 +61,19 @@ export default {
       this.svgDom.on(".", null);
       this.svgDom.selectAll("*").on(".", null);
       this.d3init();
-    },
-    // hot_name(){
-    //   this.hot_name = this.data.hot_name;
-    //   // this.getd3Atlas(this.hot_name);
-    // }
-
+    }
   },
   computed:{
-    // hot_name(){
-    //     return this.$store.state.hot_name;
-    // }
+
   },
   created() {
-    // this.states = Array(this.names.length).fill('on')
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
-    // this.hot_name = this.$store.state.hot_name;
-    console.log(this.hot_name)
-    this.getd3Atlas(this.hot_name);
   },
-  mounted() {},
+  mounted() {
+    this.d3init();
+  },
   beforeDestroy() {
     // 移除svg和元素注册事件，防止内存泄漏
     this.svgDom.on(".", null);
@@ -84,8 +82,8 @@ export default {
   methods: {
     // d3初始化，包括数据解析、数据渲染
     d3init() {
-      this.links = this.links;
-      this.nodes = this.nodes;
+      this.links = this.data.links;
+      this.nodes = this.data.nodes;
       this.svgDom = d3.select("#svg1"); // 获取svg的DOM元素
       // this.d3jsonParser(this.graph)
       this.d3render();
@@ -101,16 +99,16 @@ export default {
     },
     d3render() {
       var _this = this; // 临时获取Vue实例，避免与d3的this指针冲突
-    //   _this.nodes = _this.nodes.filter(node => {
+    //   _this.nodes = _this.data.nodes.filter(node => {
     //     if (node.data_type === "is_show") return false;
     //     return true;
     //   });
-    //   _this.links = _this.links.filter(node => {
+    //   _this.links = _this.data.links.filter(node => {
     //     if (node.data_type === "is_show") return false;
     //     return true;
     //   });
-    _this.nodes = _this.nodes;
-    _this.links = _this.links;
+    _this.nodes = _this.data.nodes;
+    _this.links = _this.data.links;
       // 渲染前清空svg内的元素
       _this.svgDom.selectAll("*").remove();
       // svg.selectAll('g').remove()
@@ -144,7 +142,7 @@ export default {
       var forceCollide = d3
         .forceCollide()
         .radius(d => {
-          return 16 * 1;
+          return 16 * 3;
         })
         .iterations(0.15)
         .strength(0.75);
@@ -156,7 +154,7 @@ export default {
           "link",
           d3.forceLink().id(d => d.id)
         )
-        .force("charge", d3.forceManyBody().strength(-50))
+        .force("charge", d3.forceManyBody().strength(-100))
         // .force("center", d3.forceCenter(width / 2, height / 2)
         .force(
           "center",
@@ -212,12 +210,12 @@ export default {
         .attr("r", function(d) {
           // 每次访问nodes的一项数据
           // console.log(d)
-          let size = 16;
+          let size = 14;
           switch (d.label) {
             case _this.labels[0]:
               break;
             case _this.labels[1]:
-              size = 14;
+              size = 13;
               break;
             case _this.labels[2]:
               size = 12;
@@ -252,7 +250,7 @@ export default {
         .data(this.nodes)
         .enter()
         .append("text")
-        .attr("font-size", () => 13)
+        .attr("font-size", () => 12)
         .attr("fill", () => "#fff")
         .attr("name", d =>
           d.properties.name.text ? d.properties.name.text : d.properties.name
@@ -286,13 +284,13 @@ export default {
           let distance = 20;
           switch (d.source.label) {
             case _this.labels[0]:
-              distance += 30;
-              break;
-            case _this.labels[1]:
               distance += 25;
               break;
-            case _this.labels[2]:
+            case _this.labels[1]:
               distance += 22;
+              break;
+            case _this.labels[2]:
+              distance += 20;
               break;
             default:
               distance += 20;
@@ -362,7 +360,7 @@ export default {
         node.attr("cx", d => d.x).attr("cy", d => d.y);
 
         text.attr("transform", function(d) {
-          let size = 15;
+          let size = 14;
           switch (d.label) {
             case _this.labels[0]:
               break;
@@ -514,170 +512,6 @@ export default {
         .attr("fill", "#1E90FF")
         .attr("stroke-opacity", 0.6);
     },
-    // 获取图谱数据
-    async getd3Atlas(name) {
-      let that = this;
-      let hot_name = name;
-      let pearms = {
-        hot_name,
-      };
-      this.json = [];
-      const loading = this.$loading({
-        lock: true,
-        text: "图谱更新中...",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.1)",
-        target: document.querySelector(".atlas-box")
-      });
-      await getd3Atlas(pearms)
-        .then(res => {
-          loading.close();
-          if (res.data.code == 0) {
-            let data = res.data.data;
-            that.d3jsonParser(data);
-          } else {
-            this.$message.error({
-              message: res.data.msg
-            });
-          }
-        })
-        .catch(e => {
-          loading.close();
-          console.log(e);
-        });
-    },
-    d3jsonParser(data) {
-      let that = this;
-    //   let _name = that.name;
-      const labels = [];
-      const linkTypes = [""];
-      const nodes = []; // 存放节点
-      const links = []; // 存放关系
-      const nodeSet = []; // 存放去重后nodes的id
-      // 重新更改data格式
-      for (let segment1 of data) {
-        for (let segment of segment1) {
-          if (nodeSet.indexOf(segment.start.identity) == -1) {
-            nodeSet.push(segment.start.identity);
-            // let is_show = "";
-            // if (_name == segment.start.properties.name.text) {
-            //   is_show = "2";
-            // } else {
-            //   is_show = "1";
-            // }
-            nodes.push({
-              id: segment.start.identity,
-              label: segment.start.labels[1],
-              tag: segment.start.tag,
-              properties: segment.start.properties,
-            //   is_show
-            });
-          }
-          if (nodeSet.indexOf(segment.end.identity) == -1) {
-            nodeSet.push(segment.end.identity);
-            // let is_show = "";
-            // if (_name == segment.end.properties.name.text) {
-            //   is_show = "2";
-            // } else {
-            //   is_show = "1";
-            // }
-            nodes.push({
-              id: segment.end.identity,
-              label: segment.end.labels[1],
-              tag: segment.end.tag,
-              properties: segment.end.properties,
-            //   is_show
-            });
-          }
-          links.push({
-            source: segment.relationship.start,
-            target: segment.relationship.end,
-            type: segment.relationship.type,
-            properties: segment.relationship.properties
-          });
-          if (labels.indexOf(segment.end.labels[1]) == -1) {
-            labels.push(segment.end.labels[1]);
-          }
-          if (linkTypes.indexOf(segment.relationship.type) == -1) {
-            linkTypes.push(segment.relationship.type);
-          }
-
-          for (let key in segment.end.properties) {
-            if (segment.end.properties[key].text != "") {
-              if (nodeSet.indexOf(`${segment.end.identity}-${key}`) == -1) {
-                nodeSet.push(`${segment.end.identity}-${key}`);
-                // let data_type = "";
-                // if (_name == segment.end.properties.name.text) {
-                //   data_type = "no_show";
-                // } else {
-                //   data_type = "is_show";
-                // }
-                nodes.push({
-                  id: `${segment.end.identity}-${key}`,
-                  label: "Att",
-                  properties: {
-                    name: segment.end.properties[key].text
-                  },
-                //   data_type
-                });
-                links.push({
-                  source: segment.relationship.end,
-                  target: `${segment.end.identity}-${key}`,
-                  type: "att",
-                  properties: {
-                    name: segment.end.properties[key].name
-                  },
-                //   data_type
-                });
-              }
-            }
-          }
-          if (labels.indexOf(segment.start.labels[1]) == -1) {
-            labels.push(segment.start.labels[1]);
-          }
-
-          for (let key in segment.start.properties) {
-            if (segment.start.properties[key].text != "") {
-              if (nodeSet.indexOf(`${segment.start.identity}-${key}`) == -1) {
-                nodeSet.push(`${segment.start.identity}-${key}`);
-                // let data_type = "";
-                // if (_name == segment.start.properties.name.text) {
-                //   data_type = "no_show";
-                // } else {
-                //   data_type = "is_show";
-                // }
-                nodes.push({
-                  id: `${segment.start.identity}-${key}`,
-                  label: "Att",
-                  properties: {
-                    name: segment.start.properties[key].text
-                  },
-                //   data_type
-                });
-                links.push({
-                  source: segment.start.identity,
-                  target: `${segment.start.identity}-${key}`,
-                  type: "att",
-                  properties: {
-                    name: segment.start.properties[key].name
-                  },
-                //   data_type
-                });
-              }
-            }
-          }
-        }
-      }
-      labels.push("Att");
-      linkTypes.push("att");
-      that.linkTypes = linkTypes;
-      that.labels = labels;
-      that.nodes = nodes;
-      that.links = links;
-      console.log(nodes);
-      console.log(links);
-      that.d3init();
-    }
   }
 };
 </script>
