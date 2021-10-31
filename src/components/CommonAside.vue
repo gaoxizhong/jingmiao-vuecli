@@ -204,7 +204,7 @@ export default {
         return {
             menuBackgroundColor:'#242a4d',
             menuTextColor:'#fff',
-            oneColumn: 0
+            oneColumn:'0'
         }
     },
     watch:{
