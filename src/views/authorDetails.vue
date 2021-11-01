@@ -21,7 +21,7 @@
           <!-- 参考文献 -->
           <div class="daohang-box">
             <div class="daohang-tags">
-              <a href="javascript:0;" class="active">参考文献</a>
+              <a href="javascript:0;" class="active">作者文献</a>
             </div>
             <div class="tagspane-box">
               <a v-for="(auts,index) in infoDetail.authorDocument" :key="index" class="auts-box" @click="clickAuts(auts)">[{{index+1}}]{{auts}}</a>
