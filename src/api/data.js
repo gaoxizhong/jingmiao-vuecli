@@ -17,21 +17,21 @@ export const LoginUserInfo = (params) =>{
   })
 }
 //  首页左侧列表
-export const WesternMedicine = (params) =>{
-  return axios.request({
-    url:'/zsk/index',
-    method: 'get',
-    data: params
-  })
-}
-//  首页左侧文献单独列表
 // export const WesternMedicine = (params) =>{
 //   return axios.request({
-//     url:'/zsk/doc/menu',
+//     url:'/zsk/index',
 //     method: 'get',
 //     data: params
 //   })
 // }
+//  首页左侧文献单独列表
+export const WesternMedicine = (params) =>{
+  return axios.request({
+    url:'/zsk/doc/menu',
+    method: 'get',
+    data: params
+  })
+}
 //  西医首页右侧列表
 export const getHomeRightList = (params) =>{
   return axios.request({
