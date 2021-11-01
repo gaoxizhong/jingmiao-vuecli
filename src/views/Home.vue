@@ -158,10 +158,10 @@ import {getHomeRightList,getSearch} from '@/api/data'
     data() {
       return {
         input3:'',
-        select: '药品',
+        select: '请选择',
         select_name:'',
-        selectSearchChange:'medicine',
-        options:[{label:'药品',value:'medicine'}],
+        selectSearchChange:'',
+        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}],
         tag:'',
         getListInfo:[],
         name:'',

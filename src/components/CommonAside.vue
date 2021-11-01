@@ -6,12 +6,12 @@
         :collapse="isCollapse"
         :background-color="menuBackgroundColor"
         :text-color="menuTextColor"
-        default-active="0-0"
+        default-active="0-0-0-0-0"
         unique-opened
     >
     <div class="logo-box">
-      <img src="../assets/image/logo1.png" alt="" v-show="!isCollapse" style="width:230px;"/>
-      <h3 style="color:#fff;" v-show="isCollapse">省立</h3>
+      <img src="../assets/image/logo.png" alt="" v-show="!isCollapse"/>
+      <h3 style="color:#fff;" v-show="isCollapse">菁苗</h3>
     </div>
 
 			<!-- 第一层 -->
@@ -225,11 +225,9 @@ export default {
         console.log(e)
       },
        aa(){
-        //   let arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
-        //  console.log(arryinfo)
-        //   let name = arryinfo.departmentLevel2;
-          let arryinfo = this.datalist[0].subordinate[0];
-          let name = arryinfo.name;
+          let arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
+         console.log(arryinfo)
+          let name = arryinfo.departmentLevel2;
           let tag = arryinfo.tag;
           this.$store.dispatch("sickNess",name);
           let is_details = window.localStorage.getItem('is_details');
@@ -238,7 +236,7 @@ export default {
              return
           }else{
             this.$router.replace({  //核心语句
-              path:'/litgHome',   //跳转的路径
+              path:'/Home',   //跳转的路径
               query:{           //路由传参时push和query搭配使用 ，作用时传递参数
               name,
               tag,
@@ -255,78 +253,51 @@ export default {
         handleClose(key, keyPath) {
             this.oneColumn = key;
         },
-        // clickItem_2(e){
-        //      window.localStorage.setItem('is_details',0);
-        //      if(this.oneColumn.substring(0,1) == 0){
-        //         let name = e.$attrs.name;
-        //         let tag = e.$attrs.tag;
-        //         // this.$store.dispatch("sickNess",name);
-        //         this.$emit('sickNess')
-        //         this.$router.replace({  //核心语句
-        //             path:'/Home',   //跳转的路径
-        //             query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-        //               name,
-        //               tag,
-        //             }
-        //         })
-        //       return
-        //      }
-        //     if(this.oneColumn.substring(0,1) == 1){
-        //         let name = e.$attrs.name;
-        //         let tag = e.$attrs.tag;
-        //         this.$store.dispatch("sickNess",name);
-        //         this.$emit('sickNess')
-        //         this.$router.replace({  //核心语句
-        //             path:'/zyHome',   //跳转的路径
-        //             query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-        //               name,
-        //               tag,
-        //             }
-        //         })
-        //       return
-        //      }
-        //     if(this.oneColumn.substring(0,1) == 2){
-        //         let name = e.$attrs.name;
-        //         let tag = e.$attrs.tag;
-        //         // this.$store.dispatch("sickNess",name);
-        //         this.$emit('sickNess')
-        //         this.$router.replace({  //核心语句
-        //             path:'/litgHome',   //跳转的路径
-        //             query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-        //               name,
-        //               tag,
-        //             }
-        //         })
-        //       return
-        //      }
-        // },
         clickItem_2(e){
-          let name = e.$attrs.name;
-          let tag = e.$attrs.tag;
-          if(tag == "medicine"){
-            this.$emit('sickNess')
-            this.$router.replace({  
-                path:'/Home',   
-                query:{       
-                  name,
-                  tag,
-                }
-            })
-            return
-          }else{
-            this.$emit('sickNess')
-            this.$router.replace({
-                path:'/litgHome', 
-                query:{
-                  tag,
-                }
-            })
-            return
-          }
+             window.localStorage.setItem('is_details',0);
+             if(this.oneColumn.substring(0,1) == 0){
+                let name = e.$attrs.name;
+                let tag = e.$attrs.tag;
+                // this.$store.dispatch("sickNess",name);
+                this.$emit('sickNess')
+                this.$router.replace({  //核心语句
+                    path:'/Home',   //跳转的路径
+                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                      name,
+                      tag,
+                    }
+                })
+              return
+             }
+            if(this.oneColumn.substring(0,1) == 1){
+                let name = e.$attrs.name;
+                let tag = e.$attrs.tag;
+                this.$store.dispatch("sickNess",name);
+                this.$emit('sickNess')
+                this.$router.replace({  //核心语句
+                    path:'/zyHome',   //跳转的路径
+                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                      name,
+                      tag,
+                    }
+                })
+              return
+             }
+            if(this.oneColumn.substring(0,1) == 2){
+                let name = e.$attrs.name;
+                let tag = e.$attrs.tag;
+                // this.$store.dispatch("sickNess",name);
+                this.$emit('sickNess')
+                this.$router.replace({  //核心语句
+                    path:'/litgHome',   //跳转的路径
+                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                      name,
+                      tag,
+                    }
+                })
+              return
+             }
         },
-
-
-
     },
     computed: {
         noChild() {

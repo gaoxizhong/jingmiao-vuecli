@@ -7,11 +7,11 @@
         <p>中医数字化健康平台</p>
       </div> -->
     </div>
-    <!-- <div class="r-content" v-if="phone">
+    <div class="r-content" v-if="phone">
       <span class="r-phone">{{ phone }}</span>
       <div class="r-toLogin" @click="toLogin">
         <img src="../assets/image/tui-icon.png" alt="" /> 退出</div>
-    </div> -->
+    </div>
   </header>
 </template>
 
