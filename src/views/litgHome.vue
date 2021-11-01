@@ -70,7 +70,8 @@
                     <d3Atlas
                       :data="data"
                       :labels="labels"
-                      :linkTypes="linkTypes"
+                      :linkTypes="linkTypes" 
+                      v-if="data.nodes.length > 0"
                     />
                     <el-empty description="暂无数据..." v-if='!data.nodes || data.nodes.length <= 0'></el-empty>
                   </div>

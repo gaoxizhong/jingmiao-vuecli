@@ -486,7 +486,7 @@ export default {
         .data(this.links)
         .join("text")
         .style('text-anchor','middle')
-        .style('fill', '#fff')
+        // .style('fill', '#fff')
         .style('font-size', '12px')
         // .style('font-weight', 'bold')
         .text(d => d.properties.name.text?d.properties.name.text:d.properties.name)
@@ -956,6 +956,9 @@ $opacity: 0.15;  /* 显示的不透明度 */
 $activeColor: #1E90FF;  /* 激活的颜色 */
 svg {
   margin: 4px 0px;
+}
+#svg{
+  font-weight:100;
 }
 /*设置节点及边的样式*/
 .links line {
