@@ -20,8 +20,11 @@
         <div class="content-box1">
             <div class="content-box1-left">
                 <div class="title-info-box">
-                    <div></div>
-                    <div style="color:#999;">找到<span style="color:#5578F0;">{{count}}</span>条结果</div>
+                    <a href="javascript:0;" class="title-info-box-1" @click="orderClick()">
+                      <span style="margin-right:4px;">按年份排序</span>
+                      <i class="el-icon-sort" style="color:#5578F0;"></i>
+                    </a>
+                    <div>找到<span style="color:#5578F0;">{{count}}</span>条结果</div>
                 </div>
                 <a href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
                   <!-- 文献 -->
@@ -44,7 +47,7 @@
                         </div>
                     </div>
                     <div class="item-center-box"><span>年份:</span> {{item.year}}</div>
-                    <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian"  :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"><i class="el-icon-reading"></i>在线阅读</a>
+                    <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian"  :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"  v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
                   </div>
                   <!-- 指南 -->
                   <div v-else>
@@ -55,7 +58,7 @@
                     </div>
                     <div class="item-center-box"><span>制定者：</span> {{item.constitutor?item.constitutor:"暂无"}}</div>
                     <div class="item-center-box"><span>年份:</span> {{item.year}}</div>
-                    <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"><i class="el-icon-reading"></i>在线阅读</a>
+                    <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)" v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
                   </div>
                 </a>
                 <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
@@ -132,6 +135,7 @@ export default {
         is_show:false,
         is_Atlas:false,
         showFull: [],
+        order:'desc',  // 年份排序  asc 正序  desc  倒序
       }
     },
     active(){
@@ -141,7 +145,6 @@ export default {
       console.log('created') //接受参数关键代码
         // this.select_name = this.$route.query.name;
         this.tag = this.$route.query.tag;
-        // this.is_search = 'notis';
         this.setsickNess();
         // 获取列表
         this.getHomeRightList();
@@ -227,6 +230,17 @@ export default {
         }
 
       },
+      // 点击排序
+      orderClick(){
+        let that = this;
+        let order = that.order;
+        if(order === 'desc'){
+          that.order = 'asc'
+        }else if(order === 'asc'){
+          that.order = 'desc'
+        }
+        that.getHomeRightList();
+      },
       // 获取列表
        getHomeRightList(){
         let that = this;
@@ -235,12 +249,14 @@ export default {
 
         if(!search || search == ''){
           pearms = {
+            order:that.order,
             tag: that.tag,
             is_search: 'notis',
             pn: that.current_page,
           }
         }else{
           pearms = {
+            order:that.order,
             tag: that.tag,
             is_search: 'is',
             search: that.search,
@@ -582,8 +598,10 @@ export default {
 </script>
 
 <style scoped>
+    .pagination-box{
+      padding: 30px 0;
+    }
     .content-box{
-        padding: 30rpx 20prx;
         width: 100%;
         height: 100%;
         box-sizing: border-box;
@@ -627,10 +645,24 @@ export default {
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        margin-bottom: 10px;
+        justify-content: flex-end;
+        margin-bottom: 20px;
         padding: 0 10px;
+
     }
+    .title-info-box>div{
+      color:#999;
+    }
+    .title-info-box-1{
+      color:#999;
+      display: inline-block;
+      margin-right: 30px;
+    }
+    .title-info-box-1:hover{
+      color: #D54B4B;
+    }
+
+
     .item-title{
         width: auto;
         font-size: 20px;
