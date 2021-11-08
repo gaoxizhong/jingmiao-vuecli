@@ -24,7 +24,7 @@
                       <span style="margin-right:4px;">按年份排序</span>
                       <i class="el-icon-sort" style="color:#5578F0;"></i>
                     </a>
-                    <div>找到<span style="color:#5578F0;">{{count}}</span>条结果</div>
+                    <!-- <div>找到<span style="color:#5578F0;">{{count}}</span>条结果</div> -->
                 </div>
                 <a href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
                   <!-- 文献 -->

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
-import Login from '../views/Login.vue'
+// import Login from '../views/Login.vue'
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location, onResolve, onReject) {
@@ -15,13 +15,13 @@ Vue.use(VueRouter)
 
 //   }
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'Login',
+  //   component: Login
+  // },
   {
-    path: '/',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path:'/Main',
+    path:'/',
     name:'Main',
     component: Main,
     // redirect: {name: 'home'},
