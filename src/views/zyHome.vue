@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="16" :offset="4">
         <div class="el-input-box el-col">
-          <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+          <el-input placeholder="请输入内容" v-model="input3" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
             <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
               <el-option
                 v-for="item in options"
@@ -213,6 +213,13 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         that.current_page = val;
         console.log(that.current_page)
         that.getzyHomeRightList();
+      },
+      // 回车键点击
+      searchEnterFun(e){
+        var keyCode = window.event?e.keyCode:e.which;
+        if(keyCode == 13){
+          this.getInputBtn();
+        }
       },
       // 点击搜索
       getInputBtn(){
