@@ -2,17 +2,17 @@
   <div class="content-box">
     <div class="inside-content-box" id="inside-content-box">
         <el-row>
-          <el-col :span="16" :offset="4">
+          <el-col :span="12" :offset="5">
             <div class="el-input-box el-col">
               <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-                <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
+                <!-- <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"></el-option>
-                </el-select>
-                <el-button slot="append" icon="el-icon-search" @click="getInputBtn()"></el-button>
+                </el-select> -->
+                <el-button slot="append" icon="el-icon-search" @click="getInputBtn()" style=" padding: 12px 30px;"></el-button>
               </el-input>
             </div>
           </el-col>
@@ -109,10 +109,10 @@ export default {
     data(){
       return{
         search:'',
-        select: '请选择',
-        select_name:'',
-        selectSearchChange:'',
-        options:[{label:'文献',value:'document'},{label:'指南',value:'guide'}],
+        // select: '请选择',
+        // select_name:'',
+        // selectSearchChange:'',
+        // options:[{label:'文献',value:'document'},{label:'指南',value:'guide'}],
         getListInfo:[],
         current_page:1,
         pageSize: 10,
@@ -190,12 +190,12 @@ export default {
       // 点击搜索
       getInputBtn(){
         let that = this;
-         if(that.selectSearchChange == ''){
-          this.$message.error({
-              message: '请先选择类型',
-          });
-          return
-        }
+        //  if(that.selectSearchChange == ''){
+        //   this.$message.error({
+        //       message: '请先选择类型',
+        //   });
+        //   return
+        // }
         // if(that.search == ''){
         //   this.$message.error({
         //       message: '请填写内容',
@@ -296,10 +296,10 @@ export default {
         })
       },
 
-      searchDownChange(e){
-        console.log(e)
-        this.selectSearchChange = e;
-      },
+      // searchDownChange(e){
+      //   console.log(e)
+      //   this.selectSearchChange = e;
+      // },
       // 获取文献气泡图数据
     async getDochots(){
       let that = this;
