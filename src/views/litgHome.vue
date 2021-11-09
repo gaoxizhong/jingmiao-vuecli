@@ -148,6 +148,7 @@ export default {
         this.setsickNess();
         // 获取列表
         this.getHomeRightList();
+        window.localStorage.setItem('is_details',0);
         // 获取文献气泡图、图谱数据
         if(this.tag == 'document'){
           this.getDochots();
@@ -265,15 +266,7 @@ export default {
         }
 
         that.getListInfo = [];
-        const loading = that.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.1)',
-          target:document.querySelector('body'),
-        });
         getLitgSearch(pearms).then( res =>{
-          loading.close();
           if(res.data.code == 0){
             let getListInfo = res.data.data.list;
             if(that.tag == "document"){
@@ -299,7 +292,6 @@ export default {
             });
           }
         }).catch(e =>{
-            loading.close();
             console.log(e)
         })
       },
@@ -314,15 +306,7 @@ export default {
       let pearms = {
         title: that.title,
       }
-      const loading = that.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.1)',
-        target:document.querySelector('.bubble-box'),
-      });
       await getDochots(pearms).then( res =>{
-        loading.close();
         if(res.data.code == 0){
           let data = res.data.data;
           let arr_r = [40,36,30,26,22];
@@ -347,8 +331,6 @@ export default {
           data.forEach(el => {
             yData.push(el.year)
             for(let i = 0; i<el.hots.length; i++){
-
-
               nodes.push({
                 x: (i+1)*20,
                 name: el.hots[i].name,
@@ -373,7 +355,6 @@ export default {
           });
         }
       }).catch(e =>{
-          loading.close();
           console.log(e)
       })
     },
@@ -385,16 +366,8 @@ export default {
         hot_name,
       };
       this.json = [];
-      const loading = this.$loading({
-        lock: true,
-        text: "Loading",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.1)",
-        target: document.querySelector(".atlas-box")
-      });
       await getd3Atlas(pearms)
         .then(res => {
-          loading.close();
           if (res.data.code == 0) {
             let data = res.data.data;
             that.d3jsonParser(data);
@@ -405,7 +378,6 @@ export default {
           }
         })
         .catch(e => {
-          loading.close();
           console.log(e);
         });
     },

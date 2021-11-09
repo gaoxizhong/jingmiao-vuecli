@@ -27,13 +27,6 @@
               <a v-for="(auts,index) in infoDetail.authorDocument" :key="index" class="auts-box" @click="clickAuts(auts)">[{{index+1}}]{{auts}}</a>
             </div>
           </div>
-
-
-
-
-
-
-
         </div>
       </div>
     </div>
@@ -206,17 +199,9 @@ export default {
       let pearms = {
         kgid,
       };
-      const loading = this.$loading({
-        lock: true,
-        text: "Loading",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.1)",
-        target: document.querySelector("body")
-      });
       that.infoDetail = {};
       getAuthorDetail(pearms)
         .then(res => {
-          loading.close();
           if (res.data.code == 0) {
             that.infoDetail = res.data.data;
           } else {
@@ -226,7 +211,6 @@ export default {
           }
         })
         .catch(e => {
-          loading.close();
           console.log(e);
         });
     }

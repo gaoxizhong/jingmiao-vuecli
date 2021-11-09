@@ -8,7 +8,6 @@
   </div>
 </template>
 <script>
-// import {getDochots} from '../api/data'
 import * as d3 from 'd3'
 export default {
   name: 'd3bubble',
@@ -58,8 +57,6 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
-    // 获取文献气泡图数据
-    // this.getDochots();
 
   },
   mounted () {
@@ -282,55 +279,6 @@ export default {
           };
 
 
-    },
-
-    // 获取文献气泡图数据
-   async getDochots(){
-    let that = this;
-    let pearms = {
-      // tag: that.tag,
-      // is_search: 'notis',
-    }
-    const loading = that.$loading({
-      lock: true,
-      text: 'Loading',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.1)',
-      target:document.querySelector('.bubble-box'),
-    });
-    await getDochots(pearms).then( res =>{
-      loading.close();
-      if(res.data.code == 0){
-        let data = res.data.data;
-        let nodes = []; // 节点
-        let yData = [];  // 年份
-        data.forEach(el => {
-          yData.push(el.year)
-          for(let i = 0; i<el.hots.length; i++){
-            nodes.push({
-              x: (i+1)*20,
-              name: el.hots[i].name,
-              year: el.year,
-              count: el.hots[i].count
-            })
-          }
-        });
-
-        that.nodes = nodes;
-        that.yData = yData.reverse();
-        // let hot_name = this.$store.state.hot_name;
-        let hot_name = that.nodes[0].name;
-        that.$store.dispatch("hotName",hot_name);
-        that.d3init();
-      }else{
-        that.$message.error({
-            message: res.data.msg
-        });
-      }
-    }).catch(e =>{
-        loading.close();
-        console.log(e)
-    })
     },
   }
 }

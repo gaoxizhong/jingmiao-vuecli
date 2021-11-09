@@ -345,16 +345,8 @@ import {getSickNess,getD3Search} from '@/api/data'
           'sickness':name_1,
           'tag': that.tag
         }
-        const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.1)',
-          target:document.querySelector('.content-box'),
-        });
         that.activeName = [];
         await getSickNess(pearms).then( res =>{
-          loading.close();
           if(res.data.code == 0){
             let getinfo = res.data.data;
             that.name = getinfo.sickness_name.text;
@@ -399,7 +391,6 @@ import {getSickNess,getD3Search} from '@/api/data'
             });
           }
         }).catch(e =>{
-            loading.close();
             console.log(e)
         })
       },
@@ -422,15 +413,7 @@ import {getSickNess,getD3Search} from '@/api/data'
           'tag': that.tag
         }
         this.json = [];
-        const loading = this.$loading({
-          lock: true,
-          text: '图谱更新中...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.1)',
-          target:document.querySelector('.gContainer'),
-        });
         getD3Search(pearms).then( res =>{
-          loading.close();
           if(res.data.code == 0){
             let data = res.data.data;
             this.json = data;
@@ -442,7 +425,6 @@ import {getSickNess,getD3Search} from '@/api/data'
           }
         }).catch(e =>{
           that.update(this.json);
-          loading.close();
           console.log(e)
         })
       },
