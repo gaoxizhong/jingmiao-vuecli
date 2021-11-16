@@ -5,13 +5,6 @@
         <el-col :span="16" :offset="4">
         <div class="el-input-box el-col">
           <el-input placeholder="请输入内容" v-model="input3" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-            <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"></el-option>
-            </el-select>
             <el-button slot="append" icon="el-icon-search" @click="getInputBtn()"></el-button>
           </el-input>
         </div>
@@ -19,8 +12,8 @@
       </el-row>
       <el-row style="padding-top:20px;">
         <el-col :span="20" :offset="2">
-          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name,item.kgid  )">
-            <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}<div class="gengduo">更多>></div></div>
+          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
+            <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}<div class="gengduo" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name,item.kgid  )">更多>></div></div>
             <!-- 中医库--疾病 -->
             <div class="tags-list-box" v-if=" tag == 'zysickness' || tag == 'icd10'">
               <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
@@ -91,6 +84,7 @@
     color: #5578F0;
     opacity: 1;
     padding-left: 10px;
+    cursor: pointer;
   }
   .content-box{
     padding: 30rpx 20prx;
@@ -109,7 +103,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 20px !important;
     overflow: hidden;
   }
   .el-select-box{
@@ -144,6 +137,7 @@
     color: #5578F0;
     border-bottom: 1px solid #5578F0;
     margin:0 6px;
+    cursor: pointer;
   }
   .tags-list-items.active{
     color: #333333;
@@ -176,10 +170,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
     data() {
       return {
         input3:'',
-        select: '请选择',
         select_name:'',
-        selectSearchChange:'',
-        options:[{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}],
         tag:'',
         getListInfo:[],
         name:'',
@@ -196,7 +187,6 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
       console.log('created')
         this.select_name = this.$route.query.name;  //接受参数关键代码
         this.tag = this.$route.query.tag;
-        console.log(this.select_name)
         console.log(this.tag)
         this.getzyHomeRightList();
     },
@@ -224,12 +214,6 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
       // 点击搜索
       getInputBtn(){
         let that = this;
-        if(that.selectSearchChange == ''){
-          this.$message.error({
-              message: '请先选择类型',
-          });
-          return
-        }
         if(that.input3 == ''){
           this.$message.error({
               message: '请填写内容',
@@ -246,13 +230,12 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
       });
       that.current_page = 1;
        getSearch({
-          tag: that.selectSearchChange,
+          tag: that.tag,
           search: that.input3,
           pn: that.current_page
        }).then(res =>{
           loading.close();
          if(res.data.code == 0){
-           that.tag= that.selectSearchChange;
            console.log(1)
             let getListInfo = res.data.data;
             for(var i = 0;i<getListInfo.length;i++){
@@ -593,10 +576,6 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         }
         this.getListInfo= getListInfo;
       },
-      searchDownChange(e){
-        console.log(e)
-        this.selectSearchChange = e;
-      }
     },
     computed: {
 
