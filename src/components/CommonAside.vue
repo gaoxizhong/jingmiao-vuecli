@@ -61,11 +61,11 @@
                                   <span slot="title" class="span-text">{{ item_5.departmentLevel2?item_5.departmentLevel2:item_5.level2 }}</span>
                                 </template>
 
-                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag'  @click="clickItem_2($event)">{{ item_6.name }}</el-menu-item>
+                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_6.name }}</el-menu-item>
                                 </el-submenu>
                               </template>
                               <!-- 如果第五层没有子菜单 -->
-                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :name='item_5.name' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.name }}</el-menu-item>
+                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :name='item_5.name' :tag='item_5.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_5.name }}</el-menu-item>
                               </template>
 															<!-- <el-menu-item v-for="(item_5,idx_5) in item_4.departmentLevel2.name" :key="idx_5" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item> -->
 														</el-submenu>
@@ -85,23 +85,23 @@
                                   <span slot="title" class="span-text">{{ item_5.departmentLevel2 }}</span>
                                 </template>
 
-                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag'  @click="clickItem_2($event)">{{ item_6.name }}</el-menu-item>
+                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_6.name }}</el-menu-item>
                                 </el-submenu>
                               </template>
                               <!-- 如果第五层没有子菜单 -->
-                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item>
+                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_5.departmentLevel2 }}</el-menu-item>
                               </template>
 															<!-- <el-menu-item v-for="(item_5,idx_5) in item_4.departmentLevel2.name" :key="idx_5" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item> -->
 														</el-submenu>
 													</template>
 
 													<!-- 如果第四层没有子菜单 -->
-													<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}`" :key="idx_4" :name='item_4.departmentLevel2' :tag='item_4.tag'  @click="clickItem_2($event)">{{ item_4.departmentLevel2 }}</el-menu-item>
+													<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}`" :key="idx_4" :name='item_4.departmentLevel2' :tag='item_4.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_4.departmentLevel2 }}</el-menu-item>
 												</template>
 											</el-submenu>
 										</template>
 										<!-- 如果第三层没有子菜单 -->
-										<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}`" :key="idx_3" :name='item_3.name' :tag='item_3.tag'  @click="clickItem_2($event)">{{ item_3.name }}</el-menu-item>
+										<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}`" :key="idx_3" :name='item_3.name' :tag='item_3.tag'  @click="clickItem_2($event)"><i style="width: 20px;display: inline-block;"></i>{{ item_3.name }}</el-menu-item>
 									</template>
 								</el-submenu>
 							</template>
