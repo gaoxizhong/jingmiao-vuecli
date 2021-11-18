@@ -7,13 +7,13 @@
         <el-row>
          <el-col :span="14" :offset="4">
           <el-input placeholder="请输入内容" v-model="name" class="input-with-select" @keydown.enter.native="searchEnterFun($event,name)">
-            <!-- <el-select class="el-select-box" v-model="select_1" slot="prepend" style="width:140px;" @change="selectchange">
+            <el-select class="el-select-box" v-model="select_1" slot="prepend" style="width:140px;" @change="selectchange">
               <el-option
               v-for="item in options"
               :key="item.value"
               :label="item.label"
               :value="item.value"></el-option>
-            </el-select> -->
+            </el-select>
               <!-- <el-button slot="append" type="success" icon="el-icon-search" @click="getD3Search"></el-button> -->
               <el-button slot="append" type="success" icon="el-icon-search" @click="getD3name(name,tag)"></el-button>
             </el-input>

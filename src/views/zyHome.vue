@@ -5,6 +5,13 @@
         <el-col :span="16" :offset="4">
         <div class="el-input-box el-col">
           <el-input placeholder="请输入内容" v-model="input3" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+            <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"></el-option>
+            </el-select>
             <el-button slot="append" icon="el-icon-search" @click="getInputBtn()"></el-button>
           </el-input>
         </div>
@@ -170,7 +177,10 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
     data() {
       return {
         input3:'',
+        select: '请选择',
         select_name:'',
+        selectSearchChange:'',
+        options:[{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}],
         tag:'',
         getListInfo:[],
         name:'',
@@ -214,6 +224,12 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
       // 点击搜索
       getInputBtn(){
         let that = this;
+        if(that.selectSearchChange == ''){
+          this.$message.error({
+            message: '请先选择类型',
+          });
+          return
+        }
         if(that.input3 == ''){
           this.$message.error({
               message: '请填写内容',
@@ -230,12 +246,13 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
       });
       that.current_page = 1;
        getSearch({
-          tag: that.tag,
+          tag: that.selectSearchChange,
           search: that.input3,
           pn: that.current_page
        }).then(res =>{
           loading.close();
          if(res.data.code == 0){
+           that.tag= that.selectSearchChange;
            console.log(1)
             let getListInfo = res.data.data;
             for(var i = 0;i<getListInfo.length;i++){
@@ -576,6 +593,10 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         }
         this.getListInfo= getListInfo;
       },
+      searchDownChange(e){
+        console.log(e)
+        this.selectSearchChange = e;
+      }
     },
     computed: {
 

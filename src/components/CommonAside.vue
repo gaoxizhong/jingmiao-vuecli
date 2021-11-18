@@ -231,7 +231,13 @@ export default {
       },
        aa(){
           let arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
-         console.log(arryinfo)
+          let arr = [];
+          arr.push(this.datalist[0].knowledge_base_name);
+          arr.push(this.datalist[0].subordinate[0].name);
+          arr.push(this.datalist[0].subordinate[0].subordinate[0].name);
+          arr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel1);
+          arr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0].departmentLevel2);
+         console.log(arr)
           let name = arryinfo.departmentLevel2;
           let tag = arryinfo.tag;
           this.$store.dispatch("sickNess",name);
