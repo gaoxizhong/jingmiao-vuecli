@@ -5,16 +5,6 @@
       <div style="color:#444;font-size:15px;padding-right:10px;">关系文字显示</div>
       <div class="gState" style="margin: 6px 0;">
         <el-switch v-model="value" active-value="1" inactive-value="0" @change="changeTextState($event)"></el-switch>
-        <!-- <span
-          @click="changeTextState(0)"
-          :class="{ active: isShowText }"
-          style="border-top-right-radius:0;border-bottom-right-radius:0;"
-        >显示</span>
-        <span
-          @click="changeTextState(2)"
-          :class="{ active: textState === 2 }"
-          style="border-top-left-radius:0;border-bottom-left-radius:0;position:relative;"
-        >隐藏</span> -->
       </div>
     </div>
     <svg
@@ -23,20 +13,6 @@
       :height="viewHeight - 180"
     ></svg>
     <!-- 绘制图例 -->
-
-    <!-- <div id="indicator">
-      <div v-for="(items, index) in labels" :key="index">
-        <span
-          @click="hideNodeOfType"
-          :data-state="states[index]"
-          :data-index="index"
-          style="cursor: pointer;"
-          :style="{ backgroundColor: states[index] === 'on' ? colors[index] : '#aaa' }"
-        ></span>
-        {{ items }}
-      </div>
-    </div> -->
-
   </div>
 </template>
 
@@ -156,64 +132,7 @@ export default {
             // this.stateInit()
           }
         },
-        // {
-        //   title: '隐藏节点',
-        //   action: (elm, d) => {
-        //     console.log(d)
-        //     // 遍历删除节点
-        //     this.nodes = this.nodes.filter(node => {
-        //       if (node.id === d.id) return false
-        //       else return true
-        //     })
-        //     // 遍历删除关系
-        //     this.links = this.links.filter(link => {
-        //       if (link.source.id === d.id || link.target.id === d.id) return false
-        //       else return true
-        //     })
-        //     this.d3render() // 重新渲染图
-        //     this.stateInit()
-        //   },
-        //   disabled: false // optional, defaults to false
-        // },
-        // {
-        //   title: '显示节点关联图',
-        //   action: (elm, d) => {
-        //     console.log(d)
-        //     // 遍历保留对应节点
-        //     this.nodes = this.data.nodes.filter(node => {
-        //       if (node.id === d.id) return true
-        //       else {
-        //         for (var i = 0; i < this.data.links.length; i++) {
-        //           // 如果links的起点等于name，并且终点等于正在处理的则显示
-        //           if (this.data.links[i].source.id === node.id && this.data.links[i].target.id === d.id) {
-        //             return true
-        //           }
-        //           if (this.data.links[i].target.id === node.id && this.data.links[i].source.id === d.id) {
-        //             return true
-        //           }
-        //         }
-        //         return false
-        //       }
-        //     })
-        //     // 遍历保留节点的关联关系
-        //     this.links = this.data.links.filter(link => {
-        //       if (link.source.id === d.id || link.target.id === d.id) return true
-        //       else return false
-        //     })
-        //     this.d3render() // 重新渲染图
-        //     this.stateInit()
-        //   }
-        // },
-        // {
-        //   title: '显示所有查询节点',
-        //   action: (elm, d) => {
-        //     this.nodes = this.data.nodes
-        //     // 遍历保留节点的关联关系
-        //     this.links = this.data.links
-        //     this.d3render() // 重新渲染图
-        //     this.stateInit()
-        //   }
-        // }
+
       ],
       isEdit: true,
     }
@@ -271,6 +190,7 @@ export default {
 
       // this gets executed when a contextmenu event occurs
       return function (event, data) {
+      event.stopPropagation() // 阻止事件冒泡
         // 指向右键触发的节点
         var elm = this
         if(data.label == 'Att'){
@@ -308,7 +228,6 @@ export default {
           .style('left', (event.pageX - 2) + 'px')
           .style('top', (event.pageY - 2) + 'px')
           .style('display', 'block')
-
         event.preventDefault()
         }
 
@@ -413,10 +332,13 @@ export default {
 
       var svg = _this.svgDom
         .on('click', () => {
+              d3.select('body').on('click.d3-context-menu', function () {
+                d3.select('.d3-context-menu').style('display', 'none')
+              })
           // console.log(this.isNodeClicked)
           this.isNodeClicked = false
           // 移除所有样式
-          this.clearGraphStyle()
+          this.clearGraphStyle();
         })
         // 给画布绑定zoom事件（缩放、平移）
         .call(d3.zoom().on('zoom', event => {
@@ -523,13 +445,9 @@ export default {
         .attr("name", d => d.properties.name.text?d.properties.name.text:d.properties.name)
         .attr("id", d => d.id)
         .call(this.drag(simulation))
-        .on("click", nodeClick)
+        .on("click",  _this.contextMenu(this.menu))
         .on('mouseenter', function (event) {
-          // console.dir(this)
           const node = d3.select(this)
-          // node.attr("class", "fixed")
-          // node.classed("fixed", true)
-          // console.log(node)
           //获取被选中元素的名字
           let name = node.attr("name")
           let id = node.attr("id")
@@ -539,7 +457,6 @@ export default {
           _this.$set(_this.selectNodeData, 'id', id)
           _this.$set(_this.selectNodeData, 'name', name)
           _this.$set(_this.selectNodeData, 'color', color)
-
           //遍历查找id对应的属性
           for (let item of _this.nodes) {
             if (item.id == id) {
@@ -552,22 +469,14 @@ export default {
         })
         .on('mouseleave', event => {
           if (!this.isNodeClicked) {
-            this.clearGraphStyle()
+            // 移除所有样式
+            this.clearGraphStyle();
           }
         })
-        .on('contextmenu', _this.contextMenu(this.menu))
-        // .on('contextmenu', function (d, i) {
-        //   // 阻止默认右键菜单的弹出
-        //   d3.event.preventDefault()
-
-        // })
-        // .call(d3.drag()
-        //   .on("start", dragstarted)
-        //   .on("drag", dragged)
-        //   .on("end", dragended)
-        // )
+        // .on('contextmenu', _this.contextMenu(this.menu))
 
       // 显示所有的文本
+
       // 设置大小、填充颜色、名字、text()设置文本
       // 使用 attr("text-anchor", "middle")设置文本居中
         var text = svg.append("g")
@@ -583,7 +492,7 @@ export default {
           return textBreaking(d3.select(this), d.properties.name.text?d.properties.name.text:d.properties.name)
         })
         .call(this.drag(simulation))
-        .on("click", nodeClick)
+        .on("click",  _this.contextMenu(this.menu))
         .on('mouseenter', function (event) {
           // console.dir(this)
           const text = d3.select(this)
@@ -618,12 +527,9 @@ export default {
             this.clearGraphStyle()
           }
         })
-        .on('contextmenu', _this.contextMenu(this.menu))
-        // .call(d3.drag()
-        //   .on("start", dragstarted)
-        //   .on("drag", dragged)
-        //   .on("end", dragended)
-        // )
+
+        // .on('contextmenu', _this.contextMenu(this.menu))
+
 
       // 圆增加title
       node.append("title").text(d => d.properties.name.text?d.properties.name.text:d.properties.name)
@@ -754,35 +660,48 @@ export default {
             })
         }
       }
+
+
+      function nodeClick(event,d){
+        console.log(d)
+        let name = '';
+        name = d.properties.kgid?d.properties.kgid.text:d.properties.name.text;
+        let tag = d.tag;
+        // _this.$emit('getData',tag,name)
+
+        
+        _this.contextMenu(this.menu)
+      }
       // 分别定义节点和文本的点击事件
       // 优化：由于点击前必定触发mouseenter事件，所以不用再去查找节点id
       //      直接根据this.selectNodeData拿到节点信息
       // 优化后：只需定义一个点击事件即可
-      function nodeClick(event, d) {
-        // console.log('node clicked!')
-        // sticked用于固定节点（无法实现节点固定功能）
-        // delete d.fx
-        // delete d.fy
-        // d3.select(this).classed("fixed", true)
-        // simulation.alpha(1).restart()
+      // function nodeClick(event, d) {
 
-        // 获取被选中元素信息
-        // const node = d3.select(this)
-        // let name = node.attr("name")
-        // let id = node.attr("id")
-        // let color = node.attr('fill')
-        // console.log(name, id, color)
+      //   // console.log('node clicked!')
+      //   // sticked用于固定节点（无法实现节点固定功能）
+      //   // delete d.fx
+      //   // delete d.fy
+      //   // d3.select(this).classed("fixed", true)
+      //   // simulation.alpha(1).restart()
 
-        // 直接通过this.selectNodeData拿到节点信息
-        event.cancelBubble = true
-        event.stopPropagation() // 阻止事件冒泡
+      //   // 获取被选中元素信息
+      //   // const node = d3.select(this)
+      //   // let name = node.attr("name")
+      //   // let id = node.attr("id")
+      //   // let color = node.attr('fill')
+      //   // console.log(name, id, color)
 
-        const name = _this.selectNodeData.name
-        _this.isNodeClicked = true
-        _this.changeGraphStyle(name)
+      //   // 直接通过this.selectNodeData拿到节点信息
+      //   event.cancelBubble = true
+      //   event.stopPropagation() // 阻止事件冒泡
 
-        return false
-      }
+      //   const name = _this.selectNodeData.name
+      //   _this.isNodeClicked = true
+      //   _this.changeGraphStyle(name)
+
+      //   return false
+      // }
     },
     // 根据当前节点名称来更改图样式
     changeGraphStyle (name) {
@@ -859,11 +778,14 @@ export default {
         })
     },
     clearGraphStyle () {
+      console.log(d3.select('.d3-context-menu').attr('display'))
       // 移除所有样式
       this.svgDom.select('.nodes').selectAll('circle').attr('class', '')
       this.svgDom.select(".texts").selectAll('text').attr('class', '')
       this.svgDom.select('.links').selectAll('line').attr('class', '').attr('marker-end', 'url(#posMarker)')
       this.svgDom.select(".linkTexts").selectAll('text').attr('class', '')
+
+
       // d3.select(this).attr('class', '')
     },
     drag(simulation) {
