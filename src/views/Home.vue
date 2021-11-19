@@ -169,7 +169,8 @@ import {getHomeRightList,getSearch} from '@/api/data'
         hove_index: 0,
         current_page:1,
         total: 0,
-        pageSize: 20
+        pageSize: 20,
+        crumbsarr:[],
       }
     },
     active(){
@@ -179,6 +180,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
       console.log('created')
         this.select_name = this.$route.query.name;  //接受参数关键代码
         this.tag = this.$route.query.tag;
+        this.crumbsarr = this.$route.query.crumbsarr;
         this.getHomeRightList();
     },
     mounted(){
