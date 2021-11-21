@@ -32,4 +32,6 @@ export const inputName = ({commit},data) =>{
 export const hotName = ({commit},data) =>{
   commit('hotName',data);
 }
-
+export const crumbsarr = ({commit},data) =>{
+  commit('crumbsarr',data);
+}

@@ -1,5 +1,10 @@
 <template>
    <div class="content-box">
+     <div>
+         <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item v-for="(item,index) in crumbs" :key="index">{{item}}</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
      <div class="inside-content-box">
        <a href="#" class="box2-span" @click="fanhui_btn()">
          <img src="../assets/image/fan-left.png" alt=""> 返回
@@ -263,19 +268,23 @@ import {getSickNess,getD3Search} from '@/api/data'
         labels: [],
         linkTypes: [],
         viewHeight:'',
+        crumbs:[]
       }
     },
     beforeCreate(){
 
     },
     created(){  //生命周期里接收参数
+
         let getViewportSize = this.$getViewportSize();
         this.viewHeight = getViewportSize.height;
         this.viewWidth = getViewportSize.width;
         this.name_1 = this.$route.query.name;  //接受参数关键代码
         this.tag = this.$route.query.tag;
         this.type = this.$route.query.type;
-        console.log(this.type)
+        let crumbs =  this.$store.state.crumbsarr;
+        this.crumbs = crumbs;
+        crumbs.push(this.name_1);
         if(this.type == 'xy'){
           this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}]
         }
@@ -296,9 +305,6 @@ import {getSickNess,getD3Search} from '@/api/data'
       medicine_click(tag,name){
         this.name_1 = name;
         this.tag = tag;
-        console.log(tag)
-        console.log(name)
-
         this.getD3name(this.name_1);
       },
       dian_left(){
@@ -352,7 +358,9 @@ import {getSickNess,getD3Search} from '@/api/data'
             that.name = getinfo.sickness_name.text;
             that.name_2 = getinfo.sickness_name.text;
             let getinfo_arr = [];
-
+            let crumbs = this.crumbs;
+            crumbs.pop();
+            crumbs.push(this.name);
             for(let key in getinfo){
               let is_list = 0;
               if( getinfo[key].text.name ){
@@ -396,7 +404,10 @@ import {getSickNess,getD3Search} from '@/api/data'
       },
       // 返回上一步
       fanhui_btn(){
-        this.$router.go(-1)
+        let crumbs = this.crumbs;
+        crumbs.pop();
+        // this.$router.go(-1);  // ios 不支持
+        location.href = "javascript:history.go(-2);"
       },
       // ===============================
       selectchange(e){
@@ -570,12 +581,16 @@ import {getSickNess,getD3Search} from '@/api/data'
         linkTypes.push('att');
         that.linkTypes = linkTypes;
         that.labels = labels;
-        console.log(nodes)
-        console.log(links);
         that.data = { nodes, links }
       },
       getD3name(name){
         let name_1 = name;
+        if(name_1 == '' || !name_1){
+          this.$message.error({
+            message: '内容不能为空!',
+          });
+          return
+        }
         this.name_1 = name_1;
         this.getSickNess(name_1);
         this.getD3Search(name_1);
@@ -584,8 +599,7 @@ import {getSickNess,getD3Search} from '@/api/data'
       searchEnterFun(e,name){
         var keyCode = window.event?e.keyCode:e.which;
         if(keyCode == 13){
-          this.getSickNess(name);
-          this.getD3Search(name);
+          this.getD3name(name);
         }
       },
     }

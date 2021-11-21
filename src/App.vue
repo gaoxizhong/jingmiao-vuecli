@@ -33,7 +33,20 @@ a{
     }
   }
 }
-
+.el-breadcrumb__separator {
+    margin: 0 !important;
+}
+.el-breadcrumb{
+  font-size: 13px !important;
+  padding-bottom: 20px;
+}
+.el-breadcrumb__inner{
+  color: #9b9797 !important;
+}
+.el-breadcrumb__item:last-child .el-breadcrumb__inner, .el-breadcrumb__item:last-child .el-breadcrumb__inner a, .el-breadcrumb__item:last-child .el-breadcrumb__inner a:hover, .el-breadcrumb__item:last-child .el-breadcrumb__inner:hover{
+  color: #333 !important;
+  font-weight: 600;
+}
 </style>
 <script>
 export default {

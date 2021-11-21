@@ -34,3 +34,6 @@ export const inputName = (state,input_name) =>{
 export const hotName = (state,hot_name) =>{
   state.hot_name = hot_name
 }
+export const crumbsarr = (state,crumbsarr) =>{
+  state.crumbsarr = crumbsarr
+}

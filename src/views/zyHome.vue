@@ -1,6 +1,11 @@
 <template>
    <div class="content-box">
      <div class="inside-content-box" id="inside-content-box">
+       <div>
+         <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item v-for="(item,index) in crumbs" :key="index">{{item}}</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
       <el-row>
         <el-col :span="16" :offset="4">
         <div class="el-input-box el-col">
@@ -188,23 +193,23 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         current_page:1,
         total: 0,
         pageSize: 20,
+        crumbs:[],
       }
     },
     active(){
       console.log('active')
     },
     created(){
-      console.log('created')
         this.select_name = this.$route.query.name;  //接受参数关键代码
         this.tag = this.$route.query.tag;
-        console.log(this.tag)
+        let crumbs =  this.$store.state.crumbsarr;
+        this.crumbs = crumbs;
+        console.log(crumbs)
         this.getzyHomeRightList();
     },
     mounted(){
-      console.log('mounted')
     },
     updated() {
-        console.log('updated')
      },
     methods:{
       // 点击分页功能

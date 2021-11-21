@@ -1,11 +1,14 @@
 <template>
   <div class="content-box">
     <div class="back-box">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item v-for="(item,index) in crumbs" :key="index">{{item}}</el-breadcrumb-item>
+      </el-breadcrumb>
       <a href="#" class="box2-span" @click="fanhui_btn()">
         <img src="../assets/image/fan-left.png" alt /> 返回
       </a>
     </div>
-    <div class="info-box" :style="`height:${viewHeight - 130}px;`">
+    <div class="info-box" :style="`height:${viewHeight - 150}px;`">
       <div class="info-box1">
         <div class="info-box2">
           <div class="infoDetail-title">{{infoDetail.name}}</div>
@@ -42,10 +45,10 @@
 }
 .back-box {
   width: 100%;
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 80px;
+  justify-content: flex-start; */
+  margin-bottom: 50px;
 }
 .box2-span {
   width: 80px;
@@ -168,7 +171,8 @@ export default {
       viewHeight: "",
       infoDetail: {},
       tag: "",
-      kgid:""
+      kgid:"",
+      crumbs:[]
     };
   },
   created() {
@@ -189,7 +193,10 @@ export default {
     },
     // 返回上一步
     fanhui_btn() {
-      this.$router.go(-1);
+      let crumbs = this.crumbs;
+      crumbs.pop();
+      // this.$router.go(-1);  // ios 不支持
+      location.href = "javascript:history.go(-2);"
     },
 
     // 获取详情
@@ -204,6 +211,9 @@ export default {
         .then(res => {
           if (res.data.code == 0) {
             that.infoDetail = res.data.data;
+            let crumbs =  that.$store.state.crumbsarr;
+            crumbs.push(res.data.data.name)
+            this.crumbs = crumbs;
           } else {
             this.$message.error({
               message: res.data.msg

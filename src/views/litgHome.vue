@@ -1,97 +1,102 @@
 <template>
   <div class="content-box">
     <div class="inside-content-box" id="inside-content-box">
-        <el-row>
-          <el-col :span="12" :offset="5">
-            <div class="el-input-box el-col">
-              <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-                <!-- <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"></el-option>
-                </el-select> -->
-                <el-button slot="append" icon="el-icon-search" @click="getInputBtn()" style=" padding: 12px 30px;"></el-button>
-              </el-input>
-            </div>
-          </el-col>
-        </el-row>
-        <div class="content-box1">
-            <div class="content-box1-left">
-                <div class="title-info-box">
-                    <a href="javascript:0;" class="title-info-box-1" @click="orderClick()">
-                      <span style="margin-right:4px;">按年份排序</span>
-                      <i class="el-icon-sort" style="color:#5578F0;"></i>
-                    </a>
-                    <!-- <div>找到<span style="color:#5578F0;">{{count}}</span>条结果</div> -->
-                </div>
-                <a href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
-                  <!-- 文献 -->
-                  <div v-if="tag == 'document'">
-                    <div class="item-title">{{item.title}}</div>
-                    <div class="tag-top-box">
-                        <div class="zuozhe-box" style="width:auto;padding-right:8px;">作者:</div>
-                        <div class="tap-top-span">
-                          <a href="javascript:0;" v-for="(items,index) in item.author" @click.stop="goToauthor(items.kgid)" :key="index">{{items.name?items.name:''}}</a>
-                        </div>
-                    </div>
-                    <div class="item-center-box show-box" :class="{ cool: !showFull[index].status }"><span>摘要:</span> {{item.abstract}}</div>
-                    <div class="full_box">
-                      <a href="javascript:0;" class='full_txt' @click.stop='openFulltxt(index)' v-if='item.abstract.length > 100'>{{!showFull[index].status?'展开':'收起'}}</a>
-                    </div>
-                    <div class="key-box">
-                        <div class="zuozhe-box">关键词:</div>
-                        <div class="keyspan-box">
-                          <span :class="{active: idx == 0 }" v-for="(keys,idx) in item.keyword" :key="idx">{{keys}}</span>
-                        </div>
-                    </div>
-                    <div class="item-center-box"><span>年份:</span> {{item.year}}</div>
-                    <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian"  :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"  v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
-                  </div>
-                  <!-- 指南 -->
-                  <div v-else>
-                    <div class="item-title">{{item.title}}</div>
-                    <div class="tag-top-box">
-                        <div class="zuozhe-box" style="width:auto;padding-right:8px;">数据来源:</div>
-                        <div class="tap-top-span">{{item.source?item.source:'暂无'}}</div>
-                    </div>
-                    <div class="item-center-box"><span>制定者：</span> {{item.constitutor?item.constitutor:"暂无"}}</div>
-                    <div class="item-center-box"><span>年份:</span> {{item.year}}</div>
-                    <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)" v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
-                  </div>
+      <div>
+         <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item v-for="(item,index) in crumbs" :key="index">{{item}}</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+      <el-row>
+        <el-col :span="12" :offset="5">
+          <div class="el-input-box el-col">
+            <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+              <!-- <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"></el-option>
+              </el-select> -->
+              <el-button slot="append" icon="el-icon-search" @click="getInputBtn()" style=" padding: 12px 30px;"></el-button>
+            </el-input>
+          </div>
+        </el-col>
+      </el-row>
+      <div class="content-box1">
+        <div class="content-box1-left">
+            <div class="title-info-box">
+                <a href="javascript:0;" class="title-info-box-1" @click="orderClick()">
+                  <span style="margin-right:4px;">按年份排序</span>
+                  <i class="el-icon-sort" style="color:#5578F0;"></i>
                 </a>
-                <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
+                <!-- <div>找到<span style="color:#5578F0;">{{count}}</span>条结果</div> -->
             </div>
-            <div  class="content-box1-right" v-if="tag == 'document'">
-                <div>
-                  <div class="bubble-box">
-                    <d3Bubble :data='data1' v-if="is_show && data1.nodes.length > 0" @getData="bubble_click" />
-                    <el-empty description="暂无数据..." v-if='!data1.nodes || data1.nodes.length <= 0'></el-empty>
-                  </div>
-                  <div class="atlas-box">
-                    <d3Atlas
-                      :data="data"
-                      :labels="labels"
-                      :linkTypes="linkTypes" 
-                      v-if="data.nodes.length > 0"
-                    />
-                    <el-empty description="暂无数据..." v-if='!data.nodes || data.nodes.length <= 0'></el-empty>
-                  </div>
+            <a href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
+              <!-- 文献 -->
+              <div v-if="tag == 'document'">
+                <div class="item-title">{{item.title}}</div>
+                <div class="tag-top-box">
+                    <div class="zuozhe-box" style="width:auto;padding-right:8px;">作者:</div>
+                    <div class="tap-top-span">
+                      <a href="javascript:0;" v-for="(items,index) in item.author" @click.stop="goToauthor(items.kgid)" :key="index">{{items.name?items.name:''}}</a>
+                    </div>
                 </div>
+                <div class="item-center-box show-box" :class="{ cool: !showFull[index].status }"><span>摘要:</span> {{item.abstract}}</div>
+                <div class="full_box">
+                  <a href="javascript:0;" class='full_txt' @click.stop='openFulltxt(index)' v-if='item.abstract.length > 100'>{{!showFull[index].status?'展开':'收起'}}</a>
+                </div>
+                <div class="key-box">
+                    <div class="zuozhe-box">关键词:</div>
+                    <div class="keyspan-box">
+                      <span :class="{active: idx == 0 }" v-for="(keys,idx) in item.keyword" :key="idx">{{keys}}</span>
+                    </div>
+                </div>
+                <div class="item-center-box"><span>年份:</span> {{item.year}}</div>
+                <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian"  :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"  v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
+              </div>
+              <!-- 指南 -->
+              <div v-else>
+                <div class="item-title">{{item.title}}</div>
+                <div class="tag-top-box">
+                    <div class="zuozhe-box" style="width:auto;padding-right:8px;">数据来源:</div>
+                    <div class="tap-top-span">{{item.source?item.source:'暂无'}}</div>
+                </div>
+                <div class="item-center-box"><span>制定者：</span> {{item.constitutor?item.constitutor:"暂无"}}</div>
+                <div class="item-center-box"><span>年份:</span> {{item.year}}</div>
+                <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)" v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
+              </div>
+            </a>
+            <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
+        </div>
+        <div  class="content-box1-right" v-if="tag == 'document'">
+            <div>
+              <div class="bubble-box">
+                <d3Bubble :data='data1' v-if="is_show && data1.nodes.length > 0" @getData="bubble_click" />
+                <el-empty description="暂无数据..." v-if='!data1.nodes || data1.nodes.length <= 0'></el-empty>
+              </div>
+              <div class="atlas-box">
+                <d3Atlas
+                  :data="data"
+                  :labels="labels"
+                  :linkTypes="linkTypes"
+                  v-if="data.nodes.length > 0"
+                />
+                <el-empty description="暂无数据..." v-if='!data.nodes || data.nodes.length <= 0'></el-empty>
+              </div>
             </div>
         </div>
-              <!-- 分页展示 -->
-        <div class="pagination-box">
-          <el-pagination
-          background
-          @current-change="handleCurrentChange"
-          layout="total, prev, pager, next"
-          :total="count"
-          :page-size="pageSize"
-          :current-page='current_page'>
-          </el-pagination>
-        </div>
+      </div>
+            <!-- 分页展示 -->
+      <div class="pagination-box">
+        <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        layout="total, prev, pager, next"
+        :total="count"
+        :page-size="pageSize"
+        :current-page='current_page'>
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -136,13 +141,16 @@ export default {
         is_Atlas:false,
         showFull: [],
         order:'desc',  // 年份排序  asc 正序  desc  倒序
+        crumbs:[]
       }
     },
     active(){
       console.log('active')
     },
     created(){
-      console.log('created') //接受参数关键代码
+        let crumbs =  this.$store.state.crumbsarr;
+        this.crumbs = crumbs;
+        console.log(crumbs)
         // this.select_name = this.$route.query.name;
         this.tag = this.$route.query.tag;
         this.setsickNess();

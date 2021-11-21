@@ -61,15 +61,20 @@
                                   <span slot="title" class="span-text">{{ item_5.departmentLevel2?item_5.departmentLevel2:item_5.level2 }}</span>
                                 </template>
 
-                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_6.name }}</el-menu-item>
+                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate"
+                                :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}-${idx_6}`"
+                                :name='item_6.name' :tag='item_6.tag'
+                                :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.level?item_4.level:(item_4.departmentLevel1?item_4.departmentLevel1:item_4.departmentLevel2),item_5.departmentLevel2?item_5.departmentLevel2:item_5.level2,item_6.name]  @click="clickItem_2($event)"><i style="width: 34px;display: inline-block;"></i>{{ item_6.name }}</el-menu-item>
                                 </el-submenu>
                               </template>
                               <!-- 如果第五层没有子菜单 -->
-                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :name='item_5.name' :tag='item_5.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_5.name }}</el-menu-item>
+                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`"
+                              :key="idx_5" :name='item_5.name' :tag='item_5.tag'
+                              :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.level?item_4.level:(item_4.departmentLevel1?item_4.departmentLevel1:item_4.departmentLevel2),item_5.name]  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_5.name }}</el-menu-item>
                               </template>
-															<!-- <el-menu-item v-for="(item_5,idx_5) in item_4.departmentLevel2.name" :key="idx_5" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item> -->
 														</el-submenu>
 													</template>
+
 													<template v-else-if="item_4.departmentLevel2.name">
 														<el-submenu :index="`${index}-${idx_2}-${idx_3}-${idx_4}`" :key="idx_4">
 															<template slot="title">
@@ -85,28 +90,28 @@
                                   <span slot="title" class="span-text">{{ item_5.departmentLevel2 }}</span>
                                 </template>
 
-                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_6.name }}</el-menu-item>
+                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.departmentLevel1,item_5.departmentLevel2,item_6.name]  @click="clickItem_2($event)"><i style="width: 30px;display: inline-block;"></i>{{ item_6.name }}</el-menu-item>
                                 </el-submenu>
                               </template>
                               <!-- 如果第五层没有子菜单 -->
-                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_5.departmentLevel2 }}</el-menu-item>
+                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :name='item_5.departmentLevel2' :tag='item_5.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.departmentLevel1,item_5.departmentLevel2] @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_5.departmentLevel2 }}</el-menu-item>
                               </template>
 															<!-- <el-menu-item v-for="(item_5,idx_5) in item_4.departmentLevel2.name" :key="idx_5" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item> -->
 														</el-submenu>
 													</template>
 
 													<!-- 如果第四层没有子菜单 -->
-													<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}`" :key="idx_4" :name='item_4.departmentLevel2' :tag='item_4.tag'  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_4.departmentLevel2 }}</el-menu-item>
+													<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}`" :key="idx_4" :name='item_4.departmentLevel2' :tag='item_4.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.departmentLevel2]  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_4.departmentLevel2 }}</el-menu-item>
 												</template>
 											</el-submenu>
 										</template>
 										<!-- 如果第三层没有子菜单 -->
-										<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}`" :key="idx_3" :name='item_3.name' :tag='item_3.tag'  @click="clickItem_2($event)"><i style="width: 20px;display: inline-block;"></i>{{ item_3.name }}</el-menu-item>
+										<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}`" :key="idx_3" :name='item_3.name' :tag='item_3.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name]  @click="clickItem_2($event)"><i style="width: 20px;display: inline-block;"></i>{{ item_3.name }}</el-menu-item>
 									</template>
 								</el-submenu>
 							</template>
 							<!-- 如果第二层没有子菜单 -->
-							<el-menu-item v-else :index="`${index}-${idx_2}`" :key="idx_2" style=" display: flex;justify-content: flex-start;align-items:center; padding-left:30px !important;" :tag='item_2.tag' :name='item_2.name' @click="clickItem_2($event)">
+							<el-menu-item v-else :index="`${index}-${idx_2}`" :key="idx_2" style=" display: flex;justify-content: flex-start;align-items:center; padding-left:30px !important;"  :arr=[item.knowledge_base_name,item_2.name] :tag='item_2.tag' :name='item_2.name' @click="clickItem_2($event)">
                 <i class="el-icon-guide"></i>
                 <span slot="title">{{ item_2.name }}</span>
               </el-menu-item>
@@ -121,14 +126,15 @@
 					</el-menu-item>
 				</template>
 			</template>
-      <!-- <template>
-        <el-menu-item style="text-align:left; padding-left:20px !important;">
+
+      <template>
+        <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoQA">
           <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
           <span slot="title" style="padding-left: 8px;font-size: 18px;">问答</span>
         </el-menu-item>
-      </template> -->
-    </el-menu>
+      </template>
 
+    </el-menu>
 </template>
 <style>
 .logo-box{
@@ -237,7 +243,7 @@ export default {
           crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].name);
           crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel1);
           crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0].departmentLevel2);
-         console.log(crumbsarr)
+          this.$store.dispatch("crumbsarr",crumbsarr);
           let name = arryinfo.departmentLevel2;
           let tag = arryinfo.tag;
           this.$store.dispatch("sickNess",name);
@@ -251,7 +257,6 @@ export default {
               query:{           //路由传参时push和query搭配使用 ，作用时传递参数
               name,
               tag,
-              crumbsarr,
               }
             })
           }
@@ -265,7 +270,26 @@ export default {
         handleClose(key, keyPath) {
             this.oneColumn = key;
         },
+        // 跳转问答首页
+        gotoQA(){
+          // this.$emit('sickNess');
+          // this.$router.replace({
+          //   path:'/QAhome',
+          //   query:{
+          //     tag:'QA',
+          //   }
+          // })
+          // 新页面打开
+           let newUrl = this.$router.resolve({
+             path: "/QAhome"
+            });
+          window.open(newUrl.href, "_blank");
+        },
         clickItem_2(e){
+          console.log(e)
+            let crumbsarr = e.$attrs.arr;
+            let b1 = crumbsarr.slice(); //  不修改原数组
+            this.$store.dispatch("crumbsarr",b1);
              window.localStorage.setItem('is_details',0);
              if(this.oneColumn.substring(0,1) == 0){
                 let name = e.$attrs.name;
@@ -273,11 +297,11 @@ export default {
                 // this.$store.dispatch("sickNess",name);
                 this.$emit('sickNess')
                 this.$router.replace({  //核心语句
-                    path:'/Home',   //跳转的路径
-                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                      name,
-                      tag,
-                    }
+                  path:'/Home',   //跳转的路径
+                  query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                    name,
+                    tag,
+                  }
                 })
               return
              }

@@ -16,6 +16,7 @@ const state ={
   idx: 0,
   input_name: '', // 详情页搜索
   hot_name:'',  // 气泡图name
+  crumbsarr:[]  //  面包屑数组
 }
 export default new Vuex.Store({
   state,
