@@ -21,6 +21,7 @@
             </div>
           </dd>
         </dl>
+        <div id="msg_end" ref="msg_end" style="height:0px; overflow:hidden"></div>
       </div>
 
       <div id="side-box" class="scrollbar" style="width: 300px;">
@@ -31,7 +32,7 @@
           <div class="tab-content">
             <div id="" class="tab-pane scrollbar active custom_content_TabPanel">
               <ul class="wenti-ul">
-                <li style="width: 100.0%;" class="wenti-ul-li" v-for="(item,index) in popular_problem" :key="index"><span>{{index + 1}}、</span>{{item.text}}</li>
+                <li style="width: 100.0%;" class="wenti-ul-li" v-for="(item,index) in popular_problem" :key="index" @click="wentiClick(item.text)"><span>{{index + 1}}、</span>{{item.text}}</li>
               </ul>
             </div>
           </div>
@@ -60,6 +61,7 @@
 </template>
 
 <script>
+import {getQuestion} from '@/api/data'
 export default {
   name: 'QAhome',
   data(){
@@ -68,10 +70,8 @@ export default {
       textarea: '',
       is_kefu:1,  // 1为客服 msg-recv， 2为用户  msg-send
       input_textarea:'',
-      QAList:[
-        {id:1,text:'我是机器人！',type:'1',name:'机器人小智',time:'2021-11-11 04:04:04'},
-        {id:2,text:'哦阿克苏达六十大寿',type:'2',name:'',time:'2021-11-11 04:04:04'}
-      ],
+      curTime:'',
+      QAList:[],
       popular_problem:[
         {id:1,text:'糖尿病的病因是什么'},
         {id:2,text:'糖尿病应该怎么预防'},
@@ -97,15 +97,84 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
+    this.getCurrentTime();
+     this.QAList.push({
+      type:1,
+      text:'您好，这里是智能机器人客服，很高兴为您服务',
+      name:'智能客服',
+      time: this.curTime
+    })
   },
+  mounted(){
+
+  },
+
   methods: {
+    /**
+     * 获取当前时间 格式：yyyy-MM-dd HH:MM:SS
+    */
+    getCurrentTime(){
+        var date = new Date();//当前时间
+        var month = this.zeroFill(date.getMonth() + 1);//月
+        var day = this.zeroFill(date.getDate());//日
+        var hour = this.zeroFill(date.getHours());//时
+        var minute = this.zeroFill(date.getMinutes());//分
+        var second = this.zeroFill(date.getSeconds());//秒
+
+        //当前时间
+        var curTime = date.getFullYear() + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+         this.curTime = curTime;
+         console.log(curTime)
+    },
+
+    /**
+     * 补零
+     */
+    zeroFill(i){
+        if (i >= 0 && i <= 9) {
+            return "0" + i;
+        } else {
+            return i;
+        }
+    },
     onSendClcik(){
       let that = this;
       let input_textarea = that.input_textarea;
+
       if(input_textarea == ''){
         return
       }
-      alert(input_textarea)
+      that.getCurrentTime();
+      that.QAList.push({
+        type:2,
+        text: input_textarea,
+        name:'',
+        time: that.curTime
+      })
+      let pearms = {
+        question:input_textarea
+      }
+      getQuestion(pearms).then(res =>{
+        if(res.data.code == 0){
+          that.input_textarea = '';
+          let QAList = that.QAList;
+          QAList.push(res.data.data.answer);
+          that.QAList = QAList;
+          // 选中ref
+          that.$refs.msg_end.scrollIntoView({
+            behavior: "smooth",  // 平滑过渡
+            block:    "start"  // 上边框与视窗顶部平齐。默认值
+          });
+
+        }
+      })
+    },
+    // 点击热门问题
+    wentiClick(t){
+      let text = t;
+      let that = this;
+      this.input_textarea = text;
+      that.onSendClcik();
     }
   },
 }
@@ -252,7 +321,7 @@ dd, dl, dt, li, ol, ul {
   display: inline-block;
   background-color: #fff;
   position: relative;
-  max-width: 260px;
+  max-width: 320px;
 }
 .bot .msg .msg-content {
     float: right;
@@ -428,7 +497,7 @@ dd, dl, dt, li, ol, ul {
 <style scoped>
   @media screen and (min-width: 768px){
   .msg .msg-content {
-    max-width: 60%;
+    max-width: 76%;
   }
   }
 

@@ -112,3 +112,11 @@ export const getd3Atlas = (params) =>{
     data: params
   })
 }
+// 问答接口
+export const getQuestion = (params) =>{
+  return axios.request({
+    url:'/zsk/qw',
+    method: 'post',
+    data: params
+  })
+}
