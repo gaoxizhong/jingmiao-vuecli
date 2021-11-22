@@ -49,6 +49,16 @@
                <div :class="[{ active: item.principle.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'principle',item.principle.text)">{{item.principle.name}}</div>
                <div :class="[{ active: item.reagent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'reagent',item.reagent.text)">{{item.reagent.name}}</div>
             </div>
+            <!-- 症状体征 -->
+            <div class="tags-list-box" v-if=" tag == 'symptom' ">
+               <div :class="[{ active: item.identify.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'identify',item.identify.text)">{{item.identify.name}}</div>
+               <div :class="[{ active: item.precaution.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'precaution',item.precaution.text)">{{item.precaution.name}}</div>
+               <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
+               <div :class="[{ active: item.etiology.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'etiology',item.etiology.text)">{{item.etiology.name}}</div>
+               <div :class="[{ active: item.abstract.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'abstract',item.abstract.text)">{{item.abstract.name}}</div>
+            
+            </div>
+
             <div class="tags-list-info">{{item.text?item.text:'暂无'}}</div>
           </div>
           <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
@@ -167,7 +177,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}],
+        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'}],
         tag:'',
         getListInfo:[],
         name:'',
@@ -253,6 +263,8 @@ import {getHomeRightList,getSearch} from '@/api/data'
                   getListInfo[i].text = getListInfo[i].majorConstituent.text
                 }else if(that.tag == "inspection"){
                   getListInfo[i].text = getListInfo[i].annotation.text
+                }else if(that.tag == "symptom"){
+                  getListInfo[i].text = getListInfo[i].identify.text
                 }
 
             }
@@ -325,6 +337,8 @@ import {getHomeRightList,getSearch} from '@/api/data'
                 getListInfo[i].text = getListInfo[i].majorConstituent.text
               }else if(that.tag == "inspection"){
                 getListInfo[i].text = getListInfo[i].annotation.text
+              }else if(that.tag == "symptom"){
+                getListInfo[i].text = getListInfo[i].identify.text
               }
             }
             that.getListInfo= getListInfo;
@@ -406,6 +420,48 @@ import {getHomeRightList,getSearch} from '@/api/data'
             getListInfo[index].inspection.active = false;
             getListInfo[index].diagnostiCtriage.active = false;
             getListInfo[index].treatmenCommonSense.active = true;
+            return
+          }
+        }
+        if(this.tag == "symptom"){
+          if(type == 'identify'){
+            getListInfo[index].identify.active = true;
+            getListInfo[index].precaution.active = false;
+            getListInfo[index].inspection.active = false;
+            getListInfo[index].etiology.active = false;
+            getListInfo[index].abstract.active = false;
+            return
+          }
+          if(type == 'precaution'){
+            getListInfo[index].identify.active = false;
+            getListInfo[index].precaution.active = true;
+            getListInfo[index].inspection.active = false;
+            getListInfo[index].etiology.active = false;
+            getListInfo[index].abstract.active = false;
+            return
+          }
+          if(type == 'inspection'){
+            getListInfo[index].identify.active = false;
+            getListInfo[index].precaution.active = false;
+            getListInfo[index].inspection.active = true;
+            getListInfo[index].etiology.active = false;
+            getListInfo[index].abstract.active = false;
+            return
+          }
+          if(type == 'etiology'){
+            getListInfo[index].identify.active = false;
+            getListInfo[index].precaution.active = false;
+            getListInfo[index].inspection.active = false;
+            getListInfo[index].etiology.active = true;
+            getListInfo[index].abstract.active = false;
+            return
+          }
+          if(type == 'abstract'){
+            getListInfo[index].identify.active = false;
+            getListInfo[index].precaution.active = false;
+            getListInfo[index].inspection.active = false;
+            getListInfo[index].etiology.active = false;
+            getListInfo[index].abstract.active = true;
             return
           }
         }

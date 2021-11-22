@@ -49,6 +49,14 @@
               <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
               <div :class="[{ active: item.source.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'source',item.source.text)">{{item.source.name}}</div>
             </div>
+             <!-- 中医库--经络 -->
+            <div class="tags-list-box" v-if=" tag == 'jl'">
+              <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
+              <div :class="[{ active: item.aponeuroticSystem.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'aponeuroticSystem',item.aponeuroticSystem.text)">{{item.aponeuroticSystem.name}}</div>
+              <div :class="[{ active: item.channelSymptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'channelSymptom',item.channelSymptom.text)">{{item.channelSymptom.name}}</div>
+              <div :class="[{ active: item.clinicalFeature.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'clinicalFeature',item.clinicalFeature.text)">{{item.clinicalFeature.name}}</div>
+              <div :class="[{ active: item.collateralSymptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'collateralSymptom',item.collateralSymptom.text)">{{item.collateralSymptom.name}}</div>
+            </div>
              <!-- 中医库--方剂 -->
             <div class="tags-list-box" v-if=" tag == 'fj'">
               <div :class="[{ active: item.composition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'composition',item.composition.text)">{{item.composition.name}}</div>
@@ -66,6 +74,14 @@
               <div :class="[{ active: item.psychologicalFeature.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'psychologicalFeature',item.psychologicalFeature.text)">{{item.psychologicalFeature.name}}</div>
               <div :class="[{ active: item.notEat.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'notEat',item.notEat.text)">{{item.notEat.name}}</div>
               <div :class="[{ active: item.meridianHealth.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'meridianHealth',item.meridianHealth.text)">{{item.meridianHealth.name}}</div>
+            </div>
+             <!-- 中医库--穴位 -->
+            <div class="tags-list-box" v-if=" tag == 'xw'">
+              <div :class="[{ active: item.location.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'location',item.location.text)">{{item.location.name}}</div>
+              <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
+              <div :class="[{ active: item.compatibility.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'compatibility',item.compatibility.text)">{{item.compatibility.name}}</div>
+              <div :class="[{ active: item.acupuncture.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'acupuncture',item.acupuncture.text)">{{item.acupuncture.name}}</div>
+              <div :class="[{ active: item.notions.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'notions',item.notions.text)">{{item.notions.name}}</div>
             </div>
             <div class="tags-list-info">{{item.text?item.text:'暂无'}}</div>
           </div>
@@ -185,7 +201,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}],
+        options:[{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'},{label:'经络',value:'jl'},{label:'穴位',value:'xw'}],
         tag:'',
         getListInfo:[],
         name:'',
@@ -273,7 +289,13 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
                   getListInfo[i].text = getListInfo[i].composition.text
                 }else if(that.tag == "tz"){
                   getListInfo[i].text = getListInfo[i].overallFeature.text
+                }else if(that.tag == "xw"){
+                  getListInfo[i].text = getListInfo[i].location.text
                 }
+                else if(that.tag == "jl"){
+                  getListInfo[i].text = getListInfo[i].indications.text
+                }
+                
             }
             this.getListInfo= getListInfo;
             console.log(this.getListInfo)
@@ -305,7 +327,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         let name = '';
         let kgid = _kgid;
         let tag = that.tag;
-        if(tag == 'zysickness' || tag == 'zy' || tag == 'icd10'){
+        if(tag == 'zysickness' || tag == 'zy' || tag == 'jl' || tag == 'icd10'){
           name = kgid.text
         }else{
           name = _name
@@ -335,7 +357,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
           background: 'rgba(0, 0, 0, 0.1)',
           target:document.querySelector('.content-box'),
         });
-        if(that.tag == 'zysickness' || that.tag == 'zcy' || that.tag == 'icd10'){
+        if(that.tag == 'zysickness' || that.tag == 'zcy'|| that.tag == 'jl' || that.tag == 'icd10'){
          if(that.input3){
            pearms.department = that.input3;
           }else{
@@ -352,6 +374,8 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
                     getListInfo[i].text = getListInfo[i].symptom.text
                   }else if(that.tag == "zcy"){
                     getListInfo[i].text = getListInfo[i].classification.text
+                  }else if(that.tag == "jl"){
+                    getListInfo[i].text = getListInfo[i].indications.text
                   }
               }
               that.getListInfo= getListInfo;
@@ -385,7 +409,10 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
                     getListInfo[i].text = getListInfo[i].composition.text
                   }else if(that.tag == "tz"){
                     getListInfo[i].text = getListInfo[i].overallFeature.text
+                  }else if(that.tag == "xw"){
+                    getListInfo[i].text = getListInfo[i].location.text
                 }
+
               }
               that.getListInfo= getListInfo;
               console.log(that.getListInfo)
@@ -530,6 +557,53 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
           }
 
         }
+        // 经络
+        if(this.tag == "jl"){
+          if(type == 'indications'){
+            getListInfo[index].indications.active = true;
+            getListInfo[index].aponeuroticSystem.active = false;
+            getListInfo[index].channelSymptom.active = false;
+            getListInfo[index].clinicalFeature.active = false;
+            getListInfo[index].collateralSymptom.active = false;
+
+            return
+          }
+          if(type == 'aponeuroticSystem'){
+            getListInfo[index].indications.active = false;
+            getListInfo[index].aponeuroticSystem.active = true;
+            getListInfo[index].channelSymptom.active = false;
+            getListInfo[index].clinicalFeature.active = false;
+            getListInfo[index].collateralSymptom.active = false;
+
+            return
+          }
+          if(type == 'channelSymptom'){
+            getListInfo[index].indications.active = false;
+            getListInfo[index].aponeuroticSystem.active = false;
+            getListInfo[index].channelSymptom.active = true;
+            getListInfo[index].clinicalFeature.active = false;
+            getListInfo[index].collateralSymptom.active = false;
+
+            return
+          }
+          if(type == 'clinicalFeature'){
+            getListInfo[index].indications.active = false;
+            getListInfo[index].aponeuroticSystem.active = false;
+            getListInfo[index].channelSymptom.active = false;
+            getListInfo[index].clinicalFeature.active = true;
+            getListInfo[index].collateralSymptom.active = false;
+            return
+          }
+          if(type == 'collateralSymptom'){
+            getListInfo[index].indications.active = false;
+            getListInfo[index].aponeuroticSystem.active = false;
+            getListInfo[index].channelSymptom.active = false;
+            getListInfo[index].clinicalFeature.active = false;
+            getListInfo[index].collateralSymptom.active = true;
+            return
+          }
+
+        }
         // 体质
         if(this.tag == "tz"){
           if(type == 'overallFeature'){
@@ -593,6 +667,49 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
             getListInfo[index].composition.active = false;
             getListInfo[index].indications.active = false;
             getListInfo[index].medicinalCrop.active = true;
+            return
+          }
+        }
+        // 穴位
+        if(this.tag == "xw"){
+          if(type == 'location'){
+            getListInfo[index].location.active = true;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].compatibility.active = false;
+            getListInfo[index].acupuncture.active = false;
+            getListInfo[index].acupuncture.active = false;
+            return
+          }
+          if(type == 'indications'){
+            getListInfo[index].location.active = false;
+            getListInfo[index].indications.active = true;
+            getListInfo[index].compatibility.active = false;
+            getListInfo[index].acupuncture.active = false;
+            getListInfo[index].acupuncture.active = false;
+            return
+          }
+          if(type == 'compatibility'){
+            getListInfo[index].location.active = false;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].acupuncture.active = false;
+            getListInfo[index].compatibility.active = true;
+            getListInfo[index].acupuncture.active = false;
+            return
+          }
+           if(type == 'acupuncture'){
+            getListInfo[index].location.active = false;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].compatibility.active = false;
+            getListInfo[index].acupuncture.active = true;
+            getListInfo[index].acupuncture.active = false;
+            return
+          }
+          if(type == 'notions'){
+            getListInfo[index].location.active = false;
+            getListInfo[index].indications.active = false;
+            getListInfo[index].compatibility.active = false;
+            getListInfo[index].acupuncture.active = false;
+            getListInfo[index].acupuncture.active = true;
             return
           }
         }
