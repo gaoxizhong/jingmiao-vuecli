@@ -9,10 +9,10 @@
         default-active="0-0-0-0-0"
         unique-opened
     >
-    <div class="logo-box">
-      <img src="../assets/image/logo.png" alt="" v-show="!isCollapse" />
-      <h3 style="color:#fff;" v-show="isCollapse">菁苗</h3>
-    </div>
+      <div class="logo-box">
+        <img src="../assets/image/logo-2.png" alt="" v-show="!isCollapse" class="logo-img"/>
+        <h3 v-show="isCollapse">信泰</h3>
+      </div>
 
 			<!-- 第一层 -->
 			<template v-for="(item,index) in datalist">
@@ -141,9 +141,11 @@
   width: 100%;
   height: auto;
   padding: 10px 0;
+  background: #242a4d;
+  box-shadow: 0 2px 10px #000020;
 }
 img.logo-img{
-  width: 220px;
+  width: 180px;
 }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 260px;
@@ -194,13 +196,13 @@ img.logo-img{
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    color:#fff;
+    color:#242a4d;
     opacity: 0.7;
-    background: #20234E !important;
+    background: #fff !important;
 }
 .span-text{
-  color:#fff;
-  opacity: 0.8;
+  color:#242a4d;
+  /* opacity: 0.8; */
 }
 .el-submenu .el-menu-item.is-active{
   color: #fff;
@@ -208,7 +210,10 @@ img.logo-img{
   background: #8FA7FA !important;
 }
 .el-icon-arrow-down:before{
-  color: #fff;
+  color: #242a4d;
+}
+.el-aside>ul>li:nth-of-type(1){
+  margin-top: 14px;
 }
 </style>
 <script>
@@ -216,8 +221,8 @@ export default {
     props:['datalist'],
     data() {
         return {
-            menuBackgroundColor:'#242a4d',
-            menuTextColor:'#fff',
+            menuBackgroundColor:'#fff',
+            menuTextColor:'#242a4d',
             oneColumn: '0'
         }
     },
