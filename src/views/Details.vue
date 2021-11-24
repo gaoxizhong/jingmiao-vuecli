@@ -478,7 +478,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                 is_show
               })
             }
-            if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness'){
+            if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness' || that.tag == 'symptom'){
               if (nodeSet.indexOf(segment.end.identity) == -1) {
                 nodeSet.push(segment.end.identity)
               let is_show = '';

@@ -295,7 +295,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
                 else if(that.tag == "jl"){
                   getListInfo[i].text = getListInfo[i].indications.text
                 }
-                
+
             }
             this.getListInfo= getListInfo;
             console.log(this.getListInfo)
@@ -359,7 +359,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         });
         if(that.tag == 'zysickness' || that.tag == 'zcy'|| that.tag == 'jl' || that.tag == 'icd10'){
          if(that.input3){
-           pearms.department = that.input3;
+           pearms.search = that.input3;
           }else{
             pearms.department = that.select_name;
           }
