@@ -34,7 +34,7 @@
           </div>
           <div v-show="is_show">
             <!-- 详情 -->
-            <div class="activi-box" :style="`height:${viewHeight - 240}px;`">
+            <div class="activi-box" :style="`height:${viewHeight - 270}px;`">
               <div class="activi-1">
                 <div v-for="(item,index) in getinfo" :key="index">
                   <div class="item-name">{{item.name}}</div>
@@ -208,6 +208,7 @@
   .activi-box{
     overflow-X: hidden;
     overflow-Y: scroll;
+    padding-bottom: 20px;
   }
   .activi-1{
     height: auto;
