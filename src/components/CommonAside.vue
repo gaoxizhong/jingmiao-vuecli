@@ -10,7 +10,7 @@
         unique-opened
     >
     <div class="logo-box">
-      <img src="../assets/image/logo-2.png" alt="" v-show="!isCollapse" class="logo-img"/>
+      <img src="../assets/image/logo.png" alt="" v-show="!isCollapse" />
       <h3 style="color:#fff;" v-show="isCollapse">菁苗</h3>
     </div>
 
@@ -140,10 +140,10 @@
 .logo-box{
   width: 100%;
   height: auto;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 img.logo-img{
-  width: 230px;
+  width: 220px;
 }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 260px;
@@ -200,7 +200,7 @@ img.logo-img{
 }
 .span-text{
   color:#fff;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 .el-submenu .el-menu-item.is-active{
   color: #fff;

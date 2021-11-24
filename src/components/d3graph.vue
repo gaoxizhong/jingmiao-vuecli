@@ -669,7 +669,7 @@ export default {
         let tag = d.tag;
         // _this.$emit('getData',tag,name)
 
-        
+
         _this.contextMenu(this.menu)
       }
       // 分别定义节点和文本的点击事件
@@ -778,7 +778,6 @@ export default {
         })
     },
     clearGraphStyle () {
-      console.log(d3.select('.d3-context-menu').attr('display'))
       // 移除所有样式
       this.svgDom.select('.nodes').selectAll('circle').attr('class', '')
       this.svgDom.select(".texts").selectAll('text').attr('class', '')

@@ -64,12 +64,6 @@ export default {
           let datalist = res.data.data;
           this.datalist = datalist;
           this.setsickNess();
-        }else if(res.data.code == 1){
-          this.$message.error({
-              message: res.data.msg
-          });
-          this.$router.push('/');
-          return
         }else{
            this.$message.error({
               message: res.data.msg

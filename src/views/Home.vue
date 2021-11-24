@@ -56,7 +56,7 @@
                <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
                <div :class="[{ active: item.etiology.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'etiology',item.etiology.text)">{{item.etiology.name}}</div>
                <div :class="[{ active: item.abstract.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'abstract',item.abstract.text)">{{item.abstract.name}}</div>
-            
+
             </div>
 
             <div class="tags-list-info">{{item.text?item.text:'暂无'}}</div>
@@ -312,7 +312,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
           'pn': that.current_page
         }
         if(that.input3){
-          pearms.department = that.input3;
+          pearms.search = that.input3;
         }else{
           pearms.department = that.select_name;
         }
