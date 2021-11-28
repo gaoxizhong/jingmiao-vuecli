@@ -237,6 +237,7 @@
 <script>
 import {getSickNess,getD3Search} from '@/api/data'
   export default {
+    inject: ['setsickNess'],
     name: 'Details',
     components: {
       // gSearch:require('../components/gSearch.vue').default,
@@ -273,10 +274,10 @@ import {getSickNess,getD3Search} from '@/api/data'
       }
     },
     beforeCreate(){
-
+      console.log("beforeCreate")
     },
     created(){  //生命周期里接收参数
-
+        console.log('created')
         let getViewportSize = this.$getViewportSize();
         this.viewHeight = getViewportSize.height;
         this.viewWidth = getViewportSize.width;
@@ -286,6 +287,25 @@ import {getSickNess,getD3Search} from '@/api/data'
         let crumbs =  this.$store.state.crumbsarr;
         this.crumbs = crumbs;
         crumbs.push(this.name_1);
+
+        let barckArr = JSON.parse(window.localStorage.getItem('barckArr'));
+        var result = barckArr.some(item=>{
+          if(item.name === this.name_1){
+              return true
+            }
+          })
+          // 如果barckArr数组对象中含有name:'张三',就会返回true，否则返回false
+          if(result){ // 如果存在
+              console.log('存在')
+          }else{
+            barckArr.push({
+              tag:this.tag,
+              name: this.name_1
+            });
+          }
+        console.log(barckArr)
+         window.localStorage.setItem('barckArr',JSON.stringify(barckArr));
+
         if(this.type == 'xy'){
           this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'}]
         }
@@ -297,7 +317,7 @@ import {getSickNess,getD3Search} from '@/api/data'
         //   this.name = this.$route.query.name;
         // }
 
-        window.localStorage.setItem("is_details",1);
+        // window.localStorage.setItem("is_details",1);
     },
     mounted(){
        this.getD3name(this.name_1)
@@ -306,7 +326,19 @@ import {getSickNess,getD3Search} from '@/api/data'
       medicine_click(tag,name){
         this.name_1 = name;
         this.tag = tag;
-        this.getD3name(this.name_1);
+          // this.getD3name(this.name_1);
+        this.setsickNess();
+        this.$router.push({  //核心语句
+          path:'/Details',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+            name:this.name_1,
+            tag: this.tag,
+            type:this.type
+          }
+        })
+        // this.getD3name(this.name_1);
+
+
       },
       dian_left(){
         let span_left = this.span_left;
@@ -358,10 +390,31 @@ import {getSickNess,getD3Search} from '@/api/data'
             let getinfo = res.data.data;
             that.name = getinfo.sickness_name.text;
             that.name_2 = getinfo.sickness_name.text;
+            // 记录面包屑导航数组
             let getinfo_arr = [];
             let crumbs = this.crumbs;
             crumbs.pop();
             crumbs.push(this.name);
+
+            // 记录页面加载数据数组,,用作返回判断
+            let barckArr = JSON.parse(window.localStorage.getItem('barckArr'));
+            console.log(barckArr)
+            var result = barckArr.some(item=>{
+              if(item.name === that.name){
+                      return true
+                  }
+              })
+              // 如果barckArr数组对象中含有name:'张三',就会返回true，否则返回false
+              if(result){ // 如果存在
+                  console.log('存在')
+              }else{
+                barckArr.push({
+                  tag: that.tag,
+                  name: that.name
+                })
+                window.localStorage.setItem('barckArr',JSON.stringify(barckArr));
+                console.log(JSON.parse(window.localStorage.getItem('barckArr')))
+              }
             for(let key in getinfo){
               let is_list = 0;
               if( getinfo[key].text.name ){
@@ -405,10 +458,25 @@ import {getSickNess,getD3Search} from '@/api/data'
       },
       // 返回上一步
       fanhui_btn(){
-        let crumbs = this.crumbs;
+        let that = this;
+        let crumbs = that.crumbs;
         crumbs.pop();
-        // this.$router.go(-1);  // ios 不支持
-        location.href = "javascript:history.go(-2);"
+        let barckArr = JSON.parse(window.localStorage.getItem('barckArr'));
+        console.log(barckArr)
+        if(barckArr.length > 1){
+        console.log('1')
+          let name = barckArr[barckArr.length-2].name;
+          let tag = barckArr[barckArr.length-2].tag;
+          this.tag = tag;
+          barckArr.pop();
+          window.localStorage.setItem('barckArr',JSON.stringify(barckArr));
+          // that.setsickNess();
+          return
+        }
+          // that.$router.go(-1);  // ios 不支持
+          location.href = "javascript:history.go(-2);"
+          // that.setsickNess();
+
       },
       // ===============================
       selectchange(e){

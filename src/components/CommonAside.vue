@@ -293,6 +293,8 @@ export default {
             let crumbsarr = e.$attrs.arr;
             let b1 = crumbsarr.slice(); //  不修改原数组
             this.$store.dispatch("crumbsarr",b1);
+            let barckArr = [];
+            window.localStorage.setItem('barckArr',JSON.stringify(barckArr));
              window.localStorage.setItem('is_details',0);
              if(this.oneColumn.substring(0,1) == 0){
                 let name = e.$attrs.name;

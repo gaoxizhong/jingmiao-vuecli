@@ -57,7 +57,15 @@ const routes = [
         scollTopPosition: 0
       }
     },
-      { path: '/Details', name: 'Details', component: () => import('@/views/Details') },
+      {
+        path: '/Details',
+        name: 'Details',
+        component: () => import('@/views/Details'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0
+        }
+      },
       { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
       { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails') },
     ]

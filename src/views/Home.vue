@@ -171,6 +171,7 @@
 <script>
 import {getHomeRightList,getSearch} from '@/api/data'
   export default {
+    inject: ['setsickNess'],
     data() {
       return {
         input3:'',
@@ -201,10 +202,8 @@ import {getHomeRightList,getSearch} from '@/api/data'
         this.getHomeRightList();
     },
     mounted(){
-      console.log('mounted')
     },
     updated() {
-        console.log('updated')
      },
     methods:{
       // 点击分页功能
@@ -295,6 +294,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         let that = this;
         let name = _name;
         let tag = that.tag;
+        this.setsickNess();
         this.$router.push({  //核心语句
           path:'/Details',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数

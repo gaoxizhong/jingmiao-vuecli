@@ -9,9 +9,9 @@
       </el-header>
       <el-main>
       <keep-alive v-if="is_view">
-        <router-view v-if="$route.meta.keepAlive"></router-view>
+        <router-view v-if="$route.meta.keepAlive" @sickNess="setsickNess"></router-view>
       </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive"/>
+        <router-view v-if="!$route.meta.keepAlive" @sickNess="setsickNess"/>
       </el-main>
     </el-container>
   </el-container>
@@ -24,6 +24,11 @@ import CommonHeader from "../components/CommonHeader";
 
 import {WesternMedicine} from '@/api/data'
 export default {
+  provide(){
+    return {
+      setsickNess: this.setsickNess
+    }
+  },
   name: 'Main',
   components: {
     CommonAside,
@@ -75,11 +80,12 @@ export default {
     },
     setsickNess(){
       this.is_view = false;
-      // 在组件移除后，重新渲染组件
-      // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
+      console.log(this.is_view)
       this.$nextTick(() => {
-          this.is_view = true
+        this.is_view = true
+        console.log(this.is_view)
       })
+
     },
   },
 }

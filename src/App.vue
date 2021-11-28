@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view v-if="isRouterAlive"/>
   </div>
 </template>
 
@@ -51,15 +51,26 @@ a{
 <script>
 export default {
   name:'app',
+  provide(){
+    return {
+      reload: this.reload
+    }
+  },
   data() {
     return {
         isCollapse: false,
-        is_view: true
+        is_view: true,
+        isRouterAlive: true
     };
   },
 
   methods: {
-
+    reload(){
+      this.isRouterAlive = false;
+      this.$nextTick( function(){
+        this.isRouterAlive = true;
+      })
+    }
   },
   created(){
 
