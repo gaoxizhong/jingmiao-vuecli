@@ -9,9 +9,9 @@
       </el-header>
       <el-main>
       <keep-alive v-if="is_view">
-        <router-view v-if="$route.meta.keepAlive" @sickNess="setsickNess"></router-view>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive" @sickNess="setsickNess"/>
+        <router-view v-if="!$route.meta.keepAlive"/>
       </el-main>
     </el-container>
   </el-container>

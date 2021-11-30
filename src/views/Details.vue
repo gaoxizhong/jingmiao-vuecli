@@ -287,8 +287,7 @@ import {getSickNess,getD3Search} from '@/api/data'
         let crumbs =  this.$store.state.crumbsarr;
         this.crumbs = crumbs;
         crumbs.push(this.name_1);
-
-        let barckArr = JSON.parse(window.localStorage.getItem('barckArr'));
+        let barckArr = this.$store.state.barckArr;
         var result = barckArr.some(item=>{
           if(item.name === this.name_1){
               return true
@@ -304,8 +303,7 @@ import {getSickNess,getD3Search} from '@/api/data'
             });
           }
         console.log(barckArr)
-         window.localStorage.setItem('barckArr',JSON.stringify(barckArr));
-
+        this.$store.dispatch("barckArr",barckArr);
         if(this.type == 'xy'){
           this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'}]
         }
@@ -397,7 +395,8 @@ import {getSickNess,getD3Search} from '@/api/data'
             crumbs.push(this.name);
 
             // 记录页面加载数据数组,,用作返回判断
-            let barckArr = JSON.parse(window.localStorage.getItem('barckArr'));
+            let barckArr = this.$store.state.barckArr;
+
             console.log(barckArr)
             var result = barckArr.some(item=>{
               if(item.name === that.name){
@@ -412,8 +411,8 @@ import {getSickNess,getD3Search} from '@/api/data'
                   tag: that.tag,
                   name: that.name
                 })
-                window.localStorage.setItem('barckArr',JSON.stringify(barckArr));
-                console.log(JSON.parse(window.localStorage.getItem('barckArr')))
+                this.$store.dispatch("barckArr",barckArr);
+                console.log(this.$store.state.barckArr)
               }
             for(let key in getinfo){
               let is_list = 0;
@@ -461,21 +460,27 @@ import {getSickNess,getD3Search} from '@/api/data'
         let that = this;
         let crumbs = that.crumbs;
         crumbs.pop();
-        let barckArr = JSON.parse(window.localStorage.getItem('barckArr'));
+        let barckArr = that.$store.state.barckArr;
         console.log(barckArr)
         if(barckArr.length > 1){
+          location.href = "javascript:history.go(-2);"
         console.log('1')
           let name = barckArr[barckArr.length-2].name;
           let tag = barckArr[barckArr.length-2].tag;
-          this.tag = tag;
+          that.name = name;
+          that.tag = tag;
           barckArr.pop();
-          window.localStorage.setItem('barckArr',JSON.stringify(barckArr));
+          that.$store.dispatch("barckArr",barckArr);
+          that.getD3name(name);
           // that.setsickNess();
           return
-        }
+        }else{
+          console.log('2')
           // that.$router.go(-1);  // ios 不支持
           location.href = "javascript:history.go(-2);"
           // that.setsickNess();
+        }
+          
 
       },
       // ===============================

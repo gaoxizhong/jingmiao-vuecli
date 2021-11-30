@@ -35,3 +35,6 @@ export const hotName = ({commit},data) =>{
 export const crumbsarr = ({commit},data) =>{
   commit('crumbsarr',data);
 }
+export const barckArr = ({commit},data) =>{
+  commit('barckArr',data);
+}

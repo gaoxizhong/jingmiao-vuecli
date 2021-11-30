@@ -9,5 +9,4 @@ export const idx = state => state.idx;
 export const input_name = state => state.input_name;
 export const hot_name = state => state.hot_name;
 export const crumbsarr = state => state.crumbsarr;
-
-
+export const barckArr = state => state.barckArr;
