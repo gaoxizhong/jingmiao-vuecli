@@ -1,7 +1,7 @@
 <template>
   <el-container :style="`height:${viewHeight}px;`">
     <el-aside width="auto">
-      <CommonAside :datalist='datalist' @sickNess="setsickNess"></CommonAside>
+      <CommonAside @sickNess="setsickNess"></CommonAside>
     </el-aside>
     <el-container >
       <el-header>
@@ -52,7 +52,7 @@ export default {
   },
   mounted(){
     let that = this;
-     this.WesternMedicine();
+    //  this.WesternMedicine();
   },
   created(){
     let getViewportSize = this.$getViewportSize();
@@ -61,23 +61,6 @@ export default {
   },
 
   methods: {
-    // 获取左侧信息
-    async WesternMedicine(){
-      let that = this;
-      await  WesternMedicine({}).then( res =>{
-        if(res.data.code == 0){
-          let datalist = res.data.data;
-          this.datalist = datalist;
-          this.setsickNess();
-        }else{
-           this.$message.error({
-              message: res.data.msg
-          });
-        }
-      }).catch(e =>{
-          console.log(e)
-      })
-    },
     setsickNess(){
       this.is_view = false;
       console.log(this.is_view)

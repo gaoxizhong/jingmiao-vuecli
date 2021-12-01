@@ -212,145 +212,164 @@ img.logo-img{
 }
 </style>
 <script>
+import {WesternMedicine} from '@/api/data'
 export default {
-    props:['datalist'],
+    // props:['datalist'],
     data() {
         return {
-            menuBackgroundColor:'#242a4d',
-            menuTextColor:'#fff',
-            oneColumn: '0'
+          menuBackgroundColor:'#242a4d',
+          menuTextColor:'#fff',
+          oneColumn: '0',
+          datalist:[],
         }
     },
-    watch:{
-        datalist(datalist){
-        this.datalist = datalist;
-        this.aa();
-        }
-    },
+    // watch:{
+    //     datalist(datalist){
+    //     this.datalist = datalist;
+    //     this.aa();
+    //     }
+    // },
     mounted(){
 
     },
     created(){
-
+      this.WesternMedicine();
     },
     methods: {
       // 点击左侧一级栏目
       clickItem_1(e){
         console.log(e)
       },
-       aa(){
-          let arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
-          let crumbsarr = [];
-          crumbsarr.push(this.datalist[0].knowledge_base_name);
-          crumbsarr.push(this.datalist[0].subordinate[0].name);
-          crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].name);
-          crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel1);
-          crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0].departmentLevel2);
-          this.$store.dispatch("crumbsarr",crumbsarr);
-          let name = arryinfo.departmentLevel2;
-          let tag = arryinfo.tag;
-          this.$store.dispatch("sickNess",name);
-          let is_details = window.localStorage.getItem('is_details');
-          console.log(is_details)
-          if(is_details == 1){
-             return
-          }else{
+    // 获取左侧信息
+    async WesternMedicine(){
+      let that = this;
+      await  WesternMedicine({}).then( res =>{
+        if(res.data.code == 0){
+          let datalist = res.data.data;
+          this.datalist = datalist;
+          this.aa();
+        }else{
+           this.$message.error({
+              message: res.data.msg
+          });
+        }
+      }).catch(e =>{
+          console.log(e)
+      })
+    },
+    aa(){
+      let arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
+      let crumbsarr = [];
+      crumbsarr.push(this.datalist[0].knowledge_base_name);
+      crumbsarr.push(this.datalist[0].subordinate[0].name);
+      crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].name);
+      crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel1);
+      crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0].departmentLevel2);
+      this.$store.dispatch("crumbsarr",crumbsarr);
+      let name = arryinfo.departmentLevel2;
+      let tag = arryinfo.tag;
+      this.$store.dispatch("sickNess",name);
+      let is_details = window.localStorage.getItem('is_details');
+      console.log(is_details)
+      if(is_details == 1){
+          return
+      }else{
+        this.$router.replace({  //核心语句
+          path:'/Home',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+          name,
+          tag,
+          }
+        })
+      }
+
+      console.log(this.datalist)
+
+    },
+    handleOpen(key, keyPath) {
+      this.oneColumn = key;
+    },
+    handleClose(key, keyPath) {
+        this.oneColumn = key;
+    },
+    // 跳转问答首页
+    gotoQA(){
+      // this.$emit('sickNess');
+      // this.$router.replace({
+      //   path:'/QAhome',
+      //   query:{
+      //     tag:'QA',
+      //   }
+      // })
+      // 新页面打开
+        let newUrl = this.$router.resolve({
+          path: "/QAhome"
+        });
+      window.open(newUrl.href, "_blank");
+    },
+    clickItem_2(e){
+      console.log(e)
+        let crumbsarr = e.$attrs.arr;
+        let b1 = crumbsarr.slice(); //  不修改原数组
+        this.$store.dispatch("crumbsarr",b1);
+        let barckArr = [];
+        this.$store.dispatch("barckArr",barckArr);
+          window.localStorage.setItem('is_details',0);
+          if(this.oneColumn.substring(0,1) == 0){
+            let name = e.$attrs.name;
+            let tag = e.$attrs.tag;
+            // this.$store.dispatch("sickNess",name);
+            this.$emit('sickNess')
             this.$router.replace({  //核心语句
               path:'/Home',   //跳转的路径
               query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-              name,
-              tag,
+                name,
+                tag,
               }
             })
+          return
           }
-
-         console.log(this.datalist)
-
-       },
-       handleOpen(key, keyPath) {
-          this.oneColumn = key;
-        },
-        handleClose(key, keyPath) {
-            this.oneColumn = key;
-        },
-        // 跳转问答首页
-        gotoQA(){
-          // this.$emit('sickNess');
-          // this.$router.replace({
-          //   path:'/QAhome',
-          //   query:{
-          //     tag:'QA',
-          //   }
-          // })
-          // 新页面打开
-           let newUrl = this.$router.resolve({
-             path: "/QAhome"
-            });
-          window.open(newUrl.href, "_blank");
-        },
-        clickItem_2(e){
-          console.log(e)
-            let crumbsarr = e.$attrs.arr;
-            let b1 = crumbsarr.slice(); //  不修改原数组
-            this.$store.dispatch("crumbsarr",b1);
-            let barckArr = [];
-            this.$store.dispatch("barckArr",barckArr);
-             window.localStorage.setItem('is_details',0);
-             if(this.oneColumn.substring(0,1) == 0){
-                let name = e.$attrs.name;
-                let tag = e.$attrs.tag;
-                // this.$store.dispatch("sickNess",name);
-                this.$emit('sickNess')
-                this.$router.replace({  //核心语句
-                  path:'/Home',   //跳转的路径
-                  query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                    name,
-                    tag,
-                  }
-                })
-              return
-             }
-            if(this.oneColumn.substring(0,1) == 1){
-                let name = e.$attrs.name;
-                let tag = e.$attrs.tag;
-                this.$store.dispatch("sickNess",name);
-                this.$emit('sickNess')
-                this.$router.replace({  //核心语句
-                    path:'/zyHome',   //跳转的路径
-                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                      name,
-                      tag,
-                    }
-                })
-              return
-             }
-            if(this.oneColumn.substring(0,1) == 2){
-                let name = e.$attrs.name;
-                let tag = e.$attrs.tag;
-                // this.$store.dispatch("sickNess",name);
-                this.$emit('sickNess')
-                this.$router.replace({  //核心语句
-                    path:'/litgHome',   //跳转的路径
-                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                      name,
-                      tag,
-                    }
-                })
-              return
-             }
-        },
+        if(this.oneColumn.substring(0,1) == 1){
+            let name = e.$attrs.name;
+            let tag = e.$attrs.tag;
+            this.$store.dispatch("sickNess",name);
+            this.$emit('sickNess')
+            this.$router.replace({  //核心语句
+                path:'/zyHome',   //跳转的路径
+                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                  name,
+                  tag,
+                }
+            })
+          return
+          }
+        if(this.oneColumn.substring(0,1) == 2){
+            let name = e.$attrs.name;
+            let tag = e.$attrs.tag;
+            // this.$store.dispatch("sickNess",name);
+            this.$emit('sickNess')
+            this.$router.replace({  //核心语句
+                path:'/litgHome',   //跳转的路径
+                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                  name,
+                  tag,
+                }
+            })
+          return
+          }
     },
-    computed: {
-        noChild() {
-            return this.menu.filter( (item) => !item.child)
-        },
-        hasChild() {
-            return this.menu.filter( (item) => item.child)
-        },
-        isCollapse() {
-          return this.$store.state.isCollapse
-        },
-    }
+  },
+  computed: {
+      noChild() {
+          return this.menu.filter( (item) => !item.child)
+      },
+      hasChild() {
+          return this.menu.filter( (item) => item.child)
+      },
+      isCollapse() {
+        return this.$store.state.isCollapse
+      },
+  }
 
 }
 </script>
