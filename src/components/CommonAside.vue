@@ -132,6 +132,10 @@
           <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
           <span slot="title" style="padding-left: 8px;font-size: 18px;">问答</span>
         </el-menu-item>
+        <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoLc">
+          <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
+          <span slot="title" style="padding-left: 8px;font-size: 18px;">临床</span>
+        </el-menu-item>
       </template>
 
     </el-menu>
@@ -294,13 +298,6 @@ export default {
     },
     // 跳转问答首页
     gotoQA(){
-      // this.$emit('sickNess');
-      // this.$router.replace({
-      //   path:'/QAhome',
-      //   query:{
-      //     tag:'QA',
-      //   }
-      // })
       // 新页面打开
         let newUrl = this.$router.resolve({
           path: "/QAhome"
@@ -358,6 +355,20 @@ export default {
           return
           }
     },
+    // 点击临床
+    gotoLc(){
+      let tag = 'lc';
+      let name = '临床';
+      this.$emit('sickNess')
+      this.$router.replace({  //核心语句
+        path:'/LcsyHome',   //跳转的路径
+        query:{        //路由传参时push和query搭配使用 ，作用时传递参数
+          name,
+          tag,
+        }
+      })
+      return
+    }
   },
   computed: {
       noChild() {

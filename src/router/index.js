@@ -33,41 +33,52 @@ const routes = [
     component: Main,
     // redirect: {name: 'home'},
     children: [
-      { path: '/Home',
-        name: 'home',
-        component: () => import('@/views/Home'),
+        { path: '/Home',
+          name: 'home',
+          component: () => import('@/views/Home'),
+            meta: {
+              keepAlive: true,
+              scollTopPosition: 0
+            }
+        },
+        { path: '/zyHome',
+          name: 'zyHome',
+          component: () => import('@/views/zyHome'),
           meta: {
             keepAlive: true,
             scollTopPosition: 0
           }
-       },
-      { path: '/zyHome',
-        name: 'zyHome',
-        component: () => import('@/views/zyHome'),
-        meta: {
-          keepAlive: true,
-          scollTopPosition: 0
-        }
-      },
-      { path: '/litgHome',
-      name: 'litgHome',
-      component: () => import('@/views/litgHome'),
-      meta: {
-        keepAlive: true,
-        scollTopPosition: 0
-      }
-    },
-      {
-        path: '/Details',
-        name: 'Details',
-        component: () => import('@/views/Details'),
-        meta: {
-          keepAlive: true,
-          scollTopPosition: 0
-        }
-      },
-      { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
-      { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails') },
+        },
+        { path: '/litgHome',
+          name: 'litgHome',
+          component: () => import('@/views/litgHome'),
+          meta: {
+            keepAlive: true,
+            scollTopPosition: 0
+          }
+        },
+        { path: '/Details',
+          name: 'Details',
+          component: () => import('@/views/Details'),
+          meta: {
+            keepAlive: true,
+            scollTopPosition: 0
+          }
+        },
+        { path: '/LcsyHome',
+          name: 'LcsyHome',
+          component: () => import('@/views/LcsyHome'),
+          meta: {
+            keepAlive: true,
+            scollTopPosition: 0
+          }
+        },
+        { path: '/LcsyDetails',
+          name: 'LcsyDetails',
+          component: () => import('@/views/LcsyDetails'),
+        },
+        { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
+        { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails') },
     ]
   }
 ]
