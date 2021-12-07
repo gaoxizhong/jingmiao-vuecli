@@ -10,8 +10,8 @@
         unique-opened
     >
     <div class="logo-box">
-      <img src="../assets/image/logo-3.png" alt="" v-show="!isCollapse" class="logo-img"/>
-      <h3 style="color:#fff;padding:10px 0;" v-show="isCollapse">森亿</h3>
+      <img src="../assets/image/logo.png" alt="" v-show="!isCollapse"/>
+      <h3 style="color:#fff;" v-show="isCollapse">菁苗</h3>
     </div>
 
 			<!-- 第一层 -->
