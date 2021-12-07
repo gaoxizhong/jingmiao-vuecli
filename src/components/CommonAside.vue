@@ -132,10 +132,10 @@
           <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
           <span slot="title" style="padding-left: 8px;font-size: 18px;">问答</span>
         </el-menu-item>
-        <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoLc">
+        <!-- <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoLc">
           <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
           <span slot="title" style="padding-left: 8px;font-size: 18px;">临床</span>
-        </el-menu-item>
+        </el-menu-item> -->
       </template>
 
     </el-menu>
@@ -311,19 +311,31 @@ export default {
         this.$store.dispatch("crumbsarr",b1);
         let barckArr = [];
         this.$store.dispatch("barckArr",barckArr);
-          window.localStorage.setItem('is_details',0);
+        window.localStorage.setItem('is_details',0);
+
           if(this.oneColumn.substring(0,1) == 0){
             let name = e.$attrs.name;
             let tag = e.$attrs.tag;
             // this.$store.dispatch("sickNess",name);
-            this.$emit('sickNess')
-            this.$router.replace({  //核心语句
-              path:'/Home',   //跳转的路径
-              query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                name,
-                tag,
-              }
-            })
+            this.$emit('sickNess');
+            if(tag == 'clinicalPathway' || tag == 'clinicTrial'){
+              this.$router.replace({  //核心语句
+                path:'/LcsyHome',   //跳转的路径
+                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                  name,
+                  tag,
+                }
+              })
+            }else{
+              this.$router.replace({  //核心语句
+                path:'/Home',   //跳转的路径
+                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                  name,
+                  tag,
+                }
+              })
+            }
+
           return
           }
         if(this.oneColumn.substring(0,1) == 1){

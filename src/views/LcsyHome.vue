@@ -25,16 +25,60 @@
       <div class="content-box1">
         <div class="content-box1-left">
             <div class="paddingSide15">
-              <template>
-                <el-table :data="tableData" border stripe style="width: 100%;"  @row-click="rowClick">
+              <!-- 临床试验 -->
+              <template v-if="tag == 'clinicTrial'">
+                <el-table :data="getListInfo" border stripe style="width: 100%;" >
                   <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
-                  <el-table-column prop="date" label="发布年份"></el-table-column>
-                  <el-table-column prop="name" label="路径名称"></el-table-column>
-                  <el-table-column prop="address" label="发布单位"></el-table-column>
+                  <el-table-column prop="register_number" label="登记号">
+                    <template slot-scope="scope">  
+                      <a :href="scope.row.file" target="_blank" >{{scope.row.register_number}}</a>
+                    </template>  
+                  </el-table-column>
+                  <el-table-column prop="trystate" label="试验状态">
+                    <template slot-scope="scope">  
+                      <a :href="scope.row.file" target="_blank" >{{scope.row.trystate}}</a>
+                    </template>  
+                  </el-table-column>
+                  <el-table-column prop="drug_name" label="药物名称">
+                    <template slot-scope="scope">  
+                      <a :href="scope.row.file" target="_blank" >{{scope.row.drug_name}}</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="adaptation_disease" label="适应症">
+                    <template slot-scope="scope">  
+                      <a :href="scope.row.file" target="_blank" >{{scope.row.adaptation_disease}}</a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="experimental_popular_topic" label="试验通俗题目">
+                    <template slot-scope="scope">  
+                      <a :href="scope.row.file" target="_blank" >{{scope.row.experimental_popular_topic}}</a>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </template>
+              <!-- 临床路径 -->
+              <template v-if="tag == 'clinicalPathway'">
+                <el-table :data="getListInfo" border stripe style="width: 100%;" >
+                  <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
+                  <el-table-column prop="clinical_pathway" label="临床路径名称">
+                    <template slot-scope="scope">  
+                      <a :href="scope.row.file" target="_blank" >{{scope.row.clinical_pathway}}</a>
+                    </template>  
+                  </el-table-column>
+                  <el-table-column prop="publish_year" label="发布年份"  width="180">
+                    <template slot-scope="scope">  
+                      <a :href="scope.row.file" target="_blank" >{{scope.row.publish_year}}</a>
+                    </template>  
+                  </el-table-column>
+                  <el-table-column prop="release_unit" label="发布单位">
+                    <template slot-scope="scope">  
+                      <a :href="scope.row.file" target="_blank" >{{scope.row.release_unit}}</a>
+                    </template>  
+                  </el-table-column>
                 </el-table>
               </template>
             </div>
-            <el-empty description="暂无数据"  v-if='!tableData || tableData.length == 0'></el-empty>
+            <!-- <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty> -->
         </div>
       </div>
             <!-- 分页展示 -->
@@ -53,7 +97,7 @@
 </template>
 
 <script>
-import {getLitgSearch} from '@/api/data'
+import {getDepartment} from '@/api/data'
 export default {
   name: 'LcsyHome',
     data(){
@@ -62,7 +106,7 @@ export default {
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'数据1',value:'document'},{label:'数据2',value:'guide'}],
+        options:[{label:'临床试验',value:'clinicTrial'},{label:'临床路径',value:'clinicalPathway'}],
         getListInfo:[],
         current_page:1,
         pageSize: 10,
@@ -71,23 +115,6 @@ export default {
         is_show:false,
         is_Atlas:false,
         crumbs:[],
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
       }
     },
     active(){
@@ -110,16 +137,18 @@ export default {
       },
       rowClick(e){
         console.log(e)
-        let name = e.name;
+        let url = e.file;
+        window.location.href = url;
+        // let name = e.name;
         // let tag = that.tag;
-        this.setsickNess();
-        this.$router.push({  //核心语句
-          path:'/LcsyDetails',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            name,
-            // tag,
-          }
-        })
+        // this.setsickNess();
+        // this.$router.push({ 
+        //   path:'/LcsyDetails', 
+        //   query:{
+        //     name,
+        //     tag,
+        //   }
+        // })
       },
       // 点击分页功能
       handleCurrentChange(val) {
@@ -138,18 +167,18 @@ export default {
       // 点击搜索
       getInputBtn(){
         let that = this;
-        //  if(that.selectSearchChange == ''){
-        //   this.$message.error({
-        //       message: '请先选择类型',
-        //   });
-        //   return
-        // }
-        // if(that.search == ''){
-        //   this.$message.error({
-        //       message: '请填写内容',
-        //   });
-        //   return
-        // }
+         if(that.selectSearchChange == ''){
+          this.$message.error({
+              message: '请先选择类型',
+          });
+          return
+        }
+        if(that.search == ''){
+          this.$message.error({
+              message: '请填写内容',
+          });
+          return
+        }
         that.current_page = 1;
         that.getHomeRightList();
       },
@@ -175,12 +204,17 @@ export default {
       // 获取列表
        getHomeRightList(){
         let that = this;
+
         let pearms = {
             tag: that.tag,
             pn: that.current_page,
           }
+         let search = that.search;
+         if(search || search != ''){
+           pearms.like_name = search;
+         }
         that.getListInfo = [];
-        getLitgSearch(pearms).then( res =>{
+        getDepartment(pearms).then( res =>{
           if(res.data.code == 0){
             let getListInfo = res.data.data.list;
             that.count = res.data.data.count;
@@ -231,6 +265,7 @@ export default {
 </script>
 
 <style scoped>
+
   .pagination-box{
     padding: 30px 0;
   }

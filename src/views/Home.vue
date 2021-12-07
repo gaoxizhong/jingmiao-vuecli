@@ -25,42 +25,56 @@
 
       <el-row style="padding-top:20px;">
         <el-col :span="20" :offset="2">
-          <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
-            <div class="items-title">{{item.sickness_name}}<div class="gengduo" @click="getarticle(item.sickness_name)">更多>></div></div>
-            <div class="tags-list-box" v-if=" tag == 'sickness' || tag == 'disease' ">
-              <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
-              <div :class="[{ active: item.pathogenesis.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pathogenesis',item.pathogenesis.text)">{{item.pathogenesis.name}}</div>
-              <div :class="[{ active: item.complicationsOverview.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'complicationsOverview',item.complicationsOverview.text)">{{item.complicationsOverview.name}}</div>
-              <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
-              <div :class="[{ active: item.diagnostiCtriage.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'diagnostiCtriage',item.diagnostiCtriage.text)">{{item.diagnostiCtriage.name}}</div>
-              <div :class="[{ active: item.treatmenCommonSense.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'treatmenCommonSense',item.treatmenCommonSense.text)">{{item.treatmenCommonSense.name}}</div>
+              <!-- 鉴别诊断 -->
+          <template  v-if=" tag == 'identify'">
+            <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
+              <div class="items-title">{{item.sickness_name}}</div>
+              <div class="tags-list-box">
+                <div class="tags-list-items active ">{{item.antidiastole.name}}</div>
+              </div>
+              <div class="show-box" :class=" ['tags-list-info1',{ cool: !showFull[index].status }] ">{{item.antidiastole.text?item.antidiastole.text:'暂无'}}</div>
+              <div class="full_box">
+                <a href="javascript:0;" class='full_txt' @click.stop='openFulltxt(index)' v-if='item.antidiastole.text.length > 100'>{{!showFull[index].status?'展开':'收起'}}</a>
+              </div>
             </div>
-            <!-- 药品 -->
-            <div class="tags-list-box" v-if=" tag == 'medicine' ">
-               <div :class="[{ active: item.majorConstituent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'majorConstituent',item.majorConstituent.text)">{{item.majorConstituent.name}}</div>
-               <div :class="[{ active: item.indication.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indication',item.indication.text)">{{item.indication.name}}</div>
-               <div :class="[{ active: item.notes.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'notes',item.notes.text)">{{item.notes.name}}</div>
-               <div :class="[{ active: item.pinyi.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pinyi',item.pinyi.text)">{{item.pinyi.name}}</div>
-            </div>
-             <!-- 检查 -->
-            <div class="tags-list-box" v-if=" tag == 'inspection' ">
-               <div :class="[{ active: item.annotation.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'annotation',item.annotation.text)">{{item.annotation.name}}</div>
-               <div :class="[{ active: item.clinicalSignificance.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'clinicalSignificance',item.clinicalSignificance.text)">{{item.clinicalSignificance.name}}</div>
-               <div :class="[{ active: item.principle.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'principle',item.principle.text)">{{item.principle.name}}</div>
-               <div :class="[{ active: item.reagent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'reagent',item.reagent.text)">{{item.reagent.name}}</div>
-            </div>
-            <!-- 症状体征 -->
-            <div class="tags-list-box" v-if=" tag == 'symptom' ">
-               <div :class="[{ active: item.identify.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'identify',item.identify.text)">{{item.identify.name}}</div>
-               <div :class="[{ active: item.precaution.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'precaution',item.precaution.text)">{{item.precaution.name}}</div>
-               <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
-               <div :class="[{ active: item.etiology.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'etiology',item.etiology.text)">{{item.etiology.name}}</div>
-               <div :class="[{ active: item.abstract.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'abstract',item.abstract.text)">{{item.abstract.name}}</div>
+          </template>
 
+          <template v-else>
+            <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
+              <div class="items-title">{{item.sickness_name}}<div class="gengduo" @click="getarticle(item.sickness_name)">更多>></div></div>
+              <div class="tags-list-box" v-if=" tag == 'sickness' || tag == 'disease' ">
+                <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
+                <div :class="[{ active: item.pathogenesis.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pathogenesis',item.pathogenesis.text)">{{item.pathogenesis.name}}</div>
+                <div :class="[{ active: item.complicationsOverview.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'complicationsOverview',item.complicationsOverview.text)">{{item.complicationsOverview.name}}</div>
+                <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
+                <div :class="[{ active: item.diagnostiCtriage.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'diagnostiCtriage',item.diagnostiCtriage.text)">{{item.diagnostiCtriage.name}}</div>
+                <div :class="[{ active: item.treatmenCommonSense.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'treatmenCommonSense',item.treatmenCommonSense.text)">{{item.treatmenCommonSense.name}}</div>
+              </div>
+              <!-- 药品 -->
+              <div class="tags-list-box" v-if=" tag == 'medicine' ">
+                <div :class="[{ active: item.majorConstituent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'majorConstituent',item.majorConstituent.text)">{{item.majorConstituent.name}}</div>
+                <div :class="[{ active: item.indication.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indication',item.indication.text)">{{item.indication.name}}</div>
+                <div :class="[{ active: item.notes.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'notes',item.notes.text)">{{item.notes.name}}</div>
+                <div :class="[{ active: item.pinyi.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pinyi',item.pinyi.text)">{{item.pinyi.name}}</div>
+              </div>
+              <!-- 检查 -->
+              <div class="tags-list-box" v-if=" tag == 'inspection' ">
+                <div :class="[{ active: item.annotation.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'annotation',item.annotation.text)">{{item.annotation.name}}</div>
+                <div :class="[{ active: item.clinicalSignificance.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'clinicalSignificance',item.clinicalSignificance.text)">{{item.clinicalSignificance.name}}</div>
+                <div :class="[{ active: item.principle.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'principle',item.principle.text)">{{item.principle.name}}</div>
+                <div :class="[{ active: item.reagent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'reagent',item.reagent.text)">{{item.reagent.name}}</div>
+              </div>
+              <!-- 症状体征 -->
+              <div class="tags-list-box" v-if=" tag == 'symptom' ">
+                <div :class="[{ active: item.identify.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'identify',item.identify.text)">{{item.identify.name}}</div>
+                <div :class="[{ active: item.precaution.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'precaution',item.precaution.text)">{{item.precaution.name}}</div>
+                <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
+                <div :class="[{ active: item.etiology.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'etiology',item.etiology.text)">{{item.etiology.name}}</div>
+                <div :class="[{ active: item.abstract.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'abstract',item.abstract.text)">{{item.abstract.name}}</div>
+              </div>
+              <div class="tags-list-info">{{item.text?item.text:'暂无'}}</div>
             </div>
-
-            <div class="tags-list-info">{{item.text?item.text:'暂无'}}</div>
-          </div>
+          </template>
           <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
         </el-col>
       </el-row>
@@ -159,6 +173,13 @@
     line-height: 1.6;
     color:#837f7f;
   }
+  .tags-list-info1{
+    box-sizing: border-box;
+    font-size: 12px;
+    text-align: left;
+    line-height: 1.6;
+    color:#837f7f;
+  }
   .pagination-box{
     width: 100%;
     height: auto;
@@ -167,6 +188,24 @@
     justify-content: center;
     padding: 10px 0;
   }
+  .show-box.cool {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.full_box{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.full_txt{
+  width:auto;
+  text-align: right;
+  font-size: 14px;
+  padding: 2px 20px;
+}
 </style>
 <script>
 import {getHomeRightList,getSearch} from '@/api/data'
@@ -178,7 +217,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'}],
+        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'},{label:'鉴别诊断',value:'identify'},],
         tag:'',
         getListInfo:[],
         name:'',
@@ -187,6 +226,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         total: 0,
         pageSize: 20,
         crumbs:[],
+        showFull: [],
       }
     },
     active(){
@@ -206,6 +246,14 @@ import {getHomeRightList,getSearch} from '@/api/data'
     updated() {
      },
     methods:{
+      
+      //打开全文
+      openFulltxt(idx) {
+        let index = idx;
+        this.showFull[index].status = !this.showFull[index].status
+        this.showFull= this.showFull
+      },
+
       // 点击分页功能
       handleCurrentChange(val) {
         let that = this;
@@ -253,21 +301,32 @@ import {getHomeRightList,getSearch} from '@/api/data'
          if(res.data.code == 0){
             that.tag= that.selectSearchChange;
             let getListInfo = res.data.data;
-            for(var i = 0;i<getListInfo.length;i++){
-
-              getListInfo[i].index = i;
-              if(that.tag == "sickness" || that.tag == "disease"){
-                  getListInfo[i].text = getListInfo[i].symptom.text
-                }else if(that.tag == "medicine"){
-                  getListInfo[i].text = getListInfo[i].majorConstituent.text
-                }else if(that.tag == "inspection"){
-                  getListInfo[i].text = getListInfo[i].annotation.text
-                }else if(that.tag == "symptom"){
-                  getListInfo[i].text = getListInfo[i].identify.text
-                }
-
+            that.total = res.data.data.count;
+            if(that.tag == "identify"){
+              let showFull =[];
+              for (var i = 0; i < getListInfo.length; i++) {
+                let obj = {};
+                obj.leng = getListInfo[i].antidiastole.text.length;
+                obj.status = false;
+                showFull.push(obj);
+              }
+              that.showFull = showFull;
+            }else{
+              for(var i = 0;i<getListInfo.length;i++){
+                getListInfo[i].index = i;
+                if(that.tag == "sickness" || that.tag == "disease"){
+                    getListInfo[i].text = getListInfo[i].symptom.text
+                  }else if(that.tag == "medicine"){
+                    getListInfo[i].text = getListInfo[i].majorConstituent.text
+                  }else if(that.tag == "inspection"){
+                    getListInfo[i].text = getListInfo[i].annotation.text
+                  }else if(that.tag == "symptom"){
+                    getListInfo[i].text = getListInfo[i].identify.text
+                  }
+              }
             }
-            this.getListInfo= getListInfo;
+
+            that.getListInfo= getListInfo;
          }else if(res.data.code == 1){
             this.$message.error({
                 message: res.data.msg,
@@ -329,16 +388,27 @@ import {getHomeRightList,getSearch} from '@/api/data'
           if(res.data.code == 0){
             let getListInfo = res.data.data.list;
             that.total = res.data.data.count;
-            for(var i = 0;i<getListInfo.length;i++){
-              getListInfo[i].index = i;
-              if(that.tag == "sickness" || that.tag == "disease"){
-                getListInfo[i].text = getListInfo[i].symptom.text
-              }else if(that.tag == "medicine"){
-                getListInfo[i].text = getListInfo[i].majorConstituent.text
-              }else if(that.tag == "inspection"){
-                getListInfo[i].text = getListInfo[i].annotation.text
-              }else if(that.tag == "symptom"){
-                getListInfo[i].text = getListInfo[i].identify.text
+            if(that.tag == "identify"){
+              let showFull =[];
+              for (var i = 0; i < getListInfo.length; i++) {
+                let obj = {};
+                obj.leng = getListInfo[i].antidiastole.text.length;
+                obj.status = false;
+                showFull.push(obj);
+              }
+              that.showFull = showFull;
+            }else{
+              for(var i = 0;i<getListInfo.length;i++){
+                getListInfo[i].index = i;
+                if(that.tag == "sickness" || that.tag == "disease"){
+                    getListInfo[i].text = getListInfo[i].symptom.text
+                  }else if(that.tag == "medicine"){
+                    getListInfo[i].text = getListInfo[i].majorConstituent.text
+                  }else if(that.tag == "inspection"){
+                    getListInfo[i].text = getListInfo[i].annotation.text
+                  }else if(that.tag == "symptom"){
+                    getListInfo[i].text = getListInfo[i].identify.text
+                  }
               }
             }
             that.getListInfo= getListInfo;

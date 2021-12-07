@@ -14,6 +14,12 @@
 a{
   text-decoration: none;
 }
+  a{
+    color: #333;
+  }
+  a:hover{
+    color: #026ae0;
+  }
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

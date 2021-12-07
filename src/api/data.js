@@ -120,3 +120,11 @@ export const getQuestion = (params) =>{
     data: params
   })
 }
+// 临床试验、临床路径
+export const getDepartment = (params) =>{
+  return axios.request({
+    url:'/zsk/department/SickNess',
+    method: 'post',
+    data: params
+  })
+}
