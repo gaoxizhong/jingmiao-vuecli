@@ -29,7 +29,7 @@
               <template v-if="tag == 'clinicTrial'">
                 <el-table :data="getListInfo" border stripe style="width: 100%;" >
                   <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
-                  <el-table-column prop="register_number" label="登记号">
+                  <el-table-column prop="register_number" label="登记号"  width="180">
                     <template slot-scope="scope">  
                       <a :href="scope.row.file" target="_blank" >{{scope.row.register_number}}</a>
                     </template>  
