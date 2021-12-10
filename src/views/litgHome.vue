@@ -35,7 +35,7 @@
               <!-- 文献 -->
               <div v-if="tag == 'document'">
                 <div class="item-title">{{item.title}}</div>
-                <div class="tag-top-box">
+                <div class="tag-top-box" v-if="item.author && item.author.length > 0">
                     <div class="zuozhe-box" style="width:auto;padding-right:8px;">作者:</div>
                     <div class="tap-top-span">
                       <a href="javascript:0;" v-for="(items,index) in item.author" @click.stop="goToauthor(items.kgid)" :key="index">{{items.name?items.name:''}}</a>
@@ -45,7 +45,7 @@
                 <div class="full_box">
                   <a href="javascript:0;" class='full_txt' @click.stop='openFulltxt(index)' v-if='item.abstract.length > 100'>{{!showFull[index].status?'展开':'收起'}}</a>
                 </div>
-                <div class="key-box">
+                <div class="key-box" v-if="item.keyword && item.keyword.length > 0">
                     <div class="zuozhe-box">关键词:</div>
                     <div class="keyspan-box">
                       <span :class="{active: idx == 0 }" v-for="(keys,idx) in item.keyword" :key="idx">{{keys}}</span>
