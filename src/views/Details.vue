@@ -480,7 +480,7 @@ import {getSickNess,getD3Search} from '@/api/data'
           location.href = "javascript:history.go(-2);"
           // that.setsickNess();
         }
-          
+
 
       },
       // ===============================
