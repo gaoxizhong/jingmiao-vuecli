@@ -200,19 +200,19 @@ img.logo-img{
     -webkit-box-orient: vertical;
     color:#fff;
     opacity: 0.7;
-    background: #20234E !important;
+    background: #ebebeb !important;
 }
-.span-text{
+/* .span-text{
   color:#fff;
   opacity: 0.7;
-}
+} */
 .el-submenu .el-menu-item.is-active{
   color: #fff;
   opacity: 1;
   background: #8FA7FA !important;
 }
 .el-icon-arrow-down:before{
-  color: #fff;
+  color: #000;
 }
 </style>
 <script>
@@ -221,8 +221,8 @@ export default {
     // props:['datalist'],
     data() {
         return {
-          menuBackgroundColor:'#242a4d',
-          menuTextColor:'#fff',
+          menuBackgroundColor:'#fff',
+          menuTextColor:'#000',
           oneColumn: '0',
           datalist:[],
         }
