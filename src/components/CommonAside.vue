@@ -10,8 +10,8 @@
         unique-opened
     >
     <div class="logo-box">
-      <img src="../assets/image/logo.png" alt="" v-show="!isCollapse"/>
-      <h3 style="color:#fff;" v-show="isCollapse">菁苗</h3>
+      <img src="../assets/image/logo-4.png" alt="" v-show="!isCollapse" class="logo-img"/>
+      <div style="color:#fff;padding:10px 0;" v-show="isCollapse">全科患教系统</div>
     </div>
 
 			<!-- 第一层 -->
@@ -147,7 +147,7 @@
   padding: 10px 0;
 }
 img.logo-img{
-  width: 180px;
+  width: 220px;
 }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 260px;
