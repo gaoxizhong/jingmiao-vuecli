@@ -127,16 +127,12 @@
 				</template>
 			</template>
 
-      <template>
+      <!-- <template>
         <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoQA">
           <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
           <span slot="title" style="padding-left: 8px;font-size: 18px;">问答</span>
         </el-menu-item>
-        <!-- <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoLc">
-          <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
-          <span slot="title" style="padding-left: 8px;font-size: 18px;">临床</span>
-        </el-menu-item> -->
-      </template>
+      </template> -->
 
     </el-menu>
 </template>

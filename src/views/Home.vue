@@ -217,7 +217,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'},{label:'鉴别诊断',value:'identify'},],
+        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'症状体征',value:'symptom'}],
         tag:'',
         getListInfo:[],
         name:'',
@@ -246,7 +246,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
     updated() {
      },
     methods:{
-      
+
       //打开全文
       openFulltxt(idx) {
         let index = idx;
