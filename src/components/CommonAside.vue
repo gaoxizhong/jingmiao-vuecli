@@ -9,19 +9,22 @@
         default-active="0-0-0-0-0"
         unique-opened
     >
-    <div class="logo-box">
-      <img src="../assets/image/logo-4.png" alt="" v-show="!isCollapse" class="logo-img"/>
-      <div style="color:#fff;padding:10px 0;" v-show="isCollapse">全科患教系统</div>
+    <div class="logo-box" v-show="!isCollapse" >
+      <img src="../assets/image/logo-5.png" alt="" class="logo-img"/>
+      <!-- <span class="logo-box-span">医疗健康数字化平台</span> -->
     </div>
-
+    <div class="logo-box" v-show="isCollapse">
+      <div style="padding:10px 0;">菁苗健康</div>
+    </div>
 			<!-- 第一层 -->
 			<template v-for="(item,index) in datalist">
 				<!-- 如果第一层有子菜单，则继续循环 -->
 				<template v-if="item.subordinate">
 					<el-submenu :index="`${index}`" :key="index">
 						<template slot="title">
-							<i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
-							<span slot="title" style="padding-left: 8px;font-size: 18px;">{{ item.knowledge_base_name }}</span>
+              <i class="el-icon-menu"></i>
+							<!-- <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i> -->
+							<span slot="title" style="padding-left: 8px;font-size: 16px;">{{ item.knowledge_base_name }}</span>
 						</template>
 						<!-- 第二层 -->
 						<template v-for="(item_2,idx_2) in item.subordinate">
@@ -121,30 +124,38 @@
 				<!-- 如果第一层没有子菜单 -->
 				<template v-else>
 					<el-menu-item :index="`${index}`" :key="index" style="text-align:left; padding-left:20px !important;">
-						<i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
+					  <i class="el-icon-menu"></i>
+          	<!-- <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i> -->
 						<span slot="title" style="padding-left: 8px;font-size: 18px;">{{ item.knowledge_base_name }}</span>
 					</el-menu-item>
 				</template>
 			</template>
 
-      <!-- <template>
+      <template>
         <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoQA">
-          <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i>
+          <i class="el-icon-menu"></i>
+          <!-- <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i> -->
           <span slot="title" style="padding-left: 8px;font-size: 18px;">问答</span>
         </el-menu-item>
-      </template> -->
+      </template>
 
     </el-menu>
 </template>
 <style>
-.logo-box{
-  width: 100%;
-  height: auto;
-  padding: 10px 0;
-}
-img.logo-img{
-  width: 220px;
-}
+  .logo-box{
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
+  }
+  img.logo-img{
+    width: 140px;
+  }
+  .logo-box-span{
+    font-size: 14px;
+    color: #5578f0;
+    text-align: center;
+    display: block;
+  }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 260px;
     min-height: 400px;
