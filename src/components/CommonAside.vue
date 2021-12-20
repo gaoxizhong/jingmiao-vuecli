@@ -11,7 +11,6 @@
     >
     <div class="logo-box" v-show="!isCollapse" >
       <img src="../assets/image/logo-5.png" alt="" class="logo-img"/>
-      <!-- <span class="logo-box-span">医疗健康数字化平台</span> -->
     </div>
     <div class="logo-box" v-show="isCollapse">
       <div style="padding:10px 0;">菁苗健康</div>
@@ -23,7 +22,6 @@
 					<el-submenu :index="`${index}`" :key="index">
 						<template slot="title">
               <i class="el-icon-menu"></i>
-							<!-- <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i> -->
 							<span slot="title" style="padding-left: 8px;font-size: 16px;">{{ item.knowledge_base_name }}</span>
 						</template>
 						<!-- 第二层 -->
@@ -125,17 +123,19 @@
 				<template v-else>
 					<el-menu-item :index="`${index}`" :key="index" style="text-align:left; padding-left:20px !important;">
 					  <i class="el-icon-menu"></i>
-          	<!-- <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i> -->
 						<span slot="title" style="padding-left: 8px;font-size: 18px;">{{ item.knowledge_base_name }}</span>
 					</el-menu-item>
 				</template>
 			</template>
 
       <template>
+        <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoVideoList">
+          <i class="el-icon-menu"></i>
+          <span slot="title" style="padding-left: 8px;font-size: 16px;">视频</span>
+        </el-menu-item>
         <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoQA">
           <i class="el-icon-menu"></i>
-          <!-- <i><img src="../assets/image/i-icon.png" alt="" style="margin-bottom: 4px;"/></i> -->
-          <span slot="title" style="padding-left: 8px;font-size: 18px;">问答</span>
+          <span slot="title" style="padding-left: 8px;font-size: 16px;">问答</span>
         </el-menu-item>
       </template>
 
