@@ -169,6 +169,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+     padding:0;
   }
   .el-menu-vertical-demo>li>ul>li>div.el-submenu__title{
     padding-left: 30px !important;
@@ -310,6 +311,10 @@ export default {
           path: "/QAhome"
         });
       window.open(newUrl.href, "_blank");
+    },
+    gotoVideoList(){
+      this.$emit('sickNess');
+      this.$router.replace({path:'/VideoHome'})
     },
     clickItem_2(e){
       console.log(e)

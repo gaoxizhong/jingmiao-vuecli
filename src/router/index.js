@@ -77,6 +77,10 @@ const routes = [
           name: 'LcsyDetails',
           component: () => import('@/views/LcsyDetails'),
         },
+        { path: '/VideoHome',
+          name: 'VideoHome',
+          component: () => import('@/views/VideoHome'),
+        },
         { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
         { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails') },
     ]
