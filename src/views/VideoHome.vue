@@ -12,20 +12,18 @@
           <div class="main_left2">
             <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
               <li>
-                  <a href="" target="_blank" title="人工智能NLP自然语言处理实战课程">
-                      <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
-                      <div class="list_title">
-                          <h2>人工智能NLP自然语言处理实战课程</h2>
-                          <p class="relainfo">
-                              <img src="" alt="" class="likeNum"/>
-                              34
-                          </p>
-                      </div>
-                  </a>
+                <a href="javascript:0;" title="人工智能NLP自然语言处理实战课程" @click="gotoVideo('https://video.pearvideo.com/mp4/adshort/20200715/cont-1685978-15265163_adpkg-ad_hd.mp4')">
+                  <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
+                  <div class="list_title">
+                    <h2>人工智能NLP自然语言处理实战课程</h2>
+                    <p class="relainfo">
+                      <img src="" alt="" class="likeNum"/>34
+                    </p>
+                  </div>
+                </a>
               </li>
             </el-col>
             <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
-
               <li>
                   <a href="" target="_blank" title="人工智能NLP自然语言处理实战课程">
                       <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
@@ -70,7 +68,6 @@
               </li>
             </el-col>
             <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
-
               <li>
                   <a href="" target="_blank" title="人工智能NLP自然语言处理实战课程">
                       <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
@@ -154,7 +151,7 @@
     height: 100%;
     display: block;
     float: left;
-    padding: 0 50px;
+    padding: 0 20px;
     box-sizing: border-box;
   }
   .main_left2 li {
@@ -181,10 +178,10 @@
     float: left;
 }
 .main_left2 li .list_title h2, p {
-    line-height: 30px;
     font-size: 14px;
-    text-indent: 10px;
     font-weight: normal;
+    text-align: left;
+    padding: 4px 6px;
 }
 .likeNum {
     width: 16px!important;
@@ -223,6 +220,17 @@ import {getHomeRightList} from '@/api/data'
     updated() {
      },
     methods:{
+      gotoVideo(s){
+        console.log(s)
+      // 新页面打开
+        let newUrl = this.$router.resolve({
+          path: "/VideoDetails",
+          query:{
+            src:s
+          }
+        });
+      window.open(newUrl.href, "_blank");
+    },
       // 点击分页功能
       handleCurrentChange(val) {
         let that = this;

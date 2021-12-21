@@ -3,8 +3,7 @@ import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
 import QAhome from '../views/QAhome.vue'
-
-
+import VideoDetails from '../views/VideoDetails.vue'
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location, onResolve, onReject) {
   if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
@@ -84,7 +83,12 @@ const routes = [
         { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
         { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails') },
     ]
-  }
+  },
+  {
+    path: '/VideoDetails',
+    name: 'VideoDetails',
+    component: VideoDetails
+  },
 ]
 
 const router = new VueRouter({
