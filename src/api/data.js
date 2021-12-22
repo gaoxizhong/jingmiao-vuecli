@@ -128,3 +128,11 @@ export const getDepartment = (params) =>{
     data: params
   })
 }
+// 视频列表
+export const getVideoList = (params) =>{
+  return axios.request({
+    url:'/video',
+    method: 'post',
+    data: params
+  })
+}

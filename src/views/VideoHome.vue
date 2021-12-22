@@ -10,109 +10,21 @@
 
       <el-row style="padding-top:20px;">
           <div class="main_left2">
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box" v-for="(item,index) in getListInfo" :key="index">
               <li>
-                <a href="javascript:0;" title="人工智能NLP自然语言处理实战课程" @click="gotoVideo('https://video.pearvideo.com/mp4/adshort/20200715/cont-1685978-15265163_adpkg-ad_hd.mp4')">
-                  <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
+                <a href="javascript:0;" :title="item.title" @click="gotoVideo(item.video_url)">
+                  <img :src="item.cover_img" alt="" />
                   <div class="list_title">
-                    <h2>人工智能NLP自然语言处理实战课程</h2>
+                    <h2>{{item.title}}</h2>
                     <p class="relainfo">
-                      <img src="" alt="" class="likeNum"/>34
+                     <i class="el-icon-view"></i><span style="padding-left:10px;font-size:12px;">{{item.page_view}}</span> 
                     </p>
                   </div>
                 </a>
               </li>
             </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
-              <li>
-                  <a href="" target="_blank" title="人工智能NLP自然语言处理实战课程">
-                      <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
-                      <div class="list_title">
-                          <h2>人工智能NLP自然语言处理实战课程</h2>
-                          <p class="relainfo">
-                              <img src="" alt="" class="likeNum"/>
-                              34
-                          </p>
-                      </div>
-                  </a>
-              </li>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
-
-              <li>
-                  <a href="" target="_blank" title="人工智能NLP自然语言处理实战课程">
-                      <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
-                      <div class="list_title">
-                          <h2>人工智能NLP自然语言处理实战课程</h2>
-                          <p class="relainfo">
-                              <img src="" alt="" class="likeNum"/>
-                              34
-                          </p>
-                      </div>
-                  </a>
-              </li>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
-
-              <li>
-                  <a href="" target="_blank" title="人工智能NLP自然语言处理实战课程">
-                      <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
-                      <div class="list_title">
-                          <h2>人工智能NLP自然语言处理实战课程</h2>
-                          <p class="relainfo">
-                              <img src="" alt="" class="likeNum"/>
-                              34
-                          </p>
-                      </div>
-                  </a>
-              </li>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
-              <li>
-                  <a href="" target="_blank" title="人工智能NLP自然语言处理实战课程">
-                      <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
-                      <div class="list_title">
-                          <h2>人工智能NLP自然语言处理实战课程</h2>
-                          <p class="relainfo">
-                              <img src="" alt="" class="likeNum"/>
-                              34
-                          </p>
-                      </div>
-                  </a>
-              </li>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
-
-              <li>
-                  <a href="" target="_blank" title="人工智能NLP自然语言处理实战课程">
-                      <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
-                      <div class="list_title">
-                          <h2>人工智能NLP自然语言处理实战课程</h2>
-                          <p class="relainfo">
-                              <img src="" alt="" class="likeNum"/>
-                              34
-                          </p>
-                      </div>
-                  </a>
-              </li>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box">
-
-              <li>
-                  <a href="" target="_blank" title="人工智能NLP自然语言处理实战课程">
-                      <img src="/Uploads/video/202112/1639881888/m_2021121902.jpg" alt="" />
-                      <div class="list_title">
-                          <h2>人工智能NLP自然语言处理实战课程</h2>
-                          <p class="relainfo">
-                              <img src="" alt="" class="likeNum"/>
-                              34
-                          </p>
-                      </div>
-                  </a>
-              </li>
-            </el-col>
           </div>
-          <!-- <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty> -->
+          <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
       </el-row>
       <!-- 分页展示 -->
       <div class="pagination-box">
@@ -161,12 +73,19 @@
     float: left;
     margin: 0 5px;
     margin-bottom: 20px;
-    border: solid 1px #CDCDCD;
     background-color: #F6F6F6;
+  }
+   .main_left2 li>a{
+     display: inline-block;
+     width: 100%;
+     height: 100%;
+   }
+  .main_left2 li>a:hover{
+    box-shadow: 1px 2px 2px #00000020;
   }
   .main_left2 li img {
     width: 100%;
-    height: 160px;
+    height: 180px;
     display: block;
     float: left;
     padding-bottom: 0px;
@@ -194,7 +113,7 @@
 }
 </style>
 <script>
-import {getHomeRightList} from '@/api/data'
+import { getVideoList } from '@/api/data'
   export default {
     inject: ['setsickNess'],
     data() {
@@ -244,7 +163,7 @@ import {getHomeRightList} from '@/api/data'
         let name = _name;
 
       },
-      // 获取科室下列表
+      // 获取视频列表
       getHomeRightList(){
         let that = this;
         let pearms = {
@@ -258,7 +177,7 @@ import {getHomeRightList} from '@/api/data'
           background: 'rgba(0, 0, 0, 0.1)',
           target:document.querySelector('.content-box'),
         });
-        getHomeRightList(pearms).then( res =>{
+        getVideoList(pearms).then( res =>{
           loading.close();
           if(res.data.code == 0){
             let getListInfo = res.data.data.list;

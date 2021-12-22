@@ -1,5 +1,5 @@
 <template>
-  <div class="content-box">
+  <div class="content-box" :style="`height:${ viewHeight }px;padding-top: 60px;`">
     <div class="video-box">
       <video
         :src="videoOptions.src"
@@ -9,7 +9,6 @@
         playsinline="true"
         x-webkit-airplay="allow"
         x5-playsinline
-        style="width: 100%;height:100%;"
         @play="onPlayerPlay"
         @pause="onPlayerPause"
         @seeking="seeking"
@@ -21,10 +20,14 @@
 </template>
 <style scoped>
   .video-box{
-    width: 800px;
-    height: 520px;
+    width: 860px;
+    height: 70%;
     margin: 0 auto;
-    margin-top: 50px;
+    box-shadow: 0 0 24px 0 rgb(19 70 80 / 25%);
+  }
+  .video-box video{
+    width: 100%;
+    height: 100%;
   }
 </style>
 <script>
