@@ -7,7 +7,15 @@
           <el-breadcrumb-item>列表</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-
+      <el-row>
+        <el-col :span="12" :offset="5">
+          <div class="el-input-box">
+            <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+              <el-button slot="append" icon="el-icon-search" @click="getInputBtn()" style=" padding: 12px 30px;"></el-button>
+            </el-input>
+          </div>
+        </el-col>
+      </el-row>
       <el-row style="padding-top:20px;">
           <div class="main_left2">
             <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box" v-for="(item,index) in getListInfo" :key="index">
@@ -17,7 +25,7 @@
                   <div class="list_title">
                     <h2>{{item.title}}</h2>
                     <p class="relainfo">
-                     <i class="el-icon-view"></i><span style="padding-left:10px;font-size:12px;">{{item.page_view}}</span> 
+                     <i class="el-icon-view"></i><span class="relainfo-span">{{item.page_view}}</span>
                     </p>
                   </div>
                 </a>
@@ -111,6 +119,22 @@
 .col-box{
   padding: 0 5px;
 }
+.el-input-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 4px;
+}
+.el-select-box{
+  width: auto;
+  min-width: 120px;
+}
+.relainfo-span{
+  padding-left:10px;
+  font-size:12px;
+  color: #a9a9a9;
+}
 </style>
 <script>
 import { getVideoList } from '@/api/data'
@@ -118,6 +142,8 @@ import { getVideoList } from '@/api/data'
     inject: ['setsickNess'],
     data() {
       return {
+        search:'',
+        title:'',
         getListInfo:[],
         hove_index: 0,
         current_page:1,
@@ -139,6 +165,25 @@ import { getVideoList } from '@/api/data'
     updated() {
      },
     methods:{
+            // 回车键点击
+      searchEnterFun(e){
+        var keyCode = window.event?e.keyCode:e.which;
+        if(keyCode == 13){
+          this.getInputBtn();
+        }
+      },
+      // 点击搜索
+      getInputBtn(){
+        let that = this;
+        // if(that.search == ''){
+        //   this.$message.error({
+        //       message: '请填写内容',
+        //   });
+        //   return
+        // }
+        that.current_page = 1;
+        that.getHomeRightList();
+      },
       gotoVideo(s){
         console.log(s)
       // 新页面打开
@@ -166,8 +211,12 @@ import { getVideoList } from '@/api/data'
       // 获取视频列表
       getHomeRightList(){
         let that = this;
+        let search = that.search;
         let pearms = {
           'pn': that.current_page
+        }
+        if(search != '' || search){
+          pearms.search = search
         }
         that.getListInfo = [];
         const loading = that.$loading({
