@@ -136,3 +136,11 @@ export const getVideoList = (params) =>{
     data: params
   })
 }
+// 视频阅读量
+export const getVideoRecordPv = (params) =>{
+  return axios.request({
+    url:'/recordPv',
+    method: 'post',
+    data: params
+  })
+}

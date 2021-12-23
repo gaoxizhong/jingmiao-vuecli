@@ -20,8 +20,11 @@
           <div class="main_left2">
             <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box" v-for="(item,index) in getListInfo" :key="index">
               <li>
-                <a href="javascript:0;" :title="item.title" @click="gotoVideo(item.video_url)">
-                  <img :src="item.cover_img" alt="" />
+                <a href="javascript:0;" :title="item.title" @click="gotoVideo(item.video_url,item.id)">
+                  <!-- <img :src="item.cover_img" alt="" /> -->
+                  <div style="width:100%;height:160px;">
+                    <video :src="item.video_url" style="object-fit: fill;" width="100%" height="100%" ></video>
+                  </div>
                   <div class="list_title">
                     <h2>{{item.title}}</h2>
                     <p class="relainfo">
@@ -70,7 +73,6 @@
     width: 100%;
     height: 100%;
     display: block;
-    float: left;
     padding: 0 20px;
     box-sizing: border-box;
   }
@@ -78,7 +80,6 @@
     width: 100%;
     height: auto;
     display: block;
-    float: left;
     margin: 0 5px;
     margin-bottom: 20px;
     background-color: #F6F6F6;
@@ -91,18 +92,11 @@
   .main_left2 li>a:hover{
     box-shadow: 1px 2px 2px #00000020;
   }
-  .main_left2 li img {
-    width: 100%;
-    height: 180px;
-    display: block;
-    float: left;
-    padding-bottom: 0px;
-}
+
 .main_left2 li .list_title {
     width: 100%;
     height: auto;
     display: block;
-    float: left;
 }
 .main_left2 li .list_title h2, p {
     font-size: 14px;
@@ -184,13 +178,16 @@ import { getVideoList } from '@/api/data'
         that.current_page = 1;
         that.getHomeRightList();
       },
-      gotoVideo(s){
+      gotoVideo(s,v){
         console.log(s)
+        console.log(v)
+
       // 新页面打开
         let newUrl = this.$router.resolve({
           path: "/VideoDetails",
           query:{
-            src:s
+            src:s,
+            v_id:v
           }
         });
       window.open(newUrl.href, "_blank");

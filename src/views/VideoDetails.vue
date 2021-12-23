@@ -11,7 +11,6 @@
         x5-playsinline
         @play="onPlayerPlay"
         @pause="onPlayerPause"
-        @seeking="seeking"
         autoplay="autoplay"
         ref="video">
       </video>
@@ -31,6 +30,7 @@
   }
 </style>
 <script>
+import { getVideoRecordPv } from '@/api/data'
   export default {
     name: "showVideo",
     data() {
@@ -38,6 +38,7 @@
           videoOptions: {
               controls:true,
               src:"", // url地址
+              v_id:''
           },
           player: null,
           playTime:'',
@@ -49,12 +50,15 @@
     mounted() {
     },
     created(){  //生命周期里接收参数
-      console.log('created')
+      console.log(this.$route.query.v_id)
       let getViewportSize = this.$getViewportSize();
       this.viewHeight = getViewportSize.height;
       this.viewWidth = getViewportSize.width;
       this.videoOptions.src = this.$route.query.src;
-      this.initVideo();
+      this.videoOptions.v_id = this.$route.query.v_id;
+
+      // this.initVideo();
+      this.getVideoRecordPv();
     },
     methods: {
       initVideo() {
@@ -75,7 +79,15 @@
           }
         };
       },
-
+    getVideoRecordPv(){
+      let that = this;
+      let v_id = that.videoOptions.v_id;
+      getVideoRecordPv({v_id}).then( res =>{
+        if(res.data.code == 0){
+          console.log('阅读成功')
+        }
+      })
+    },
       // 播放回调
       onPlayerPlay(player) {
           // this.globalSetting = true

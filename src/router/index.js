@@ -79,6 +79,10 @@ const routes = [
         { path: '/VideoHome',
           name: 'VideoHome',
           component: () => import('@/views/VideoHome'),
+          meta: {
+            keepAlive: true,
+            scollTopPosition: 0
+          }
         },
         { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
         { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails') },
