@@ -4,14 +4,16 @@
       <video
         :src="videoOptions.src"
         :controls="videoOptions.controls"
-        class="video-js vjs-big-play-centered vjs-fluid"
         webkit-playsinline="true"
         playsinline="true"
         x-webkit-airplay="allow"
         x5-playsinline
         @play="onPlayerPlay"
         @pause="onPlayerPause"
-        autoplay="autoplay"
+        autoplay="autoplay" 
+        style="object-fit: fill;" 
+        width="100%" 
+        height="100%" 
         ref="video">
       </video>
     </div>
@@ -21,6 +23,7 @@
   .video-box{
     width: 860px;
     height: 70%;
+    min-height: 560px;
     margin: 0 auto;
     box-shadow: 0 0 24px 0 rgb(19 70 80 / 25%);
   }
