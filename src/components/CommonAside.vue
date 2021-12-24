@@ -10,10 +10,10 @@
         unique-opened
     >
     <div class="logo-box" v-show="!isCollapse" >
-      <img src="../assets/image/logo-4.png" alt="" class="logo-img"/>
+      <img src="../assets/image/logo-5.png" alt="" class="logo-img"/>
     </div>
     <div class="logo-box" v-show="isCollapse">
-      <div style="padding:10px 0;">第一人民医院</div>
+      <div style="padding:10px 0;">菁苗健康</div>
     </div>
 			<!-- 第一层 -->
 			<template v-for="(item,index) in datalist">
@@ -133,10 +133,10 @@
           <i class="el-icon-menu"></i>
           <span slot="title" style="padding-left: 8px;font-size: 16px;">视频</span>
         </el-menu-item>
-        <!-- <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoQA">
+        <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoQA">
           <i class="el-icon-menu"></i>
           <span slot="title" style="padding-left: 8px;font-size: 16px;">问答</span>
-        </el-menu-item> -->
+        </el-menu-item>
       </template>
 
     </el-menu>
@@ -148,7 +148,7 @@
     padding: 10px 0;
   }
   img.logo-img{
-    width: 220px;
+    width: 140px;
   }
   .logo-box-span{
     font-size: 14px;

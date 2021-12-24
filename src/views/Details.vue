@@ -305,7 +305,7 @@ import {getSickNess,getD3Search} from '@/api/data'
         console.log(barckArr)
         this.$store.dispatch("barckArr",barckArr);
         if(this.type == 'xy'){
-           this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'症状体征',value:'symptom'}]
+                    this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'}]
         }
         if(this.type == 'zy'){
           this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'},{label:'经络',value:'jl'},{label:'穴位',value:'xw'},]
