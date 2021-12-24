@@ -224,7 +224,10 @@
 }
 </style>
 <script>
-import {WesternMedicine} from '@/api/data'
+import { WesternMedicine,getHomeRightList,getzyHomeRightList } from '@/api/data'
+// getHomeRightList ----> 对应类型为 sickness disease medicine inspection symptom identify 中医类： zysickness  zcy  jl icd10
+// getzyHomeRightList ----> 对应类型为 中医类： zy fj ys tz xw
+
 export default {
     // props:['datalist'],
     data() {
@@ -318,41 +321,105 @@ export default {
     },
     clickItem_2(e){
       console.log(e)
-        let crumbsarr = e.$attrs.arr;
-        let b1 = crumbsarr.slice(); //  不修改原数组
-        this.$store.dispatch("crumbsarr",b1);
-        let barckArr = [];
-        this.$store.dispatch("barckArr",barckArr);
-        window.localStorage.setItem('is_details',0);
+      let name = e.$attrs.name;
+      let tag = e.$attrs.tag;
 
-          if(this.oneColumn.substring(0,1) == 0){
-            let name = e.$attrs.name;
-            let tag = e.$attrs.tag;
-            // this.$store.dispatch("sickNess",name);
-            this.$emit('sickNess');
-            if(tag == 'clinicalPathway' || tag == 'clinicTrial'){
-              this.$router.replace({  //核心语句
-                path:'/LcsyHome',   //跳转的路径
-                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                  name,
-                  tag,
-                }
-              })
-            }else{
-              this.$router.replace({  //核心语句
-                path:'/Home',   //跳转的路径
-                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                  name,
-                  tag,
-                }
-              })
+// ======================================== ↓ ================================
+
+      // if(that.tag == 'zysickness' || that.tag == 'zcy'|| that.tag == 'jl' || that.tag == 'icd10' || that.tag == 'sickness' || that.tag == 'disease'|| that.tag == 'medicine' || that.tag == 'inspection' || that.tag == 'symptom' || that.tag == 'identify'){
+      //     getHomeRightList({
+      //       department: name,
+      //       tag,
+      //       pn:'1'
+      //     }).then( res =>{
+      //       if(res.data.code == 0){
+      //         let getListInfo = res.data.data.list;
+      //         that.total = res.data.data.count;
+      //         console.log(that.getListInfo)
+      //       }else{
+      //         that.$message.error({
+      //             message: '暂无数据'
+      //         });
+      //       }
+      //     }).catch(e =>{
+      //       console.log(e)
+      //     })
+      //     return
+      //   }
+      //  if( that.tag == 'zy' || that.tag == 'fj'|| that.tag == 'ys' || that.tag == 'tz'|| that.tag == 'xw' ) {
+      //     getzyHomeRightList({
+      //       tag,
+      //       pn: '1'
+      //     }).then( res =>{
+      //       loading.close();
+      //       if(res.data.code == 0){
+      //         let getListInfo = res.data.data.list;
+      //         that.total = res.data.data.count;
+      //         for(var i = 0;i<getListInfo.length;i++){
+      //           getListInfo[i].index = i;
+      //             if(that.tag == "zy"){
+      //               getListInfo[i].text = getListInfo[i].toxicity.text
+      //             }else if(that.tag == "fj" || that.tag == "ys" ){
+      //               getListInfo[i].text = getListInfo[i].composition.text
+      //             }else if(that.tag == "tz"){
+      //               getListInfo[i].text = getListInfo[i].overallFeature.text
+      //             }else if(that.tag == "xw"){
+      //               getListInfo[i].text = getListInfo[i].location.text
+      //           }
+
+      //         }
+      //         that.getListInfo= getListInfo;
+      //         console.log(that.getListInfo)
+      //       }else if(res.data.code == 1){
+      //         that.$message.error({
+      //             message: res.data.msg,
+      //         });
+      //         return
+      //       }else{
+      //         that.$message.error({
+      //             message: res.data.msg
+      //         });
+      //       }
+      //     }).catch(e =>{
+      //         loading.close();
+      //         console.log(e)
+      //     })
+      //   }
+
+      // return
+// ======================================== ↑ ================================
+
+      let crumbsarr = e.$attrs.arr;
+      let b1 = crumbsarr.slice(); //  不修改原数组
+      this.$store.dispatch("crumbsarr",b1);
+      let barckArr = [];
+      this.$store.dispatch("barckArr",barckArr);
+      window.localStorage.setItem('is_details',0);
+
+      if(this.oneColumn.substring(0,1) == 0){
+        // this.$store.dispatch("sickNess",name);
+        this.$emit('sickNess');
+        if(tag == 'clinicalPathway' || tag == 'clinicTrial'){
+          this.$router.replace({  //核心语句
+            path:'/LcsyHome',   //跳转的路径
+            query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+              name,
+              tag,
             }
+          })
+        }else{
+          this.$router.replace({  //核心语句
+            path:'/Home',   //跳转的路径
+            query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+              name,
+              tag,
+            }
+          })
+        }
 
-          return
-          }
-        if(this.oneColumn.substring(0,1) == 1){
-            let name = e.$attrs.name;
-            let tag = e.$attrs.tag;
+      return
+      }
+      if(this.oneColumn.substring(0,1) == 1){
             this.$store.dispatch("sickNess",name);
             this.$emit('sickNess')
             this.$router.replace({  //核心语句
@@ -364,9 +431,7 @@ export default {
             })
           return
           }
-        if(this.oneColumn.substring(0,1) == 2){
-            let name = e.$attrs.name;
-            let tag = e.$attrs.tag;
+      if(this.oneColumn.substring(0,1) == 2){
             // this.$store.dispatch("sickNess",name);
             this.$emit('sickNess')
             this.$router.replace({  //核心语句
