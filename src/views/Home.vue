@@ -55,7 +55,7 @@
                 <div :class="[{ active: item.majorConstituent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'majorConstituent',item.majorConstituent.text)">{{item.majorConstituent.name}}</div>
                 <div :class="[{ active: item.indication.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indication',item.indication.text)">{{item.indication.name}}</div>
                 <div :class="[{ active: item.notes.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'notes',item.notes.text)">{{item.notes.name}}</div>
-                <div :class="[{ active: item.pinyi.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pinyi',item.pinyi.text)">{{item.pinyi.name}}</div>
+                <div :class="[{ active: item.usageDosage.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'usageDosage',item.usageDosage.text)">{{item.usageDosage.name}}</div>
               </div>
               <!-- 检查 -->
               <div class="tags-list-box" v-if=" tag == 'inspection' ">
@@ -343,7 +343,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         }).catch(e =>{
             loading.close();
             this.$message.error({
-                message: '请求报错！',
+                message: '请求暂无数据！',
             });
             console.log(e)
         })
@@ -537,29 +537,29 @@ import {getHomeRightList,getSearch} from '@/api/data'
         }
         // 药品
         if(this.tag == "medicine"){
-          if(type == 'pinyi'){
-            getListInfo[index].pinyi.active = true;
+          if(type == 'usageDosage'){
+            getListInfo[index].usageDosage.active = true;
             getListInfo[index].indication.active = false;
             getListInfo[index].majorConstituent.active = false;
             getListInfo[index].notes.active = false;
             return
           }
           if(type == 'indication'){
-            getListInfo[index].pinyi.active = false;
+            getListInfo[index].usageDosage.active = false;
             getListInfo[index].indication.active = true;
             getListInfo[index].majorConstituent.active = false;
             getListInfo[index].notes.active = false;
             return
           }
           if(type == 'majorConstituent'){
-            getListInfo[index].pinyi.active = false;
+            getListInfo[index].usageDosage.active = false;
             getListInfo[index].indication.active = false;
             getListInfo[index].majorConstituent.active = true;
             getListInfo[index].notes.active = false;
             return
           }
           if(type == 'notes'){
-            getListInfo[index].pinyi.active = false;
+            getListInfo[index].usageDosage.active = false;
             getListInfo[index].indication.active = false;
             getListInfo[index].majorConstituent.active = false;
             getListInfo[index].notes.active = true;

@@ -316,7 +316,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         }).catch(e =>{
             loading.close();
             this.$message.error({
-                message: '请求报错！',
+                message: '请求暂无数据！',
             });
             console.log(e)
         })
@@ -677,7 +677,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
             getListInfo[index].indications.active = false;
             getListInfo[index].compatibility.active = false;
             getListInfo[index].acupuncture.active = false;
-            getListInfo[index].acupuncture.active = false;
+            getListInfo[index].notions.active = false;
             return
           }
           if(type == 'indications'){
@@ -685,15 +685,15 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
             getListInfo[index].indications.active = true;
             getListInfo[index].compatibility.active = false;
             getListInfo[index].acupuncture.active = false;
-            getListInfo[index].acupuncture.active = false;
+            getListInfo[index].notions.active = false;
             return
           }
           if(type == 'compatibility'){
             getListInfo[index].location.active = false;
             getListInfo[index].indications.active = false;
-            getListInfo[index].acupuncture.active = false;
             getListInfo[index].compatibility.active = true;
             getListInfo[index].acupuncture.active = false;
+            getListInfo[index].notions.active = false;
             return
           }
            if(type == 'acupuncture'){
@@ -701,7 +701,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
             getListInfo[index].indications.active = false;
             getListInfo[index].compatibility.active = false;
             getListInfo[index].acupuncture.active = true;
-            getListInfo[index].acupuncture.active = false;
+            getListInfo[index].notions.active = false;
             return
           }
           if(type == 'notions'){
@@ -709,7 +709,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
             getListInfo[index].indications.active = false;
             getListInfo[index].compatibility.active = false;
             getListInfo[index].acupuncture.active = false;
-            getListInfo[index].acupuncture.active = true;
+            getListInfo[index].notions.active = true;
             return
           }
         }
