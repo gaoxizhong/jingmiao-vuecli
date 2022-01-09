@@ -39,7 +39,7 @@
                 <div v-for="(item,index) in getinfo" :key="index">
                   <div class="item-name">{{item.name}}</div>
                   <div class="item-text" v-if=" item.tag !='' && item.is_list == 1">
-                    <a class="item-text-a" @click="medicine_click(item.tag,items)" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items}}</a>
+                    <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a>
                   </div>
                   <div class="item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
                 </div>
@@ -270,24 +270,29 @@ import {getSickNess,getD3Search} from '@/api/data'
         labels: [],
         linkTypes: [],
         viewHeight:'',
-        crumbs:[]
+        crumbs:[],
       }
     },
     beforeCreate(){
-      console.log("beforeCreate")
+
     },
     created(){  //生命周期里接收参数
-        console.log('created')
         let getViewportSize = this.$getViewportSize();
         this.viewHeight = getViewportSize.height;
         this.viewWidth = getViewportSize.width;
-        this.name_1 = this.$route.query.name;  //接受参数关键代码
         this.tag = this.$route.query.tag;
         this.type = this.$route.query.type;
         let crumbs =  this.$store.state.crumbsarr;
-        this.crumbs = crumbs;
-        crumbs.push(this.name_1);
         let barckArr = this.$store.state.barckArr;
+        let name_1 = this.$route.query.name;  //接受参数关键代码
+        let kgid = this.$route.query.kgid;
+        this.crumbs = crumbs;
+        crumbs.push(name_1);
+        if(kgid){
+          this.name_1 = kgid;
+        }else{
+          this.name_1 = name_1;
+        }
         var result = barckArr.some(item=>{
           if(item.name === this.name_1){
               return true
@@ -305,7 +310,7 @@ import {getSickNess,getD3Search} from '@/api/data'
         console.log(barckArr)
         this.$store.dispatch("barckArr",barckArr);
         if(this.type == 'xy'){
-                    this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'}]
+          this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'}]
         }
         if(this.type == 'zy'){
           this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'},{label:'经络',value:'jl'},{label:'穴位',value:'xw'},]
@@ -321,15 +326,18 @@ import {getSickNess,getD3Search} from '@/api/data'
        this.getD3name(this.name_1)
     },
     methods:{
-      medicine_click(tag,name){
-        this.name_1 = name;
+      medicine_click(tag,name,kgid){
         this.tag = tag;
+        let new_name = name;
+          this.name_1 = new_name;
+          console.log(this.name_1)
           // this.getD3name(this.name_1);
         this.setsickNess();
         this.$router.push({  //核心语句
           path:'/Details',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             name:this.name_1,
+            kgid: kgid,
             tag: this.tag,
             type:this.type
           }
@@ -388,32 +396,13 @@ import {getSickNess,getD3Search} from '@/api/data'
             let getinfo = res.data.data;
             that.name = getinfo.sickness_name.text;
             that.name_2 = getinfo.sickness_name.text;
+            let kgid = getinfo.kgid?getinfo.kgid.text:'';
             // 记录面包屑导航数组
             let getinfo_arr = [];
             let crumbs = this.crumbs;
             crumbs.pop();
             crumbs.push(this.name);
-
             // 记录页面加载数据数组,,用作返回判断
-            let barckArr = this.$store.state.barckArr;
-
-            console.log(barckArr)
-            var result = barckArr.some(item=>{
-              if(item.name === that.name){
-                      return true
-                  }
-              })
-              // 如果barckArr数组对象中含有name:'张三',就会返回true，否则返回false
-              if(result){ // 如果存在
-                  console.log('存在')
-              }else{
-                barckArr.push({
-                  tag: that.tag,
-                  name: that.name
-                })
-                this.$store.dispatch("barckArr",barckArr);
-                console.log(this.$store.state.barckArr)
-              }
             for(let key in getinfo){
               let is_list = 0;
               if( getinfo[key].text.name ){
@@ -432,8 +421,7 @@ import {getSickNess,getD3Search} from '@/api/data'
 
             }
             that.getinfo= getinfo_arr;
-            console.log(that.getinfo)
-            for(let i=0; i<= getinfo_arr.length ;i++){
+            for(let i=0; i< getinfo_arr.length ;i++){
               if(getinfo_arr[i].text != '' || getinfo_arr[i].text == "[]"){
                 that.activeName.push(i)
               }
@@ -464,7 +452,6 @@ import {getSickNess,getD3Search} from '@/api/data'
         console.log(barckArr)
         if(barckArr.length > 1){
           location.href = "javascript:history.go(-2);"
-        console.log('1')
           let name = barckArr[barckArr.length-2].name;
           let tag = barckArr[barckArr.length-2].tag;
           that.name = name;
@@ -475,7 +462,6 @@ import {getSickNess,getD3Search} from '@/api/data'
           // that.setsickNess();
           return
         }else{
-          console.log('2')
           // that.$router.go(-1);  // ios 不支持
           location.href = "javascript:history.go(-2);"
           // that.setsickNess();
@@ -485,7 +471,6 @@ import {getSickNess,getD3Search} from '@/api/data'
       },
       // ===============================
       selectchange(e){
-          console.log(e)
           this.selectcheng = e;
           this.tag = e;
       },
@@ -510,14 +495,12 @@ import {getSickNess,getD3Search} from '@/api/data'
           }
         }).catch(e =>{
           that.update(this.json);
-          console.log(e)
         })
       },
       // ===============================
 
       // 知识图谱 视图更新
       update (json) {
-        console.log('update')
         this.d3jsonParser(json)
       },
       /*eslint-disable*/
@@ -551,7 +534,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                 is_show
               })
             }
-            if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness' || that.tag == 'symptom'){
+            if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness' || that.tag == 'symptom'|| that.tag == 'ys'){
               if (nodeSet.indexOf(segment.end.identity) == -1) {
                 nodeSet.push(segment.end.identity)
               let is_show = '';
@@ -656,6 +639,8 @@ import {getSickNess,getD3Search} from '@/api/data'
         that.linkTypes = linkTypes;
         that.labels = labels;
         that.data = { nodes, links }
+        console.log(nodes)
+        console.log(links)
       },
       getD3name(name){
         let name_1 = name;

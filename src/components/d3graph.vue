@@ -74,10 +74,10 @@ export default {
           title: '搜索节点',
           action: (elm, d) => {
             console.log(d)
-            let name = '';
-            name = d.properties.kgid?d.properties.kgid.text:d.properties.name.text;
+            let name = d.properties.name.text;
+            let kgid = d.properties.kgid.text;
             let tag = d.tag;
-            this.$emit('getData',tag,name)
+            this.$emit('getData',tag,name,kgid)
           }
         },
         {

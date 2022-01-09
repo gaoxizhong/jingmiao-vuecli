@@ -195,6 +195,7 @@
 <script>
 import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
   export default {
+    inject: ['setsickNess'],
     data() {
       return {
         input3:'',
@@ -332,6 +333,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         }else{
           name = _name
         }
+        this.setsickNess();
         this.$router.push({  //核心语句
           path:'/Details',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
