@@ -2,7 +2,7 @@
   <header>
     <div class="l-content">
       <img src="../assets/image/header-icon.png" alt=""  @click="menu_btn()" class="header-img" />
-      <div style="font-size:18px;padding-left:20px;color:#5578F0;font-weight:600;font-family: '宋体';">医疗健康数字化平台</div>
+      <!-- <div style="font-size:18px;padding-left:20px;color:#5578F0;font-weight:600;font-family: '宋体';">医疗健康数字化平台</div> -->
     </div>
     <div class="r-content" v-if="phone">
       <span class="r-phone">{{ phone }}</span>
