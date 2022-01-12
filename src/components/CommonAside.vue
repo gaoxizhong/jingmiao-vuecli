@@ -10,10 +10,10 @@
         unique-opened
     >
     <div class="logo-box" v-show="!isCollapse" >
-      <img src="../assets/image/logo-2.png" alt="" class="logo-img"/>
+      <img src="../assets/image/logo-5.png" alt="" class="logo-img"/>
     </div>
     <div class="logo-box" v-show="isCollapse">
-      <div style="padding:10px 0;">信泰</div>
+      <div style="padding:10px 0;">菁苗健康</div>
     </div>
 			<!-- 第一层 -->
 			<template v-for="(item,index) in datalist">
@@ -128,7 +128,7 @@
 				</template>
 			</template>
 
-      <!-- <template>
+      <template>
         <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoVideoList">
           <i class="el-icon-menu"></i>
           <span slot="title" style="padding-left: 8px;font-size: 16px;">视频</span>
@@ -137,7 +137,7 @@
           <i class="el-icon-menu"></i>
           <span slot="title" style="padding-left: 8px;font-size: 16px;">问答</span>
         </el-menu-item>
-      </template> -->
+      </template>
 
     </el-menu>
 </template>
@@ -146,12 +146,9 @@
     width: 100%;
     height: auto;
     padding: 10px 0;
-    background: #242a4d;
-    box-shadow: 0 2px 10px #000020;
-    color: #fff;
   }
   img.logo-img{
-    width: 180px;
+    width: 140px;
   }
   .logo-box-span{
     font-size: 14px;
@@ -209,24 +206,21 @@
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    color:#242a4d;
+    color:#fff;
     opacity: 0.7;
-    background: #fff !important;
+    background: #ebebeb !important;
 }
-.span-text{
-  color:#242a4d;
-  /* opacity: 0.7; */
-}
+/* .span-text{
+  color:#fff;
+  opacity: 0.7;
+} */
 .el-submenu .el-menu-item.is-active{
   color: #fff;
   opacity: 1;
   background: #8FA7FA !important;
 }
 .el-icon-arrow-down:before{
-  color: #242a4d;
-}
-.el-aside>ul>li:nth-of-type(1){
-  margin-top: 14px;
+  color: #000;
 }
 </style>
 <script>
@@ -239,7 +233,7 @@ export default {
     data() {
         return {
           menuBackgroundColor:'#fff',
-          menuTextColor:'#242a4d',
+          menuTextColor:'#000',
           oneColumn: '0',
           datalist:[],
         }
