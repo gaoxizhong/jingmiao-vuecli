@@ -535,14 +535,14 @@ import {getSickNess,getD3Search} from '@/api/data'
               })
             }
             if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness' || that.tag == 'symptom'|| that.tag == 'ys'){
-              if (nodeSet.indexOf(segment.end.identity) == -1) {
+              if (segment.end && nodeSet.indexOf(segment.end.identity) == -1) {
                 nodeSet.push(segment.end.identity)
-              let is_show = '';
-              if(_name == segment.end.properties.name.text){
-                is_show = '2'
-              }else{
-                is_show = '1'
-              }
+                let is_show = '';
+                if(_name == segment.end.properties.name.text){
+                  is_show = '2'
+                }else{
+                  is_show = '1'
+                }
                 nodes.push({
                   is_show: is_show,
                   id: segment.end.identity,
@@ -552,50 +552,55 @@ import {getSickNess,getD3Search} from '@/api/data'
                   is_show
                 })
               }
-              links.push({
-                source: segment.relationship.start,
-                target: segment.relationship.end,
-                type: segment.relationship.type,
-                properties: segment.relationship.properties
-              })
-              if(labels.indexOf(segment.end.labels[1]) == -1) {
+              if(segment.relationship){
+                links.push({
+                  source: segment.relationship.start,
+                  target: segment.relationship.end,
+                  type: segment.relationship.type,
+                  properties: segment.relationship.properties
+                })
+              }
+
+              if(segment.end && labels.indexOf(segment.end.labels[1]) == -1) {
                 labels.push(segment.end.labels[1])
               }
-              if(linkTypes.indexOf(segment.relationship.type) == -1) {
+              if(segment.relationship && linkTypes.indexOf(segment.relationship.type) == -1) {
                 linkTypes.push(segment.relationship.type)
               }
-
-              for( let key in segment.end.properties){
-                if(segment.end.properties[key].text != ''){
-                  if (nodeSet.indexOf(`${segment.end.identity}-${key}`) == -1) {
-                    nodeSet.push(`${segment.end.identity}-${key}`)
-                    let data_type = '';
-                    if(_name == segment.end.properties.name.text){
-                      data_type = 'no_show'
-                    }else{
-                      data_type = 'is_show'
+              if( segment.end ){
+                for( let key in segment.end.properties){
+                  if(segment.end.properties[key].text != ''){
+                    if (nodeSet.indexOf(`${segment.end.identity}-${key}`) == -1) {
+                      nodeSet.push(`${segment.end.identity}-${key}`)
+                      let data_type = '';
+                      if(_name == segment.end.properties.name.text){
+                        data_type = 'no_show'
+                      }else{
+                        data_type = 'is_show'
+                      }
+                      nodes.push({
+                        id: `${segment.end.identity}-${key}`,
+                        label: 'Att',
+                        properties: {
+                          'name': segment.end.properties[key].text
+                        },
+                        data_type,
+                      })
+                      links.push({
+                        source: segment.relationship.end,
+                        target: `${segment.end.identity}-${key}`,
+                        type: 'att',
+                        properties: {
+                          'name': segment.end.properties[key].name
+                        },
+                        data_type,
+                      })
                     }
-                    nodes.push({
-                      id: `${segment.end.identity}-${key}`,
-                      label: 'Att',
-                      properties: {
-                        'name': segment.end.properties[key].text
-                      },
-                      data_type,
-                    })
-                    links.push({
-                      source: segment.relationship.end,
-                      target: `${segment.end.identity}-${key}`,
-                      type: 'att',
-                      properties: {
-                        'name': segment.end.properties[key].name
-                      },
-                      data_type,
-                    })
                   }
-                }
 
+                }
               }
+
             }
             if(labels.indexOf(segment.start.labels[1]) == -1) {
               labels.push(segment.start.labels[1])
