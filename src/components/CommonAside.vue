@@ -137,6 +137,10 @@
           <i class="el-icon-menu"></i>
           <span slot="title" style="padding-left: 8px;font-size: 16px;">问答</span>
         </el-menu-item>
+        <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoxycdss">
+          <i class="el-icon-menu"></i>
+          <span slot="title" style="padding-left: 8px;font-size: 16px;">智能问诊</span>
+        </el-menu-item>
       </template>
 
     </el-menu>
@@ -315,9 +319,15 @@ export default {
         });
       window.open(newUrl.href, "_blank");
     },
+    // 跳转视频
     gotoVideoList(){
       this.$emit('sickNess');
       this.$router.replace({path:'/VideoHome'})
+    },
+    // 跳转西医 cdss
+    gotoxycdss(){
+      this.$emit('sickNess');
+      this.$router.replace({path:'/WesternMedicineCdss'})
     },
     clickItem_2(e){
       console.log(e)

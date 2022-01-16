@@ -84,6 +84,14 @@ const routes = [
             scollTopPosition: 0
           }
         },
+        { path: '/WesternMedicineCdss',
+        name: 'WesternMedicineCdss',
+        component: () => import('@/views/WesternMedicineCdss'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0
+        }
+      },
         { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
         { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails') },
     ]
