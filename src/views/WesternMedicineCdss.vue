@@ -12,34 +12,44 @@
         </div>
         <!-- 左侧列表选项 -->
         <div class="leftcontent-list-box">
+          <el-checkbox-group v-model="checkList" @change="checkGroup">
 
-          <div class="options-list-box">
-            <div class="options-list-title">皮炎莫</div>
-            <div class="oplist-items-box">
-              a
+            <div class="options-list-box">
+              <div class="options-list-title">皮炎莫</div>
+              <div class="oplist-items-box">
+                <el-checkbox label="复选框 A"></el-checkbox>
+                <el-checkbox label="复选框 B"></el-checkbox>
+                <el-checkbox label="复选框 C"></el-checkbox>
+              </div>
             </div>
-          </div>
 
-           <div class="options-list-box">
-            <div class="options-list-title">皮炎莫</div>
-            <div class="oplist-items-box">
-              a
+            <div class="options-list-box">
+              <div class="options-list-title">皮炎莫</div>
+              <div class="oplist-items-box">
+                <el-checkbox label="复选框 E"></el-checkbox>
+                <el-checkbox label="复选框 F"></el-checkbox>
+                <el-checkbox label="复选框 G"></el-checkbox>
+              </div>
             </div>
-          </div>
 
-          <div class="options-list-box">
-            <div class="options-list-title">皮炎莫</div>
-            <div class="oplist-items-box">
-              a
+            <div class="options-list-box">
+              <div class="options-list-title">皮炎莫</div>
+              <div class="oplist-items-box">
+                <el-checkbox label="复选框 H"></el-checkbox>
+                <el-checkbox label="复选框 I"></el-checkbox>
+                <el-checkbox label="复选框 J"></el-checkbox>
+              </div>
             </div>
-          </div>
 
-          <div class="options-list-box">
-            <div class="options-list-title">皮炎莫</div>
-            <div class="oplist-items-box">
-              a
+            <div class="options-list-box">
+              <div class="options-list-title">皮炎莫</div>
+              <div class="oplist-items-box">
+                <el-checkbox label="复选框 K"></el-checkbox>
+                <el-checkbox label="复选框 L"></el-checkbox>
+                <el-checkbox label="复选框 M"></el-checkbox>
+              </div>
             </div>
-          </div>
+          </el-checkbox-group>
 
 
         </div>
@@ -153,12 +163,24 @@
     font-size: 16px;
     padding: 0 10px;
   }
+  .oplist-items-box{
+    text-align: left;
+    padding-left: 10px;
+  }
+  .el-checkbox{
+    margin-right: 14px;
+  }
+  .el-checkbox >>> .el-checkbox__label {
+    font-size: 12px;
+    padding-left: 6px;
+  }
 </style>
 <script>
 export default {
   data(){
     return{
       viewHeight:0,
+      checkList: []
     }
   },
   created(){
@@ -172,7 +194,20 @@ export default {
   },
   methods: {
     finish_btn(){
-      alert(1)
+      let that = this;
+      console.log(that.checkList)
+    },
+    checkGroup(e){
+      console.log(e)
+      let that = this;
+      let checkGroupList = e;
+      let checkList = that.checkList;
+
+      if(checkGroupList.length > 4){
+        alert('最多选择4项！')
+        checkList.pop();
+        that.checkList =checkList;
+      }
     }
   },
 }
