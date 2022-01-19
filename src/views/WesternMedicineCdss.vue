@@ -67,7 +67,7 @@
               </div>
             </div>
           </el-checkbox-group>
-          
+
           <!-- 其他症状 -->
           <div class="qt-box">
             <span>其他</span>
@@ -76,6 +76,28 @@
                 <el-button slot="append" @click="getInputBtn()">确定</el-button>
               </el-input>
             </div>
+          </div>
+
+          <!-- 症状时长 -->
+          <div class="duration-box">
+
+            <div class="duration-items-box" v-for="(item,index) in durationList" :key="index">
+              <div class="durationItems-title">乏力出现了多长时间：</div>
+              <div class="durationItems-table">
+                <div class="durationItems-table-left"><el-input type="text" v-model="appearTimeText"></el-input></div>
+                <div class="durationItems-table-right">
+                  <el-radio-group v-model="appearTimeLabel" size="small">
+                    <el-radio-button label="minute" name="分钟">分钟</el-radio-button>
+                    <el-radio-button label="hour" name="小时">小时</el-radio-button>
+                    <el-radio-button label="sky" name="天">天</el-radio-button>
+                    <el-radio-button label="week" name="周">周</el-radio-button>
+                    <el-radio-button label="moon" name="月">月</el-radio-button>
+                    <el-radio-button label="year" name="年">年</el-radio-button>
+                  </el-radio-group>
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -202,15 +224,14 @@
     font-size: 14px;
     padding-left: 6px;
   }
-
-
   .qt-box{
     width: 100%;
-    height: 80px;
+    height: 64px;
     display: flex;
     align-items: center;
   }
   .qt-box>span{
+    width: 66px;
     letter-spacing:14px;
     padding-left: 10px;
   }
@@ -219,7 +240,7 @@
     height: 34px;
     line-height: 34px;
     border-radius: 4px;
-    margin-left: 10px;
+    margin-left: 6px;
   }
   .el-input-box >>> .el-input__inner{
     height: 34px;
@@ -227,7 +248,7 @@
   }
   .el-input-box >>> .el-input-group__append{
     border-top-left-radius: 0;
-    border-bottom-left-radius: 0; 
+    border-bottom-left-radius: 0;
     height: 100%;
     padding-bottom: 1px;
   }
@@ -239,21 +260,72 @@
     padding: 0;
     height: 34px;
     border-top-left-radius: 0;
-    border-bottom-left-radius: 0; 
+    border-bottom-left-radius: 0;
   }
-
-   .el-checkbox >>> .el-checkbox__input.is-checked .el-checkbox__inner,.el-checkbox >>> .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  .el-input-box >>> input:focus{
+    border-color: #27afa1;
+  }
+  .el-checkbox >>> .el-checkbox__input.is-checked .el-checkbox__inner,.el-checkbox >>> .el-checkbox__input.is-indeterminate .el-checkbox__inner{
     background:#27afa1;
     border-color: #27afa1;
   }
   .el-checkbox >>> .el-checkbox__input.is-checked+.el-checkbox__label {
     color: #27afa1;
   }
-   .el-checkbox >>> .el-checkbox.is-bordered.is-checked{
+  .el-checkbox >>> .el-checkbox.is-bordered.is-checked{
+    border-color: #27afa1;
+  }
+  .duration-box{
+    width: 100%;
+    margin: 5px 0;
+  }
+  .duration-items-box{
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  .durationItems-title{
+    text-align: left;
+  }
+  .durationItems-table{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .durationItems-table-left{
+    width: 60px;
+    height: 30px;
+  }
+  .durationItems-table-left >>> .el-input{
+    height: 100%;
+   }
+  .durationItems-table-left >>> input{
+    width: 100%;
+    height: 100%;
+    line-height: 30px;
+    text-align: center;
+  }
+  .durationItems-table-right{
+    padding-left: 24px;
+    width: auto;
+    height: 30px;
+  }
+  .durationItems-table-right >>> .el-radio-button__orig-radio:checked+.el-radio-button__inner{
+    background-color: #27afa1;
+    border-color: #27afa1;
+    box-shadow: -1px 0 0 0 #27afa1;
+  }
+  .durationItems-table-right >>> .el-radio-button__inner:hover{
+    color: #27afa1;
+  }
+  .durationItems-table-right >>> .el-radio-button__orig-radio:checked+.el-radio-button__inner:hover{
+    color: #fff;
+  }
+ .durationItems-table-left >>> input:focus{
     border-color: #27afa1;
   }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
+
     .grid-rightcontent-box{
       width: 320px;
     }
@@ -268,6 +340,24 @@
     }
     .el-input-box{
       width: 300px;
+      height: 30px;
+    }
+
+    .el-input-box >>> .el-input__inner{
+      height: 30px;
+      line-height: 30px;
+    }
+    .el-input-box >>> .el-button{
+      height: 30px;
+    }
+    .duration-items-box{
+      font-size: 14px;
+    }
+    .options-list-box .options-list-title{
+      font-size: 14px;
+    }
+    .qt-box{
+      font-size: 14px;
     }
   }
 
@@ -279,6 +369,9 @@ export default {
       viewHeight:0,
       checkList: [],   // 多选框 选中项
       inputOtherValue:'', // 其他症状
+      durationList:[{}], // 症状列表时长
+      appearTimeText:'4', // 出现时长数字
+      appearTimeLabel:"", //  选中的出现时长
     }
   },
   created(){
@@ -306,7 +399,18 @@ export default {
         checkList.pop();
         that.checkList =checkList;
       }
-    }
+    },
+    //  点击其他症状确认按钮
+    getInputBtn(){
+      if(that.inputOtherValue == ''){
+        this.$message.error({
+            message: '请填写内容',
+        });
+        return
+      }
+
+    },
+
   },
 }
 </script>
