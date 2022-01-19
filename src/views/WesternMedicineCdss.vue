@@ -17,40 +17,66 @@
             <div class="options-list-box">
               <div class="options-list-title">皮炎莫</div>
               <div class="oplist-items-box">
-                <el-checkbox label="复选框 A"></el-checkbox>
-                <el-checkbox label="复选框 B"></el-checkbox>
-                <el-checkbox label="复选框 C"></el-checkbox>
+                <el-checkbox label="A" name="复选框 A">复选框 A</el-checkbox>
+                <el-checkbox label="B" name="复选框 B">复选框 B</el-checkbox>
+                <el-checkbox label="C" name="复选框 C">复选框 C</el-checkbox>
               </div>
             </div>
 
             <div class="options-list-box">
               <div class="options-list-title">皮炎莫</div>
               <div class="oplist-items-box">
-                <el-checkbox label="复选框 E"></el-checkbox>
-                <el-checkbox label="复选框 F"></el-checkbox>
-                <el-checkbox label="复选框 G"></el-checkbox>
+                <el-checkbox label="E" name="复选框 E">复选框 E</el-checkbox>
+                <el-checkbox label="F" name="复选框 F">复选框 F</el-checkbox>
+                <el-checkbox label="G" name="复选框 G">复选框 G</el-checkbox>
               </div>
             </div>
 
             <div class="options-list-box">
               <div class="options-list-title">皮炎莫</div>
               <div class="oplist-items-box">
-                <el-checkbox label="复选框 H"></el-checkbox>
-                <el-checkbox label="复选框 I"></el-checkbox>
-                <el-checkbox label="复选框 J"></el-checkbox>
+                <el-checkbox label="H" name="复选框 H">复选框 H</el-checkbox>
+                <el-checkbox label="I" name="复选框 I">复选框 I</el-checkbox>
+                <el-checkbox label="J" name="复选框 J">复选框 J</el-checkbox>
               </div>
             </div>
 
             <div class="options-list-box">
               <div class="options-list-title">皮炎莫</div>
               <div class="oplist-items-box">
-                <el-checkbox label="复选框 K"></el-checkbox>
-                <el-checkbox label="复选框 L"></el-checkbox>
-                <el-checkbox label="复选框 M"></el-checkbox>
+                <el-checkbox label="K" name="复选框 K">复选框 K</el-checkbox>
+                <el-checkbox label="L" name="复选框 L">复选框 L</el-checkbox>
+                <el-checkbox label="M" name="复选框 M">复选框 M</el-checkbox>
+              </div>
+            </div>
+
+            <div class="options-list-box">
+              <div class="options-list-title">皮炎莫</div>
+              <div class="oplist-items-box">
+                <el-checkbox label="N" name="复选框 N">复选框 N</el-checkbox>
+                <el-checkbox label="O" name="复选框 O">复选框 O</el-checkbox>
+                <el-checkbox label="P" name="复选框 P">复选框 P</el-checkbox>
+              </div>
+            </div>
+            <div class="options-list-box">
+              <div class="options-list-title">皮炎莫</div>
+              <div class="oplist-items-box">
+                <el-checkbox label="Q">复选框 Q</el-checkbox>
+                <el-checkbox label="R">复选框 R</el-checkbox>
+                <el-checkbox label="S">复选框 S</el-checkbox>
               </div>
             </div>
           </el-checkbox-group>
-
+          
+          <!-- 其他症状 -->
+          <div class="qt-box">
+            <span>其他</span>
+            <div class="el-input-box">
+              <el-input placeholder="您可以输入其他症状" v-model="inputOtherValue" class="input-with-select">
+                <el-button slot="append" @click="getInputBtn()">确定</el-button>
+              </el-input>
+            </div>
+          </div>
 
         </div>
 
@@ -82,8 +108,9 @@
     flex: 1;
     padding-right: 20px;
   }
+
   .grid-rightcontent-box{
-    width: 320px;
+    width: 400px;
     height: 100%;
     border-radius: 6px;
     box-shadow: 0 0 6px #a9a9a9;
@@ -92,6 +119,7 @@
     padding: 10px;
     position: relative;
   }
+
   .mz-box{
     width: 100%;
     font-size: 10px;
@@ -165,22 +193,92 @@
   }
   .oplist-items-box{
     text-align: left;
-    padding-left: 10px;
+    padding-left: 30px;
   }
   .el-checkbox{
-    margin-right: 14px;
+    margin-right: 20rpx;
   }
   .el-checkbox >>> .el-checkbox__label {
-    font-size: 12px;
+    font-size: 14px;
     padding-left: 6px;
   }
+
+
+  .qt-box{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+  .qt-box>span{
+    letter-spacing:14px;
+    padding-left: 10px;
+  }
+  .el-input-box{
+    width: 340px;
+    height: 34px;
+    line-height: 34px;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+  .el-input-box >>> .el-input__inner{
+    height: 34px;
+    line-height: 34px;
+  }
+  .el-input-box >>> .el-input-group__append{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0; 
+    height: 100%;
+    padding-bottom: 1px;
+  }
+  .el-input-box >>> .el-button{
+    width: 84px;
+    background: #27afa1;
+    color: #fff;
+    font-size: 14px;
+    padding: 0;
+    height: 34px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0; 
+  }
+
+   .el-checkbox >>> .el-checkbox__input.is-checked .el-checkbox__inner,.el-checkbox >>> .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background:#27afa1;
+    border-color: #27afa1;
+  }
+  .el-checkbox >>> .el-checkbox__input.is-checked+.el-checkbox__label {
+    color: #27afa1;
+  }
+   .el-checkbox >>> .el-checkbox.is-bordered.is-checked{
+    border-color: #27afa1;
+  }
+  /* 媒体查询 */
+  @media only screen and (max-width: 1366px){
+    .grid-rightcontent-box{
+      width: 320px;
+    }
+    .el-checkbox{
+      margin-right: 14px;
+    }
+    .oplist-items-box{
+      padding-left: 10px;
+    }
+    .el-checkbox >>> .el-checkbox__label {
+      font-size: 12px;
+    }
+    .el-input-box{
+      width: 300px;
+    }
+  }
+
 </style>
 <script>
 export default {
   data(){
     return{
       viewHeight:0,
-      checkList: []
+      checkList: [],   // 多选框 选中项
+      inputOtherValue:'', // 其他症状
     }
   },
   created(){
