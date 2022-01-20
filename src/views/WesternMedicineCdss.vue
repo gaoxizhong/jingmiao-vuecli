@@ -231,7 +231,7 @@
     align-items: center;
   }
   .qt-box>span{
-    width: 66px;
+    width: 70px;
     letter-spacing:14px;
     padding-left: 10px;
   }
@@ -387,6 +387,16 @@ export default {
     finish_btn(){
       let that = this;
       console.log(that.checkList)
+      // 新页面打开
+        let newUrl = this.$router.resolve({
+          path: "/inquiryResultPage",
+          // query:{
+          //   src:s,
+          //   v_id:v
+          // }
+        });
+      window.open(newUrl.href, "_blank");
+
     },
     checkGroup(e){
       console.log(e)

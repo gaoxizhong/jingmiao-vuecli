@@ -4,6 +4,7 @@ import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
 import QAhome from '../views/QAhome.vue'
 import VideoDetails from '../views/VideoDetails.vue'
+import inquiryResultPage from '../views/inquiryResultPage.vue'
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location, onResolve, onReject) {
   if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
@@ -101,6 +102,16 @@ const routes = [
     name: 'VideoDetails',
     component: VideoDetails
   },
+  {
+    path: '/inquiryResultPage',
+    name: 'inquiryResultPage',
+    component: () => import('@/views/inquiryResultPage'),
+    meta: {
+      title:'问诊结果',
+      keepAlive: true,
+      scollTopPosition: 0
+    }
+  },
 ]
 
 const router = new VueRouter({
@@ -108,5 +119,11 @@ const router = new VueRouter({
   // base: process.env.BASE_URL,
   routes
 })
+router.afterEach((to) => {
+  if(to.meta.title){
+    document.title = to.meta.title
+  }
+  window.scrollTo(0,0);
 
+})
 export default router
