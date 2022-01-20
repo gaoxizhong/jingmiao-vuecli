@@ -1,7 +1,7 @@
 <template>
   <div style="height:100%;">
     <div class="westernmedicin-content-box" style="height:100%;">
-      <!-- 左侧 -->
+      <!--  -->
       <div class="grid-leftcontent-box">
         <!-- 左侧上部 -->
         <div class="leftcontent-title-box">
@@ -15,55 +15,70 @@
           <el-checkbox-group v-model="checkList" @change="checkGroup">
 
             <div class="options-list-box">
-              <div class="options-list-title">皮炎莫</div>
+              <div class="options-list-title">全身症状</div>
               <div class="oplist-items-box">
-                <el-checkbox label="A" name="复选框 A">复选框 A</el-checkbox>
-                <el-checkbox label="B" name="复选框 B">复选框 B</el-checkbox>
-                <el-checkbox label="C" name="复选框 C">复选框 C</el-checkbox>
+                <el-checkbox label="发热">发热</el-checkbox>
+                <el-checkbox label="乏力">乏力</el-checkbox>
+                <el-checkbox label="多饮">多饮</el-checkbox>
+                <el-checkbox label="食欲下降">食欲下降</el-checkbox>
+                <el-checkbox label="畏寒">畏寒</el-checkbox>
               </div>
             </div>
 
             <div class="options-list-box">
-              <div class="options-list-title">皮炎莫</div>
+              <div class="options-list-title">皮肤黏膜</div>
               <div class="oplist-items-box">
-                <el-checkbox label="E" name="复选框 E">复选框 E</el-checkbox>
-                <el-checkbox label="F" name="复选框 F">复选框 F</el-checkbox>
-                <el-checkbox label="G" name="复选框 G">复选框 G</el-checkbox>
+                <el-checkbox label="皮肤黏膜出血">皮肤黏膜出血</el-checkbox>
+                <el-checkbox label="黄疸">黄疸</el-checkbox>
+                <el-checkbox label="皮下肿物">皮下肿物</el-checkbox>
+                <el-checkbox label="乳房肿物">乳房肿物</el-checkbox>
+                <el-checkbox label="皮疹">皮疹</el-checkbox>
+                <el-checkbox label="水肿">水肿</el-checkbox>
+                <el-checkbox label="皮肤瘙痒">皮肤瘙痒</el-checkbox>
               </div>
             </div>
 
             <div class="options-list-box">
-              <div class="options-list-title">皮炎莫</div>
+              <div class="options-list-title">面部五官</div>
               <div class="oplist-items-box">
-                <el-checkbox label="H" name="复选框 H">复选框 H</el-checkbox>
-                <el-checkbox label="I" name="复选框 I">复选框 I</el-checkbox>
-                <el-checkbox label="J" name="复选框 J">复选框 J</el-checkbox>
+                <el-checkbox label="视野不清">视野不清</el-checkbox>
+                <el-checkbox label="咽痛">咽痛</el-checkbox>
+                <el-checkbox label="口干">口干</el-checkbox>
+                <el-checkbox label="眼红">眼红</el-checkbox>
               </div>
             </div>
 
             <div class="options-list-box">
-              <div class="options-list-title">皮炎莫</div>
+              <div class="options-list-title">神经系统</div>
               <div class="oplist-items-box">
-                <el-checkbox label="K" name="复选框 K">复选框 K</el-checkbox>
-                <el-checkbox label="L" name="复选框 L">复选框 L</el-checkbox>
-                <el-checkbox label="M" name="复选框 M">复选框 M</el-checkbox>
+                <el-checkbox label="头痛">头痛</el-checkbox>
+                <el-checkbox label="眩晕">眩晕</el-checkbox>
+                <el-checkbox label="头晕">头晕</el-checkbox>
               </div>
             </div>
 
             <div class="options-list-box">
-              <div class="options-list-title">皮炎莫</div>
+              <div class="options-list-title">呼吸系统</div>
               <div class="oplist-items-box">
-                <el-checkbox label="N" name="复选框 N">复选框 N</el-checkbox>
-                <el-checkbox label="O" name="复选框 O">复选框 O</el-checkbox>
-                <el-checkbox label="P" name="复选框 P">复选框 P</el-checkbox>
+                <el-checkbox label="咳嗽">咳嗽</el-checkbox>
+                <el-checkbox label="咳痰">咳痰</el-checkbox>
+                <el-checkbox label="咯血">咯血</el-checkbox>
+                <el-checkbox label="流涕">流涕</el-checkbox>
+                <el-checkbox label="鼻塞">鼻塞</el-checkbox>
+                <el-checkbox label="呼吸困难">呼吸困难</el-checkbox>
+                <el-checkbox label="喘息">喘息</el-checkbox>
+
               </div>
             </div>
             <div class="options-list-box">
-              <div class="options-list-title">皮炎莫</div>
+              <div class="options-list-title">运动系统</div>
               <div class="oplist-items-box">
-                <el-checkbox label="Q">复选框 Q</el-checkbox>
-                <el-checkbox label="R">复选框 R</el-checkbox>
-                <el-checkbox label="S">复选框 S</el-checkbox>
+                <el-checkbox label="腰背痛">腰背痛</el-checkbox>
+                <el-checkbox label="肢体无力">肢体无力</el-checkbox>
+                <el-checkbox label="下肢痛">下肢痛</el-checkbox>
+                <el-checkbox label="肢体麻木">肢体麻木</el-checkbox>
+                <el-checkbox label="关节肿痛">关节肿痛</el-checkbox>
+                <el-checkbox label="关节痛">关节痛</el-checkbox>
               </div>
             </div>
           </el-checkbox-group>
@@ -81,35 +96,82 @@
           <!-- 症状时长 -->
           <div class="duration-box">
 
-            <div class="duration-items-box" v-for="(item,index) in durationList" :key="index">
+            <!-- <div class="duration-items-box" v-for="(item,index) in durationList" :key="index"> -->
+            <div class="duration-items-box">
               <div class="durationItems-title">乏力出现了多长时间：</div>
               <div class="durationItems-table">
-                <div class="durationItems-table-left"><el-input type="text" v-model="appearTimeText"></el-input></div>
+                <div class="durationItems-table-left"><el-input type="text" v-model="timeText_1"></el-input></div>
                 <div class="durationItems-table-right">
-                  <el-radio-group v-model="appearTimeLabel" size="small">
-                    <el-radio-button label="minute" name="分钟">分钟</el-radio-button>
-                    <el-radio-button label="hour" name="小时">小时</el-radio-button>
-                    <el-radio-button label="sky" name="天">天</el-radio-button>
-                    <el-radio-button label="week" name="周">周</el-radio-button>
-                    <el-radio-button label="moon" name="月">月</el-radio-button>
-                    <el-radio-button label="year" name="年">年</el-radio-button>
+                  <el-radio-group v-model="timeLabel_1" size="small">
+                    <el-radio-button label="分钟">分钟</el-radio-button>
+                    <el-radio-button label="小时">小时</el-radio-button>
+                    <el-radio-button label="天">天</el-radio-button>
+                    <el-radio-button label="周">周</el-radio-button>
+                    <el-radio-button label="月">月</el-radio-button>
+                    <el-radio-button label="年">年</el-radio-button>
                   </el-radio-group>
                 </div>
               </div>
             </div>
+
+            <div class="duration-items-box">
+              <div class="durationItems-title">乏力加重多长时间：</div>
+              <div class="durationItems-table">
+                <div class="durationItems-table-left"><el-input type="text" v-model="timeText_2"></el-input></div>
+                <div class="durationItems-table-right">
+                  <el-radio-group v-model="timeLabel_2" size="small">
+                    <el-radio-button label="分钟">分钟</el-radio-button>
+                    <el-radio-button label="小时">小时</el-radio-button>
+                    <el-radio-button label="天">天</el-radio-button>
+                    <el-radio-button label="周">周</el-radio-button>
+                    <el-radio-button label="月">月</el-radio-button>
+                    <el-radio-button label="年">年</el-radio-button>
+                  </el-radio-group>
+                </div>
+              </div>
+            </div>
+
+            <div class="duration-items-box">
+              <div class="durationItems-title">黄疸出现多长时间：</div>
+              <div class="durationItems-table">
+                <div class="durationItems-table-left"><el-input type="text" v-model="timeText_3"></el-input></div>
+                <div class="durationItems-table-right">
+                  <el-radio-group v-model="timeLabel_3" size="small">
+                    <el-radio-button label="分钟">分钟</el-radio-button>
+                    <el-radio-button label="小时">小时</el-radio-button>
+                    <el-radio-button label="天">天</el-radio-button>
+                    <el-radio-button label="周">周</el-radio-button>
+                    <el-radio-button label="月">月</el-radio-button>
+                    <el-radio-button label="年">年</el-radio-button>
+                  </el-radio-group>
+                </div>
+              </div>
+            </div>
+
+
 
           </div>
 
         </div>
 
       </div>
-      <!-- 左侧 -->
+      <!-- 右侧 -->
       <div class="grid-rightcontent-box">
         <div class="grid-rightcontent-title">智能问诊</div>
         <div class="zhusu-box">
           <div class="zhusu-title-box">
             <i class="el-icon-tickets"></i>
             <span style="padding-left:4px;font-weight: 600;">主诉</span>
+          </div>
+          <div class="zhusu-info-box">
+            <div>
+              <span v-if="timeText_1">乏力出现<span style="color:#27afa1;">{{timeText_1}}{{timeLabel_1}}</span>，</span>
+              <span v-if="timeText_2">乏力加重<span style="color:#27afa1;">{{timeText_2}}{{timeLabel_2}}</span>，</span>
+              <span v-if="timeText_3">黄疸出现<span style="color:#27afa1;">{{timeText_3}}{{timeLabel_3}}</span></span>
+            </div>
+            <div class="qt-info" v-if=" inputOtherValue_q != '' ">{{inputOtherValue_q}}</div>
+            <!-- 选择的数据 -->
+            <span v-for="(item,index) in checkList" :key="index">{{item}} <span v-if="index != checkList.length -1">、</span></span>
           </div>
         </div>
         <div class="mz-box"><span style="color:#27afa1;">免责声明: </span>以上仅供参考, 以医生临床诊断为主</div>
@@ -323,6 +385,13 @@
  .durationItems-table-left >>> input:focus{
     border-color: #27afa1;
   }
+  .zhusu-info-box{
+    padding: 16px 10px;
+    text-align: left;
+  }
+  .qt-info{
+    padding-bottom: 4px;
+  }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
 
@@ -367,11 +436,17 @@ export default {
   data(){
     return{
       viewHeight:0,
-      checkList: [],   // 多选框 选中项
+      checkList: [],   // 多选框 选中项label
+      checkList_name:[], // 多选框 选中项name
       inputOtherValue:'', // 其他症状
+      inputOtherValue_q:'', // 点击确认
       durationList:[{}], // 症状列表时长
-      appearTimeText:'4', // 出现时长数字
-      appearTimeLabel:"", //  选中的出现时长
+      timeText_1:'4',
+      timeLabel_1:"天",
+      timeText_2:'4',
+      timeLabel_2:'天',
+      timeText_3:'4',
+      timeLabel_3:'天',
     }
   },
   created(){
@@ -399,26 +474,27 @@ export default {
 
     },
     checkGroup(e){
-      console.log(e)
       let that = this;
       let checkGroupList = e;
       let checkList = that.checkList;
 
-      if(checkGroupList.length > 4){
-        alert('最多选择4项！')
+      if(checkGroupList.length > 5){
+        alert('最多选择5项！')
         checkList.pop();
         that.checkList =checkList;
       }
+      console.log(that.checkList)
     },
     //  点击其他症状确认按钮
     getInputBtn(){
-      if(that.inputOtherValue == ''){
+      if(this.inputOtherValue == ''){
         this.$message.error({
             message: '请填写内容',
         });
         return
       }
-
+      this.inputOtherValue_q = this.inputOtherValue;
+      // this.inputOtherValue = '';
     },
 
   },
