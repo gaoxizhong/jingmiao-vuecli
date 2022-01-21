@@ -1,6 +1,7 @@
 <template>
   <div style="width:100%;height:100%;">
-    <svg id="svg1" :width="initWidth" :height="initHeight" />
+    <!-- <svg id="svg1" :width="initWidth" :height="initHeight" /> -->
+    <svg id="svg1" width="100%" height="100%" />
   </div>
 </template>
 
@@ -19,12 +20,15 @@ export default {
         }
       }
     },
-    labels: Array
+    labels: Array,
+    is_cdss: String,
+    width: Number,
+    height:Number,
   },
   data() {
     return {
-      initWidth: 420,
-      initHeight: 440,
+      initWidth: 0,
+      initHeight: 0,
       viewHeight: "",
       viewWidth: "",
       svgDom: null, // svg的DOM元素 => d3.select('#svg1')
@@ -44,6 +48,7 @@ export default {
     };
   },
   computed: {
+    
     isShowNode: function() {
       // `this` 指向 vm 实例
       return this.nodeState === 0;
@@ -63,13 +68,13 @@ export default {
       this.d3init();
     }
   },
-  computed:{
-
-  },
   created() {
+    let that = this;
     let getViewportSize = this.$getViewportSize();
-    this.viewHeight = getViewportSize.height;
-    this.viewWidth = getViewportSize.width;
+    that.viewHeight = getViewportSize.height;
+    that.viewWidth = getViewportSize.width;
+    that.initWidth = that.width;
+    that.initHeight = that.height;
   },
   mounted() {
     this.d3init();
@@ -99,16 +104,14 @@ export default {
     },
     d3render() {
       var _this = this; // 临时获取Vue实例，避免与d3的this指针冲突
-    //   _this.nodes = _this.data.nodes.filter(node => {
-    //     if (node.data_type === "is_show") return false;
-    //     return true;
-    //   });
-    //   _this.links = _this.data.links.filter(node => {
-    //     if (node.data_type === "is_show") return false;
-    //     return true;
-    //   });
-    _this.nodes = _this.data.nodes;
-    _this.links = _this.data.links;
+      _this.nodes = _this.data.nodes.filter(node => {
+        if (node.data_type === "is_show") return false;
+        return true;
+      });
+      _this.links = _this.data.links.filter(node => {
+        if (node.data_type === "is_show") return false;
+        return true;
+      });
       // 渲染前清空svg内的元素
       _this.svgDom.selectAll("*").remove();
       // svg.selectAll('g').remove()

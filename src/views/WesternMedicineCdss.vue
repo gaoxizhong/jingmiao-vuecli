@@ -260,7 +260,7 @@
   .options-list-box{
     width: 100%;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     font-size: 14px;
   }
   .options-list-box:nth-of-type(odd){
@@ -273,11 +273,12 @@
   }
   .options-list-box .options-list-title{
     font-size: 16px;
-    padding: 0 10px;
+    width: 86px;
   }
   .oplist-items-box{
     text-align: left;
     padding-left: 30px;
+    flex: 1;
   }
   .el-checkbox{
     margin-right: 20rpx;

@@ -19,9 +19,27 @@
             </div>
 
         </el-aside>
+
         <el-main>
           <div class="main-box">
-            <div class="main-box-left">1</div>
+            <!-- main 左侧 -->
+            <div class="main-box-left">
+              <div class="main-box-left-t">
+                <div style="font-weight:600;"> <i class="el-icon-share"></i> 疾病图谱</div>
+                <div></div>
+              </div>
+              <div class="atlas-box">
+                <d3Atlas
+                  :data="data"
+                  :labels="labels"
+                  :linkTypes="linkTypes" 
+                  :width="cdssWidth"
+                  :height="cdssHeight"
+                  v-if="data.nodes.length > 0"
+                />
+                <el-empty description="暂无数据..." v-if='!data.nodes || data.nodes.length <= 0'></el-empty>
+              </div>
+            </div>
             <!-- main 右侧 -->
             <div class="main-box-right">
               <div class="rightcontent-title">问诊结果</div>
@@ -33,8 +51,8 @@
                   <span style="padding-left:4px;font-weight: 600;">疑似病例</span>
                 </div>
                 <div class="ysblList-box">
-                  <div class="ysblList-items-box" v-for="(item,index) in ysblList" :key="index">
-                    <div style="font-weight:600;"><span>糖尿病</span><i class="el-icon-s-operation" style="color:#53bfb4;margin-left:6px;"></i></div>
+                  <div class="ysblList-items-box" v-for="(item,index) in ysblList" :key="index" @click="click_ysbl(item.name)">
+                    <div style="font-weight:600;"><span>{{item.name}}</span><i class="el-icon-s-operation" style="color:#53bfb4;margin-left:6px;"></i></div>
                     <div class="ysblList-items-text">体重下降、腹部不适、肢体末端感觉、体重下降、腹部不适、肢体末端感觉</div>
                   </div>
                 </div>
@@ -56,6 +74,8 @@
 </template>
 <script>
 // import {WesternMedicine} from '@/api/data'
+import d3Atlas from "../components/d3Atlas";
+import {getD3Search} from '@/api/data'
 export default {
   provide(){
     return {
@@ -63,6 +83,9 @@ export default {
     }
   },
   name: 'inquiryResultPage',
+  components: {
+    d3Atlas
+  },
   data(){
     return {
       viewHeight:'',
@@ -88,11 +111,20 @@ export default {
           {name:'血糖检测',type:'aa'}
         ],
         ysblList:[  //  问诊结果疑似病例
-          {},
-          {},
-          {},
+          {id:1,name:'脑梗死'},
+          {id:2,name:'脑梗死'},
+          {id:3,name:'脑梗死'},
         ],
-        is_ypxq:false
+        is_ypxq:false,
+        data: {    //  图谱数据
+          nodes:[],
+          likes: [],
+        },
+        labels: [],
+        linkTypes: [],
+        cdssWidth: 800,
+        cdssHeight: 600,
+        hot_name:'脑梗死'
     }
   },
   mounted(){
@@ -103,6 +135,7 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
+    this.getd3Atlas();
   },
 
   methods: {
@@ -118,8 +151,166 @@ export default {
     },
     click_close(){
       this.is_ypxq = false
-    }
+    },
+    // 点击疑似病例
+    click_ysbl(n){
+      let that = this;
+      let name = n;
+      that.hot_name = name;
+      that.getd3Atlas();
+    },
+    // 获取图谱数据
+    async getd3Atlas() {
+      let that = this;
+      let hot_name = that.hot_name;
+      let pearms = {
+        name: "脑梗死",
+        tag: "disease"
+      }
+      this.json = [];
+      await getD3Search(pearms)
+        .then(res => {
+          if (res.data.code == 0) {
+            let data = res.data.data;
+            that.d3jsonParser(data);
+          } else {
+            this.$message.error({
+              message: res.data.msg
+            });
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    d3jsonParser(data) {
+      let that = this;
+      let _name = that.hot_name;
+      const labels = [];
+      const linkTypes = [""];
+      const nodes = []; // 存放节点
+      const links = []; // 存放关系
+      const nodeSet = []; // 存放去重后nodes的id
+      
+      // 重新更改data格式
+      for (let segment of data) {
+        if (nodeSet.indexOf(segment.start.identity) == -1) {
+          nodeSet.push(segment.start.identity);
+          let is_show = "";
+          if (_name == segment.start.properties.name.text) {
+            is_show = "2";
+          } else {
+            is_show = "1";
+          }
+          nodes.push({
+            id: segment.start.identity,
+            label: segment.start.labels[1],
+            tag: segment.start.tag,
+            properties: segment.start.properties,
+            is_show: is_show,
+          });
+        }
+        if (nodeSet.indexOf(segment.end.identity) == -1) {
+          nodeSet.push(segment.end.identity);
+          let is_show = "";
+          if (_name == segment.end.properties.name.text) {
+            is_show = "2";
+          } else {
+            is_show = "1";
+          }
+          nodes.push({
+            id: segment.end.identity,
+            label: segment.end.labels[1],
+            tag: segment.end.tag,
+            properties: segment.end.properties,
+            is_show: is_show,
+          });
+        }
+        links.push({
+          source: segment.relationship.start,
+          target: segment.relationship.end,
+          type: segment.relationship.type,
+          properties: segment.relationship.properties
+        });
+        if (labels.indexOf(segment.end.labels[1]) == -1) {
+          labels.push(segment.end.labels[1]);
+        }
+        if (linkTypes.indexOf(segment.relationship.type) == -1) {
+          linkTypes.push(segment.relationship.type);
+        }
 
+        for (let key in segment.end.properties) {
+          if (segment.end.properties[key].text != "" && segment.end.properties[key].name != "作者") {
+            if (nodeSet.indexOf(`${segment.end.identity}-${key}`) == -1) {
+              nodeSet.push(`${segment.end.identity}-${key}`);
+              let data_type = "";
+              if (_name == segment.end.properties.name.text) {
+                data_type = "no_show";
+              } else {
+                data_type = "is_show";
+              }
+              nodes.push({
+                id: `${segment.end.identity}-${key}`,
+                label: "Att",
+                properties: {
+                  name: segment.end.properties[key].text
+                },
+                data_type
+              });
+              links.push({
+                source: segment.relationship.end,
+                target: `${segment.end.identity}-${key}`,
+                type: "att",
+                properties: {
+                  name: segment.end.properties[key].name
+                },
+                data_type
+              });
+            }
+          }
+        }
+        if (labels.indexOf(segment.start.labels[1]) == -1) {
+          labels.push(segment.start.labels[1]);
+        }
+
+        for (let key in segment.start.properties) {
+          if (segment.start.properties[key].text != "" && segment.start.properties[key].name != "作者" && segment.start.properties[key].text != _name) {
+            if (nodeSet.indexOf(`${segment.start.identity}-${key}`) == -1) {
+              nodeSet.push(`${segment.start.identity}-${key}`);
+              let data_type = "";
+              if (_name == segment.start.properties.name.text) {
+                data_type = "no_show";
+              } else {
+                data_type = "is_show";
+              }
+              nodes.push({
+                id: `${segment.start.identity}-${key}`,
+                label: "Att",
+                properties: {
+                  name: segment.start.properties[key].text
+                },
+                data_type
+              });
+              links.push({
+                source: segment.start.identity,
+                target: `${segment.start.identity}-${key}`,
+                type: "att",
+                properties: {
+                  name: segment.start.properties[key].name
+                },
+                data_type
+              });
+            }
+          }
+        }
+      }
+      labels.push("Att");
+      linkTypes.push("att");
+      that.linkTypes = linkTypes;
+      that.labels = labels;
+      that.data = { nodes, links }
+      console.log(that.data.nodes)
+    },
   },
 }
 </script>
@@ -212,9 +403,13 @@ export default {
 }
 .main-box-left{
   flex: 1;
+  padding:30px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .main-box-right{
-  width: 290px;
+  width: 390px;
   position: relative;
   padding: 20px 10px;
 }
@@ -266,7 +461,6 @@ export default {
   font-size: 13px;
   color:#999;
   text-overflow: ellipsis;
-  display: box;
   display: -webkit-box;
   line-clamp: 1;
   box-orient: vertical;
@@ -294,7 +488,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  box-shadow: 0 0 4px #53bfb4;
+  box-shadow: 0 0 10px 2px #d7d7d7;
   z-index: 100;
   padding: 10px;
 }
@@ -316,6 +510,23 @@ export default {
   font-size:15px;
   text-align: left;
 }
+.main-box-left-t{
+  width: 100%;
+  height: auto;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+}
+.atlas-box{
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
+}
 @media only screen and (max-width: 1366px){
   .cjjc-title{
     height: 30px;
@@ -324,8 +535,11 @@ export default {
     height: 30px;
   }
   .el-aside{
-    width: 370px !important;
+    width: 310px !important;
     font-size: 14px;
+  }
+  .main-box-right{
+    width: 290px;
   }
 
 }

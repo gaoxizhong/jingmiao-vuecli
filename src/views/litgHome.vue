@@ -79,6 +79,8 @@
                   :data="data"
                   :labels="labels"
                   :linkTypes="linkTypes"
+                  :width="cdssWidth"
+                  :height="cdssHeight"
                   v-if="data.nodes.length > 0"
                 />
                 <el-empty description="暂无数据..." v-if='!data.nodes || data.nodes.length <= 0'></el-empty>
@@ -133,6 +135,8 @@ export default {
         },
         labels: [],
         linkTypes: [],
+        cdssWidth: 420,
+        cdssHeight: 430,
         tag: '',
         is_search:'',
         hot_name:'冠心病',
