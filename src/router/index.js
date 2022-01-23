@@ -4,6 +4,7 @@ import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
 import QAhome from '../views/QAhome.vue'
 import VideoDetails from '../views/VideoDetails.vue'
+import store from '../store/index'
 import inquiryResultPage from '../views/inquiryResultPage.vue'
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location, onResolve, onReject) {
@@ -12,8 +13,8 @@ VueRouter.prototype.push = function push(location, onResolve, onReject) {
 }
 Vue.use(VueRouter)
 
-// if (sessionStorage.getItem('token')) {
-//   store.commit('set_token', sessionStorage.getItem('token'))
+// if (localStorage.getItem('token')) {
+//   store.commit('set_token', localStorage.getItem('token'))
 
 //   }
 const routes = [
@@ -25,7 +26,8 @@ const routes = [
   {
     path: '/QAhome',
     name: 'QAhome',
-    component: QAhome
+    component: QAhome,
+    meta:{requireAuth:true}
   },
   {
     path:'/Main',
@@ -38,7 +40,8 @@ const routes = [
           component: () => import('@/views/Home'),
             meta: {
               keepAlive: true,
-              scollTopPosition: 0
+              scollTopPosition: 0,
+              requireAuth:true
             }
         },
         { path: '/zyHome',
@@ -46,7 +49,8 @@ const routes = [
           component: () => import('@/views/zyHome'),
           meta: {
             keepAlive: true,
-            scollTopPosition: 0
+            scollTopPosition: 0,
+            requireAuth:true
           }
         },
         { path: '/litgHome',
@@ -54,7 +58,8 @@ const routes = [
           component: () => import('@/views/litgHome'),
           meta: {
             keepAlive: true,
-            scollTopPosition: 0
+            scollTopPosition: 0,
+            requireAuth:true
           }
         },
         { path: '/Details',
@@ -62,7 +67,8 @@ const routes = [
           component: () => import('@/views/Details'),
           meta: {
             keepAlive: true,
-            scollTopPosition: 0
+            scollTopPosition: 0,
+            requireAuth:true
           }
         },
         { path: '/LcsyHome',
@@ -70,19 +76,23 @@ const routes = [
           component: () => import('@/views/LcsyHome'),
           meta: {
             keepAlive: true,
-            scollTopPosition: 0
+            scollTopPosition: 0,
+            requireAuth:true
           }
         },
         { path: '/LcsyDetails',
           name: 'LcsyDetails',
           component: () => import('@/views/LcsyDetails'),
+          meta:{requireAuth:true}
+
         },
         { path: '/VideoHome',
           name: 'VideoHome',
           component: () => import('@/views/VideoHome'),
           meta: {
             keepAlive: true,
-            scollTopPosition: 0
+            scollTopPosition: 0,
+            requireAuth:true
           }
         },
         { path: '/WesternMedicineCdss',
@@ -90,17 +100,19 @@ const routes = [
         component: () => import('@/views/WesternMedicineCdss'),
         meta: {
           keepAlive: true,
-          scollTopPosition: 0
+          scollTopPosition: 0,
+          requireAuth:true
         }
       },
-        { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails') },
-        { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails') },
+        { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails'),meta:{requireAuth:true} },
+        { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails'),meta:{requireAuth:true} },
     ]
   },
   {
     path: '/VideoDetails',
     name: 'VideoDetails',
-    component: VideoDetails
+    component: VideoDetails,
+    meta:{requireAuth:true}
   },
   {
     path: '/inquiryResultPage',
@@ -109,11 +121,16 @@ const routes = [
     meta: {
       title:'问诊结果',
       keepAlive: true,
-      scollTopPosition: 0
+      scollTopPosition: 0,
+      requireAuth:true
     }
   },
 ]
+// 页面刷新时，重新赋值token
 
+if (localStorage.getItem('token')) {
+  store.dispatch("setToken",localStorage.getItem('token'));
+  }
 const router = new VueRouter({
   // mode: 'history',
   // base: process.env.BASE_URL,
@@ -126,4 +143,24 @@ router.afterEach((to) => {
   window.scrollTo(0,0);
 
 })
+// router.beforeEach((to, from, next) => {
+//   //这里的requireAuth为路由中定义的 meta:{requireAuth:true}，意思为：该路由添加该字段，表示进入该路由需要登陆的
+//   if (to.matched.some(r => r.meta.requireAuth)) {
+//     if (store.state.token) {
+//        next();
+//       }else {
+//         console.log('请先登录！')
+//         setTimeout(() => {
+//           next({
+//             path: '/',
+//             query: {redirect: to.fullPath}
+//           })
+//         }, 1500);
+//     }
+
+//   }else {
+//     next();
+//   }
+// })
+
 export default router

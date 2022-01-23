@@ -46,7 +46,7 @@ export default {
   watch: {
     // 当请求到新的数据时，重新渲染
     nodes (newData, oldData) {
-      console.log(newData, oldData)
+      // console.log(newData, oldData)
       // 移除svg和元素注册事件，防止内存泄漏
       this.svgDom.on('.', null)
       this.svgDom.selectAll('*').on('.', null)

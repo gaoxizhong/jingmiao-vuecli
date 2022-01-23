@@ -57,7 +57,8 @@ export default {
         phone: '',
         password:'',
       },
-      is_sign: false
+      is_sign: false,
+      stateurl:''
     }
   },
   mounted(){ // 可以当做初始化后加载，只加载一次
@@ -66,6 +67,9 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
+    this.$store.dispatch('delToken');
+    let stateurl = this.$store.state.stateurl;
+    this.stateurl = stateurl;
   },
   methods: {
     signIn(){
@@ -97,17 +101,12 @@ export default {
             })
             return
         }
-      console.log(newuser)
       RegisterUserInfo(newuser).then( res =>{
         if(res.data.code == 0){
           that.$message.success({
             message:'注册成功'
           })
           this.is_sign = false;
-        }else{
-          that.$message.error({
-            message: res.data.msg
-          })
         }
       }).catch(e =>{
         console.log(e)
@@ -138,15 +137,31 @@ export default {
             message:'登录成功',
             duration: 1500,
             onClose(){
-              window.localStorage.setItem('is_details',0);
-              // 执行 actions 操作,,属于异步操作
+              // commit：同步操作，数据提交至 mutations ，可用于读取用户信息写到缓存里
               // 存储token到ls
-              // const { token } = data.token;
+              const token = data.token;
               // window.localStorage.setItem('setToken',token);
-              window.localStorage.setItem('setUser',data.phone);
-              that.$store.dispatch("setUser",data.phone)
-              that.$store.dispatch("setIsAuthenticated",true)
-              that.$router.push('/Main');
+                that.$store.dispatch("setToken",token);
+              // .dispatch 执行异步操作,数据提交至 actions
+              if (that.$store.state.token) {
+                window.localStorage.setItem('setUser',data.phone);
+                that.$store.dispatch("setUser",data.phone)
+                that.$store.dispatch("setIsAuthenticated",true)
+                let stateurl = that.stateurl;
+                if(stateurl){
+                  console.log(1)
+
+                  that.$router.push({path:decodeURIComponent(stateurl)});
+                }else{
+                  that.$router.push('/Main');
+                }
+                } else {
+
+                this.$router.push('/');
+
+                }
+
+
             }
           });
         }else{

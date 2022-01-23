@@ -382,15 +382,6 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
               }
               that.getListInfo= getListInfo;
               console.log(that.getListInfo)
-            }else if(res.data.code == 1){
-              that.$message.error({
-                  message: res.data.msg,
-              });
-              return
-            }else{
-              that.$message.error({
-                  message: res.data.msg
-              });
             }
           }).catch(e =>{
               loading.close();
@@ -418,15 +409,6 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
               }
               that.getListInfo= getListInfo;
               console.log(that.getListInfo)
-            }else if(res.data.code == 1){
-              that.$message.error({
-                  message: res.data.msg,
-              });
-              return
-            }else{
-              that.$message.error({
-                  message: res.data.msg
-              });
             }
           }).catch(e =>{
               loading.close();

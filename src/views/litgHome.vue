@@ -160,7 +160,6 @@ export default {
         this.setsickNess();
         // 获取列表
         this.getHomeRightList();
-        window.localStorage.setItem('is_details',0);
         // 获取文献气泡图、图谱数据
         if(this.tag == 'document'){
           this.getDochots();
@@ -293,15 +292,6 @@ export default {
             }
             that.count = res.data.data.count;
             that.getListInfo= getListInfo;
-          }else if(res.data.code == 1){
-            that.$message.error({
-                message: res.data.msg,
-            });
-            return
-          }else{
-            that.$message.error({
-                message: res.data.msg
-            });
           }
         }).catch(e =>{
             console.log(e)

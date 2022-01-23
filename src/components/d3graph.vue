@@ -150,7 +150,7 @@ export default {
   watch: {
     // 当请求到新的数据时，重新渲染
     data (newData, oldData) {
-      console.log(newData, oldData)
+      // console.log(newData, oldData)
       // 移除svg和元素注册事件，防止内存泄漏
       this.svgDom.on('.', null)
       this.svgDom.selectAll('*').on('.', null)
@@ -235,11 +235,9 @@ export default {
     },
     // 隐藏文字
     changeTextState (state) {
-      console.log(state)
       // state发生变化时才进行更新、处理
         this.textState = state
         const text = d3.selectAll('.linkTexts text')
-        console.log(text)
         // 根据新的节点状态，在节点上展示不同的文本信息
         if (this.textState == '0') {
           text.style('display', 'none')
@@ -663,7 +661,6 @@ export default {
 
 
       function nodeClick(event,d){
-        console.log(d)
         let name = '';
         name = d.properties.kgid?d.properties.kgid.text:d.properties.name.text;
         let tag = d.tag;

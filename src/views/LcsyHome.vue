@@ -30,27 +30,27 @@
                 <el-table :data="getListInfo" border stripe style="width: 100%;" >
                   <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
                   <el-table-column prop="register_number" label="登记号"  width="180">
-                    <template slot-scope="scope">  
+                    <template slot-scope="scope">
                       <a :href="scope.row.file" target="_blank" >{{scope.row.register_number}}</a>
-                    </template>  
+                    </template>
                   </el-table-column>
                   <el-table-column prop="trystate" label="试验状态">
-                    <template slot-scope="scope">  
+                    <template slot-scope="scope">
                       <a :href="scope.row.file" target="_blank" >{{scope.row.trystate}}</a>
-                    </template>  
+                    </template>
                   </el-table-column>
                   <el-table-column prop="drug_name" label="药物名称">
-                    <template slot-scope="scope">  
+                    <template slot-scope="scope">
                       <a :href="scope.row.file" target="_blank" >{{scope.row.drug_name}}</a>
                     </template>
                   </el-table-column>
                   <el-table-column prop="adaptation_disease" label="适应症">
-                    <template slot-scope="scope">  
+                    <template slot-scope="scope">
                       <a :href="scope.row.file" target="_blank" >{{scope.row.adaptation_disease}}</a>
                     </template>
                   </el-table-column>
                   <el-table-column prop="experimental_popular_topic" label="试验通俗题目">
-                    <template slot-scope="scope">  
+                    <template slot-scope="scope">
                       <a :href="scope.row.file" target="_blank" >{{scope.row.experimental_popular_topic}}</a>
                     </template>
                   </el-table-column>
@@ -61,19 +61,19 @@
                 <el-table :data="getListInfo" border stripe style="width: 100%;" >
                   <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
                   <el-table-column prop="clinical_pathway" label="临床路径名称">
-                    <template slot-scope="scope">  
+                    <template slot-scope="scope">
                       <a :href="scope.row.file" target="_blank" >{{scope.row.clinical_pathway}}</a>
-                    </template>  
+                    </template>
                   </el-table-column>
                   <el-table-column prop="publish_year" label="发布年份"  width="180">
-                    <template slot-scope="scope">  
+                    <template slot-scope="scope">
                       <a :href="scope.row.file" target="_blank" >{{scope.row.publish_year}}</a>
-                    </template>  
+                    </template>
                   </el-table-column>
                   <el-table-column prop="release_unit" label="发布单位">
-                    <template slot-scope="scope">  
+                    <template slot-scope="scope">
                       <a :href="scope.row.file" target="_blank" >{{scope.row.release_unit}}</a>
-                    </template>  
+                    </template>
                   </el-table-column>
                 </el-table>
               </template>
@@ -129,7 +129,6 @@ export default {
         this.setsickNess();
         // 获取列表
         this.getHomeRightList();
-        window.localStorage.setItem('is_details',0);
     },
     methods:{
       indexMethod(index) {
@@ -142,8 +141,8 @@ export default {
         // let name = e.name;
         // let tag = that.tag;
         // this.setsickNess();
-        // this.$router.push({ 
-        //   path:'/LcsyDetails', 
+        // this.$router.push({
+        //   path:'/LcsyDetails',
         //   query:{
         //     name,
         //     tag,
@@ -219,15 +218,6 @@ export default {
             let getListInfo = res.data.data.list;
             that.count = res.data.data.count;
             that.getListInfo= getListInfo;
-          }else if(res.data.code == 1){
-            that.$message.error({
-                message: res.data.msg,
-            });
-            return
-          }else{
-            that.$message.error({
-                message: res.data.msg
-            });
           }
         }).catch(e =>{
             console.log(e)

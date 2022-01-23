@@ -14,6 +14,13 @@ export const setToken = ({commit},data) =>{
 export const delToken = ({commit},data) =>{
   commit('delToken',data);
 }
+
+export const setStateurl = ({commit},data) =>{
+  commit('setStateurl',data);
+}
+export const delStateurl = ({commit},data) =>{
+  commit('delStateurl',data);
+}
 export const menuBtn = ({commit},data) =>{
   commit('menuBtn',data);
 }

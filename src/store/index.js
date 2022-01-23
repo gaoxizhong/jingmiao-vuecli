@@ -17,7 +17,8 @@ const state ={
   input_name: '', // 详情页搜索
   hot_name:'',  // 气泡图name
   crumbsarr:[],  //  面包屑数组
-  barckArr:[]  //  面包屑数组
+  barckArr:[],  //  面包屑数组
+  stateurl:''  //  保存路径
 
 }
 export default new Vuex.Store({

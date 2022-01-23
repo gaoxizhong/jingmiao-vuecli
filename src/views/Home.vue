@@ -412,18 +412,6 @@ import {getHomeRightList,getSearch} from '@/api/data'
               }
             }
             that.getListInfo= getListInfo;
-          }else if(res.data.code == 1){
-            that.$message.error({
-                message: res.data.msg,
-            });
-            // setTimeout(function(){
-            //    that.$router.push('/');
-            // },1500)
-            return
-          }else{
-            that.$message.error({
-                message: res.data.msg
-            });
           }
         }).catch(e =>{
             loading.close();

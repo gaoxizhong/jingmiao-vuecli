@@ -267,10 +267,7 @@ export default {
           let datalist = res.data.data;
           this.datalist = datalist;
           this.aa();
-        }else{
-           this.$message.error({
-              message: res.data.msg
-          });
+          this.$store.dispatch('delStateurl')
         }
       }).catch(e =>{
           console.log(e)
@@ -288,10 +285,9 @@ export default {
       let name = arryinfo.departmentLevel2;
       let tag = arryinfo.tag;
       this.$store.dispatch("sickNess",name);
-      let is_details = window.localStorage.getItem('is_details');
-      console.log(is_details)
-      if(is_details == 1){
-          return
+      let stateurl = this.$store.state.stateurl;
+      if(stateurl){
+        return
       }else{
         this.$router.replace({  //核心语句
           path:'/Home',   //跳转的路径
@@ -301,9 +297,6 @@ export default {
           }
         })
       }
-
-      console.log(this.datalist)
-
     },
     handleOpen(key, keyPath) {
       this.oneColumn = key;
@@ -346,10 +339,6 @@ export default {
       //         let getListInfo = res.data.data.list;
       //         that.total = res.data.data.count;
       //         console.log(that.getListInfo)
-      //       }else{
-      //         that.$message.error({
-      //             message: '暂无数据'
-      //         });
       //       }
       //     }).catch(e =>{
       //       console.log(e)
@@ -380,15 +369,6 @@ export default {
       //         }
       //         that.getListInfo= getListInfo;
       //         console.log(that.getListInfo)
-      //       }else if(res.data.code == 1){
-      //         that.$message.error({
-      //             message: res.data.msg,
-      //         });
-      //         return
-      //       }else{
-      //         that.$message.error({
-      //             message: res.data.msg
-      //         });
       //       }
       //     }).catch(e =>{
       //         loading.close();
@@ -404,7 +384,6 @@ export default {
       this.$store.dispatch("crumbsarr",b1);
       let barckArr = [];
       this.$store.dispatch("barckArr",barckArr);
-      window.localStorage.setItem('is_details',0);
 
       if(this.oneColumn.substring(0,1) == 0){
         // this.$store.dispatch("sickNess",name);

@@ -229,15 +229,6 @@ import { getVideoList } from '@/api/data'
             let getListInfo = res.data.data.list;
             that.total = res.data.data.count;
             that.getListInfo= getListInfo;
-          }else if(res.data.code == 1){
-            that.$message.error({
-                message: res.data.msg,
-            });
-            return
-          }else{
-            that.$message.error({
-                message: res.data.msg
-            });
           }
         }).catch(e =>{
             loading.close();

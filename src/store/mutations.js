@@ -9,12 +9,17 @@ export const getlist_id = (state,list_id) => {
 };
 export const setToken = (state,token) =>{
   state.token = token
-  sessionStorage.token = token
-  console.log(state.token)
+  localStorage.token = token
 };
 export const delToken = (state) =>{
   state.token = ''
-  sessionStorage.removeItem('token')
+  localStorage.removeItem('token')
+}
+export const setStateurl = (state,stateurl) =>{
+  state.stateurl = stateurl
+};
+export const delStateurl = (state) =>{
+  state.stateurl = ''
 }
 export const menuBtn = (state,isCollapse) =>{
   state.isCollapse = isCollapse

@@ -43,6 +43,7 @@ Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Pagination);
 Vue.use(Switch);
+// http.defaults.headers.common['Authentication-Token'] = store.state.token;
 Vue.prototype.$http = http;
 Vue.prototype.$message = Message;
 Vue.prototype.$loading = Loading.service;

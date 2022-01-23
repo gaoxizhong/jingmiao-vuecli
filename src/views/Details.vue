@@ -320,7 +320,6 @@ import {getSickNess,getD3Search} from '@/api/data'
         //   this.name = this.$route.query.name;
         // }
 
-        // window.localStorage.setItem("is_details",1);
     },
     mounted(){
        this.getD3name(this.name_1)
@@ -644,8 +643,6 @@ import {getSickNess,getD3Search} from '@/api/data'
         that.linkTypes = linkTypes;
         that.labels = labels;
         that.data = { nodes, links }
-        console.log(nodes)
-        console.log(links)
       },
       getD3name(name){
         let name_1 = name;

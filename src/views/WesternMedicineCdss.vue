@@ -191,6 +191,7 @@
   .grid-leftcontent-box{
     flex: 1;
     padding-right: 20px;
+    padding-bottom: 20px;
   }
 
   .grid-rightcontent-box{
