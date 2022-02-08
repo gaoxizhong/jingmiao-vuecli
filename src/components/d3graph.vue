@@ -10,7 +10,7 @@
     <svg
       id="svg"
       width="100%"
-      :height="viewHeight - 180"
+      :height="viewHeight - 200"
     ></svg>
     <!-- 绘制图例 -->
   </div>

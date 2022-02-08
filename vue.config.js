@@ -1,7 +1,8 @@
 const Version = new Date().getTime()
 module.exports = {
   lintOnSave: false,
-  publicPath:'/',
+  publicPath:'././',
+  // publicPath:'/',
   outputDir:'dist',
   assetsDir:'aa',
   css: {

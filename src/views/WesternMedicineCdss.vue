@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;">
+  <div :style="`height:${ viewHeight }px;padding: 20px 30px 10px;`">
     <div class="westernmedicin-content-box" style="height:100%;">
       <!--  -->
       <div class="grid-leftcontent-box">
@@ -13,90 +13,36 @@
         <!-- 左侧列表选项 -->
         <div class="leftcontent-list-box">
           <el-checkbox-group v-model="checkList" @change="checkGroup">
-
-            <div class="options-list-box">
-              <div class="options-list-title">全身症状</div>
+            <div class="options-list-box" v-for="(item,index) in optionsList" :key="index">
+              <div class="options-list-title">{{item.category}}</div>
               <div class="oplist-items-box">
-                <el-checkbox label="发热">发热</el-checkbox>
-                <el-checkbox label="乏力">乏力</el-checkbox>
-                <el-checkbox label="多饮">多饮</el-checkbox>
-                <el-checkbox label="食欲下降">食欲下降</el-checkbox>
-                <el-checkbox label="畏寒">畏寒</el-checkbox>
-              </div>
-            </div>
+                <div>
+                  <!-- 下拉选择 -->
+                  <span v-if="item.select_options.length > 0">
+                    <el-select class="el-oplistselect-box" :placeholder="items_options.select_name + '选项'" v-model="items_options.select_chect" slot="prepend" v-for="(items_options,index_options) in item.select_options" :key="index_options" @change="searchSymptomsChange">
+                      <el-option v-for="(it,inx) in items_options.select_values" :key="inx" :label="it" :value="it"></el-option>
+                    </el-select>
+                  </span>
 
-            <div class="options-list-box">
-              <div class="options-list-title">皮肤黏膜</div>
-              <div class="oplist-items-box">
-                <el-checkbox label="皮肤黏膜出血">皮肤黏膜出血</el-checkbox>
-                <el-checkbox label="黄疸">黄疸</el-checkbox>
-                <el-checkbox label="皮下肿物">皮下肿物</el-checkbox>
-                <el-checkbox label="乳房肿物">乳房肿物</el-checkbox>
-                <el-checkbox label="皮疹">皮疹</el-checkbox>
-                <el-checkbox label="水肿">水肿</el-checkbox>
-                <el-checkbox label="皮肤瘙痒">皮肤瘙痒</el-checkbox>
-              </div>
-            </div>
-
-            <div class="options-list-box">
-              <div class="options-list-title">面部五官</div>
-              <div class="oplist-items-box">
-                <el-checkbox label="视野不清">视野不清</el-checkbox>
-                <el-checkbox label="咽痛">咽痛</el-checkbox>
-                <el-checkbox label="口干">口干</el-checkbox>
-                <el-checkbox label="眼红">眼红</el-checkbox>
-              </div>
-            </div>
-
-            <div class="options-list-box">
-              <div class="options-list-title">神经系统</div>
-              <div class="oplist-items-box">
-                <el-checkbox label="头痛">头痛</el-checkbox>
-                <el-checkbox label="眩晕">眩晕</el-checkbox>
-                <el-checkbox label="头晕">头晕</el-checkbox>
-              </div>
-            </div>
-
-            <div class="options-list-box">
-              <div class="options-list-title">呼吸系统</div>
-              <div class="oplist-items-box">
-                <el-checkbox label="咳嗽">咳嗽</el-checkbox>
-                <el-checkbox label="咳痰">咳痰</el-checkbox>
-                <el-checkbox label="咯血">咯血</el-checkbox>
-                <el-checkbox label="流涕">流涕</el-checkbox>
-                <el-checkbox label="鼻塞">鼻塞</el-checkbox>
-                <el-checkbox label="呼吸困难">呼吸困难</el-checkbox>
-                <el-checkbox label="喘息">喘息</el-checkbox>
-
-              </div>
-            </div>
-            <div class="options-list-box">
-              <div class="options-list-title">运动系统</div>
-              <div class="oplist-items-box">
-                <el-checkbox label="腰背痛">腰背痛</el-checkbox>
-                <el-checkbox label="肢体无力">肢体无力</el-checkbox>
-                <el-checkbox label="下肢痛">下肢痛</el-checkbox>
-                <el-checkbox label="肢体麻木">肢体麻木</el-checkbox>
-                <el-checkbox label="关节肿痛">关节肿痛</el-checkbox>
-                <el-checkbox label="关节痛">关节痛</el-checkbox>
+                  <!-- 多选 -->
+                  <el-checkbox v-for="(items,idx) in item.options" :key="idx" :label="items">{{items}}</el-checkbox>
+                </div>
               </div>
             </div>
           </el-checkbox-group>
-
           <!-- 其他症状 -->
-          <div class="qt-box">
-            <span>其他</span>
+          <!-- <div class="qt-box">
+            <span>发热症状:</span>
             <div class="el-input-box">
-              <el-input placeholder="您可以输入其他症状" v-model="inputOtherValue" class="input-with-select">
+              <el-input placeholder="您可以输入发热症状" v-model="inputOtherValue" class="input-with-select">
                 <el-button slot="append" @click="getInputBtn()">确定</el-button>
               </el-input>
             </div>
-          </div>
+          </div> -->
 
           <!-- 症状时长 -->
-          <div class="duration-box">
+          <!-- <div class="duration-box">
 
-            <!-- <div class="duration-items-box" v-for="(item,index) in durationList" :key="index"> -->
             <div class="duration-items-box">
               <div class="durationItems-title">乏力出现了多长时间：</div>
               <div class="durationItems-table">
@@ -150,7 +96,7 @@
 
 
 
-          </div>
+          </div> -->
 
         </div>
 
@@ -164,14 +110,31 @@
             <span style="padding-left:4px;font-weight: 600;">主诉</span>
           </div>
           <div class="zhusu-info-box">
-            <div>
+
+            <!-- <div>
               <span v-if="timeText_1">乏力出现<span style="color:#27afa1;">{{timeText_1}}{{timeLabel_1}}</span>，</span>
               <span v-if="timeText_2">乏力加重<span style="color:#27afa1;">{{timeText_2}}{{timeLabel_2}}</span>，</span>
               <span v-if="timeText_3">黄疸出现<span style="color:#27afa1;">{{timeText_3}}{{timeLabel_3}}</span></span>
-            </div>
+            </div> -->
             <div class="qt-info" v-if=" inputOtherValue_q != '' ">{{inputOtherValue_q}}</div>
             <!-- 选择的数据 -->
-            <span v-for="(item,index) in checkList" :key="index">{{item}} <span v-if="index != checkList.length -1">、</span></span>
+              <!-- 下拉框数据 -->
+            <div>
+              <span v-for="(item,index) in searchSymptomsList" :key="index" style="padding:0 4px;">
+                <span>{{item}}</span>
+                <span v-if="index != searchSymptomsList.length -1">,</span>
+              </span>
+              <span v-if="searchSymptomsList.length>0">;</span>
+            </div>
+            <!-- 多项选择数据 -->
+            <div style="padding:8px 0;">
+              <span v-for="(item,index) in checkList" :key="index" style="padding:0 4px;">
+                <span>{{item}}</span>
+                <span v-if="index != checkList.length -1">,</span>
+              </span>
+              <span v-if="checkList.length>0">;</span>
+            </div>
+
           </div>
         </div>
         <div class="mz-box"><span style="color:#27afa1;">免责声明: </span>以上仅供参考, 以医生临床诊断为主</div>
@@ -181,6 +144,38 @@
 </template>
 
 <style scoped>
+  .el-oplistselect-box{
+    width: 120px;
+    margin-right: 12px;
+  }
+  .el-oplistselect-box.el-select >>> .el-input__inner{
+    height: 30px;
+    line-height: 30px;
+    background: none;
+    padding-left: 4px;
+    padding-right: 20px;
+  }
+  .el-oplistselect-box.el-select >>> .el-input__icon{
+    line-height: 30px;
+    width: auto;
+  }
+  .el-select >>> .el-input__inner:focus{
+    border-color: #27afa1;
+  }
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #27afa1;
+    margin-right: 10px;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+  .demonstration {
+    display: block;
+    color: #8492a6;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
   .westernmedicin-content-box{
     width: 100%;
     height: auto;
@@ -287,6 +282,7 @@
   .el-checkbox >>> .el-checkbox__label {
     font-size: 14px;
     padding-left: 6px;
+    margin: 4px 0;
   }
   .qt-box{
     width: 100%;
@@ -295,8 +291,7 @@
     align-items: center;
   }
   .qt-box>span{
-    width: 70px;
-    letter-spacing:14px;
+    width: 82px;
     padding-left: 10px;
   }
   .el-input-box{
@@ -339,6 +334,15 @@
   .el-checkbox >>> .el-checkbox.is-bordered.is-checked{
     border-color: #27afa1;
   }
+
+  .el-fr-box{
+    width: 340px;
+    line-height: 34px;
+    border-radius: 4px;
+    text-align: left;
+    margin-left: 14px;
+  }
+
   .duration-box{
     width: 100%;
     margin: 5px 0;
@@ -421,6 +425,9 @@
     .el-input-box >>> .el-button{
       height: 30px;
     }
+    .el-fr-box{
+      width: 300px;
+    }
     .duration-items-box{
       font-size: 14px;
     }
@@ -434,15 +441,17 @@
 
 </style>
 <script>
+import { getWesternSymptomList,clickFinishBtn,getWesternFrList } from '@/api/data'
 export default {
   data(){
     return{
       viewHeight:0,
+      optionsList:[],
       checkList: [],   // 多选框 选中项label
       checkList_name:[], // 多选框 选中项name
+      searchSymptomsList:[], // 列表下拉框选中数据
       inputOtherValue:'', // 其他症状
       inputOtherValue_q:'', // 点击确认
-      durationList:[{}], // 症状列表时长
       timeText_1:'4',
       timeLabel_1:"天",
       timeText_2:'4',
@@ -454,6 +463,8 @@ export default {
   created(){
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
+    this.getWesternSymptomList();
+    this.getWesternFrList();
   },
   mounted(){
 
@@ -461,20 +472,76 @@ export default {
   updated() {
   },
   methods: {
+    searchSymptomsChange(e){
+      let searchSymptomsList = [];
+      let optionsList = this.optionsList;
+      optionsList.forEach(el =>{
+        if(el.select_options.length > 0){
+          el.select_options.forEach(el_options =>{
+            if(el_options.select_chect){
+              searchSymptomsList.push(el_options.select_chect)
+            }
+          })
+        }
+      })
+      this.searchSymptomsList = searchSymptomsList;
+    },
+    // 点击结束问诊
     finish_btn(){
       let that = this;
-      console.log(that.checkList)
-      // 新页面打开
-        let newUrl = this.$router.resolve({
-          path: "/inquiryResultPage",
-          // query:{
-          //   src:s,
-          //   v_id:v
-          // }
-        });
-      window.open(newUrl.href, "_blank");
+      let checkList = that.checkList;
+      let searchSymptomsList = that.searchSymptomsList;
+      let values = '';  // 请求数据
+      let zs_values = '';  // 跳转页面 主诉展示数据
+
+      if( searchSymptomsList.length > 0 ){
+        if(checkList.length > 0){
+          values = searchSymptomsList.join(',') + ',' + checkList.join(',');
+          zs_values = searchSymptomsList.join('、') + '，' + checkList.join('、');
+
+        }else{
+          values = searchSymptomsList.join(',');
+          zs_values = searchSymptomsList.join('、');
+
+        }
+      }else{
+        values = checkList.join(',');
+        zs_values = checkList.join('、');
+
+      }
+      // if(checkList.length <=0 || !checkList ){
+      //  that.$message.error({
+      //       message: '请先选择症状选项！',
+      //   });
+      //   return
+      // }
+      let pearms = {
+        tag:'symptom',
+        values,
+      };
+      clickFinishBtn(pearms).then(res =>{
+        if(res.data.code == 0){
+          // that.$store.dispatch("cdssInfo",pearms);
+          window.sessionStorage.setItem("cdssInfo",JSON.stringify(pearms));
+
+          window.sessionStorage.setItem("zs_values",zs_values)
+          // 新页面打开
+          let newUrl = that.$router.resolve({
+            path: "/inquiryResultPage"
+          });
+        window.open(newUrl.href, "_blank");
+        }else if(res.data.code == 1){
+          that.$message.error({
+            message: res.data.msg,
+          });
+        }
+      }).catch(e =>{
+        consoloe.log(e)
+      })
+
 
     },
+    // 列表多选选项
     checkGroup(e){
       let that = this;
       let checkGroupList = e;
@@ -498,7 +565,36 @@ export default {
       this.inputOtherValue_q = this.inputOtherValue;
       // this.inputOtherValue = '';
     },
+    // 接口获取列表
+    getWesternSymptomList(){
+      let that = this;
+      let pearms = {};
+      getWesternSymptomList(pearms).then(res => {
+        if(res.data.code == 0){
+          that.optionsList = res.data.data;
+        }
+      }).catch(e =>{
 
+        console.log(e)
+
+      })
+    },
+
+    // 获取发热选项
+    getWesternFrList(){
+      let that = this;
+      let pearms = {};
+      getWesternFrList(pearms).then(res => {
+        if(res.data.code == 0){
+          that.symptoms = res.data.data;
+        }
+      }).catch(e =>{
+
+        console.log(e)
+
+      })
+    }
   },
+
 }
 </script>

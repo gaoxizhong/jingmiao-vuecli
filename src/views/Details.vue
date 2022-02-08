@@ -87,7 +87,6 @@
     height: auto;
     background: #fff;
     box-sizing: border-box;
-    padding: 20px 0;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -144,7 +143,7 @@
 .box2-span{
   position: absolute;
   left: 20px;
-  top: 24px;
+  top: 4px;
   width: 80px;
   height: 30px;
   background: #F0F2F5;

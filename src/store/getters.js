@@ -11,3 +11,4 @@ export const hot_name = state => state.hot_name;
 export const crumbsarr = state => state.crumbsarr;
 export const barckArr = state => state.barckArr;
 export const stateurl = state => state.stateurl;
+export const cdssInfo = state => state.cdssInfo;

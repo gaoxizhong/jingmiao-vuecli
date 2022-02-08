@@ -144,3 +144,35 @@ export const getVideoRecordPv = (params) =>{
     data: params
   })
 }
+//cdss 获取西医问诊列表
+export const getWesternSymptomList = (params) =>{
+  return axios.request({
+    url:'/cdss',
+    method: 'post',
+    data: params
+  })
+}
+//cdss 获取问诊发热选项
+export const getWesternFrList = (params) =>{
+  return axios.request({
+    url:'/symptoms',
+    method: 'post',
+    data: params
+  })
+}
+// cdss 结束问诊按钮
+export const clickFinishBtn = (params) =>{
+  return axios.request({
+    url:'/result',
+    method: 'post',
+    data: params
+  })
+}
+// cdss 点击疑似病例列表
+export const clickYsbl = (params) =>{
+  return axios.request({
+    url:'/about_result',
+    method: 'post',
+    data: params
+  })
+}

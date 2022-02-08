@@ -45,4 +45,6 @@ export const crumbsarr = (state,crumbsarr) =>{
 export const barckArr = (state,barckArr) =>{
   state.barckArr = barckArr
 }
-
+export const cdssInfo = (state,cdssInfo) =>{
+  state.cdssInfo = cdssInfo
+}

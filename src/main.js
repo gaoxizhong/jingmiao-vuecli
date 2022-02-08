@@ -5,8 +5,9 @@ import router from './router'
 import store from './store'
 import http from './api/axios'
 
-import { RadioButton,RadioGroup,CheckboxGroup,Checkbox,Table,TableColumn,Breadcrumb,BreadcrumbItem,TabPane,Tabs,Switch,Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
+import { DropdownItem,RadioButton,RadioGroup,CheckboxGroup,Checkbox,Table,TableColumn,Breadcrumb,BreadcrumbItem,TabPane,Tabs,Switch,Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
 Vue.config.productionTip = false
+Vue.use(DropdownItem);
 Vue.use(RadioButton);
 Vue.use(RadioGroup);
 Vue.use(CheckboxGroup);

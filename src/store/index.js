@@ -18,8 +18,8 @@ const state ={
   hot_name:'',  // 气泡图name
   crumbsarr:[],  //  面包屑数组
   barckArr:[],  //  面包屑数组
-  stateurl:''  //  保存路径
-
+  stateurl:'',  //  保存路径
+  cdssInfo:'', // cdss问诊数据
 }
 export default new Vuex.Store({
   state,

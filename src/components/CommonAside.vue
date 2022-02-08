@@ -121,14 +121,14 @@
 				</template>
 				<!-- 如果第一层没有子菜单 -->
 				<template v-else>
-					<el-menu-item :index="`${index}`" :key="index" style="text-align:left; padding-left:20px !important;">
+					<el-menu-item :index="`${index}`" :key="index" style="text-align:left; padding-left:20px !important;" @click="clickMenuItem(index,item.knowledge_base_name)">
 					  <i class="el-icon-menu"></i>
-						<span slot="title" style="padding-left: 8px;font-size: 18px;">{{ item.knowledge_base_name }}</span>
+						<span slot="title" style="padding-left: 8px;font-size: 16px;">{{ item.knowledge_base_name }}</span>
 					</el-menu-item>
 				</template>
 			</template>
 
-      <template>
+      <!-- <template>
         <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoVideoList">
           <i class="el-icon-menu"></i>
           <span slot="title" style="padding-left: 8px;font-size: 16px;">视频</span>
@@ -137,11 +137,11 @@
           <i class="el-icon-menu"></i>
           <span slot="title" style="padding-left: 8px;font-size: 16px;">问答</span>
         </el-menu-item>
-        <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoxycdss">
+        <el-menu-item style="text-align:left; padding-left:20px !important;">
           <i class="el-icon-menu"></i>
-          <span slot="title" style="padding-left: 8px;font-size: 16px;">智能问诊</span>
+          <span slot="title" style="padding-left: 8px;font-size: 16px;">CDSS</span>
         </el-menu-item>
-      </template>
+      </template> -->
 
     </el-menu>
 </template>
@@ -299,92 +299,53 @@ export default {
       }
     },
     handleOpen(key, keyPath) {
+      console.log(key)
       this.oneColumn = key;
     },
     handleClose(key, keyPath) {
-        this.oneColumn = key;
+      console.log(key)
+      this.oneColumn = key;
     },
-    // 跳转问答首页
-    gotoQA(){
-      // 新页面打开
+    // 点击第一级没有子级的
+    clickMenuItem(key,n){
+      console.log(key)
+      this.oneColumn = key;
+      let name = n;
+      // 跳转视频
+      if( name == '视频' ){
+        this.$emit('sickNess');
+        this.$router.replace({path:'/VideoHome'})
+      }
+      // 跳转问答首页
+      if( name == '问答' ){
+        // 新页面打开
         let newUrl = this.$router.resolve({
           path: "/QAhome"
         });
-      window.open(newUrl.href, "_blank");
+        window.open(newUrl.href, "_blank");
+      }
+      // cdss
+      if( name == 'CDSS' ){
+        // this.$emit('sickNess')
+        // this.$router.replace({path:'/WesternMedicineCdss',});
+        let newUrl = this.$router.resolve({
+          path: "/WesternMedicineCdss"
+        });
+        window.open(newUrl.href, "_blank");
+        return
+      }
     },
-    // 跳转视频
-    gotoVideoList(){
-      this.$emit('sickNess');
-      this.$router.replace({path:'/VideoHome'})
-    },
-    // 跳转西医 cdss
-    gotoxycdss(){
-      this.$emit('sickNess');
-      this.$router.replace({path:'/WesternMedicineCdss'})
-    },
+
     clickItem_2(e){
       console.log(e)
       let name = e.$attrs.name;
       let tag = e.$attrs.tag;
-
-// ======================================== ↓ ================================
-
-      // if(that.tag == 'zysickness' || that.tag == 'zcy'|| that.tag == 'jl' || that.tag == 'icd10' || that.tag == 'sickness' || that.tag == 'disease'|| that.tag == 'medicine' || that.tag == 'inspection' || that.tag == 'symptom' || that.tag == 'identify'){
-      //     getHomeRightList({
-      //       department: name,
-      //       tag,
-      //       pn:'1'
-      //     }).then( res =>{
-      //       if(res.data.code == 0){
-      //         let getListInfo = res.data.data.list;
-      //         that.total = res.data.data.count;
-      //         console.log(that.getListInfo)
-      //       }
-      //     }).catch(e =>{
-      //       console.log(e)
-      //     })
-      //     return
-      //   }
-      //  if( that.tag == 'zy' || that.tag == 'fj'|| that.tag == 'ys' || that.tag == 'tz'|| that.tag == 'xw' ) {
-      //     getzyHomeRightList({
-      //       tag,
-      //       pn: '1'
-      //     }).then( res =>{
-      //       loading.close();
-      //       if(res.data.code == 0){
-      //         let getListInfo = res.data.data.list;
-      //         that.total = res.data.data.count;
-      //         for(var i = 0;i<getListInfo.length;i++){
-      //           getListInfo[i].index = i;
-      //             if(that.tag == "zy"){
-      //               getListInfo[i].text = getListInfo[i].toxicity.text
-      //             }else if(that.tag == "fj" || that.tag == "ys" ){
-      //               getListInfo[i].text = getListInfo[i].composition.text
-      //             }else if(that.tag == "tz"){
-      //               getListInfo[i].text = getListInfo[i].overallFeature.text
-      //             }else if(that.tag == "xw"){
-      //               getListInfo[i].text = getListInfo[i].location.text
-      //           }
-
-      //         }
-      //         that.getListInfo= getListInfo;
-      //         console.log(that.getListInfo)
-      //       }
-      //     }).catch(e =>{
-      //         loading.close();
-      //         console.log(e)
-      //     })
-      //   }
-
-      // return
-// ======================================== ↑ ================================
-
       let crumbsarr = e.$attrs.arr;
       let b1 = crumbsarr.slice(); //  不修改原数组
       this.$store.dispatch("crumbsarr",b1);
       let barckArr = [];
       this.$store.dispatch("barckArr",barckArr);
-
+      // 西医知识库
       if(this.oneColumn.substring(0,1) == 0){
         // this.$store.dispatch("sickNess",name);
         this.$emit('sickNess');
@@ -408,30 +369,32 @@ export default {
 
       return
       }
+      // 中医知识库
       if(this.oneColumn.substring(0,1) == 1){
-            this.$store.dispatch("sickNess",name);
-            this.$emit('sickNess')
-            this.$router.replace({  //核心语句
-                path:'/zyHome',   //跳转的路径
-                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                  name,
-                  tag,
-                }
-            })
-          return
-          }
+        this.$store.dispatch("sickNess",name);
+        this.$emit('sickNess')
+        this.$router.replace({  //核心语句
+            path:'/zyHome',   //跳转的路径
+            query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+              name,
+              tag,
+            }
+        })
+        return
+      }
+      // 文献指南
       if(this.oneColumn.substring(0,1) == 2){
-            // this.$store.dispatch("sickNess",name);
-            this.$emit('sickNess')
-            this.$router.replace({  //核心语句
-                path:'/litgHome',   //跳转的路径
-                query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                  name,
-                  tag,
-                }
-            })
-          return
-          }
+        // this.$store.dispatch("sickNess",name);
+        this.$emit('sickNess')
+        this.$router.replace({  //核心语句
+            path:'/litgHome',   //跳转的路径
+            query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+              name,
+              tag,
+            }
+        })
+        return
+      }
     },
     // 点击临床
     gotoLc(){

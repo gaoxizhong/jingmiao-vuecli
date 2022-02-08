@@ -95,15 +95,6 @@ const routes = [
             requireAuth:true
           }
         },
-        { path: '/WesternMedicineCdss',
-        name: 'WesternMedicineCdss',
-        component: () => import('@/views/WesternMedicineCdss'),
-        meta: {
-          keepAlive: true,
-          scollTopPosition: 0,
-          requireAuth:true
-        }
-      },
         { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails'),meta:{requireAuth:true} },
         { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails'),meta:{requireAuth:true} },
     ]
@@ -125,6 +116,25 @@ const routes = [
       requireAuth:true
     }
   },
+  { path: '/WesternMedicineCdss',
+    name: 'WesternMedicineCdss',
+    component: () => import('@/views/WesternMedicineCdss'),
+    meta: {
+      title:'CDSS',
+      keepAlive: true,
+      scollTopPosition: 0,
+      requireAuth:true
+    }
+  },
+  // { path: '/WesternMedicineCdss',
+  //   name: 'WesternMedicineCdss',
+  //   component: () => import('@/views/WesternMedicineCdss'),
+  //   meta: {
+  //     keepAlive: true,
+  //     scollTopPosition: 0,
+  //     requireAuth:true
+  //   }
+  // },
 ]
 // 页面刷新时，重新赋值token
 
