@@ -120,7 +120,7 @@ const routes = [
     name: 'WesternMedicineCdss',
     component: () => import('@/views/WesternMedicineCdss'),
     meta: {
-      title:'CDSS',
+      title:'西医CDSS',
       keepAlive: true,
       scollTopPosition: 0,
       requireAuth:true

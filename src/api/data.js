@@ -152,14 +152,6 @@ export const getWesternSymptomList = (params) =>{
     data: params
   })
 }
-//cdss 获取问诊发热选项
-export const getWesternFrList = (params) =>{
-  return axios.request({
-    url:'/symptoms',
-    method: 'post',
-    data: params
-  })
-}
 // cdss 结束问诊按钮
 export const clickFinishBtn = (params) =>{
   return axios.request({

@@ -4,6 +4,7 @@
       <div class="main-box" v-if="is_initial == 1">
         <div class="wzinfo-divbox">
           <div class="wzinfo-divbox-1">
+            <!-- 主诉数据 -->
             <div class="zs-box">
               <div class="zs-title-box">
                 <i class="el-icon-tickets"></i>
@@ -13,6 +14,28 @@
                 <div>{{zs_values}}</div>
               </div>
             </div>
+            <!-- 既往史数据 -->
+            <div class="zs-box">
+              <div class="zs-title-box">
+                <i class="el-icon-tickets"></i>
+                <span style="letter-spacing:6px;">既往史</span>
+              </div>
+              <div class="zs-info-box">
+                <div>{{zs_jwsdata}}</div>
+              </div>
+            </div>
+
+            <!-- 个人史数据 -->
+            <div class="zs-box">
+              <div class="zs-title-box">
+                <i class="el-icon-tickets"></i>
+                <span style="letter-spacing:6px;">个人史</span>
+              </div>
+              <div class="zs-info-box">
+                <div>{{zs_grsdata}}</div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -160,6 +183,8 @@ export default {
       name_1:'', // 弹窗标题
       is_initial: 1, // 判断页面初始展示主诉数据
       zs_values:'', // 页面初始展示主诉数据
+      zs_jwsdata:'', // 既往史展示数据
+      zs_grsdata:'', // 个人史展示数据
     };
   },
   mounted() {
@@ -170,10 +195,14 @@ export default {
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
     let pearms = JSON.parse(window.sessionStorage.getItem("cdssInfo"));
-    let zs_values = window.sessionStorage.getItem("zs_values");
     this.pearms = pearms;
+
+
+    let zs_values = window.sessionStorage.getItem("zs_values");
+    let zs_jwsdata = window.sessionStorage.getItem("zs_jwsdata");
     this.zs_values = zs_values;
-    console.log(zs_values)
+    this.zs_jwsdata = zs_jwsdata;
+
     this.finish_btn(pearms);
   },
 
@@ -439,9 +468,10 @@ export default {
   display: flex;
   align-items: center;
   font-size: 16px;
+  margin: 10px;
 }
 .zs-title-box{
-  width: 92px;
+  width: auto;
   display: flex;
   align-items: center;
 }

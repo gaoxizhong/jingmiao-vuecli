@@ -127,22 +127,6 @@
 					</el-menu-item>
 				</template>
 			</template>
-
-      <!-- <template>
-        <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoVideoList">
-          <i class="el-icon-menu"></i>
-          <span slot="title" style="padding-left: 8px;font-size: 16px;">视频</span>
-        </el-menu-item>
-        <el-menu-item style="text-align:left; padding-left:20px !important;" @click="gotoQA">
-          <i class="el-icon-menu"></i>
-          <span slot="title" style="padding-left: 8px;font-size: 16px;">问答</span>
-        </el-menu-item>
-        <el-menu-item style="text-align:left; padding-left:20px !important;">
-          <i class="el-icon-menu"></i>
-          <span slot="title" style="padding-left: 8px;font-size: 16px;">CDSS</span>
-        </el-menu-item>
-      </template> -->
-
     </el-menu>
 </template>
 <style>
