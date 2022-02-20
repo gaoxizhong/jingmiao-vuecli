@@ -152,10 +152,19 @@ export const getWesternSymptomList = (params) =>{
     data: params
   })
 }
-// cdss 结束问诊按钮
+// cdss 西医问诊 保存按钮
 export const clickFinishBtn = (params) =>{
   return axios.request({
-    url:'/result',
+    // url:'/result',
+    url:'/advisory/submit',
+    method: 'post',
+    data: params
+  })
+}
+// cdss 西医问诊 预览按钮
+export const getUserAdvisory = (params) =>{
+  return axios.request({
+    url:'/get_user_advisory',
     method: 'post',
     data: params
   })
@@ -164,6 +173,30 @@ export const clickFinishBtn = (params) =>{
 export const clickYsbl = (params) =>{
   return axios.request({
     url:'/about_result',
+    method: 'post',
+    data: params
+  })
+}
+// cdss 获取医学知识列表请求
+export const getMedicineList = (params) =>{
+  return axios.request({
+    url:'/get_medical_knowledge',
+    method: 'post',
+    data: params
+  })
+}
+// cdss 症状选项内 搜索点击请求
+export const getchoosesymptomBtn = (params) =>{
+  return axios.request({
+    url:'/symptom/search',
+    method: 'post',
+    data: params
+  })
+}
+// cdss(icss)分类多项下拉接口
+export const getManySelect = (params) =>{
+  return axios.request({
+    url:'/many_select',
     method: 'post',
     data: params
   })
