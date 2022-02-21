@@ -700,8 +700,13 @@ export default {
     document.addEventListener('click',e =>{
       let box_1 = document.getElementById('addSymptomPop_1');
       let box_2 = document.getElementById('is_symptomSearch');
+      let box_3 = document.getElementById('addSymptomPop_2');
+
       if(!box_1.contains(e.target)){
         this.addSymptomPop_1 = false;
+      };
+      if(!box_3.contains(e.target)){
+        this.addSymptomPop_2 = false;
       };
        if(!box_2.contains(e.target)){
         this.is_symptomSearch = false;
@@ -721,6 +726,96 @@ export default {
 
   },
   methods: {
+
+    // ====================   现病史---- 添加症状功能 -- 以下 --  ====================
+      // 点击 现病史 添加症状-1
+      addSymptom_2(){
+        this.addSymptomPop_2 = true;
+      },
+      // 点击 现病史 添加症状弹窗内，确定按钮
+      addSymptomPopSureClick_2(){
+        this.addSymptomPop_2 = false;
+      },
+      // 点击 现病史 添加症状弹窗内，清除按钮
+      addSymptomPopEmptyClick_2(){
+        let that = this;
+        let optionsList_2 = this.optionsList_2;
+        optionsList_2.forEach(el =>{
+          if(el.select_options.length > 0){
+            el.select_options.forEach(el_options =>{
+              el_options.select_chect = '';
+            })
+          }
+        })
+        that.symptomSearch_name_2 = '';
+        that.checkList_2 = [];   // 多选框 选中项label
+        that.searchSymptomsList_2 = []; // 列表下拉框选中数据
+        that.optionsList_2 = optionsList_2;
+      },
+      // 点击下来选项
+      searchSymptomsChange_2(e){
+        let searchSymptomsList_2 = [];
+        let optionsList_2 = this.optionsList_2;
+        optionsList_2.forEach(el =>{
+          if(el.select_options.length > 0){
+            el.select_options.forEach(el_options =>{
+              if(el_options.select_chect){
+                searchSymptomsList_2.push(el_options.select_chect)
+              }
+            })
+          }
+        })
+        this.searchSymptomsList_2 = searchSymptomsList_2;
+      },
+      // 列表多选选项
+      checkGroup_2(e){
+        let that = this;
+        let checkGroupList_2 = e;
+        let checkList_2 = that.checkList_2;
+        if(checkGroupList_2.length > 5){
+          alert('最多选择5项！')
+          checkList_2.pop();
+          that.checkList_2 = checkList_2;
+          console.log(that.checkList_2)
+        }else{
+          console.log(that.checkList_2)
+        }
+        console.log(that.checkList_2)
+      },
+      // 搜索其他症状@input事件
+      getInputBtn_2(){
+        let that = this;
+        if(that.inputOtherValue_2 == ''){
+          that.$message.error({
+              message: '请填写内容',
+          });
+          return
+        }
+        that.symptomSearch_data_2 = '';
+        that.is_symptomSearch_2 = false;
+        getchoosesymptomBtn({
+          keyword: that.inputOtherValue_2,
+        }).then(res =>{
+          if(res.data.code == 0){
+            let symptomSearch_data_2 = res.data.data;
+            if(symptomSearch_data_2.length <=0){
+              return
+            }else{
+              that.symptomSearch_data_2 = symptomSearch_data_2;
+              that.is_symptomSearch_2 = true;
+            }
+          }
+        }).catch(e =>{
+          console.log(e)
+        })
+      },
+     // 点击其他症状列表项
+
+      symptomSearchClick_2(n){
+        this.symptomSearch_name_2 = n;
+      },
+    // ====================   现病史---- 添加症状功能 -- 以上--   ====================
+
     // 点击主诉添加症状弹窗内，确定按钮
     addSymptomPopSureClick(){
       this.addSymptomPop_1 = false;
@@ -949,15 +1044,12 @@ export default {
         checkList.pop();
         that.checkList = checkList;
         console.log(that.checkList)
-
       }else{
-
         console.log(that.checkList)
-
       }
       console.log(that.checkList)
     },
-    // 点击其他症状确认按钮
+    // 搜索其他症状@input事件
     getInputBtn(){
       let that = this;
       if(that.inputOtherValue == ''){
@@ -995,6 +1087,7 @@ export default {
       getWesternSymptomList(pearms).then(res => {
         if(res.data.code == 0){
           that.optionsList = res.data.data;
+          that.optionsList_2 = res.data.data;
         }
       }).catch(e =>{
 
