@@ -649,7 +649,7 @@ export default {
       symptomSearch_data:[],
       addSymptomPop_1: false, //选项弹窗模块显示状态
 //  现病史------的添加症状字段
-      optionsList:[], // 现病史---添加症状内接口数据
+      optionsList_2:[], // 现病史---添加症状内接口数据
       checkList_2: [],   // 现病史---多选框 选中项
       searchSymptomsList_2:[], // 现病史---列表下拉框选中数据
       inputOtherValue_2:'', // 现病史---搜索症状
@@ -695,7 +695,6 @@ export default {
   created(){
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
-    this.getWesternSymptomList();
     this.getManySelect();  //获取主页展示数据
     document.addEventListener('click',e =>{
       let box_1 = document.getElementById('addSymptomPop_1');
@@ -730,7 +729,16 @@ export default {
     // ====================   现病史---- 添加症状功能 -- 以下 --  ====================
       // 点击 现病史 添加症状-1
       addSymptom_2(){
-        this.addSymptomPop_2 = true;
+        let that = this;
+        // 接口获取列表
+        getWesternSymptomList({}).then(res => {
+          if(res.data.code == 0){
+            that.optionsList_2 = res.data.data;
+            that.addSymptomPop_2 = true;
+          }
+        }).catch(e =>{
+          console.log(e)
+        })
       },
       // 点击 现病史 添加症状弹窗内，确定按钮
       addSymptomPopSureClick_2(){
@@ -911,7 +919,16 @@ export default {
     },
     // 点击主诉添加症状-1
     addSymptom_1(){
-      this.addSymptomPop_1 = true;
+      let that = this;
+      // 接口获取列表
+      getWesternSymptomList({}).then(res => {
+        if(res.data.code == 0){
+          that.optionsList = res.data.data;
+          that.addSymptomPop_1 = true;
+        }
+      }).catch(e =>{
+        console.log(e)
+      })
     },
     // 点击下来选项
     searchSymptomsChange(e){
@@ -933,14 +950,14 @@ export default {
       let that = this;
       let checkList = that.checkList;  //主诉 添加症状内 多选数据
       let searchSymptomsList = that.searchSymptomsList; //主诉 添加症状内 下拉数据
+      let symptomSearch_name = that.symptomSearch_name; // 主诉 搜索数据
+      
+      let checkList_2 = that.checkList_2;  //现病史 添加症状内 多选数据
+      let searchSymptomsList_2 = that.searchSymptomsList_2; //现病史 添加症状内 下拉数据
+      let symptomSearch_name_2 = that.symptomSearch_name_2; //现病史 搜索数据
       let infoData = that.infoData;
-      let advisory_content = [];
-      infoData.forEach(ele =>{
-        advisory_content.push({
-          title: ele.category,
-          text: ele.total_obtain_name
-        })
-      })
+
+      // ====================  主述 添加症状数据处理 以下 ===================
       let symptoms = '';  
       if( searchSymptomsList.length > 0 ){
         if(checkList.length > 0){
@@ -951,6 +968,50 @@ export default {
       }else{
         symptoms = checkList.join(',');
       }
+      if(symptomSearch_name){
+        symptoms = symptoms+','+ symptomSearch_name;
+      }
+      // ====================  主述 添加症状数据处理 以上 ===================
+
+      // ====================  现病史 添加症状数据处理 以下 ===================
+
+      let symptoms_2 = '';  
+      if( searchSymptomsList_2.length > 0 ){
+        if(checkList_2.length > 0){
+          symptoms_2 = searchSymptomsList_2.join(',') + ',' + checkList_2.join(',');
+        }else{
+          symptoms_2 = searchSymptomsList_2.join(',');
+        }
+      }else{
+        symptoms_2 = checkList_2.join(',');
+      }
+       if(symptomSearch_name_2){
+        symptoms_2 = symptoms_2+','+ symptomSearch_name_2;
+      }
+
+      // ====================  现病史 添加症状数据处理 以上 ===================
+
+      let advisory_content = [];
+      infoData.forEach(ele =>{
+        if(ele.category == '主诉'){
+          advisory_content.push({
+          title: ele.category,
+          text: symptoms + ',' + ele.total_obtain_name
+          })
+        }else if(ele.category == '现病史'){
+          advisory_content.push({
+            title: ele.category,
+            text: symptoms_2 + ',' + ele.total_obtain_name
+          })
+        }else{
+          advisory_content.push({
+            title: ele.category,
+            text: ele.total_obtain_name
+          })
+        }
+
+      })
+
       let pearms = {
         name: that.form.name,
         age: that.form.age,
@@ -1080,22 +1141,6 @@ export default {
     symptomSearchClick(n){
       this.symptomSearch_name = n;
     },
-    // 接口获取列表
-    getWesternSymptomList(){
-      let that = this;
-      let pearms = {};
-      getWesternSymptomList(pearms).then(res => {
-        if(res.data.code == 0){
-          that.optionsList = res.data.data;
-          that.optionsList_2 = res.data.data;
-        }
-      }).catch(e =>{
-
-        console.log(e)
-
-      })
-    },
-
 
     // ================================================================
 
