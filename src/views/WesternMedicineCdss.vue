@@ -370,8 +370,9 @@
           <div class="aside-icontitle-box">
             <i class="el-icon-printer"></i><span style="padding-left: 10px">处置建议</span>
           </div>
+          
           <!-- 常见药品 -->
-          <div class="cjyp-table-box">
+          <div class="cjyp-table-box" v-if="medicine_list.length>0">
             <div class="cjyp-table-th">
               <div style="color: #53bfb4; text-align: left; flex: 1">常见药品</div>
               <div style="color: #a9acac; text-align: right; width: 80px">说明书</div>
@@ -382,8 +383,9 @@
             </div>
             <el-empty description="暂无数据..." v-if="!medicine_list || medicine_list.length <= 0"></el-empty>
           </div>
+          
           <!-- 常见检查 -->
-          <div class="cjjc-box">
+          <div class="cjjc-box" v-if="inspection_list.length>0">
             <div class="cjjc-title">常见检查</div>
             <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
               <div class="cjyp-table-tr-l">{{ item.name }}</div>
@@ -391,6 +393,27 @@
             </div>
             <el-empty description="暂无数据..." v-if="!inspection_list || inspection_list.length <= 0"></el-empty>
           </div>
+
+          <!-- 并发症 -->
+          <div class="cjjc-box" v-if="inspection_list.length>0">
+            <div class="cjjc-title">并发症</div>
+            <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+              <div class="cjyp-table-tr-l">{{ item.name }}</div>
+              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('inspection',item.name)">查看详情</a>
+            </div>
+            <el-empty description="暂无数据..." v-if="!inspection_list || inspection_list.length <= 0"></el-empty>
+          </div>
+
+          <!-- 鉴别诊断 -->
+          <div class="cjjc-box" v-if="inspection_list.length>0">
+            <div class="cjjc-title">鉴别诊断</div>
+            <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+              <div class="cjyp-table-tr-l">{{ item.name }}</div>
+              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('inspection',item.name)">查看详情</a>
+            </div>
+            <el-empty description="暂无数据..." v-if="!inspection_list || inspection_list.length <= 0"></el-empty>
+          </div>
+
         </div>
 
         <!-- main 右侧图谱 -->

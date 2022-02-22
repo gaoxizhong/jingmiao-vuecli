@@ -593,11 +593,14 @@ table {
   }
   .cjyp-table-tr {
     width: 100%;
-    height: 36px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 5px;
+  }
+  .cjyp-table-tr:hover{
+    background: #27afa117;
   }
   .cjyp-table-tr-l {
     flex: 1;
