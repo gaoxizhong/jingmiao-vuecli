@@ -357,7 +357,7 @@
     <!-- 以下各种弹窗功能 -->
     <!-- 数据弹窗 -->
     <div class="popDiv-box" v-if="pop1" @click.stop="popClick"></div>
-    <!-- 点击左侧病例弹窗 -->
+    <!-- 点击右侧医学知识列表弹窗 -->
     <div class="casePop-mask" v-if="is_casePop"></div>
     <div class="casePop-module-box" v-if="is_casePop">
 
@@ -372,7 +372,7 @@
           </div>
           
           <!-- 常见药品 -->
-          <div class="cjyp-table-box" v-if="medicine_list.length>0">
+          <div class="cjyp-table-box">
             <div class="cjyp-table-th">
               <div style="color: #53bfb4; text-align: left; flex: 1">常见药品</div>
               <div style="color: #a9acac; text-align: right; width: 80px">说明书</div>
@@ -385,7 +385,7 @@
           </div>
           
           <!-- 常见检查 -->
-          <div class="cjjc-box" v-if="inspection_list.length>0">
+          <div class="cjjc-box">
             <div class="cjjc-title">常见检查</div>
             <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
               <div class="cjyp-table-tr-l">{{ item.name }}</div>
@@ -395,25 +395,14 @@
           </div>
 
           <!-- 并发症 -->
-          <div class="cjjc-box" v-if="inspection_list.length>0">
+          <div class="cjjc-box">
             <div class="cjjc-title">并发症</div>
-            <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+            <div class="cjyp-table-tr" v-for="(item, index) in complication_list" :key="index">
               <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('inspection',item.name)">查看详情</a>
+              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('disease',item.name)">查看详情</a>
             </div>
-            <el-empty description="暂无数据..." v-if="!inspection_list || inspection_list.length <= 0"></el-empty>
+            <el-empty description="暂无数据..." v-if="!complication_list || complication_list.length <= 0"></el-empty>
           </div>
-
-          <!-- 鉴别诊断 -->
-          <div class="cjjc-box" v-if="inspection_list.length>0">
-            <div class="cjjc-title">鉴别诊断</div>
-            <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
-              <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('inspection',item.name)">查看详情</a>
-            </div>
-            <el-empty description="暂无数据..." v-if="!inspection_list || inspection_list.length <= 0"></el-empty>
-          </div>
-
         </div>
 
         <!-- main 右侧图谱 -->
@@ -693,6 +682,8 @@ export default {
       hot_name:'',//疑似病例列表标题
       medicine_list: [], //  常见药品
       inspection_list: [], // 常见检查
+      complication_list:[], // 并发症
+      identify_list:[], // 鉴别诊断
       data: {   //  图谱数据
         nodes: [],
         likes: [],
@@ -994,6 +985,7 @@ export default {
       if(symptomSearch_name){
         symptoms = symptoms+','+ symptomSearch_name;
       }
+      // that.symptoms = symptoms;
       // ====================  主述 添加症状数据处理 以上 ===================
 
       // ====================  现病史 添加症状数据处理 以下 ===================
@@ -1187,6 +1179,7 @@ export default {
           let graph = res.data.data.graph; //图谱
           that.medicine_list = res.data.data.medicine_list; //药品列表
           that.inspection_list = res.data.data.inspection_list; //检查列表
+          that.complication_list = res.data.data.complication_list; //并发症
           that.is_casePop = true;
           return f(graph);
         }
