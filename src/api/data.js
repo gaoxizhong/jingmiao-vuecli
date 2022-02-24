@@ -1,4 +1,5 @@
 import axios from './axios'
+import webServicesAxios from './webServicesAxios'
 
 // 提交注册信息
 export const RegisterUserInfo = (params) =>{
@@ -201,3 +202,14 @@ export const getManySelect = (params) =>{
     data: params
   })
 }
+
+// ======================== webServicesAxios  接口 ===========================================
+// cdss(icss)webServicesAxios 
+export const DrumpServices_ZK = (params) =>{
+  return webServicesAxios.request({
+    url:'http://49.233.2.47:9000/drumpWS_QT.asmx?op=DrumpServices_ZK',
+    method: 'post',
+    data: params
+  })
+}
+

@@ -4,6 +4,8 @@ export default {
         // 开发
         dev: 'https://zskweb.jiankangche.cn/jmjk/',
         // 生产
-        pro: 'https://zskweb.jiankangche.cn/jmjk/'
+        pro: 'https://zskweb.jiankangche.cn/jmjk/',
+        // webServices
+        webServicesUrl:''
     }
 }

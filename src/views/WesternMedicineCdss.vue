@@ -639,7 +639,7 @@
 </style>
 <script>
 import d3Atlas from "../components/d3Atlas";
-import { getWesternSymptomList,clickFinishBtn,clickYsbl,getSickNess,getMedicineList,getchoosesymptomBtn,getManySelect,getUserAdvisory   } from '@/api/data'
+import { DrumpServices_ZK,getWesternSymptomList,clickFinishBtn,clickYsbl,getSickNess,getMedicineList,getchoosesymptomBtn,getManySelect,getUserAdvisory   } from '@/api/data'
 export default {
   name: "WesternMedicineCdss",
   components: {
@@ -710,6 +710,7 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.getManySelect();  //获取主页展示数据
+    this.DrumpServices_ZK();
     document.addEventListener('click',e =>{
       let box_1 = document.getElementById('addSymptomPop_1');
       let box_2 = document.getElementById('is_symptomSearch');
@@ -739,7 +740,12 @@ export default {
 
   },
   methods: {
-
+    DrumpServices_ZK(){
+      let that = this;
+      DrumpServices_ZK({}).then(res =>{
+        console.log(JSON.stringify(res.data))
+      })
+    },
     // ====================   现病史---- 添加症状功能 -- 以下 --  ====================
       // 点击 现病史 添加症状-1
       addSymptom_2(){
