@@ -3,10 +3,11 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import http from './api/axios'
+import axios from 'axios'
 
-import { Radio,DropdownItem,RadioButton,RadioGroup,CheckboxGroup,Checkbox,Table,TableColumn,Breadcrumb,BreadcrumbItem,TabPane,Tabs,Switch,Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
+import { DatePicker,Radio,DropdownItem,RadioButton,RadioGroup,CheckboxGroup,Checkbox,Table,TableColumn,Breadcrumb,BreadcrumbItem,TabPane,Tabs,Switch,Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
 Vue.config.productionTip = false
+Vue.use(DatePicker);
 Vue.use(Radio);
 Vue.use(DropdownItem);
 Vue.use(RadioButton);
@@ -46,7 +47,7 @@ Vue.use(FormItem);
 Vue.use(Pagination);
 Vue.use(Switch);
 // http.defaults.headers.common['Authentication-Token'] = store.state.token;
-Vue.prototype.$http = http;
+Vue.prototype.axios = axios;
 Vue.prototype.$message = Message;
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$getViewportSize = function() {

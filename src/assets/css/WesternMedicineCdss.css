@@ -69,10 +69,16 @@ table {
   .src-components-PatInfo-2ZUg6 td {
     height: 30px;
     line-height: 30px;
-    padding-left: 10px;
+    padding-left: 5px;
     white-space: nowrap;
   }
-  .src-components-PatInfo-2ZUg6 .src-components-PatInfo-1sipu {
+  .src-components-PatInfo-2ZUg6 td>span{
+    display: inline-block;
+    border-right: 1px solid #dcdfe6;
+    padding: 0 5px;
+    font-size: 14px;
+  } 
+  .src-components-PatInfo-2ZUg6 .src-components-PatInfo-1sipu{
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -80,6 +86,9 @@ table {
     align-items: center;
     font-size: 15px;
   }
+  /* .src-components-PatInfo-2ZUg6 .src-components-PatInfo-1sipu.divflex{
+    flex: 1;
+  } */
   .leftcontent-bottom-box{
     flex: 1;
     display: flex;
@@ -153,25 +162,63 @@ table {
     padding-bottom: 52px;
   }
 .src-components-PushItems-RKWqd .src-components-PushItems-1jpJi {
-    border: 1px solid #EAEDF1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #EAEDF1;
+  max-height: 228px;
   }
-.src-components-PushItems-RKWqd .src-components-PushItems-1jpJi h1 {
+  .src-Items-hlyy{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #EAEDF1;
+    max-height: 228px;
+    margin-top: 10px;
+  }
+  .src-Items-hlyy h1 {
+    height: 36px;
     font-size: 14px;
     color: #000;
     padding: 8px 15px;
-    background: #FAEBEC;
     font-weight: bold;
     display: flex;
+    background: #EAF7FA;
   }
-  .src-components-PushItems-1jpJi h1 img {
+  .src-Items-hlyy h1 img {
     float: left;
     margin-top: 0px;
     margin-right: 5px;
   }
-  .src-components-PushItems-1jpJi>div {
+  .src-Items-hlyy>div {
+    flex: 1;
     font-size: 14px;
     padding: 0 10px;
+    overflow-y: auto;
   }
+  .basyzkdiv-box{
+    display: flex;
+  }
+.src-components-PushItems-RKWqd .src-components-PushItems-1jpJi h1 {
+  height: 36px;
+  font-size: 14px;
+  color: #000;
+  padding: 8px 15px;
+  font-weight: bold;
+  display: flex;
+  background: #FAEBEC;
+}
+
+.src-components-PushItems-1jpJi h1 img {
+  float: left;
+  margin-top: 0px;
+  margin-right: 5px;
+}
+.src-components-PushItems-1jpJi>div {
+  flex: 1;
+  font-size: 14px;
+  padding: 0 10px;
+  overflow-y: auto;
+}
+
   .zhusu-box{
     width: 100%;
     height: auto;
@@ -280,7 +327,7 @@ table {
   .blxxDiv-box{
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 4px 0;
   }
   .blxxDiv-title-box{
@@ -289,10 +336,9 @@ table {
     text-align: right;
     padding-right: 5px;
     font-weight: bold;
+    padding-top: 5px;
   }
-  .blxxDiv-title-box:after {
-    content: "\FF1A";
-  }
+
   .src-Drop-265y8:before{
       content: '[';
       display: inline-block;
@@ -306,6 +352,19 @@ table {
     min-height: 38px;
     position: relative;
     padding: 8px 12px 8px 5px;
+    outline: none;
+    border-bottom: 1px #aaa7a7 dashed;
+    color: #333;
+    text-align: left;
+  }
+
+  .blxxDiv-info-box1{
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    min-height: 38px;
+    position: relative;
+    padding: 8px 12px 15px 5px;
     outline: none;
     border-bottom: 1px #aaa7a7 dashed;
     color: #333;
@@ -497,7 +556,33 @@ table {
     text-align: left;
     cursor: pointer;
   }
-
+  .basyzkdiv-box{
+    padding: 10px 0px 4px 0px;
+    overflow: hidden;
+  }
+  .src-components-PushItems-RecommendInspect-1-s8y{
+    width: auto;
+    height: 26px;
+    line-height: 26px;
+    padding-top: 6px;
+  }
+  .basyzkdiv-items-box{
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    line-height: 26px;
+    padding: 12px 0;
+  }
+  .basyzkdiv-items-box span {
+    font-size: 14px;
+    line-height: 14px;
+    display: inline-block;
+    margin: 0 8px 6px 8px;
+    cursor: pointer;
+  }
+  .basyzkdiv-items-box span:hover{
+    color: #ff0000;
+  }
   .ysblList-items-text {
     font-size: 13px;
     color: #999;
@@ -982,7 +1067,18 @@ img.src-components-Preview-2DV3S {
   width: 70px;
   font-size: 14px;
 }
+.demo-input-suffix{
+  display: flex;
+  align-items: center;
+  width: 33.33333333333%;
+  font-size: 14px;
+}
 
+.demo-input-suffix>span{
+  display: inline-block;
+  width:auto;
+  text-align: right;
+}
 /* ===============   ==================== */
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){

@@ -4,7 +4,7 @@ import axios from 'axios'
 import config from './config'
 import store from '../store'
 import router from '../router'
-
+import Qs from 'qs'
 // 设置配置 根据开发和生产环境不一样
 // const baseURL = process.env.NODE_ENV === 'development'? config.baseURL.dev : config.baseURL.pro;
 
@@ -19,9 +19,13 @@ class HttpRequst {
 
         const config = {
             baseURL: this.baseURL,
-            // header:{
-            //   'Content-Type':'application/x-www-form-urlencoded',
-            // },
+            // 对 data 进行任意转换处理
+            // transformRequest: [function (data) {
+            //     return Qs.stringify(data)
+            // }],
+            headers:{
+              'Content-Type':'application/x-www-form-urlencoded',
+            },
 
         }
         return config

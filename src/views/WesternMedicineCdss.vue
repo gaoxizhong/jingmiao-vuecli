@@ -1,28 +1,41 @@
 <template>
-  <div :style="`height:${ viewHeight }px;padding: 20px 20px 10px;`">
-    <div class="westernmedicin-content-box" style="height:100%;">
+  <div :style="`height:${viewHeight}px;padding: 20px 20px 10px;`">
+    <div class="westernmedicin-content-box" style="height: 100%">
       <!-- 左侧模块 -->
       <div class="grid-leftcontent-box">
         <!-- 左侧上部 -->
-        <!-- <div class="leftcontent-title-box">
-          <el-button class='title-box-btn' @click="finish_btn">
-            <i class="el-icon-switch-button"></i>
-            <span style="padding-left:2px;">结束问诊</span>
-          </el-button>
-        </div> -->
         <div class="leftcontent-title-box">
           <table class="src-components-PatInfo-2ZUg6">
             <tr>
-              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu">
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu" style="min-width:160px;">
                 <span>姓名：</span><el-input v-model="form.name"></el-input>
               </td>
-              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu">
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu" style="min-width:180px;">
                 <span>年龄：</span><el-input v-model="form.age"></el-input>
               </td>
-              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu">
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu" style="min-width:180px;">
                 <span>性别：</span><el-input v-model="form.sex"></el-input>
               </td>
-              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu"></td>
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex" style="min-width:130px;">
+                <span>出生日期：</span>
+                <el-date-picker style="width:100%;height:100%;" v-model="form.csrq" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" type="date" placeholder="选择日期时间"></el-date-picker>
+                <!-- <el-input v-model="form.csrq"></el-input> -->
+              </td>
+            </tr>
+            <tr style="border-top: none;">
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu" style="min-width:220px;">
+                <span>身份证：</span><el-input v-model="form.sfzh"></el-input>
+              </td>
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex">
+                <span>不足一周岁天龄:</span><el-input v-model="form.bzyzsnl"></el-input>
+              </td>
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex">
+                <span>新生儿出生体重:</span><el-input v-model="form.xsecstz"></el-input>
+              </td>
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex">
+                <span>新生儿入院体重:</span><el-input v-model="form.xserytz"></el-input>
+              </td>
+
             </tr>
           </table>
         </div>
@@ -34,81 +47,160 @@
           <div class="info-list-box">
             <!-- 左侧主诉、个人史、现病史、其他史列表选项 -->
             <div class="leftcontent-list-box">
-
-              <div class="blxxDiv-box zsDiv-box" v-for="(item,index) in infoData" :key="index">
-                <div class="blxxDiv-title-box zsDiv-title-box">{{item.category}}</div>
+              <div class="blxxDiv-box zsDiv-box" v-for="(item, index) in infoData" :key="index">
+                <div class="blxxDiv-title-box zsDiv-title-box"> {{ item.category }}：</div>
                 <div class="blxxDiv-info-box">
-                  <div style="display: inline-block;">
+                  <div style="display: inline-block">
                     <!-- 主诉 ==>  添加症状 信息模块 -->
-                    <div style="display: inline-block;" v-if="index == 0">
-                      <span class="src-common-components-EditableSpan-G8WSU largeFontSize selectColor src-common-components-EditableSpan-CXPJX">
+                    <div style="display: inline-block" v-if="index == 0">
+                      <span class="src-common-components-EditableSpan-G8WSU
+                          largeFontSize
+                          selectColor
+                          src-common-components-EditableSpan-CXPJX"
+                      >
                         <!-- 下拉框数据 -->
-                        <span v-for="(item,index) in searchSymptomsList" :key="index" style="padding:0 4px;">
-                          <span>{{item}}</span>
+                        <span
+                          v-for="(item, index) in searchSymptomsList"
+                          :key="index"
+                          style="padding: 0 4px"
+                        >
+                          <span>{{ item }}</span>
                           <span>,</span>
                         </span>
                         <!-- 多选框数据 -->
                         <span v-if="checkList.length > 0">
-                          <span v-for="(item,index) in checkList" :key="index" style="padding:0 4px;">
-                            <span>{{item}}</span>
+                          <span v-for="(item, index) in checkList" :key="index" style="padding: 0 4px">
+                            <span>{{ item }}</span>
                             <span>,</span>
                           </span>
                         </span>
                         <!-- 其他症状搜索项 -->
-                        <span v-if="symptomSearch_name !='' ">
-                          <span>{{symptomSearch_name}}</span>
+                        <span v-if="symptomSearch_name != ''">
+                          <span>{{ symptomSearch_name }}</span>
                           <span>,</span>
                         </span>
                       </span>
                       <div class="src-components-SpreadDrop-2GbRo">
-                        <div class="src-components-SpreadDrop-XVhKz largeFontSize selectColor" @click.stop="addSymptom_1">添加症状</div>
+                        <div class="src-components-SpreadDrop-XVhKz
+                            largeFontSize
+                            selectColor" @click.stop="addSymptom_1"
+                        >
+                          添加症状
+                        </div>
                         <!-- 选项弹窗模块 -->
-                        <div class="src-components-ListItems-3K8km" style="left: auto;" v-show="addSymptomPop_1" id="addSymptomPop_1">
+                        <div class="src-components-ListItems-3K8km"
+                          style="left: auto"
+                          v-show="addSymptomPop_1"
+                          id="addSymptomPop_1"
+                        >
                           <div class="clearfix">
                             <!-- <p class="src-components-ListItems-1OJip">按点击顺序成文</p> -->
                             <div class="src-components-ListItems-31jDC">
-                              <span class="src-components-ListItems-3iV0y" @click.stop="addSymptomPopEmptyClick">清空选项</span>
-                              <span class="src-components-ListItems-3TE88" @click.stop="addSymptomPopSureClick">确定</span>
+                              <span
+                                class="src-components-ListItems-3iV0y"
+                                @click.stop="addSymptomPopEmptyClick"
+                                >清空选项</span
+                              >
+                              <span
+                                class="src-components-ListItems-3TE88"
+                                @click.stop="addSymptomPopSureClick"
+                                >确定</span
+                              >
                             </div>
                           </div>
-                          <el-checkbox-group v-model="checkList" @change="checkGroup">
-                            <div class="options-list-box" v-for="(item,index) in optionsList" :key="index">
-                              <div class="options-list-title">{{item.category}}</div>
+                          <el-checkbox-group
+                            v-model="checkList"
+                            @change="checkGroup"
+                          >
+                            <div
+                              class="options-list-box"
+                              v-for="(item, index) in optionsList"
+                              :key="index"
+                            >
+                              <div class="options-list-title">
+                                {{ item.category }}
+                              </div>
                               <div class="oplist-items-box">
                                 <div>
                                   <span v-if="item.select_options.length > 0">
-                                    <el-select class="el-oplistselect-box el-select" :placeholder="items_options.select_name + '选项'" v-model="items_options.select_chect" slot="prepend" v-for="(items_options,index_options) in item.select_options" :key="index_options" @change="searchSymptomsChange">
-                                      <el-option v-for="(it,inx) in items_options.select_values" :key="inx" :label="it" :value="it"></el-option>
+                                    <el-select
+                                      class="el-oplistselect-box el-select"
+                                      :placeholder="
+                                        items_options.select_name + '选项'
+                                      "
+                                      v-model="items_options.select_chect"
+                                      slot="prepend"
+                                      v-for="(
+                                        items_options, index_options
+                                      ) in item.select_options"
+                                      :key="index_options"
+                                      @change="searchSymptomsChange"
+                                    >
+                                      <el-option
+                                        v-for="(
+                                          it, inx
+                                        ) in items_options.select_values"
+                                        :key="inx"
+                                        :label="it"
+                                        :value="it"
+                                      ></el-option>
                                     </el-select>
                                   </span>
 
-                                  <span v-for="(items,idx) in item.options" :key="idx">
-                                    <el-checkbox :label="items" v-if="items !=''">{{items}}</el-checkbox>
+                                  <span
+                                    v-for="(items, idx) in item.options"
+                                    :key="idx"
+                                  >
+                                    <el-checkbox
+                                      :label="items"
+                                      v-if="items != ''"
+                                      >{{ items }}</el-checkbox
+                                    >
                                   </span>
                                 </div>
                               </div>
                             </div>
                           </el-checkbox-group>
 
-                        <!-- 搜索症状 -->
+                          <!-- 搜索症状 -->
                           <div class="qt-box">
                             <div class="el-input-box">
-                              <el-input placeholder="搜索症状" clearable v-model="inputOtherValue" @input="getInputBtn" class="input-with-select">
+                              <el-input
+                                placeholder="搜索症状"
+                                clearable
+                                v-model="inputOtherValue"
+                                @input="getInputBtn"
+                                class="input-with-select"
+                              >
                                 <!-- <el-button slot="append" @click.stop="getInputBtn()">确定</el-button> -->
                               </el-input>
                             </div>
-                            <div class="qt-inputPop-box" v-show="is_symptomSearch" id="is_symptomSearch">
-                              <div class="scrollarea" style="max-height: 180px;">
+                            <div
+                              class="qt-inputPop-box"
+                              v-show="is_symptomSearch"
+                              id="is_symptomSearch"
+                            >
+                              <div class="scrollarea" style="max-height: 180px">
                                 <div class="scrollarea-content content">
                                   <ul>
-                                    <li class="src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa" 
-                                    v-for="(item,index) in symptomSearch_data" :key="index" @click.stop="symptomSearchClick(item)">{{item}}</li>
+                                    <li
+                                      class="
+                                        src-common-components-LiItem-2PM-m
+                                        src-common-components-LiItem-3S7Fa
+                                      "
+                                      v-for="(
+                                        item, index
+                                      ) in symptomSearch_data"
+                                      :key="index"
+                                      @click.stop="symptomSearchClick(item)"
+                                    >
+                                      {{ item }}
+                                    </li>
                                   </ul>
                                 </div>
                               </div>
                             </div>
                           </div>
-
                         </div>
                         <!-- 选项弹窗模块结束 -->
                       </div>
@@ -116,75 +208,160 @@
                     <!-- 主诉 ==>  添加症状 信息模块 结束 -->
 
                     <!-- 现病史 ==>  添加症状 信息模块 -->
-                    <div style="display: inline-block;" v-if="index == 1">
-                      <span class="src-common-components-EditableSpan-G8WSU largeFontSize selectColor src-common-components-EditableSpan-CXPJX">
+                    <div style="display: inline-block" v-if="index == 1">
+                      <span class=" src-common-components-EditableSpan-G8WSU largeFontSize selectColor src-common-components-EditableSpan-CXPJX">
                         <!-- 下拉框数据 -->
-                        <span v-for="(item,index) in searchSymptomsList_2" :key="index" style="padding:0 4px;">
-                          <span>{{item}}</span>
+                        <span
+                          v-for="(item, index) in searchSymptomsList_2"
+                          :key="index"
+                          style="padding: 0 4px"
+                        >
+                          <span>{{ item }}</span>
                           <span>,</span>
                         </span>
                         <!-- 多选框数据 -->
                         <span v-if="checkList_2.length > 0">
-                          <span v-for="(item,index) in checkList_2" :key="index" style="padding:0 4px;">
-                            <span>{{item}}</span>
+                          <span
+                            v-for="(item, index) in checkList_2"
+                            :key="index"
+                            style="padding: 0 4px"
+                          >
+                            <span>{{ item }}</span>
                             <span>,</span>
                           </span>
                         </span>
                         <!-- 其他症状搜索项 -->
-                        <span v-if="symptomSearch_name_2 !='' ">
+                        <span v-if="symptomSearch_name_2 != ''">
                           <span>{{ symptomSearch_name_2 }}</span>
                           <span>,</span>
                         </span>
                       </span>
                       <div class="src-components-SpreadDrop-2GbRo">
-                        <div class="src-components-SpreadDrop-XVhKz largeFontSize selectColor" @click.stop="addSymptom_2">添加症状</div>
+                        <div
+                          class="
+                            src-components-SpreadDrop-XVhKz
+                            largeFontSize
+                            selectColor
+                          "
+                          @click.stop="addSymptom_2"
+                        >
+                          添加症状
+                        </div>
                         <!-- 选项弹窗模块 -->
-                        <div class="src-components-ListItems-3K8km" style="left: auto;" v-show="addSymptomPop_2" id="addSymptomPop_2">
+                        <div
+                          class="src-components-ListItems-3K8km"
+                          style="left: auto"
+                          v-show="addSymptomPop_2"
+                          id="addSymptomPop_2"
+                        >
                           <div class="clearfix">
                             <!-- <p class="src-components-ListItems-1OJip">按点击顺序成文</p> -->
                             <div class="src-components-ListItems-31jDC">
-                              <span class="src-components-ListItems-3iV0y" @click.stop="addSymptomPopEmptyClick_2">清空选项</span>
-                              <span class="src-components-ListItems-3TE88" @click.stop="addSymptomPopSureClick_2">确定</span>
+                              <span
+                                class="src-components-ListItems-3iV0y"
+                                @click.stop="addSymptomPopEmptyClick_2"
+                                >清空选项</span
+                              >
+                              <span
+                                class="src-components-ListItems-3TE88"
+                                @click.stop="addSymptomPopSureClick_2"
+                                >确定</span
+                              >
                             </div>
                           </div>
-                          <el-checkbox-group v-model="checkList_2" @change="checkGroup_2">
-                            <div class="options-list-box" v-for="(item,index) in optionsList_2" :key="index">
-                              <div class="options-list-title">{{item.category}}</div>
+                          <el-checkbox-group
+                            v-model="checkList_2"
+                            @change="checkGroup_2"
+                          >
+                            <div
+                              class="options-list-box"
+                              v-for="(item, index) in optionsList_2"
+                              :key="index"
+                            >
+                              <div class="options-list-title">
+                                {{ item.category }}
+                              </div>
                               <div class="oplist-items-box">
                                 <div>
                                   <span v-if="item.select_options.length > 0">
-                                    <el-select class="el-oplistselect-box el-select" :placeholder="items_options.select_name + '选项'" v-model="items_options.select_chect" slot="prepend" v-for="(items_options,index_options) in item.select_options" :key="index_options" @change="searchSymptomsChange_2">
-                                      <el-option v-for="(it,inx) in items_options.select_values" :key="inx" :label="it" :value="it"></el-option>
+                                    <el-select
+                                      class="el-oplistselect-box el-select"
+                                      :placeholder="
+                                        items_options.select_name + '选项'
+                                      "
+                                      v-model="items_options.select_chect"
+                                      slot="prepend"
+                                      v-for="(
+                                        items_options, index_options
+                                      ) in item.select_options"
+                                      :key="index_options"
+                                      @change="searchSymptomsChange_2"
+                                    >
+                                      <el-option
+                                        v-for="(
+                                          it, inx
+                                        ) in items_options.select_values"
+                                        :key="inx"
+                                        :label="it"
+                                        :value="it"
+                                      ></el-option>
                                     </el-select>
                                   </span>
 
-                                  <span v-for="(items,idx) in item.options" :key="idx">
-                                    <el-checkbox :label="items" v-if="items !=''">{{items}}</el-checkbox>
+                                  <span
+                                    v-for="(items, idx) in item.options"
+                                    :key="idx"
+                                  >
+                                    <el-checkbox
+                                      :label="items"
+                                      v-if="items != ''"
+                                      >{{ items }}</el-checkbox
+                                    >
                                   </span>
                                 </div>
                               </div>
                             </div>
                           </el-checkbox-group>
 
-                        <!-- 搜索症状 -->
+                          <!-- 搜索症状 -->
                           <div class="qt-box">
                             <div class="el-input-box">
-                              <el-input placeholder="搜索症状" clearable v-model="inputOtherValue_2" @input="getInputBtn_2" class="input-with-select">
+                              <el-input
+                                placeholder="搜索症状"
+                                clearable
+                                v-model="inputOtherValue_2"
+                                @input="getInputBtn_2"
+                                class="input-with-select"
+                              >
                                 <!-- <el-button slot="append" @click.stop="getInputBtn()">确定</el-button> -->
                               </el-input>
                             </div>
-                            <div class="qt-inputPop-box" v-show="is_symptomSearch_2" id="is_symptomSearch_2">
-                              <div class="scrollarea" style="max-height: 180px;">
+                            <div
+                              class="qt-inputPop-box"
+                              v-show="is_symptomSearch_2"
+                              id="is_symptomSearch_2"
+                            >
+                              <div class="scrollarea" style="max-height: 180px">
                                 <div class="scrollarea-content content">
                                   <ul>
-                                    <li class="src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa" 
-                                    v-for="(item,index) in symptomSearch_data_2" :key="index" @click.stop="symptomSearchClick_2(item)">{{item}}</li>
+                                    <li
+                                      class="
+                                        src-common-components-LiItem-2PM-m
+                                        src-common-components-LiItem-3S7Fa
+                                      "
+                                      v-for="(
+                                        item, index
+                                      ) in symptomSearch_data_2"
+                                      :key="index"
+                                      @click.stop="symptomSearchClick_2(item)"
+                                    >
+                                      {{ item }}
+                                    </li>
                                   </ul>
                                 </div>
                               </div>
                             </div>
                           </div>
-
                         </div>
                         <!-- 选项弹窗模块结束 -->
                       </div>
@@ -192,59 +369,194 @@
                     <!-- 现病史 ==>  添加症状 信息模块 结束 -->
 
                     <!-- 各项数据按钮循环遍历模块 -->
-                    <div class="src-components-RadioDrop-2by7P prefixUnsetColor" v-for="(item_many_select,idx_1) in item.many_select_options" :key="idx_1">
-                      
-                      <div style="display: inline-block;">
-                        <div class="selectColor largeFontSize src-Drop-3C2YP src-Drop-2GRSD" v-if="item_many_select.obtain_name" @click.stop="item_many_selectClick(item_many_select.id,item_many_select.category)">
-                          {{item_many_select.obtain_name}} <span>,</span>
+                    <div
+                      class="src-components-RadioDrop-2by7P prefixUnsetColor"
+                      v-for="(
+                        item_many_select, idx_1
+                      ) in item.many_select_options"
+                      :key="idx_1"
+                    >
+                      <div style="display: inline-block">
+                        <div
+                          class="
+                            selectColor
+                            largeFontSize
+                            src-Drop-3C2YP src-Drop-2GRSD
+                          "
+                          v-if="item_many_select.obtain_name"
+                          @click.stop="
+                            item_many_selectClick(
+                              item_many_select.id,
+                              item_many_select.category
+                            )
+                          "
+                        >
+                          {{ item_many_select.obtain_name }} <span>,</span>
                         </div>
-                        <div class="selectColor largeFontSize src-Drop-3C2YP" v-else @click.stop="item_many_selectClick(item_many_select.id,item_many_select.category)">
-                          {{item_many_select.inspect_name}}
+                        <div
+                          class="selectColor largeFontSize src-Drop-3C2YP"
+                          v-else
+                          @click.stop="
+                            item_many_selectClick(
+                              item_many_select.id,
+                              item_many_select.category
+                            )
+                          "
+                        >
+                          {{ item_many_select.inspect_name }}
                         </div>
                         <!-- 数据弹窗 -->
-                        <div class="src-common-components-DropList-3yJNN"  v-if=" item_many_select.id == popId && pop1 ">
+                        <div
+                          class="src-common-components-DropList-3yJNN"
+                          v-if="item_many_select.id == popId && pop1"
+                        >
                           <div class="clearfix">
                             <!-- <p class="src-components-ListItems-1OJip">按点击顺序成文</p> -->
                             <div class="src-components-ListItems-31jDC">
-                              <span class="src-components-ListItems-3iV0y" @click.stop="emptyLiClick(index,idx_1)">清空选项</span>
-                              <span class="src-components-ListItems-3TE88" @click.stop="sureLiClick(item_many_select.id)">确定</span>
+                              <span
+                                class="src-components-ListItems-3iV0y"
+                                @click.stop="emptyLiClick(index, idx_1)"
+                                >清空选项</span
+                              >
+                              <span
+                                class="src-components-ListItems-3TE88"
+                                @click.stop="sureLiClick(item_many_select.id)"
+                                >确定</span
+                              >
                             </div>
                           </div>
                           <div>
                             <!-- 第一列 -->
                             <ul class="src-components-ListItem-bf29n">
-                              <li :class="[idx_2 == 0?'hideClass':'']" class="src-common-components-LiItem-3S7Fa" v-for="(items,idx_2) in item_many_select.first_column_select" :key="idx_2" @click.stop="SelectLiClick('1',items,item_many_select.id,index,idx_1)">{{items}}</li>
+                              <li
+                                :class="[idx_2 == 0 ? 'hideClass' : '']"
+                                class="src-common-components-LiItem-3S7Fa"
+                                v-for="(
+                                  items, idx_2
+                                ) in item_many_select.first_column_select"
+                                :key="idx_2"
+                                @click.stop="
+                                  SelectLiClick(
+                                    '1',
+                                    items,
+                                    item_many_select.id,
+                                    index,
+                                    idx_1
+                                  )
+                                "
+                              >
+                                {{ items }}
+                              </li>
                             </ul>
                             <!-- 第二列 -->
                             <ul class="src-components-ListItem-bf29n">
-                              <li :class="[idx_2 == 0?'hideClass':'']" class="src-common-components-LiItem-3S7Fa" v-for="(items,idx_2) in item_many_select.second_column_select" :key="idx_2" @click.stop="SelectLiClick('2',items,item_many_select.id,index,idx_1)">{{items}}</li>
+                              <li
+                                :class="[idx_2 == 0 ? 'hideClass' : '']"
+                                class="src-common-components-LiItem-3S7Fa"
+                                v-for="(
+                                  items, idx_2
+                                ) in item_many_select.second_column_select"
+                                :key="idx_2"
+                                @click.stop="
+                                  SelectLiClick(
+                                    '2',
+                                    items,
+                                    item_many_select.id,
+                                    index,
+                                    idx_1
+                                  )
+                                "
+                              >
+                                {{ items }}
+                              </li>
                             </ul>
                             <!-- 第三列 -->
                             <ul class="src-components-ListItem-bf29n">
-                              <li :class="[idx_2 == 0?'hideClass':'']" class="src-common-components-LiItem-3S7Fa" v-for="(items,idx_2) in item_many_select.thirdly_column_select" :key="idx_2" @click.stop="SelectLiClick('3',items,item_many_select.id,index,idx_1)">{{items}}</li>
+                              <li
+                                :class="[idx_2 == 0 ? 'hideClass' : '']"
+                                class="src-common-components-LiItem-3S7Fa"
+                                v-for="(
+                                  items, idx_2
+                                ) in item_many_select.thirdly_column_select"
+                                :key="idx_2"
+                                @click.stop="
+                                  SelectLiClick(
+                                    '3',
+                                    items,
+                                    item_many_select.id,
+                                    index,
+                                    idx_1
+                                  )
+                                "
+                              >
+                                {{ items }}
+                              </li>
                             </ul>
                             <!-- 第四列 -->
                             <ul class="src-components-ListItem-bf29n">
-                              <li :class="[idx_2 == 0?'hideClass':'']" class="src-common-components-LiItem-3S7Fa" v-for="(items,idx_2) in item_many_select.fourthly_column_select" :key="idx_2" @click.stop="SelectLiClick('4',items,item_many_select.id,index,idx_1)">{{items}}</li>
+                              <li
+                                :class="[idx_2 == 0 ? 'hideClass' : '']"
+                                class="src-common-components-LiItem-3S7Fa"
+                                v-for="(
+                                  items, idx_2
+                                ) in item_many_select.fourthly_column_select"
+                                :key="idx_2"
+                                @click.stop="
+                                  SelectLiClick(
+                                    '4',
+                                    items,
+                                    item_many_select.id,
+                                    index,
+                                    idx_1
+                                  )
+                                "
+                              >
+                                {{ items }}
+                              </li>
                             </ul>
                             <!-- 第五列 -->
                             <ul class="src-components-ListItem-bf29n">
-                              <li :class="[idx_2 == 0?'hideClass':'']" class="src-common-components-LiItem-3S7Fa" v-for="(items,idx_2) in item_many_select.fifth_column_select" :key="idx_2" @click.stop="SelectLiClick('5',items,item_many_select.id,index,idx_1)">{{items}}</li>
+                              <li
+                                :class="[idx_2 == 0 ? 'hideClass' : '']"
+                                class="src-common-components-LiItem-3S7Fa"
+                                v-for="(
+                                  items, idx_2
+                                ) in item_many_select.fifth_column_select"
+                                :key="idx_2"
+                                @click.stop="
+                                  SelectLiClick(
+                                    '5',
+                                    items,
+                                    item_many_select.id,
+                                    index,
+                                    idx_1
+                                  )
+                                "
+                              >
+                                {{ items }}
+                              </li>
                             </ul>
-
                           </div>
-                          
-
                         </div>
                         <!-- 数据弹窗结束 -->
                       </div>
-                      
                     </div>
                     <!-- 各项数据按钮循环遍历模块结束 -->
                   </div>
                 </div>
               </div>
-              
+
+              <!-- 主要诊断模块开始 -->
+              <div class="blxxDiv-box zsDiv-box">
+                <div class="blxxDiv-title-box zsDiv-title-box">诊断：</div>
+                <div class="blxxDiv-info-box1">
+                  <div class="demo-input-suffix" v-for="(item,index) in diagnosisList" :key="index">
+                    <span>{{item.name}}：</span>
+                    <el-input :placeholder="`${item.name}`" v-model="item.input" :disabled="(item.tag == 'jbdm' || item.tag == 'icdCode')? true : false" @input="(item.tag == 'zyzd' || item.tag == 'icdName') ? getIcd(item.input,item.tag) : '' "></el-input>
+                  </div>
+                </div> 
+              </div>
+              <!-- 主要诊断模块结束 -->
             </div>
             <!-- 左侧主诉、个人史、现病史、其他史列表选项结束 -->
           </div>
@@ -253,11 +565,19 @@
         <!-- 左侧底部 -->
         <div class="src-components-Operation-1pym1">
           <div class="srcdiv-box">
-            <span class="src-components-Operation-1PVES" @click="getUserAdvisory">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAmdJREFUOBGNVN9LVEEUPnN3iUoyQkoiMQhKqIwegghLzJcoMYMelCiKYKN/IhKC8rVXoVWfkn1IfaheEtdUuE9iuisKEu2uEIUVtWaL7d7pfLM7gzPu5h44986c851vfpxzhsiVluicZBECDox6J9MO5vdmXioT3I7Pmc5+XgdIdg0nKyCxnhNEHgxw9E2nEe0rgEYWAtiU+AoJb+9kioIi0QuFvhj9kFGDMp9LgwsdxqxpjaHMIOzaePXxOyPL7acP1dDi2gZFr5+gkChuXO0cAa0Dc3J0aa201+KvbzqDQVZdb8vQ/FUqBG8ArtsTprGeUzS2/I0a9+9mNpF7Gl9Zga96aR2Yv1YJ/b8bsWL0jZjLtbxlJhYQ0dDE13WJSmGJ6Bh1aj1hhyhICm7GFulCQy39yQfUefwAnTtSa+FQhT5fNpiUoABQWCCylt74Wzh/8uBevQB5zJP6mTNzM2CayO1XS1KX0qOJT4oZALU27kqSbIDh+ZVj5HkepZmpq6mObsUSmZfdzY1mk0gjn6RfByCoGhEkVmVIPJi5e+athdcJsIxVTrbGbitbzbEVBNvM/bPmNBpT7l+RsFoCl9RKn+vEnNNymHUc6UHOR7ifoPphgQ+ts03cI2Jeek7k43hKIuU6/SDHGDaURUlM2SpylxBGBmbR4c+KXa0DrT86HjsGFjE7HTmJ7vdXf+nnDDFG8MThvTnKGJYkPiZzKFrheQ+n7jW/hgPCq8L/jhut/cn7NH38kSPdIlhk364QDd5ootjCl83+7/U18csirwJ3+oCYNcLqs2ZLijFsom1ChruHEz3g+QelE7Z+u9Lc3wAAAABJRU5ErkJggg==" alt="" />
-             预览
+            <span
+              class="src-components-Operation-1PVES"
+              @click="getUserAdvisory"
+            >
+              <img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAmdJREFUOBGNVN9LVEEUPnN3iUoyQkoiMQhKqIwegghLzJcoMYMelCiKYKN/IhKC8rVXoVWfkn1IfaheEtdUuE9iuisKEu2uEIUVtWaL7d7pfLM7gzPu5h44986c851vfpxzhsiVluicZBECDox6J9MO5vdmXioT3I7Pmc5+XgdIdg0nKyCxnhNEHgxw9E2nEe0rgEYWAtiU+AoJb+9kioIi0QuFvhj9kFGDMp9LgwsdxqxpjaHMIOzaePXxOyPL7acP1dDi2gZFr5+gkChuXO0cAa0Dc3J0aa201+KvbzqDQVZdb8vQ/FUqBG8ArtsTprGeUzS2/I0a9+9mNpF7Gl9Zga96aR2Yv1YJ/b8bsWL0jZjLtbxlJhYQ0dDE13WJSmGJ6Bh1aj1hhyhICm7GFulCQy39yQfUefwAnTtSa+FQhT5fNpiUoABQWCCylt74Wzh/8uBevQB5zJP6mTNzM2CayO1XS1KX0qOJT4oZALU27kqSbIDh+ZVj5HkepZmpq6mObsUSmZfdzY1mk0gjn6RfByCoGhEkVmVIPJi5e+athdcJsIxVTrbGbitbzbEVBNvM/bPmNBpT7l+RsFoCl9RKn+vEnNNymHUc6UHOR7ifoPphgQ+ts03cI2Jeek7k43hKIuU6/SDHGDaURUlM2SpylxBGBmbR4c+KXa0DrT86HjsGFjE7HTmJ7vdXf+nnDDFG8MThvTnKGJYkPiZzKFrheQ+n7jW/hgPCq8L/jhut/cn7NH38kSPdIlhk364QDd5ootjCl83+7/U18csirwJ3+oCYNcLqs2ZLijFsom1ChruHEz3g+QelE7Z+u9Lc3wAAAABJRU5ErkJggg=="
+                alt=""
+              />
+              预览
             </span>
-            <span class="src-components-Operation-3GqtE" @click="finish_btn">保存</span>
+            <span class="src-components-Operation-3GqtE" @click="finish_btn"
+              >保存</span
+            >
             <!-- <span class="src-components-Operation-1s8dr src-components-Operation-3GqtE">清除</span> -->
           </div>
         </div>
@@ -273,48 +593,99 @@
         </div>
         <div class="grid-rightcontent-info-box">
           <!-- 辅助诊疗模块 -->
-          <div class="rightcontent-info-bodybox" v-if=" activeName == 'auxiliary' ">
-              <div class="src-components-PushItems-RKWqd">
-                <div class="src-components-PushItems-1jpJi">
-                  <h1>
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAfRJREFUOBGtVDEzxFAQ3ncSBa2CRqdUUPgBFAztxQw5nEZDqzyFK9UajRyOIkpuruEHKCiUOgoKLYWEZ3fz9k2Si4wZMnPv7e1++82+9+0+gL982lupc75ero+VEllkIUqiulp7SvgW/SYZuupr3j3/sAIa1jgqizO4zaakSRVKALSzM45WQbv7ANGNCtuj6TgDpABO8GqXAhBmZtRefViFwYsmgNbzAlLnbROvPYsPKzdHsR4sBa+rsEbCaDwigJoDZ2BcnR28pvJ+Z2ZP7fmPAO4UqGgTHPdInQYPPTT5GtP1WXAaxCc3kQwYQYHNQEN0E582elZAwax1iri4I/MF+1klYljaGMqoYsA2mQ9o/tGlpsEWVCBCr945UPYesQyI3++xoC52zrow054BpgNkU/0Qv+2xpBzUXcCGLZO2kJAb5iO+BqUaKjwOmMssfGatm9DvTBcpnCEsI0qTkv0TMROao90CVHbyFXGykUrmIk2eqPS1i1cxSVeREHo0OM4EDZeA80Mmft6V6qjwZEF8NJgA8R36RpzEiZdNnQ/QEFAmoaTCBP+5RYqTXaGFpccxomEoajQUp4M/+25QDn2E5QFy+1rSPhlRGESP5w8KM4shwjenUOkeQptExFF0hZ3aSp4/jNC10EPqujNFLSO5/7p/A6iJBGKnQxzOAAAAAElFTkSuQmCC" alt="" />
-                    初步诊断
-                  </h1>
-                  <!-- 初步诊断列表 -->
-                  <div v-if="disease_list.length > 0">
-                    <div class="ysblList-items-box" :class="index == clickIndex ? 'hoverClass' : ''" v-for="(item, index) in disease_list" :key="index" @click.stop="clickYsbl(item.name,index)">
-                      <div style="font-weight: 600">
-                        <span>{{ item.name }}</span >
-                        <i class="el-icon-s-operation" style="color: #53bfb4; margin-left: 6px"></i>
-                      </div>
-                      <div class="ysblList-items-text">
-                        {{ item.pathogenesis ? item.pathogenesis : "暂无" }}
-                      </div>
+          <div class="rightcontent-info-bodybox" v-if="activeName == 'auxiliary'">
+            <div class="src-components-PushItems-RKWqd">
+              <!-- 初步诊断模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAfRJREFUOBGtVDEzxFAQ3ncSBa2CRqdUUPgBFAztxQw5nEZDqzyFK9UajRyOIkpuruEHKCiUOgoKLYWEZ3fz9k2Si4wZMnPv7e1++82+9+0+gL982lupc75ero+VEllkIUqiulp7SvgW/SYZuupr3j3/sAIa1jgqizO4zaakSRVKALSzM45WQbv7ANGNCtuj6TgDpABO8GqXAhBmZtRefViFwYsmgNbzAlLnbROvPYsPKzdHsR4sBa+rsEbCaDwigJoDZ2BcnR28pvJ+Z2ZP7fmPAO4UqGgTHPdInQYPPTT5GtP1WXAaxCc3kQwYQYHNQEN0E582elZAwax1iri4I/MF+1klYljaGMqoYsA2mQ9o/tGlpsEWVCBCr945UPYesQyI3++xoC52zrow054BpgNkU/0Qv+2xpBzUXcCGLZO2kJAb5iO+BqUaKjwOmMssfGatm9DvTBcpnCEsI0qTkv0TMROao90CVHbyFXGykUrmIk2eqPS1i1cxSVeREHo0OM4EDZeA80Mmft6V6qjwZEF8NJgA8R36RpzEiZdNnQ/QEFAmoaTCBP+5RYqTXaGFpccxomEoajQUp4M/+25QDn2E5QFy+1rSPhlRGESP5w8KM4shwjenUOkeQptExFF0hZ3aSp4/jNC10EPqujNFLSO5/7p/A6iJBGKnQxzOAAAAAElFTkSuQmCC" alt=""/>
+                  初步诊断
+                </h1>
+                <!-- 初步诊断列表 -->
+                <div v-if="disease_list.length > 0">
+                  <div class="ysblList-items-box" :class="index == clickIndex ? 'hoverClass' : ''"
+                    v-for="(item, index) in disease_list"
+                    :key="index"
+                    @click.stop="clickYsbl(item.name, index)"
+                  >
+                    <div style="font-weight: 600">
+                      <span>{{ item.name }}</span>
+                      <i
+                        class="el-icon-s-operation"
+                        style="color: #53bfb4; margin-left: 6px"
+                      ></i>
+                    </div>
+                    <div class="ysblList-items-text">
+                      {{ item.pathogenesis ? item.pathogenesis : "暂无" }}
                     </div>
                   </div>
-                  <div style="padding:6px 0 6px 15px;" v-else>暂无</div>
-                  <!-- 初步诊断列表结束 -->
                 </div>
+                <div style="padding: 6px 0 6px 15px" v-else>暂无</div>
+                <!-- 初步诊断列表结束 -->
               </div>
+              <!-- 初步诊断模块结束 -->
+
+              <!-- 病案首页质控模块开始 -->
+              <div class="src-Items-hlyy">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAmpJREFUOBGNVM9rE0EUntlMVDaNUluUeihU7CWBNGezaXOyUOvRgkgDiaDg1ZtHRSj4D3jpbom/IFAoSBUVsdrEix52C+tJEDx4SMT6G2M2Gd/bOuPsj0DmkHnv+76ZzPvm7RAyaFAkCqbNj42M6UGRYdquhhAnJBOgLr7hSQkYlvNBJEXTnhdxdDYsewXRguU8kyyAyzIJB/N19zBizDCd75ySl4TzhcdLWVqy3h8IiIuWc1UAZ+vuPljwVOQDZ6w7liw95wzquqySBdN5reYEBPUAoCTGmn0dU+b/pFgVzGzDf40rmr2Q09UINhSAFWKlQqw6gJh/dRiAb9ro8YyslBN+EPHYMdASUMsdcSU0zluxQ/gOpRA9a1TzWSGEZWn09n8OETaNuGiVUBvLx4WpqkjE4MY9jBla0v6p38BELYZSstmo5BfBhkXk/MaHg9/inFxCQB0g/sLIoYmtytRvX6iSGBs1d5J43ip4Ows9KS/B11H6h3LoVcYuNMpZ+XGIPYLVC9TzXLKfTjbP53YFpM7G3Z1R0vFws7SKYyztVgmNaBne6a+Diz84h3P+Gxj7GHCoEfjQs2qqWBSHCQ7n2JJLt90TXrf7SqNaThVjnAAMPpkWSyZPbi1n34X5SF5cc27Cu7IRIUIAalAbgvfaAcFTNefIrx63aUI7t13OvQgL4/JibWeO9/r39QTNPynPtFDjG47PVJd8+zqSYhPwbH1GAk6wic8YxpFB6cNmZeY04mcefNR3P7Vb6aP62KOF6Y68wYJl36GE9mlKv7K9NN2ObBIDzNacqZ7HryHVrOYHv7gxa4eG/gKatuNgPCIG8gAAAABJRU5ErkJggg==" alt=""/>
+                  病案首页质控
+                </h1>
+                <!-- 病案首页质控列表 -->
+                <div class="basyzkdiv-box" v-if="basyzk_list.length > 0">
+                  <div class="src-components-PushItems-RecommendInspect-1-s8y">提示：</div>
+                  <div class="basyzkdiv-items-box">
+                    <span v-for="(item, index) in basyzk_list" :key="index">{{ item }}</span>
+                  </div>
+                </div>
+                <div style="padding: 6px 0 6px 15px" v-else>暂无</div>
+                <!-- 病案首页质控列表结束 -->
+              </div>
+              <!-- 病案首页质控模块结束 -->
+
+
+            </div>
           </div>
-           <!-- 辅助诊疗模块结束 -->
+          <!-- 辅助诊疗模块结束 -->
           <!-- 医学知识模块 -->
-          <div class="rightcontent-info-bodybox" v-if=" activeName == 'medicine' ">
+          <div
+            class="rightcontent-info-bodybox"
+            v-if="activeName == 'medicine'"
+          >
             <div class="sousuo-box">
               <!-- 搜索部分 -->
               <div class="sousuo-top-box">
-                <div class="el-input-box" style="width:80%;">
-                  <el-input placeholder="搜索症状" v-model="inputMedicineValue" class="input-with-select">
-                    <el-button slot="append" @click="getMedicineInputBtn()">确定</el-button>
+                <div class="el-input-box" style="width: 80%">
+                  <el-input
+                    placeholder="搜索症状"
+                    v-model="inputMedicineValue"
+                    class="input-with-select"
+                  >
+                    <el-button slot="append" @click="getMedicineInputBtn()"
+                      >确定</el-button
+                    >
                   </el-input>
                 </div>
                 <div class="Medicine-checkbox-box">
-                  <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                  <el-checkbox-group v-model="checkMedicineTagList" @change="checkMedicine">
+                  <el-checkbox
+                    :indeterminate="isIndeterminate"
+                    v-model="checkAll"
+                    @change="handleCheckAllChange"
+                    >全选</el-checkbox
+                  >
+                  <el-checkbox-group
+                    v-model="checkMedicineTagList"
+                    @change="checkMedicine"
+                  >
                     <div class="options-list-box">
                       <div class="oplist-items-box">
-                        <span v-for="(item,index) in MedicineTagList" :key="index">
-                          <el-checkbox :label="item.tag">{{item.name}}</el-checkbox>
+                        <span
+                          v-for="(item, index) in MedicineTagList"
+                          :key="index"
+                        >
+                          <el-checkbox :label="item.tag">{{
+                            item.name
+                          }}</el-checkbox>
                         </span>
                       </div>
                     </div>
@@ -326,15 +697,22 @@
                 <p class="src-components-MedicalInfo-z8HVu">搜索结果</p>
                 <!-- 搜索结果列表部分 -->
                 <div class="MedicineTagList-infodiv">
-                  <div v-for="(item,index) in MedicineIfoList" :key="index">
-                    <ul v-if="item.list || item.list.length >0">
-                      <li v-for="(items,idx) in item.list" :key="idx" @click="click_ypxq(item.tag,items.name)">
-                        <span>{{items.name}}</span>
-                        <i>( {{item.tag_name}} )</i>
+                  <div v-for="(item, index) in MedicineIfoList" :key="index">
+                    <ul v-if="item.list || item.list.length > 0">
+                      <li
+                        v-for="(items, idx) in item.list"
+                        :key="idx"
+                        @click="click_ypxq(item.tag, items.name)"
+                      >
+                        <span>{{ items.name }}</span>
+                        <i>( {{ item.tag_name }} )</i>
                       </li>
                     </ul>
                   </div>
-                  <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
+                  <el-empty
+                    description="暂无数据..."
+                    v-if="!MedicineIfoList || MedicineIfoList.length <= 0"
+                  ></el-empty>
                 </div>
                 <!-- 搜索结果列表部分结束 -->
               </div>
@@ -343,14 +721,16 @@
           </div>
           <!-- 医学知识模块结束 -->
           <!-- 院内相似病例模块 -->
-          <div class="rightcontent-info-bodybox" v-if=" activeName == 'similar' ">
+          <div class="rightcontent-info-bodybox" v-if="activeName == 'similar'">
             <el-empty description="暂无数据..."></el-empty>
           </div>
           <!-- 院内相似病例模块结束 -->
-
         </div>
 
-        <div class="mz-box"><span style="color:#27afa1;">免责声明: </span>以上仅供参考, 以医生临床诊断为主</div>
+        <div class="mz-box">
+          <span style="color: #27afa1">免责声明: </span>以上仅供参考,
+          以医生临床诊断为主
+        </div>
       </div>
       <!-- 右侧智能问诊模块结束 -->
     </div>
@@ -360,7 +740,6 @@
     <!-- 点击右侧医学知识列表弹窗 -->
     <div class="casePop-mask" v-if="is_casePop"></div>
     <div class="casePop-module-box" v-if="is_casePop">
-
       <div class="close-box" @click="click_close">
         <i class="el-icon-circle-close"></i>
       </div>
@@ -368,40 +747,81 @@
         <!-- main 左侧 -->
         <div class="ypjc-div-box">
           <div class="aside-icontitle-box">
-            <i class="el-icon-printer"></i><span style="padding-left: 10px">处置建议</span>
+            <i class="el-icon-printer"></i
+            ><span style="padding-left: 10px">处置建议</span>
           </div>
-          
+
           <!-- 常见药品 -->
           <div class="cjyp-table-box">
             <div class="cjyp-table-th">
-              <div style="color: #53bfb4; text-align: left; flex: 1">常见药品</div>
-              <div style="color: #a9acac; text-align: right; width: 80px">说明书</div>
+              <div style="color: #53bfb4; text-align: left; flex: 1">
+                常见药品
+              </div>
+              <div style="color: #a9acac; text-align: right; width: 80px">
+                说明书
+              </div>
             </div>
-            <div class="cjyp-table-tr" v-for="(item, index) in medicine_list" :key="index">
+            <div
+              class="cjyp-table-tr"
+              v-for="(item, index) in medicine_list"
+              :key="index"
+            >
               <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('medicine',item.name)">查看详情</a>
+              <a
+                class="cjyp-table-tr-r"
+                href="javascript:0;"
+                @click="click_ypxq('medicine', item.name)"
+                >查看详情</a
+              >
             </div>
-            <el-empty description="暂无数据..." v-if="!medicine_list || medicine_list.length <= 0"></el-empty>
+            <el-empty
+              description="暂无数据..."
+              v-if="!medicine_list || medicine_list.length <= 0"
+            ></el-empty>
           </div>
-          
+
           <!-- 常见检查 -->
           <div class="cjjc-box">
             <div class="cjjc-title">常见检查</div>
-            <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+            <div
+              class="cjyp-table-tr"
+              v-for="(item, index) in inspection_list"
+              :key="index"
+            >
               <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('inspection',item.name)">查看详情</a>
+              <a
+                class="cjyp-table-tr-r"
+                href="javascript:0;"
+                @click="click_ypxq('inspection', item.name)"
+                >查看详情</a
+              >
             </div>
-            <el-empty description="暂无数据..." v-if="!inspection_list || inspection_list.length <= 0"></el-empty>
+            <el-empty
+              description="暂无数据..."
+              v-if="!inspection_list || inspection_list.length <= 0"
+            ></el-empty>
           </div>
 
           <!-- 并发症 -->
           <div class="cjjc-box">
             <div class="cjjc-title">并发症</div>
-            <div class="cjyp-table-tr" v-for="(item, index) in complication_list" :key="index">
+            <div
+              class="cjyp-table-tr"
+              v-for="(item, index) in complication_list"
+              :key="index"
+            >
               <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('disease',item.name)">查看详情</a>
+              <a
+                class="cjyp-table-tr-r"
+                href="javascript:0;"
+                @click="click_ypxq('disease', item.name)"
+                >查看详情</a
+              >
             </div>
-            <el-empty description="暂无数据..." v-if="!complication_list || complication_list.length <= 0"></el-empty>
+            <el-empty
+              description="暂无数据..."
+              v-if="!complication_list || complication_list.length <= 0"
+            ></el-empty>
           </div>
         </div>
 
@@ -411,9 +831,12 @@
             <div style="font-weight: 600">
               <i class="el-icon-share"></i> 疾病图谱
             </div>
-            <div class="main-box-right-r" @click="click_ypxq('disease',hot_name)">
+            <div
+              class="main-box-right-r"
+              @click="click_ypxq('disease', hot_name)"
+            >
               <i class="el-icon-s-operation"></i>
-              <span style="padding-left:4px;">查看详情</span>
+              <span style="padding-left: 4px">查看详情</span>
             </div>
           </div>
           <div class="atlas-box">
@@ -425,7 +848,10 @@
               :height="cdssHeight"
               v-if="data.nodes.length > 0"
             />
-            <el-empty description="暂无数据..." v-if="!data.nodes || data.nodes.length <= 0"></el-empty>
+            <el-empty
+              description="暂无数据..."
+              v-if="!data.nodes || data.nodes.length <= 0"
+            ></el-empty>
           </div>
         </div>
       </div>
@@ -442,13 +868,20 @@
         <div class="yp-info-box">
           <div class="col-left-title">{{ name_1 }}</div>
           <div class="activi-1">
-            <div v-for="(item,index) in getinfo" :key="index">
-              <div class="item-name">{{item.name}}</div>
-              <div class="item-text" v-if=" item.tag !='' && item.is_list == 1">
+            <div v-for="(item, index) in getinfo" :key="index">
+              <div class="item-name">{{ item.name }}</div>
+              <div class="item-text" v-if="item.tag != '' && item.is_list == 1">
                 <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
-              <span class="item-text-a" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</span>
+                <span
+                  class="item-text-a"
+                  v-for="(items, index) in item.text"
+                  :key="index"
+                  >{{ items.kgid ? items.name : items }}</span
+                >
               </div>
-              <div class="item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
+              <div class="item-text" v-else>
+                {{ item.text ? item.text : "暂无数据" }}
+              </div>
               <!-- <div class="item-text">{{item.text?item.text:'暂无数据'}}</div> -->
             </div>
           </div>
@@ -468,13 +901,20 @@
         <div class="yp-info-box">
           <div class="col-left-title">{{ name_1 }}</div>
           <div class="activi-1">
-            <div v-for="(item,index) in getinfo" :key="index">
-              <div class="item-name">{{item.name}}</div>
-              <div class="item-text" v-if=" item.tag !='' && item.is_list == 1">
+            <div v-for="(item, index) in getinfo" :key="index">
+              <div class="item-name">{{ item.name }}</div>
+              <div class="item-text" v-if="item.tag != '' && item.is_list == 1">
                 <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
-              <span class="item-text-a" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</span>
+                <span
+                  class="item-text-a"
+                  v-for="(items, index) in item.text"
+                  :key="index"
+                  >{{ items.kgid ? items.name : items }}</span
+                >
               </div>
-              <div class="item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
+              <div class="item-text" v-else>
+                {{ item.text ? item.text : "暂无数据" }}
+              </div>
               <!-- <div class="item-text">{{item.text?item.text:'暂无数据'}}</div> -->
             </div>
           </div>
@@ -486,28 +926,48 @@
     <!-- 点击医学知识列表查看详情弹窗结束 -->
     <!-- 点击预览按钮弹窗 -->
     <div class="src-components-Preview-34-Hv" v-if="is_useradvisory"></div>
-    <div class="src-components-Preview-1CrEY" id="previewWrapper" v-if="is_useradvisory">
+    <div
+      class="src-components-Preview-1CrEY"
+      id="previewWrapper"
+      v-if="is_useradvisory"
+    >
       <div class="src-components-Preview-1MO3X drag-title">预览</div>
-      <img class="src-components-Preview-2DV3S" @click="useradvisory_close" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjgyMDU5MUI4NERDQzExRThBODA0QzAzNjEzMzU4OUZCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjgyMDU5MUI5NERDQzExRThBODA0QzAzNjEzMzU4OUZCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ODIwNTkxQjY0RENDMTFFOEE4MDRDMDM2MTMzNTg5RkIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ODIwNTkxQjc0RENDMTFFOEE4MDRDMDM2MTMzNTg5RkIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4YYCuDAAAA80lEQVR42mL8//8/Ay0BEwONwagFI90CZyeX+0C8Go88GxCvp8QHs4A4BGhIDw75e0AcQLYFe/ftaQdS0UBcDLSkD8nljED8AMiUBmJlfGYwEpOTgYYlAam5QNwAxN1AfBeIJYBYDuiIxxRbALUkBEiB4uMlEH8AYjug4a+oloqAhq0BUn+BWByIlxJjOClBJAykHkODZg4QTwDiNqAl1RT7AGi4KJB6A8S/gdgYaOhEIF0CxFVAuUpK84EekAIFxWsgFgMa/gsaXL1AKhfkCzxJmCgfrIcGjRTQ0J9ocTIFSDWCkjBVUtFoYTdqwcBZABBgAFj3V+zxCrbRAAAAAElFTkSuQmCC" alt="">
+      <img
+        class="src-components-Preview-2DV3S"
+        @click="useradvisory_close"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjgyMDU5MUI4NERDQzExRThBODA0QzAzNjEzMzU4OUZCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjgyMDU5MUI5NERDQzExRThBODA0QzAzNjEzMzU4OUZCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ODIwNTkxQjY0RENDMTFFOEE4MDRDMDM2MTMzNTg5RkIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ODIwNTkxQjc0RENDMTFFOEE4MDRDMDM2MTMzNTg5RkIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4YYCuDAAAA80lEQVR42mL8//8/Ay0BEwONwagFI90CZyeX+0C8Go88GxCvp8QHs4A4BGhIDw75e0AcQLYFe/ftaQdS0UBcDLSkD8nljED8AMiUBmJlfGYwEpOTgYYlAam5QNwAxN1AfBeIJYBYDuiIxxRbALUkBEiB4uMlEH8AYjug4a+oloqAhq0BUn+BWByIlxJjOClBJAykHkODZg4QTwDiNqAl1RT7AGi4KJB6A8S/gdgYaOhEIF0CxFVAuUpK84EekAIFxWsgFgMa/gsaXL1AKhfkCzxJmCgfrIcGjRTQ0J9ocTIFSDWCkjBVUtFoYTdqwcBZABBgAFj3V+zxCrbRAAAAAElFTkSuQmCC"
+        alt=""
+      />
       <div class="src-components-PreviewBody-2-yuL">
-        <div class="src-components-PreviewBody-1_yxF" style="margin: 0px auto; max-width: 620px;">
+        <div
+          class="src-components-PreviewBody-1_yxF"
+          style="margin: 0px auto; max-width: 620px"
+        >
           <div>
-            <div class="src-components-Information-2Lh0V">菁苗健康医疗健康数字化平台</div>
+            <div class="src-components-Information-2Lh0V">
+              菁苗健康医疗健康数字化平台
+            </div>
             <table class="src-components-Information-1euAh">
               <tr>
-                <td>姓名：{{getUserAdvisory_list.name}}</td>
-                <td>年龄：{{getUserAdvisory_list.age}}</td>
+                <td>姓名：{{ getUserAdvisory_list.name }}</td>
+                <td>年龄：{{ getUserAdvisory_list.age }}</td>
               </tr>
               <tr>
-                <td>性别：{{getUserAdvisory_list.sex == 1?'男':'女'}}</td>
-                <td>就诊时间：{{getUserAdvisory_list.create_time}}</td>
+                <td>性别：{{ getUserAdvisory_list.sex == 1 ? "男" : "女" }}</td>
+                <td>就诊时间：{{ getUserAdvisory_list.create_time }}</td>
               </tr>
             </table>
           </div>
           <table class="src-components-PreviewBody-37xVG">
-            <tr class="src-components-PreviewBody-2-owb" v-for="(item,index) in getUserAdvisory_list.advisory_content" :key="index">
-              <td class="src-components-PreviewBody-9arcl">{{item.title}}：</td>
-              <td class="src-components-PreviewBody-9arcl">{{item.text}}</td>
+            <tr
+              class="src-components-PreviewBody-2-owb"
+              v-for="(item, index) in getUserAdvisory_list.advisory_content"
+              :key="index"
+            >
+              <td class="src-components-PreviewBody-9arcl">
+                {{ item.title }}：
+              </td>
+              <td class="src-components-PreviewBody-9arcl">{{ item.text }}</td>
             </tr>
           </table>
         </div>
@@ -518,173 +978,224 @@
 </template>
 
 <style scoped>
-.el-empty{
+.el-empty {
   padding: 10px 0;
 }
-  li {
-    list-style: none;
+li {
+  list-style: none;
+}
+@import "../assets/css/WesternMedicineCdss.css";
+
+/* 多选框边框跟样式 */
+.el-checkbox >>> .el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox >>> .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background: #27afa1;
+  border-color: #27afa1;
+}
+.el-checkbox >>> .el-checkbox__input.is-focus .el-checkbox__inner {
+  border-color: #27afa1;
+}
+.el-checkbox >>> .el-checkbox__input.is-checked + .el-checkbox__label {
+  color: #27afa1;
+}
+.el-checkbox >>> .el-checkbox.is-bordered.is-checked {
+  border-color: #27afa1;
+}
+.leftcontent-title-box >>> .el-input__inner:focus {
+  border-bottom: 1px solid #27afa1;
+}
+.el-input-box >>> input:focus {
+  border-color: #27afa1;
+}
+.el-select >>> .el-input__inner:focus {
+  border-color: #27afa1;
+}
+.el-oplistselect-box.el-select >>> .el-input__inner {
+  height: 30px;
+  line-height: 30px;
+  background: none;
+  padding-left: 4px;
+  padding-right: 20px;
+}
+.src-components-PatInfo-2ZUg6 >>> .el-input__inner{
+  width:100%;
+  height: 30px;
+  line-height: 30px;
+  border: none;
+  border-radius: 0;
+  border-right: 1px solid #dcdfe6;
+  padding: 0 5px;
+}
+.src-components-PatInfo-2ZUg6 >>> .el-input--prefix .el-input__inner{
+  padding-left: 26px;
+}
+.src-components-PatInfo-2ZUg6 >>> .el-input.is-focus .el-input__inner{
+  border-color: #27afa1;
+}
+.el-oplistselect-box.el-select >>> .el-input__icon {
+  line-height: 30px;
+  width: auto;
+}
+
+.el-oplistselect-box.el-select >>> .el-input.is-focus .el-input__inner {
+  border-color: #27afa1;
+}
+.el-select-dropdown__item.selected {
+  color: #27afa1;
+}
+.el-input-box >>> .el-input__inner {
+  height: 34px;
+  line-height: 34px;
+}
+.el-input-box >>> .el-input__suffix {
+  top: -5px;
+  padding-top: 0;
+}
+.el-input-box >>> .el-input-group__append {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  height: 100%;
+  padding-bottom: 1px;
+}
+.el-input-box >>> .el-button {
+  width: 72px;
+  background: #27afa1;
+  color: #fff;
+  font-size: 14px;
+  padding: 0;
+  height: 34px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.el-checkbox >>> .el-checkbox__label {
+  font-size: 14px;
+  padding-left: 6px;
+  margin: 4px 0;
+}
+
+.src-265y8 .el-oplistselect-box.el-select >>> .el-input__inner {
+  border: none;
+  text-align: center;
+  padding-right: 4px;
+}
+.src-265y8 .el-oplistselect-box.el-select >>> .el-input__suffix {
+  display: none;
+}
+.grid-rightcontent-title >>> .el-tabs__item.is-active {
+  color: #27afa1;
+}
+.grid-rightcontent-title >>> .el-tabs__active-bar {
+  background-color: #27afa1;
+}
+.grid-rightcontent-title >>> .el-tabs__item:hover {
+  color: #27afa1;
+}
+.grid-rightcontent-title >>> .el-tabs__item {
+  padding: 0 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.grid-rightcontent-title >>> .el-tabs__header {
+  margin: 0;
+}
+.demo-input-suffix >>> .el-input{
+  width: 58%;
+  height: 30px;
+  line-height: 30px;
+  margin-right: 12px;
+}
+.demo-input-suffix >>> .el-input .el-input__inner{
+  height: 30px;
+  line-height: 30px;
+}
+
+.demo-input-suffix >>> .el-input .el-input__inner:focus {
+  border-color: #27afa1;
+}
+.src-components-PatInfo-1sipu >>> .el-input__icon{
+  line-height: 30px;
+}
+/* 媒体查询 */
+@media only screen and (max-width: 1366px) {
+  .el-checkbox >>> .el-checkbox__label {
+    font-size: 12px;
   }
-  @import "../assets/css/WesternMedicineCdss.css";
-  /* 多选框边框跟样式 */
-  .el-checkbox >>> .el-checkbox__input.is-checked .el-checkbox__inner,.el-checkbox >>> .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-    background:#27afa1;
-    border-color: #27afa1;
-  }
-  .el-checkbox >>> .el-checkbox__input.is-focus .el-checkbox__inner{
-    border-color: #27afa1;
-  }
-  .el-checkbox >>> .el-checkbox__input.is-checked+.el-checkbox__label {
-    color: #27afa1;
-  }
-  .el-checkbox >>> .el-checkbox.is-bordered.is-checked{
-    border-color: #27afa1;
-  }
-   .leftcontent-title-box >>> .el-input__inner:focus{
-    border-bottom: 1px solid #27afa1;
-   }
-  .el-input-box >>> input:focus{
-    border-color: #27afa1;
-  }
-  .el-select >>> .el-input__inner:focus{
-    border-color: #27afa1;
-  }
-   .el-oplistselect-box.el-select >>> .el-input__inner{
+
+  .el-input-box >>> .el-input__inner {
     height: 30px;
     line-height: 30px;
-    background: none;
-    padding-left: 4px;
-    padding-right: 20px;
   }
-
-  .el-oplistselect-box.el-select >>> .el-input__icon{
-    line-height: 30px;
-    width: auto;
+  .el-input-box >>> .el-button {
+    height: 30px;
   }
-
-   .el-oplistselect-box.el-select >>> .el-input.is-focus .el-input__inner{
-    border-color: #27afa1;
-  }
-  .el-select-dropdown__item.selected{
-    color: #27afa1;
-  }
-    .el-input-box >>> .el-input__inner{
-    height: 34px;
-    line-height: 34px;
-  }
-  .el-input-box >>> .el-input__suffix{
-    top:-5px;
-    padding-top: 0;
-  }
-  .el-input-box >>> .el-input-group__append{
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    height: 100%;
-    padding-bottom: 1px;
-  }
-  .el-input-box >>> .el-button{
-    width: 72px;
-    background: #27afa1;
-    color: #fff;
-    font-size: 14px;
-    padding: 0;
-    height: 34px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  .el-checkbox >>> .el-checkbox__label {
-    font-size: 14px;
-    padding-left: 6px;
-    margin: 4px 0;
-  }
-
-  .src-265y8 .el-oplistselect-box.el-select >>> .el-input__inner{
-    border: none;
-    text-align: center;
-    padding-right: 4px;
-  }
-  .src-265y8 .el-oplistselect-box.el-select >>> .el-input__suffix{
-    display: none;
-  }
-  .grid-rightcontent-title >>> .el-tabs__item.is-active{
-    color: #27afa1;
-  }
-  .grid-rightcontent-title >>> .el-tabs__active-bar{
-    background-color: #27afa1;
-  }
-  .grid-rightcontent-title >>> .el-tabs__item:hover{
-    color: #27afa1;
-  }
-  .grid-rightcontent-title >>> .el-tabs__item{
-    padding: 0 10px;
-    font-size: 16px;
-    font-weight: 600;
-  }
-  .grid-rightcontent-title >>> .el-tabs__header{
-    margin: 0;
-  }
-  /* 媒体查询 */
-  @media only screen and (max-width: 1366px){
-    .el-checkbox >>> .el-checkbox__label {
-      font-size: 12px;
-    }
-
-    .el-input-box >>> .el-input__inner{
-      height: 30px;
-      line-height: 30px;
-    }
-    .el-input-box >>> .el-button{
-      height: 30px;
-    }
-  }
+}
 </style>
 <script>
 import d3Atlas from "../components/d3Atlas";
-import { DrumpServices_ZK,getWesternSymptomList,clickFinishBtn,clickYsbl,getSickNess,getMedicineList,getchoosesymptomBtn,getManySelect,getUserAdvisory   } from '@/api/data'
+import Qs from 'qs';
+import {
+  getWesternSymptomList,
+  clickFinishBtn,
+  clickYsbl,
+  getSickNess,
+  getMedicineList,
+  getchoosesymptomBtn,
+  getManySelect,
+  getUserAdvisory,
+  getDiagnosis,
+  getIcd,
+} from "@/api/data";
+const x2js = require("x2js");
 export default {
   name: "WesternMedicineCdss",
   components: {
     d3Atlas,
   },
-  data(){
-    return{
-      is_useradvisory:false,
-      viewHeight:0,
+  data() {
+    return {
+      is_useradvisory: false,
+      viewHeight: 0,
       popId: 0, // 主页数据弹窗标识
       pop1: false,
       infoData: [], // 主页数据
-      optionsList:[], // 添加症状内接口数据
-      checkList: [],   // 多选框 选中项label
-      searchSymptomsList:[], // 列表下拉框选中数据
-      inputOtherValue:'', // 搜索症状
-      symptomSearch_name:'', // 搜索症状列表项
-      is_symptomSearch:false, // 搜索结果弹窗状态
-      symptomSearch_data:[],
+      optionsList: [], // 添加症状内接口数据
+      checkList: [], // 多选框 选中项label
+      searchSymptomsList: [], // 列表下拉框选中数据
+      inputOtherValue: "", // 搜索症状
+      symptomSearch_name: "", // 搜索症状列表项
+      is_symptomSearch: false, // 搜索结果弹窗状态
+      symptomSearch_data: [],
       addSymptomPop_1: false, //选项弹窗模块显示状态
-//  现病史------的添加症状字段
-      optionsList_2:[], // 现病史---添加症状内接口数据
-      checkList_2: [],   // 现病史---多选框 选中项
-      searchSymptomsList_2:[], // 现病史---列表下拉框选中数据
-      inputOtherValue_2:'', // 现病史---搜索症状
-      symptomSearch_name_2:'', // 现病史---搜索症状列表项
-      is_symptomSearch_2:false, // 现病史---搜索结果弹窗状态
-      symptomSearch_data_2:[], // 现病史---搜索结果数据
-      addSymptomPop_2: false,// 现病史--- 选项弹窗模块显示状态
-//  现病史------的添加症状字段以上
-      activeName: 'auxiliary',
-      form:{
-        name:'',
-        age:'',
-        sex:'',
-        time_1:'', 
+      //  现病史------的添加症状字段
+      optionsList_2: [], // 现病史---添加症状内接口数据
+      checkList_2: [], // 现病史---多选框 选中项
+      searchSymptomsList_2: [], // 现病史---列表下拉框选中数据
+      inputOtherValue_2: "", // 现病史---搜索症状
+      symptomSearch_name_2: "", // 现病史---搜索症状列表项
+      is_symptomSearch_2: false, // 现病史---搜索结果弹窗状态
+      symptomSearch_data_2: [], // 现病史---搜索结果数据
+      addSymptomPop_2: false, // 现病史--- 选项弹窗模块显示状态
+      //  现病史------的添加症状字段以上
+      activeName: "auxiliary",
+      form: {
+        name: "",
+        age: "",
+        sex: "",
+        sfzh: "",
+        csrq: "",
+        bzyzsnl: "",
+        xsecstz: "",
+        xserytz: "",
       },
-      disease_list:[], // 获取的辅助诊疗疑似病例数据
+      disease_list: [], // 获取的辅助诊疗疑似病例数据
       clickIndex: -1, //疑似病例列表下标
-      hot_name:'',//疑似病例列表标题
+      hot_name: "", //疑似病例列表标题
       medicine_list: [], //  常见药品
       inspection_list: [], // 常见检查
-      complication_list:[], // 并发症
-      identify_list:[], // 鉴别诊断
-      data: {   //  图谱数据
+      complication_list: [], // 并发症
+      identify_list: [], // 鉴别诊断
+      data: {
+        //  图谱数据
         nodes: [],
         likes: [],
       },
@@ -692,239 +1203,293 @@ export default {
       linkTypes: [],
       cdssWidth: 800,
       cdssHeight: 600,
-      is_casePop:false, //展示常见药品、检查、图谱弹窗
-      is_ypxq:false, //点击常见药品、检查、图谱查看详情弹窗
-      name_1:'', // 常见药品、检查、图谱查看详情弹窗标题
-      inputMedicineValue:'', // 左侧医学知识内搜索框
-      checkMedicineTagList:[],
-      checkAll:false, // 全选状态
+      is_casePop: false, //展示常见药品、检查、图谱弹窗
+      is_ypxq: false, //点击常见药品、检查、图谱查看详情弹窗
+      name_1: "", // 常见药品、检查、图谱查看详情弹窗标题
+      inputMedicineValue: "", // 左侧医学知识内搜索框
+      checkMedicineTagList: [],
+      checkAll: false, // 全选状态
       isIndeterminate: false,
-      MedicineTagList:[{name:'诊断',tag:'symptom'},{name:'药品',tag:'medicine'},{name:'检查',tag:'inspection'},{name:'疾病',tag:'disease'}],
-      MedicineIfoList:[], // 搜索结果过数据列表
+      MedicineTagList: [
+        { name: "诊断", tag: "symptom" },
+        { name: "药品", tag: "medicine" },
+        { name: "检查", tag: "inspection" },
+        { name: "疾病", tag: "disease" },
+      ],
+      MedicineIfoList: [], // 搜索结果过数据列表
       is_yxzslist: false, // 医学知识列表详情弹窗状态
-      dataInfo_id:0, // 点击保存后返回数据的id,用于预览
-      getUserAdvisory_list:{}
-    }
+      dataInfo_id: 0, // 点击保存后返回数据的id,用于预览
+      getUserAdvisory_list: {},
+      diagnosisList:[], // 主要诊断选项列表
+      basyzk_list:[], // 病案首页指控检验错误提示信息
+    };
   },
-  created(){
+  created() {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
-    this.getManySelect();  //获取主页展示数据
-    this.DrumpServices_ZK();
-    document.addEventListener('click',e =>{
-      let box_1 = document.getElementById('addSymptomPop_1');
-      let box_2 = document.getElementById('is_symptomSearch');
-      let box_3 = document.getElementById('addSymptomPop_2');
+    this.getManySelect(); //获取主页展示数据
+    this.getDiagnosis(); //主要诊断选项列表
+    document.addEventListener("click", (e) => {
+      let box_1 = document.getElementById("addSymptomPop_1");
+      let box_2 = document.getElementById("is_symptomSearch");
+      let box_3 = document.getElementById("addSymptomPop_2");
 
-      if(!box_1.contains(e.target)){
+      if (!box_1.contains(e.target)) {
         this.addSymptomPop_1 = false;
-      };
-      if(!box_3.contains(e.target)){
+      }
+      if (!box_3.contains(e.target)) {
         this.addSymptomPop_2 = false;
-      };
-       if(!box_2.contains(e.target)){
+      }
+      if (!box_2.contains(e.target)) {
         this.is_symptomSearch = false;
         this.symptomSearch_data = [];
-        this.inputOtherValue = '';
-      };
-    })
+        this.inputOtherValue = "";
+      }
+    });
   },
-  mounted(){
-
-  },
-  updated() {
-  },
+  mounted() {},
+  updated() {},
   computed: {
     // 计算属性的 方法名及为 差值表达式属性值
-    
-
   },
   methods: {
-    DrumpServices_ZK(){
+    //  getIcd 获取编码
+    getIcd(i_n,t){
       let that = this;
-      DrumpServices_ZK({}).then(res =>{
-        console.log(JSON.stringify(res.data))
+      let name = i_n;
+      let tag = t;
+      let diagnosisList = that.diagnosisList;
+      getIcd({name}).then(res =>{
+        diagnosisList.forEach(el =>{
+          if(tag == 'zyzd'){
+            if(el.tag == 'jbdm'){
+              el.input = res.data.data.length > 0 ? (res.data.data[0].i_cd?res.data.data[0].i_cd:''): ''
+            }
+          }
+          if(tag == 'icdName'){
+            if(el.tag == 'icdCode'){
+              el.input = res.data.data.length > 0 ? (res.data.data[0].i_cd?res.data.data[0].i_cd:''): ''
+            }
+          }
+        })
+        that.diagnosisList = diagnosisList;
+      })
+    },
+    // 获取主要诊断选项
+    getDiagnosis(){
+      let that = this;
+      getDiagnosis({}).then(res =>{
+        if(res.data.code == 0){
+          that.diagnosisList = res.data.data
+        }
+      })
+    },
+    DrumpServices_ZK(m,s_p) {
+      let that = this;
+      let M_id = m;
+      let Services_Params = s_p;
+      let Params = {"hosId":"12231181414604795K","jkkh":"//","gj":"CHN","csd":"黑龙江省黑龙江省**市","gg":"8","mz":"1","zjlb":"1","zy":"90","hy":"2","xzz":"黑龙江**市","dh":"18645606366","yb1":"164000","hkdz":"黑龙江**市","yb2":"164000","gzdwjdz":"北河村 ","dwdh":"18645606366","yb3":"164000","lxrxm":"霸洪凤","gx":"5","dz":"北安市赵光镇*****","dh2":"15636553004","zyh":"Z002489642","ylfkfs":"2.1","zycs":2,"bah":"Z00248964","bzyzsnl":null,"xsecstz":null,"xsecstz2":null,"xsecstz3":null,"xsecstz4":null,"xsecstz5":null,"xserytz":null,"rytj":1,"rysj":"2020-12-17 09:36:00","rysjs":null,"rykb":"03","rybf":"W118普间","zkkb":"03","cysj":"2021-01-04 08:00:00","cysjs":null,"cykb":"03","cybf":"W118普间","sjzyts":18,"mzzd":"直肠肿瘤","jbbm":"D37.501","zyzd":"直肠癌","jbdm":"C20.X02","zyzdcyqk":"1","rybq":"1","rysqk":"3","ryzdbm":"D37.501","ryzdmc":"直肠肿瘤","qyhqzrq":"2020-12-17 00:00:00","lyfs":"1","yzzyYljg":null,"wsyYljg":null,"sfzzyjh":"1","md":null,"zfy":37883.62,"zfje":0,"zfje2":0,"hxjsj":null,"sfrjss":"0","tjhlts":null,"yjhlts":null,"ejhlts":17,"sjhlts":null,"wbyy":null,"h23":null,"blzd":"（直肠癌切除标本）隆起型中分化腺癌。","jbmm":"M80000/3","blh":"20203644","blzd1":null,"jbmm1":null,"blh1":null,"blzd2":null,"jbmm2":null,"blh2":null,"ywgm":"1","gmyw":null,"swhzsj":"2","xx":"5","rh":"4","hbsag":"0","hcvAb":"0","hivAb":"0","sxfy":"0","hxb":0,"xxb":0,"xj":0,"qx":0,"ztxhs":0,"ryqT":null,"ryqXs":null,"ryqF":null,"ryhT":null,"ryhXs":null,"ryhF":null,"kzrbm":"2331","kzr":"张三","zrysbm":"1008","zrys":"林艾立","zzysbm":"0069","zzys":"张旗","zyysbm":"2192","zyys":"张三","zrhsbm":"2617","zrhs":"李鑫","jxys":null,"sxys":null,"bmy":null,"bazl":null,"zkys":"刘燕铭","zkhs":"葛丽颖","zkrq":"2021-01-04 00:00:00","zzzbm":null,"zzz":null,"zzzysbm":null,"zzzys":null,"diagnos":[{"hosId":"12231181414604795K","icdCode":"K81.900","icdName":"胆囊炎","rybq":"1","cyqk":"2","ord":2,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"N40.X02","icdName":"前列腺增大","rybq":"1","cyqk":"2","ord":3,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"R93.802","icdName":"前列腺钙化灶","rybq":"1","cyqk":"2","ord":4,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"J98.422","icdName":"肺斑索","rybq":"1","cyqk":"2","ord":5,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"J98.411","icdName":"肺钙化","rybq":"1","cyqk":"2","ord":6,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":null,"icdName":"（直肠癌切除标本）隆起型中分化腺癌。","rybq":"1","cyqk":null,"ord":7,"cysj":"2021-01-04 08:00:00","type":"5106","mid":"Z002489642"}],"fee":[{"hosId":"12231181414604795K","type":"F0101","fee":6353.42,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"B02","fee":2764.4,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"J03","fee":14468.5,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"B03","fee":924,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"A03","fee":313,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"C0101","fee":1354,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"A02","fee":125,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"J02","fee":309.88,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"B04","fee":18,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"C0202","fee":3055,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"A01","fee":1719,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"K01","fee":1593.77,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"B01","fee":830.8,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"C0201","fee":3488,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"J01","fee":34.05,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"A04","fee":532.8,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"}],"operation":[{"hosId":"12231181414604795K","icdCode":"54.1901","icdName":"腹腔引流术","ord":2,"ssjczrq":"2020-12-21 08:00:00","ssjb":"2","sfzyss":"0","sscxsj":null,"sz":"林艾立","yz":"吕宏山","ez":"张旗","qkdj":"3","qkyhlb":"1","qkyhdj":null,"mzfs":"01","mzfj":null,"mzys":"王爽","cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"48.503","icdName":"直肠癌根治术","ord":1,"ssjczrq":"2020-12-21 08:00:00","ssjb":"4","sfzyss":"1","sscxsj":null,"sz":"林艾立","yz":"吕宏山","ez":"张旗","qkdj":"3","qkyhlb":"1","qkyhdj":null,"mzfs":"01","mzfj":null,"mzys":"王爽","cysj":"2021-01-04 08:00:00","mid":"Z002489642"}],"mid":"Z002489642"}
+      for( var key in Services_Params ){
+        Params[key]=Services_Params[key]
+      }
+     var data = Qs.stringify({"M_id":M_id,"Params":JSON.stringify(Params)});
+      that.axios({
+        method: 'post',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        url:'/api/drumpHTTP_QT.aspx',
+        data
+      }).then(res =>{
+        if(res.data.count == 0){
+          
+        }else{
+          that.basyzk_list = res.data.data;
+        return;
+        }
       })
     },
     // ====================   现病史---- 添加症状功能 -- 以下 --  ====================
-      // 点击 现病史 添加症状-1
-      addSymptom_2(){
-        let that = this;
-        // 接口获取列表
-        getWesternSymptomList({}).then(res => {
-          if(res.data.code == 0){
+    // 点击 现病史 添加症状-1
+    addSymptom_2() {
+      let that = this;
+      // 接口获取列表
+      getWesternSymptomList({}).then((res) => {
+          if (res.data.code == 0) {
             that.optionsList_2 = res.data.data;
             that.addSymptomPop_2 = true;
           }
-        }).catch(e =>{
-          console.log(e)
         })
-      },
-      // 点击 现病史 添加症状弹窗内，确定按钮
-      addSymptomPopSureClick_2(){
-        this.addSymptomPop_2 = false;
-      },
-      // 点击 现病史 添加症状弹窗内，清除按钮
-      addSymptomPopEmptyClick_2(){
-        let that = this;
-        let optionsList_2 = this.optionsList_2;
-        optionsList_2.forEach(el =>{
-          if(el.select_options.length > 0){
-            el.select_options.forEach(el_options =>{
-              el_options.select_chect = '';
-            })
-          }
-        })
-        that.symptomSearch_name_2 = '';
-        that.checkList_2 = [];   // 多选框 选中项label
-        that.searchSymptomsList_2 = []; // 列表下拉框选中数据
-        that.optionsList_2 = optionsList_2;
-      },
-      // 点击下来选项
-      searchSymptomsChange_2(e){
-        let searchSymptomsList_2 = [];
-        let optionsList_2 = this.optionsList_2;
-        optionsList_2.forEach(el =>{
-          if(el.select_options.length > 0){
-            el.select_options.forEach(el_options =>{
-              if(el_options.select_chect){
-                searchSymptomsList_2.push(el_options.select_chect)
-              }
-            })
-          }
-        })
-        this.searchSymptomsList_2 = searchSymptomsList_2;
-      },
-      // 列表多选选项
-      checkGroup_2(e){
-        let that = this;
-        let checkGroupList_2 = e;
-        let checkList_2 = that.checkList_2;
-        if(checkGroupList_2.length > 5){
-          alert('最多选择5项！')
-          checkList_2.pop();
-          that.checkList_2 = checkList_2;
-          console.log(that.checkList_2)
-        }else{
-          console.log(that.checkList_2)
-        }
-        console.log(that.checkList_2)
-      },
-      // 搜索其他症状@input事件
-      getInputBtn_2(){
-        let that = this;
-        if(that.inputOtherValue_2 == ''){
-          that.$message.error({
-              message: '请填写内容',
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    // 点击 现病史 添加症状弹窗内，确定按钮
+    addSymptomPopSureClick_2() {
+      this.addSymptomPop_2 = false;
+    },
+    // 点击 现病史 添加症状弹窗内，清除按钮
+    addSymptomPopEmptyClick_2() {
+      let that = this;
+      let optionsList_2 = this.optionsList_2;
+      optionsList_2.forEach((el) => {
+        if (el.select_options.length > 0) {
+          el.select_options.forEach((el_options) => {
+            el_options.select_chect = "";
           });
-          return
         }
-        that.symptomSearch_data_2 = '';
-        that.is_symptomSearch_2 = false;
-        getchoosesymptomBtn({
-          keyword: that.inputOtherValue_2,
-        }).then(res =>{
-          if(res.data.code == 0){
+      });
+      that.symptomSearch_name_2 = "";
+      that.checkList_2 = []; // 多选框 选中项label
+      that.searchSymptomsList_2 = []; // 列表下拉框选中数据
+      that.optionsList_2 = optionsList_2;
+    },
+    // 点击下来选项
+    searchSymptomsChange_2(e) {
+      let searchSymptomsList_2 = [];
+      let optionsList_2 = this.optionsList_2;
+      optionsList_2.forEach((el) => {
+        if (el.select_options.length > 0) {
+          el.select_options.forEach((el_options) => {
+            if (el_options.select_chect) {
+              searchSymptomsList_2.push(el_options.select_chect);
+            }
+          });
+        }
+      });
+      this.searchSymptomsList_2 = searchSymptomsList_2;
+    },
+    // 列表多选选项
+    checkGroup_2(e) {
+      let that = this;
+      let checkGroupList_2 = e;
+      let checkList_2 = that.checkList_2;
+      if (checkGroupList_2.length > 5) {
+        alert("最多选择5项！");
+        checkList_2.pop();
+        that.checkList_2 = checkList_2;
+        console.log(that.checkList_2);
+      } else {
+        console.log(that.checkList_2);
+      }
+      console.log(that.checkList_2);
+    },
+    // 搜索其他症状@input事件
+    getInputBtn_2() {
+      let that = this;
+      if (that.inputOtherValue_2 == "") {
+        that.$message.error({
+          message: "请填写内容",
+        });
+        return;
+      }
+      that.symptomSearch_data_2 = "";
+      that.is_symptomSearch_2 = false;
+      getchoosesymptomBtn({
+        keyword: that.inputOtherValue_2,
+      })
+        .then((res) => {
+          if (res.data.code == 0) {
             let symptomSearch_data_2 = res.data.data;
-            if(symptomSearch_data_2.length <=0){
-              return
-            }else{
+            if (symptomSearch_data_2.length <= 0) {
+              return;
+            } else {
               that.symptomSearch_data_2 = symptomSearch_data_2;
               that.is_symptomSearch_2 = true;
             }
           }
-        }).catch(e =>{
-          console.log(e)
         })
-      },
-     // 点击其他症状列表项
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    // 点击其他症状列表项
 
-      symptomSearchClick_2(n){
-        this.symptomSearch_name_2 = n;
-      },
+    symptomSearchClick_2(n) {
+      this.symptomSearch_name_2 = n;
+    },
     // ====================   现病史---- 添加症状功能 -- 以上--   ====================
 
     // 点击主诉添加症状弹窗内，确定按钮
-    addSymptomPopSureClick(){
+    addSymptomPopSureClick() {
       this.addSymptomPop_1 = false;
     },
     // 点击主诉添加症状弹窗内，清除按钮
-    addSymptomPopEmptyClick(){
+    addSymptomPopEmptyClick() {
       let that = this;
-       let optionsList = this.optionsList;
-      optionsList.forEach(el =>{
-        if(el.select_options.length > 0){
-          el.select_options.forEach(el_options =>{
-            el_options.select_chect = '';
-          })
+      let optionsList = this.optionsList;
+      optionsList.forEach((el) => {
+        if (el.select_options.length > 0) {
+          el.select_options.forEach((el_options) => {
+            el_options.select_chect = "";
+          });
         }
-      })
-      that.symptomSearch_name = '';
-      that.checkList = [];   // 多选框 选中项label
+      });
+      that.symptomSearch_name = "";
+      that.checkList = []; // 多选框 选中项label
       that.searchSymptomsList = []; // 列表下拉框选中数据
       that.optionsList = optionsList;
     },
     // 点击各项弹窗内，内容
-    SelectLiClick(num,n,i,idx,idx1){
+    SelectLiClick(num, n, i, idx, idx1) {
       let number = num;
       let name = n;
       let id = i;
       let index = idx;
       let idx_1 = idx1;
       let infoData = this.infoData;
-      infoData[index].many_select_options[idx_1].obtain_name = infoData[index].many_select_options[idx_1].obtain_name + name;
-      infoData[index].total_obtain_name = '';
-      infoData.forEach(ele =>{
-         ele.total_obtain_name = '';
-        ele.many_select_options.forEach(ele_m =>{
-          ele.total_obtain_name += ele_m.obtain_name
-        })
-      })
+      infoData[index].many_select_options[idx_1].obtain_name =
+        infoData[index].many_select_options[idx_1].obtain_name + name;
+      infoData[index].total_obtain_name = "";
+      infoData.forEach((ele) => {
+        ele.total_obtain_name = "";
+        ele.many_select_options.forEach((ele_m) => {
+          ele.total_obtain_name += ele_m.obtain_name;
+        });
+      });
       this.infoData = infoData;
-      console.log(infoData[index].total_obtain_name)
+      console.log(infoData[index].total_obtain_name);
       // infoData[index].total_obtain_name = infoData[index].total_obtain_name + infoData[index].many_select_options[idx_1].obtain_name;
-
     },
     // 点击各项弹窗内 清除按钮
-    emptyLiClick(idx,idx1){
+    emptyLiClick(idx, idx1) {
       let index = idx;
       let idx_1 = idx1;
       let infoData = this.infoData;
-      infoData[index].many_select_options[idx_1].obtain_name ='';
-      infoData[index].total_obtain_name ='';
-
+      infoData[index].many_select_options[idx_1].obtain_name = "";
+      infoData[index].total_obtain_name = "";
     },
     // cdss(icss)主页面展示信息数据
-    getManySelect(){
+    getManySelect() {
       let that = this;
-      getManySelect({}).then(res =>{
-        if(res.data.code == 0){
-          let infoData = res.data.data;
-          infoData.forEach(ele =>{
-            ele.total_obtain_name = '';
-            ele.many_select_options.forEach(ele_1 =>{
-              ele_1.obtain_name = '';
-            })
-          })
-          that.infoData = infoData;
-          console.log(that.infoData)
-        }
-      }).catch(e =>{
-        console.log(e)
-      })
+      getManySelect({})
+        .then((res) => {
+          if (res.data.code == 0) {
+            let infoData = res.data.data;
+            infoData.forEach((ele) => {
+              ele.total_obtain_name = "";
+              ele.many_select_options.forEach((ele_1) => {
+                ele_1.obtain_name = "";
+              });
+            });
+            that.infoData = infoData;
+            console.log(that.infoData);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     // 点击右侧模块头部分页
     handleClick(tab) {
       this.activeName = tab.name;
     },
     // 点击主页各项数据标题显示弹窗内确定按钮
-    sureLiClick(i){
+    sureLiClick(i) {
       let that = this;
       let id = i;
       that.pop1 = false;
     },
     // 点击主页各项数据标题显示弹窗
-    item_many_selectClick(i,c){
+    item_many_selectClick(i, c) {
       let that = this;
       let id = i;
       let category = c;
@@ -933,265 +1498,293 @@ export default {
     },
 
     // 点击弹窗蒙层
-    popClick(){
+    popClick() {
       this.popId = 0;
       this.pop1 = false;
     },
     // 点击主诉添加症状-1
-    addSymptom_1(){
+    addSymptom_1() {
       let that = this;
       // 接口获取列表
-      getWesternSymptomList({}).then(res => {
-        if(res.data.code == 0){
-          that.optionsList = res.data.data;
-          that.addSymptomPop_1 = true;
-        }
-      }).catch(e =>{
-        console.log(e)
-      })
+      getWesternSymptomList({})
+        .then((res) => {
+          if (res.data.code == 0) {
+            that.optionsList = res.data.data;
+            that.addSymptomPop_1 = true;
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     // 点击下来选项
-    searchSymptomsChange(e){
+    searchSymptomsChange(e) {
       let searchSymptomsList = [];
       let optionsList = this.optionsList;
-      optionsList.forEach(el =>{
-        if(el.select_options.length > 0){
-          el.select_options.forEach(el_options =>{
-            if(el_options.select_chect){
-              searchSymptomsList.push(el_options.select_chect)
+      optionsList.forEach((el) => {
+        if (el.select_options.length > 0) {
+          el.select_options.forEach((el_options) => {
+            if (el_options.select_chect) {
+              searchSymptomsList.push(el_options.select_chect);
             }
-          })
+          });
         }
-      })
+      });
       this.searchSymptomsList = searchSymptomsList;
     },
     // 点击西医问诊 保存按钮
-    finish_btn(){
+    finish_btn() {
       let that = this;
-      let checkList = that.checkList;  //主诉 添加症状内 多选数据
+      let checkList = that.checkList; //主诉 添加症状内 多选数据
       let searchSymptomsList = that.searchSymptomsList; //主诉 添加症状内 下拉数据
       let symptomSearch_name = that.symptomSearch_name; // 主诉 搜索数据
-      
-      let checkList_2 = that.checkList_2;  //现病史 添加症状内 多选数据
+
+      let checkList_2 = that.checkList_2; //现病史 添加症状内 多选数据
       let searchSymptomsList_2 = that.searchSymptomsList_2; //现病史 添加症状内 下拉数据
       let symptomSearch_name_2 = that.symptomSearch_name_2; //现病史 搜索数据
       let infoData = that.infoData;
 
       // ====================  主述 添加症状数据处理 以下 ===================
-      let symptoms = '';  
-      if( searchSymptomsList.length > 0 ){
-        if(checkList.length > 0){
-          symptoms = searchSymptomsList.join(',') + ',' + checkList.join(',');
-        }else{
-          symptoms = searchSymptomsList.join(',');
+      let symptoms = "";
+      if (searchSymptomsList.length > 0) {
+        if (checkList.length > 0) {
+          symptoms = searchSymptomsList.join(",") + "," + checkList.join(",");
+        } else {
+          symptoms = searchSymptomsList.join(",");
         }
-      }else{
-        symptoms = checkList.join(',');
+      } else {
+        symptoms = checkList.join(",");
       }
-      if(symptomSearch_name){
-        symptoms = symptoms+','+ symptomSearch_name;
+      if (symptomSearch_name) {
+        symptoms = symptoms + "," + symptomSearch_name;
       }
       // that.symptoms = symptoms;
       // ====================  主述 添加症状数据处理 以上 ===================
 
       // ====================  现病史 添加症状数据处理 以下 ===================
 
-      let symptoms_2 = '';  
-      if( searchSymptomsList_2.length > 0 ){
-        if(checkList_2.length > 0){
-          symptoms_2 = searchSymptomsList_2.join(',') + ',' + checkList_2.join(',');
-        }else{
-          symptoms_2 = searchSymptomsList_2.join(',');
+      let symptoms_2 = "";
+      if (searchSymptomsList_2.length > 0) {
+        if (checkList_2.length > 0) {
+          symptoms_2 =
+            searchSymptomsList_2.join(",") + "," + checkList_2.join(",");
+        } else {
+          symptoms_2 = searchSymptomsList_2.join(",");
         }
-      }else{
-        symptoms_2 = checkList_2.join(',');
+      } else {
+        symptoms_2 = checkList_2.join(",");
       }
-       if(symptomSearch_name_2){
-        symptoms_2 = symptoms_2+','+ symptomSearch_name_2;
+      if (symptomSearch_name_2) {
+        symptoms_2 = symptoms_2 + "," + symptomSearch_name_2;
       }
 
       // ====================  现病史 添加症状数据处理 以上 ===================
 
       let advisory_content = [];
-      infoData.forEach(ele =>{
-        if(ele.category == '主诉'){
-          advisory_content.push({
-          title: ele.category,
-          text: symptoms + ',' + ele.total_obtain_name
-          })
-        }else if(ele.category == '现病史'){
+      infoData.forEach((ele) => {
+        if (ele.category == "主诉") {
           advisory_content.push({
             title: ele.category,
-            text: symptoms_2 + ',' + ele.total_obtain_name
-          })
-        }else{
+            text: symptoms + "," + ele.total_obtain_name,
+          });
+        } else if (ele.category == "现病史") {
           advisory_content.push({
             title: ele.category,
-            text: ele.total_obtain_name
-          })
+            text: symptoms_2 + "," + ele.total_obtain_name,
+          });
+        } else {
+          advisory_content.push({
+            title: ele.category,
+            text: ele.total_obtain_name,
+          });
         }
-
-      })
+      });
 
       let pearms = {
         name: that.form.name,
         age: that.form.age,
-        sex: that.form.sex == '男'?1:2,
+        sex: that.form.sex == "男" ? 1 : 2,
         advisory_content,
         symptoms,
       };
-      if(pearms.name == '' || pearms.age == '' || pearms.sex == ''){
+
+
+      if (pearms.name == "" || pearms.age == "" || pearms.sex == "") {
         that.$message.error({
-          message: '请先填写个人信息！',
+          message: "请先填写个人信息！",
         });
-        return
+        return;
       }
+      
+      let M_id = "Z002489642";
+      let Services_Params = {
+        "xm": pearms.name,
+        "xb": pearms.sex,
+        "nl": pearms.age,
+        "csrq": that.form.csrq,
+        "sfzh": that.form.sfzh,
+        "bzyzsnl": that.form.bzyzsnl,
+        "xsecstz": that.form.xsecstz,
+        "xserytz": that.form.xserytz,
+      }
+      let diagnosisList = that.diagnosisList;
+      diagnosisList.forEach(el =>{
+         Services_Params[el.tag] = el.input;
+      })
+
+      that.DrumpServices_ZK(M_id,Services_Params);
+
+
       const loading = this.$loading({
         lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.1)',
-        target:document.querySelector('body'),
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.1)",
+        target: document.querySelector("body"),
       });
-      clickFinishBtn(pearms).then(res =>{
-         loading.close();
-        if(res.data.code == 0){
-          console.log(res)
-          if(res.data.data.symptom_about_sickness.length> 0){
+      clickFinishBtn(pearms)
+        .then((res) => {
+          loading.close();
+          if (res.data.code == 0) {
+            console.log(res);
+            if (res.data.data.symptom_about_sickness.length > 0) {
               that.disease_list = res.data.data.symptom_about_sickness; //疾病列表
               that.dataInfo_id = res.data.data.advisory_content.id;
               // return f(res.data.data.disease_list[0].name,0,that.d3jsonParser)
             }
 
-
-          // that.$store.dispatch("cdssInfo",pearms);
-          // window.sessionStorage.setItem("cdssInfo",JSON.stringify(pearms));
-          // window.sessionStorage.setItem("zs_values",zs_values)
-          // 新页面打开
-        //   let newUrl = that.$router.resolve({
-        //     path: "/inquiryResultPage"
-        //   });
-        // window.open(newUrl.href, "_blank");
-        }else if(res.data.code == 1){
-          that.$message.error({
-            message: res.data.msg,
-          });
-        }
-      }).catch(e =>{
-        loading.close();
-        console.log(e)
-      })
-
-
+            // that.$store.dispatch("cdssInfo",pearms);
+            // window.sessionStorage.setItem("cdssInfo",JSON.stringify(pearms));
+            // window.sessionStorage.setItem("zs_values",zs_values)
+            // 新页面打开
+            //   let newUrl = that.$router.resolve({
+            //     path: "/inquiryResultPage"
+            //   });
+            // window.open(newUrl.href, "_blank");
+          } else if (res.data.code == 1) {
+            that.$message.error({
+              message: res.data.msg,
+            });
+          }
+        })
+        .catch((e) => {
+          loading.close();
+          console.log(e);
+        });
     },
     // 点击西医问诊 预览按钮
-    getUserAdvisory(){
+    getUserAdvisory() {
       let that = this;
       let id = that.dataInfo_id;
-      if( !id || id == 0){
+      if (!id || id == 0) {
         that.$message.error({
-          message: '请先点击保存后预览！',
+          message: "请先点击保存后预览！",
         });
-        return
+        return;
       }
       const loading = this.$loading({
         lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.1)',
-        target:document.querySelector('body'),
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.1)",
+        target: document.querySelector("body"),
       });
-      getUserAdvisory({id}).then(res =>{
-         loading.close();
-        if(res.data.code == 0){
-          that.getUserAdvisory_list = res.data.data.advisory_content; //疾病列表
-          that.is_useradvisory = true;
-        }else if(res.data.code == 1){
-          that.$message.error({
-            message: res.data.msg,
-          });
-        }
-      }).catch(e =>{
-        loading.close();
-        console.log(e)
-      })
+      getUserAdvisory({ id })
+        .then((res) => {
+          loading.close();
+          if (res.data.code == 0) {
+            that.getUserAdvisory_list = res.data.data.advisory_content; //疾病列表
+            that.is_useradvisory = true;
+          } else if (res.data.code == 1) {
+            that.$message.error({
+              message: res.data.msg,
+            });
+          }
+        })
+        .catch((e) => {
+          loading.close();
+          console.log(e);
+        });
     },
     // 列表多选选项
-    checkGroup(e){
+    checkGroup(e) {
       let that = this;
       let checkGroupList = e;
       let checkList = that.checkList;
-      if(checkGroupList.length > 5){
-        alert('最多选择5项！')
+      if (checkGroupList.length > 5) {
+        alert("最多选择5项！");
         checkList.pop();
         that.checkList = checkList;
-        console.log(that.checkList)
-      }else{
-        console.log(that.checkList)
+        console.log(that.checkList);
+      } else {
+        console.log(that.checkList);
       }
-      console.log(that.checkList)
+      console.log(that.checkList);
     },
     // 搜索其他症状@input事件
-    getInputBtn(){
+    getInputBtn() {
       let that = this;
-      if(that.inputOtherValue == ''){
+      if (that.inputOtherValue == "") {
         that.$message.error({
-            message: '请填写内容',
+          message: "请填写内容",
         });
-        return
+        return;
       }
-      that.symptomSearch_data = '';
-       that.is_symptomSearch = false;
+      that.symptomSearch_data = "";
+      that.is_symptomSearch = false;
       getchoosesymptomBtn({
         keyword: that.inputOtherValue,
-      }).then(res =>{
-        if(res.data.code == 0){
-          let symptomSearch_data = res.data.data;
-          if(symptomSearch_data.length <=0){
-            return
-          }else{
-            that.symptomSearch_data = symptomSearch_data;
-            that.is_symptomSearch = true;
-          }
-        }
-      }).catch(e =>{
-        console.log(e)
       })
+        .then((res) => {
+          if (res.data.code == 0) {
+            let symptomSearch_data = res.data.data;
+            if (symptomSearch_data.length <= 0) {
+              return;
+            } else {
+              that.symptomSearch_data = symptomSearch_data;
+              that.is_symptomSearch = true;
+            }
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
-     // 点击其他症状列表项
-    symptomSearchClick(n){
+    // 点击其他症状列表项
+    symptomSearchClick(n) {
       this.symptomSearch_name = n;
     },
 
     // ================================================================
 
-    
     // 点击疑似病例
-    clickYsbl(n,i){
+    clickYsbl(n, i) {
       let that = this;
-      that.click_ysbl(n,i,that.d3jsonParser);
+      that.click_ysbl(n, i, that.d3jsonParser);
     },
-    click_ysbl(n,i,f) {
+    click_ysbl(n, i, f) {
       let that = this;
       let name = n;
       let index = i;
       that.hot_name = name;
       that.clickIndex = index;
       let pearms = {
-        disease_name:name,
+        disease_name: name,
       };
-      clickYsbl(pearms).then(res =>{
-        if(res.data.code == 0){
-          let graph = res.data.data.graph; //图谱
-          that.medicine_list = res.data.data.medicine_list; //药品列表
-          that.inspection_list = res.data.data.inspection_list; //检查列表
-          that.complication_list = res.data.data.complication_list; //并发症
-          that.is_casePop = true;
-          return f(graph);
-        }
-      }).catch(e =>{
-        console.log(e)
-      })
+      clickYsbl(pearms)
+        .then((res) => {
+          if (res.data.code == 0) {
+            let graph = res.data.data.graph; //图谱
+            that.medicine_list = res.data.data.medicine_list; //药品列表
+            that.inspection_list = res.data.data.inspection_list; //检查列表
+            that.complication_list = res.data.data.complication_list; //并发症
+            that.is_casePop = true;
+            return f(graph);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     // 获取图谱数据
     d3jsonParser(data) {
@@ -1333,59 +1926,66 @@ export default {
     click_close() {
       this.is_casePop = false;
     },
-     // 点击查看详情弹窗关闭按钮
+    // 点击查看详情弹窗关闭按钮
     ypxqclick_close() {
       this.is_ypxq = false;
     },
     // 点击预览弹窗关闭按钮
-    useradvisory_close(){
+    useradvisory_close() {
       this.is_useradvisory = false;
     },
     // 点击查看详情
-    click_ypxq(t,n) {
+    click_ypxq(t, n) {
       let that = this;
       let tag = t;
       let name = n;
       let pearms = {
-        'sickness':name,
-        'tag': tag
-      }
-    getSickNess(pearms).then( res =>{
-        if(res.data.code == 0){
-          let getinfo = res.data.data;
-          that.name_1 = getinfo.sickness_name.text;
-          // let kgid = getinfo.kgid?getinfo.kgid.text:'';
-          let getinfo_arr = [];
-          for(let key in getinfo){
-            let is_list = 0;
-            if( getinfo[key].text.name ){
-              is_list = 1;
+        sickness: name,
+        tag: tag,
+      };
+      getSickNess(pearms)
+        .then((res) => {
+          if (res.data.code == 0) {
+            let getinfo = res.data.data;
+            that.name_1 = getinfo.sickness_name.text;
+            // let kgid = getinfo.kgid?getinfo.kgid.text:'';
+            let getinfo_arr = [];
+            for (let key in getinfo) {
+              let is_list = 0;
+              if (getinfo[key].text.name) {
+                is_list = 1;
+              }
+              if (
+                getinfo[key].name != "名称" &&
+                getinfo[key].text != "" &&
+                getinfo[key].text != "[]" &&
+                getinfo[key].name != "kgid"
+              ) {
+                getinfo_arr.push({
+                  is_list,
+                  name: getinfo[key].name,
+                  text: getinfo[key].text.name
+                    ? getinfo[key].text.name
+                    : getinfo[key].text,
+                  tag: getinfo[key].text.name ? getinfo[key].text.tag : "",
+                });
+              }
             }
-            if((getinfo[key].name != '名称' && getinfo[key].text != '' && getinfo[key].text != "[]" && getinfo[key].name != "kgid")){
-
-              getinfo_arr.push ({
-                is_list,
-                name: getinfo[key].name,
-                text: getinfo[key].text.name ? getinfo[key].text.name : getinfo[key].text,
-                tag: getinfo[key].text.name ? getinfo[key].text.tag : '',
-              })
-            }
-
+            that.getinfo = getinfo_arr;
+            this.is_ypxq = true;
           }
-          that.getinfo= getinfo_arr;
-          this.is_ypxq = true;
-        }
-      }).catch(e =>{
-        console.log(e)
-      })
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     // 医学知识全选按钮事件
     handleCheckAllChange(val) {
       let MedicineTagList = this.MedicineTagList;
       let newMedicineTagList = [];
-      MedicineTagList.forEach(ele =>{
-        newMedicineTagList.push(ele.tag)
-      })
+      MedicineTagList.forEach((ele) => {
+        newMedicineTagList.push(ele.tag);
+      });
       this.checkMedicineTagList = val ? newMedicineTagList : [];
       this.isIndeterminate = false;
     },
@@ -1393,42 +1993,53 @@ export default {
     checkMedicine(value) {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.MedicineTagList.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.MedicineTagList.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.MedicineTagList.length;
     },
     // 医学知识搜索事件
-    getMedicineInputBtn(){
+    getMedicineInputBtn() {
       let that = this;
       let checkMedicineTagList = that.checkMedicineTagList;
       let inputMedicineValue = that.inputMedicineValue;
       let pearms = {
-        tag: checkMedicineTagList.join(','),
-        keyword:inputMedicineValue
-      }
-      if(pearms.keyword == '' || pearms.tag == '' ){
+        tag: checkMedicineTagList.join(","),
+        keyword: inputMedicineValue,
+      };
+      if (pearms.keyword == "" || pearms.tag == "") {
         that.$message.error({
-          message: '请先填写内容和选择选项！',
+          message: "请先填写内容和选择选项！",
         });
-        return
+        return;
       }
-      getMedicineList(pearms).then(res =>{
-        if(res.data.code == 0){
-          let list = res.data.data;
-          let newList = [];
-          for(let key in list){
-            newList.push({
-              tag: key,
-              tag_name: key == 'medicine'?'药品':(key == 'inspection'?'检查':key == 'symptom'?'诊断':(key == 'disease'?'疾病':'') ),
-              list:list[key]
-            })
+      getMedicineList(pearms)
+        .then((res) => {
+          if (res.data.code == 0) {
+            let list = res.data.data;
+            let newList = [];
+            for (let key in list) {
+              newList.push({
+                tag: key,
+                tag_name:
+                  key == "medicine"
+                    ? "药品"
+                    : key == "inspection"
+                    ? "检查"
+                    : key == "symptom"
+                    ? "诊断"
+                    : key == "disease"
+                    ? "疾病"
+                    : "",
+                list: list[key],
+              });
+            }
+            that.MedicineIfoList = newList;
+            console.log(that.MedicineIfoList);
           }
-          that.MedicineIfoList = newList;
-          console.log(that.MedicineIfoList)
-        }
-      }).catch(e =>{
-        console.log(e)
-      })
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
   },
-
-}
+};
 </script>

@@ -6,6 +6,6 @@ export default {
         // 生产
         pro: 'https://zskweb.jiankangche.cn/jmjk/',
         // webServices
-        webServicesUrl:''
+        webServicesUrl:'/api'
     }
 }

@@ -202,14 +202,31 @@ export const getManySelect = (params) =>{
     data: params
   })
 }
-
-// ======================== webServicesAxios  接口 ===========================================
-// cdss(icss)webServicesAxios 
-export const DrumpServices_ZK = (params) =>{
-  return webServicesAxios.request({
-    url:'http://49.233.2.47:9000/drumpWS_QT.asmx?op=DrumpServices_ZK',
+// cdss(icss)获取主要诊断
+export const getDiagnosis = (params) =>{
+  return axios.request({
+    url:'/diagnosis',
     method: 'post',
     data: params
   })
 }
+// cdss(icss)获取主要诊断获取编码
+export const getIcd = (params) =>{
+  return axios.request({
+    url:'/get_icd',
+    method: 'post',
+    data: params
+  })
+}
+
+
+// ======================== webServicesAxios  接口 ===========================================
+// cdss(icss)webServicesAxios 
+// export const DrumpServices_ZK = (params) =>{
+//   return webServicesAxios.request({
+//     url:'/drumpHTTP_QT.aspx',
+//     method: 'post',
+//     data: params
+//   })
+// }
 
