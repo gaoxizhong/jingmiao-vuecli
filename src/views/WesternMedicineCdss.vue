@@ -59,11 +59,7 @@
                           src-common-components-EditableSpan-CXPJX"
                       >
                         <!-- 下拉框数据 -->
-                        <span
-                          v-for="(item, index) in searchSymptomsList"
-                          :key="index"
-                          style="padding: 0 4px"
-                        >
+                        <span v-for="(item, index) in searchSymptomsList" :key="index" style="padding: 0 4px">
                           <span>{{ item }}</span>
                           <span>,</span>
                         </span>
@@ -81,81 +77,34 @@
                         </span>
                       </span>
                       <div class="src-components-SpreadDrop-2GbRo">
-                        <div class="src-components-SpreadDrop-XVhKz
-                            largeFontSize
-                            selectColor" @click.stop="addSymptom_1"
-                        >
+                        <div class="src-components-SpreadDrop-XVhKz largeFontSize selectColor" @click.stop="addSymptom_1">
                           添加症状
                         </div>
                         <!-- 选项弹窗模块 -->
-                        <div class="src-components-ListItems-3K8km"
-                          style="left: auto"
-                          v-show="addSymptomPop_1"
-                          id="addSymptomPop_1"
-                        >
+                        <div class="src-components-ListItems-3K8km" style="left: auto" v-show="addSymptomPop_1" id="addSymptomPop_1">
                           <div class="clearfix">
                             <!-- <p class="src-components-ListItems-1OJip">按点击顺序成文</p> -->
                             <div class="src-components-ListItems-31jDC">
-                              <span
-                                class="src-components-ListItems-3iV0y"
-                                @click.stop="addSymptomPopEmptyClick"
-                                >清空选项</span
-                              >
-                              <span
-                                class="src-components-ListItems-3TE88"
-                                @click.stop="addSymptomPopSureClick"
-                                >确定</span
-                              >
+                              <span class="src-components-ListItems-3iV0y" @click.stop="addSymptomPopEmptyClick">清空选项</span>
+                              <span class="src-components-ListItems-3TE88" @click.stop="addSymptomPopSureClick">确定</span>
                             </div>
                           </div>
-                          <el-checkbox-group
-                            v-model="checkList"
-                            @change="checkGroup"
-                          >
-                            <div
-                              class="options-list-box"
-                              v-for="(item, index) in optionsList"
-                              :key="index"
-                            >
+                          <el-checkbox-group v-model="checkList" @change="checkGroup">
+                            <div class="options-list-box" v-for="(item, index) in optionsList" :key="index">
                               <div class="options-list-title">
                                 {{ item.category }}
                               </div>
                               <div class="oplist-items-box">
                                 <div>
                                   <span v-if="item.select_options.length > 0">
-                                    <el-select
-                                      class="el-oplistselect-box el-select"
-                                      :placeholder="
-                                        items_options.select_name + '选项'
-                                      "
-                                      v-model="items_options.select_chect"
-                                      slot="prepend"
-                                      v-for="(
-                                        items_options, index_options
-                                      ) in item.select_options"
-                                      :key="index_options"
-                                      @change="searchSymptomsChange"
-                                    >
-                                      <el-option
-                                        v-for="(
-                                          it, inx
-                                        ) in items_options.select_values"
-                                        :key="inx"
-                                        :label="it"
-                                        :value="it"
-                                      ></el-option>
+                                    <el-select class="el-oplistselect-box el-select" :placeholder="items_options.select_name + '选项' "
+                                      v-model="items_options.select_chect" slot="prepend" v-for="(items_options, index_options) in item.select_options" :key="index_options" @change="searchSymptomsChange">
+                                      <el-option v-for="(it, inx) in items_options.select_values" :key="inx" :label="it" :value="it"></el-option>
                                     </el-select>
                                   </span>
 
-                                  <span
-                                    v-for="(items, idx) in item.options"
-                                    :key="idx"
-                                  >
-                                    <el-checkbox
-                                      :label="items"
-                                      v-if="items != ''"
-                                      >{{ items }}</el-checkbox
-                                    >
+                                  <span v-for="(items, idx) in item.options" :key="idx">
+                                    <el-checkbox :label="items" v-if="items != ''">{{ items }}</el-checkbox>
                                   </span>
                                 </div>
                               </div>
@@ -175,25 +124,12 @@
                                 <!-- <el-button slot="append" @click.stop="getInputBtn()">确定</el-button> -->
                               </el-input>
                             </div>
-                            <div
-                              class="qt-inputPop-box"
-                              v-show="is_symptomSearch"
-                              id="is_symptomSearch"
-                            >
+                            <div class="qt-inputPop-box" v-show="is_symptomSearch" id="is_symptomSearch">
                               <div class="scrollarea" style="max-height: 180px">
                                 <div class="scrollarea-content content">
                                   <ul>
-                                    <li
-                                      class="
-                                        src-common-components-LiItem-2PM-m
-                                        src-common-components-LiItem-3S7Fa
-                                      "
-                                      v-for="(
-                                        item, index
-                                      ) in symptomSearch_data"
-                                      :key="index"
-                                      @click.stop="symptomSearchClick(item)"
-                                    >
+                                    <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
+                                      v-for="(item, index) in symptomSearch_data" :key="index" @click.stop="symptomSearchClick(item)">
                                       {{ item }}
                                     </li>
                                   </ul>
@@ -211,21 +147,13 @@
                     <div style="display: inline-block" v-if="index == 1">
                       <span class=" src-common-components-EditableSpan-G8WSU largeFontSize selectColor src-common-components-EditableSpan-CXPJX">
                         <!-- 下拉框数据 -->
-                        <span
-                          v-for="(item, index) in searchSymptomsList_2"
-                          :key="index"
-                          style="padding: 0 4px"
-                        >
+                        <span v-for="(item, index) in searchSymptomsList_2" :key="index" style="padding: 0 4px">
                           <span>{{ item }}</span>
                           <span>,</span>
                         </span>
                         <!-- 多选框数据 -->
                         <span v-if="checkList_2.length > 0">
-                          <span
-                            v-for="(item, index) in checkList_2"
-                            :key="index"
-                            style="padding: 0 4px"
-                          >
+                          <span v-for="(item, index) in checkList_2" :key="index" style="padding: 0 4px">
                             <span>{{ item }}</span>
                             <span>,</span>
                           </span>
@@ -237,14 +165,7 @@
                         </span>
                       </span>
                       <div class="src-components-SpreadDrop-2GbRo">
-                        <div
-                          class="
-                            src-components-SpreadDrop-XVhKz
-                            largeFontSize
-                            selectColor
-                          "
-                          @click.stop="addSymptom_2"
-                        >
+                        <div class="src-components-SpreadDrop-XVhKz largeFontSize selectColor" @click.stop="addSymptom_2">
                           添加症状
                         </div>
                         <!-- 选项弹窗模块 -->
@@ -428,45 +349,13 @@
                           <div>
                             <!-- 第一列 -->
                             <ul class="src-components-ListItem-bf29n">
-                              <li
-                                :class="[idx_2 == 0 ? 'hideClass' : '']"
-                                class="src-common-components-LiItem-3S7Fa"
-                                v-for="(
-                                  items, idx_2
-                                ) in item_many_select.first_column_select"
-                                :key="idx_2"
-                                @click.stop="
-                                  SelectLiClick(
-                                    '1',
-                                    items,
-                                    item_many_select.id,
-                                    index,
-                                    idx_1
-                                  )
-                                "
-                              >
+                              <li :class="[idx_2 == 0 ? 'hideClass' : '']" class="src-common-components-LiItem-3S7Fa" v-for="(items, idx_2) in item_many_select.first_column_select" :key="idx_2" @click.stop="SelectLiClick('1', items,item_many_select.id,index,idx_1)">
                                 {{ items }}
                               </li>
                             </ul>
                             <!-- 第二列 -->
                             <ul class="src-components-ListItem-bf29n">
-                              <li
-                                :class="[idx_2 == 0 ? 'hideClass' : '']"
-                                class="src-common-components-LiItem-3S7Fa"
-                                v-for="(
-                                  items, idx_2
-                                ) in item_many_select.second_column_select"
-                                :key="idx_2"
-                                @click.stop="
-                                  SelectLiClick(
-                                    '2',
-                                    items,
-                                    item_many_select.id,
-                                    index,
-                                    idx_1
-                                  )
-                                "
-                              >
+                              <li :class="[idx_2 == 0 ? 'hideClass' : '']" class="src-common-components-LiItem-3S7Fa" v-for="(items, idx_2) in item_many_select.second_column_select" :key="idx_2" @click.stop="SelectLiClick('2',items,item_many_select.id,index,idx_1)">
                                 {{ items }}
                               </li>
                             </ul>
@@ -552,7 +441,7 @@
                 <div class="blxxDiv-info-box1">
                   <div class="demo-input-suffix" v-for="(item,index) in diagnosisList" :key="index">
                     <span>{{item.name}}：</span>
-                    <el-input :placeholder="`${item.name}`" v-model="item.input" :disabled="(item.tag == 'jbdm' || item.tag == 'icdCode')? true : false" @input="(item.tag == 'zyzd' || item.tag == 'icdName') ? getIcd(item.input,item.tag) : '' "></el-input>
+                    <el-input :placeholder="`${item.name}`" v-model="item.input" @input="(item.id == 7 || item.id == 9) ? getIcd(item.input,item.id) : '' "></el-input>
                   </div>
                 </div> 
               </div>
@@ -1099,7 +988,7 @@ li {
   margin: 0;
 }
 .demo-input-suffix >>> .el-input{
-  width: 58%;
+  width: 54%;
   height: 30px;
   line-height: 30px;
   margin-right: 12px;
@@ -1131,24 +1020,24 @@ li {
 }
 </style>
 <script>
-import d3Atlas from "../components/d3Atlas";
-import Qs from 'qs';
-import {
-  getWesternSymptomList,
-  clickFinishBtn,
-  clickYsbl,
-  getSickNess,
-  getMedicineList,
-  getchoosesymptomBtn,
-  getManySelect,
-  getUserAdvisory,
-  getDiagnosis,
-  getIcd,
-} from "@/api/data";
-const x2js = require("x2js");
-export default {
-  name: "WesternMedicineCdss",
-  components: {
+  import d3Atlas from "../components/d3Atlas";
+  import Qs from 'qs';
+  import {
+    getWesternSymptomList,
+    clickFinishBtn,
+    clickYsbl,
+    getSickNess,
+    getMedicineList,
+    getchoosesymptomBtn,
+    getManySelect,
+    getUserAdvisory,
+    getDiagnosis,
+    getIcd,
+  } from "@/api/data";
+  const x2js = require("x2js");
+  export default {
+    name: "WesternMedicineCdss",
+    components: {
     d3Atlas,
   },
   data() {
@@ -1257,20 +1146,26 @@ export default {
     getIcd(i_n,t){
       let that = this;
       let name = i_n;
-      let tag = t;
+      let id = t;
       let diagnosisList = that.diagnosisList;
+
       getIcd({name}).then(res =>{
+
         diagnosisList.forEach(el =>{
-          if(tag == 'zyzd'){
-            if(el.tag == 'jbdm'){
-              el.input = res.data.data.length > 0 ? (res.data.data[0].i_cd?res.data.data[0].i_cd:''): ''
+          if(id == 7){
+
+            if(el.id == 8){
+
+              el.input = res.data.data.length > 0 ? (res.data.data[0].i_cd?res.data.data[0].i_cd: el.input): el.input
+            }
+
+          }
+          if(id == 9){
+            if(el.id == 10){
+              el.input = res.data.data.length > 0 ? (res.data.data[0].i_cd?res.data.data[0].i_cd: el.input): el.input
             }
           }
-          if(tag == 'icdName'){
-            if(el.tag == 'icdCode'){
-              el.input = res.data.data.length > 0 ? (res.data.data[0].i_cd?res.data.data[0].i_cd:''): ''
-            }
-          }
+
         })
         that.diagnosisList = diagnosisList;
       })

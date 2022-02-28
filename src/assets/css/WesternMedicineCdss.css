@@ -336,7 +336,7 @@ table {
     text-align: right;
     padding-right: 5px;
     font-weight: bold;
-    padding-top: 5px;
+    padding-top: 8px;
   }
 
   .src-Drop-265y8:before{
@@ -1072,6 +1072,7 @@ img.src-components-Preview-2DV3S {
   align-items: center;
   width: 33.33333333333%;
   font-size: 14px;
+  margin-bottom: 14px;
 }
 
 .demo-input-suffix>span{
