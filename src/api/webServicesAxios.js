@@ -6,9 +6,12 @@ import store from '../store'
 import router from '../router'
 import Qs from 'qs'
 // 设置配置 根据开发和生产环境不一样
-// const baseURL = process.env.NODE_ENV === 'development'? config.baseURL.dev : config.baseURL.pro;
 
-const baseURL = config.baseURL.webServicesUrl;
+console.log(process.env.NODE_ENV)
+
+const baseURL = process.env.NODE_ENV === 'development'? config.baseURL.webServicesUrl : config.baseURL.webServicesUrl_pro;
+
+// const baseURL = config.baseURL.webServicesUrl;
 
 class HttpRequst {
 

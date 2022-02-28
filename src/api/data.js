@@ -220,7 +220,7 @@ export const getIcd = (params) =>{
 }
 
 
-// ======================== webServicesAxios  接口 ===========================================
+// ======================== webServicesAxios 第三方接口 以下 ===========================================
 // cdss(icss)webServicesAxios 
 // export const DrumpServices_ZK = (params) =>{
 //   return webServicesAxios.request({
@@ -230,3 +230,11 @@ export const getIcd = (params) =>{
 //   })
 // }
 
+export const DrumpServices_ZK = (params) =>{
+  return axios.request({
+    url:'/thirdparty',
+    method: 'post',
+    data: params
+  })
+}
+// ======================== webServicesAxios  第三方接口 以上===========================================

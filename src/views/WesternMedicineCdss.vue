@@ -441,7 +441,7 @@
                 <div class="blxxDiv-info-box1">
                   <div class="demo-input-suffix" v-for="(item,index) in diagnosisList" :key="index">
                     <span>{{item.name}}：</span>
-                    <el-input :placeholder="`${item.name}`" v-model="item.input" @input="(item.id == 7 || item.id == 9) ? getIcd(item.input,item.id) : '' "></el-input>
+                    <el-input :placeholder="`${item.name}`" v-model="item.input" @input="getIcd(item.input,item.id)"></el-input>
                   </div>
                 </div> 
               </div>
@@ -1033,6 +1033,7 @@ li {
     getUserAdvisory,
     getDiagnosis,
     getIcd,
+    DrumpServices_ZK
   } from "@/api/data";
   const x2js = require("x2js");
   export default {
@@ -1148,27 +1149,26 @@ li {
       let name = i_n;
       let id = t;
       let diagnosisList = that.diagnosisList;
-
-      getIcd({name}).then(res =>{
-
-        diagnosisList.forEach(el =>{
+      if(id == 7 || id == 9){
+        getIcd({name}).then(res =>{
           if(id == 7){
-
-            if(el.id == 8){
-
-              el.input = res.data.data.length > 0 ? (res.data.data[0].i_cd?res.data.data[0].i_cd: el.input): el.input
-            }
-
+            diagnosisList.forEach(el =>{
+              if(el.id == 8){
+                el.input = res.data.data.length > 0 ? (res.data.data[0].icd?res.data.data[0].icd: el.input): el.input
+              }
+            })
           }
           if(id == 9){
-            if(el.id == 10){
-              el.input = res.data.data.length > 0 ? (res.data.data[0].i_cd?res.data.data[0].i_cd: el.input): el.input
-            }
+            diagnosisList.forEach(el =>{
+              if(el.id == 10){
+                el.input = res.data.data.length > 0 ? (res.data.data[0].icd?res.data.data[0].icd: el.input): el.input
+              }
+            })
           }
-
+          that.diagnosisList = diagnosisList;
         })
-        that.diagnosisList = diagnosisList;
-      })
+      }
+      
     },
     // 获取主要诊断选项
     getDiagnosis(){
@@ -1188,12 +1188,8 @@ li {
         Params[key]=Services_Params[key]
       }
      var data = Qs.stringify({"M_id":M_id,"Params":JSON.stringify(Params)});
-      that.axios({
-        method: 'post',
-        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        url:'/api/drumpHTTP_QT.aspx',
-        data
-      }).then(res =>{
+
+      DrumpServices_ZK(data).then( res =>{
         if(res.data.count == 0){
           
         }else{
@@ -1201,6 +1197,19 @@ li {
         return;
         }
       })
+      // that.axios({
+      //   method: 'post',
+      //   headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      //   url:'http://49.233.2.47:9000/drumpHTTP_QT.aspx',
+      //   data
+      // }).then(res =>{
+      //   if(res.data.count == 0){
+          
+      //   }else{
+      //     that.basyzk_list = res.data.data;
+      //   return;
+      //   }
+      // })
     },
     // ====================   现病史---- 添加症状功能 -- 以下 --  ====================
     // 点击 现病史 添加症状-1

@@ -5,7 +5,10 @@ export default {
         dev: 'https://zskweb.jiankangche.cn/jmjk/',
         // 生产
         pro: 'https://zskweb.jiankangche.cn/jmjk/',
-        // webServices
-        webServicesUrl:'/api'
+        // webServices开发环境
+        webServicesUrl:'/api',
+        // webServices生产环境
+        webServicesUrl_pro:'http://49.233.2.47:9000',
+
     }
 }
