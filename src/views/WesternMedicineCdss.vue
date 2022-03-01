@@ -327,10 +327,7 @@
                           {{ item_many_select.inspect_name }}
                         </div>
                         <!-- 数据弹窗 -->
-                        <div
-                          class="src-common-components-DropList-3yJNN"
-                          v-if="item_many_select.id == popId && pop1"
-                        >
+                        <div class="src-common-components-DropList-3yJNN" v-if="item_many_select.id == popId && pop1">
                           <div class="clearfix">
                             <!-- <p class="src-components-ListItems-1OJip">按点击顺序成文</p> -->
                             <div class="src-components-ListItems-31jDC">
@@ -625,7 +622,6 @@
     </div>
     <!-- 以下各种弹窗功能 -->
     <!-- 数据弹窗 -->
-    <div class="popDiv-box" v-if="pop1" @click.stop="popClick"></div>
     <!-- 点击右侧医学知识列表弹窗 -->
     <div class="casePop-mask" v-if="is_casePop"></div>
     <div class="casePop-module-box" v-if="is_casePop">
@@ -1442,11 +1438,6 @@ li {
       that.pop1 = true;
     },
 
-    // 点击弹窗蒙层
-    popClick() {
-      this.popId = 0;
-      this.pop1 = false;
-    },
     // 点击主诉添加症状-1
     addSymptom_1() {
       let that = this;
