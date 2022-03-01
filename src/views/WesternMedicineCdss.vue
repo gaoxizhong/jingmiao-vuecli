@@ -1022,6 +1022,8 @@ li {
 <script>
   import d3Atlas from "../components/d3Atlas";
   import Qs from 'qs';
+  import Time from '../assets/js/time';
+
   import {
     getWesternSymptomList,
     clickFinishBtn,
@@ -1179,14 +1181,53 @@ li {
         }
       })
     },
-    DrumpServices_ZK(m,s_p) {
+    DrumpServices_ZK(s_p) {
       let that = this;
-      let M_id = m;
       let Services_Params = s_p;
-      let Params = {"hosId":"12231181414604795K","jkkh":"//","gj":"CHN","csd":"黑龙江省黑龙江省**市","gg":"8","mz":"1","zjlb":"1","zy":"90","hy":"2","xzz":"黑龙江**市","dh":"18645606366","yb1":"164000","hkdz":"黑龙江**市","yb2":"164000","gzdwjdz":"北河村 ","dwdh":"18645606366","yb3":"164000","lxrxm":"霸洪凤","gx":"5","dz":"北安市赵光镇*****","dh2":"15636553004","zyh":"Z002489642","ylfkfs":"2.1","zycs":2,"bah":"Z00248964","bzyzsnl":null,"xsecstz":null,"xsecstz2":null,"xsecstz3":null,"xsecstz4":null,"xsecstz5":null,"xserytz":null,"rytj":1,"rysj":"2020-12-17 09:36:00","rysjs":null,"rykb":"03","rybf":"W118普间","zkkb":"03","cysj":"2021-01-04 08:00:00","cysjs":null,"cykb":"03","cybf":"W118普间","sjzyts":18,"mzzd":"直肠肿瘤","jbbm":"D37.501","zyzd":"直肠癌","jbdm":"C20.X02","zyzdcyqk":"1","rybq":"1","rysqk":"3","ryzdbm":"D37.501","ryzdmc":"直肠肿瘤","qyhqzrq":"2020-12-17 00:00:00","lyfs":"1","yzzyYljg":null,"wsyYljg":null,"sfzzyjh":"1","md":null,"zfy":37883.62,"zfje":0,"zfje2":0,"hxjsj":null,"sfrjss":"0","tjhlts":null,"yjhlts":null,"ejhlts":17,"sjhlts":null,"wbyy":null,"h23":null,"blzd":"（直肠癌切除标本）隆起型中分化腺癌。","jbmm":"M80000/3","blh":"20203644","blzd1":null,"jbmm1":null,"blh1":null,"blzd2":null,"jbmm2":null,"blh2":null,"ywgm":"1","gmyw":null,"swhzsj":"2","xx":"5","rh":"4","hbsag":"0","hcvAb":"0","hivAb":"0","sxfy":"0","hxb":0,"xxb":0,"xj":0,"qx":0,"ztxhs":0,"ryqT":null,"ryqXs":null,"ryqF":null,"ryhT":null,"ryhXs":null,"ryhF":null,"kzrbm":"2331","kzr":"张三","zrysbm":"1008","zrys":"林艾立","zzysbm":"0069","zzys":"张旗","zyysbm":"2192","zyys":"张三","zrhsbm":"2617","zrhs":"李鑫","jxys":null,"sxys":null,"bmy":null,"bazl":null,"zkys":"刘燕铭","zkhs":"葛丽颖","zkrq":"2021-01-04 00:00:00","zzzbm":null,"zzz":null,"zzzysbm":null,"zzzys":null,"diagnos":[{"hosId":"12231181414604795K","icdCode":"K81.900","icdName":"胆囊炎","rybq":"1","cyqk":"2","ord":2,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"N40.X02","icdName":"前列腺增大","rybq":"1","cyqk":"2","ord":3,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"R93.802","icdName":"前列腺钙化灶","rybq":"1","cyqk":"2","ord":4,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"J98.422","icdName":"肺斑索","rybq":"1","cyqk":"2","ord":5,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"J98.411","icdName":"肺钙化","rybq":"1","cyqk":"2","ord":6,"cysj":"2021-01-04 08:00:00","type":"5102","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":null,"icdName":"（直肠癌切除标本）隆起型中分化腺癌。","rybq":"1","cyqk":null,"ord":7,"cysj":"2021-01-04 08:00:00","type":"5106","mid":"Z002489642"}],"fee":[{"hosId":"12231181414604795K","type":"F0101","fee":6353.42,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"B02","fee":2764.4,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"J03","fee":14468.5,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"B03","fee":924,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"A03","fee":313,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"C0101","fee":1354,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"A02","fee":125,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"J02","fee":309.88,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"B04","fee":18,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"C0202","fee":3055,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"A01","fee":1719,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"K01","fee":1593.77,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"B01","fee":830.8,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"C0201","fee":3488,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"J01","fee":34.05,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","type":"A04","fee":532.8,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"}],"operation":[{"hosId":"12231181414604795K","icdCode":"54.1901","icdName":"腹腔引流术","ord":2,"ssjczrq":"2020-12-21 08:00:00","ssjb":"2","sfzyss":"0","sscxsj":null,"sz":"林艾立","yz":"吕宏山","ez":"张旗","qkdj":"3","qkyhlb":"1","qkyhdj":null,"mzfs":"01","mzfj":null,"mzys":"王爽","cysj":"2021-01-04 08:00:00","mid":"Z002489642"},{"hosId":"12231181414604795K","icdCode":"48.503","icdName":"直肠癌根治术","ord":1,"ssjczrq":"2020-12-21 08:00:00","ssjb":"4","sfzyss":"1","sscxsj":null,"sz":"林艾立","yz":"吕宏山","ez":"张旗","qkdj":"3","qkyhlb":"1","qkyhdj":null,"mzfs":"01","mzfj":null,"mzys":"王爽","cysj":"2021-01-04 08:00:00","mid":"Z002489642"}],"mid":"Z002489642"}
-      for( var key in Services_Params ){
-        Params[key]=Services_Params[key]
-      }
+      let time = new Date();
+      var mytime=Time.formatTime(time); //获取当前时间
+      console.log(mytime);
+      let M_id = "Z002489642";
+      let Params = {
+        "hosId":"12231181414604795K",
+        "mid":"Z002489642",
+        "jkkh":"//",
+        "gj":"CHN",
+        "diagnos":[],
+        "fee":[{"hosId":"12231181414604795K","type":"A04","fee":532.8,"cysj":"2021-01-04 08:00:00","mid":"Z002489642"}],
+        "operation":[],
+        }
+        for( var key in Services_Params ){
+          Params[key]=Services_Params[key]
+        }
+
+        let diagnosisList = that.diagnosisList;
+       let d_diagnos ={
+          "hosId":"12231181414604795K",
+          "mid":"Z002489642",
+          "cysj": mytime,
+        };
+        let d_operation = {
+          "hosId":"12231181414604795K",
+          "mid":"Z002489642",
+          "cysj":mytime,
+        }
+        diagnosisList.forEach(el =>{
+          if(el.id == 7 || el.id == 8){
+           Params[el.tag] = el.input;
+          }
+          if(el.id == 9 || el.id == 10 ){
+          //  Params[el.tag] = el.input;
+          d_diagnos[el.tag] = el.input;
+          }
+          if(el.id == 13 || el.id == 14 ){
+          //  Params[el.tag] = el.input;
+          d_operation[el.tag] = el.input;
+          }
+        })
+        Params.diagnos[0] = d_diagnos;
+        Params.operation[0] = d_operation;
+
      var data = Qs.stringify({"M_id":M_id,"Params":JSON.stringify(Params)});
 
       DrumpServices_ZK(data).then( res =>{
@@ -1519,8 +1560,6 @@ li {
         });
         return;
       }
-      
-      let M_id = "Z002489642";
       let Services_Params = {
         "xm": pearms.name,
         "xb": pearms.sex,
@@ -1531,12 +1570,7 @@ li {
         "xsecstz": that.form.xsecstz,
         "xserytz": that.form.xserytz,
       }
-      let diagnosisList = that.diagnosisList;
-      diagnosisList.forEach(el =>{
-         Services_Params[el.tag] = el.input;
-      })
-
-      that.DrumpServices_ZK(M_id,Services_Params);
+      that.DrumpServices_ZK(Services_Params);
 
 
       const loading = this.$loading({

@@ -229,12 +229,21 @@ export const getIcd = (params) =>{
 //     data: params
 //   })
 // }
-
 export const DrumpServices_ZK = (params) =>{
-  return axios.request({
-    url:'/thirdparty',
-    method: 'post',
-    data: params
-  })
+  if(process.env.NODE_ENV === 'development'){
+
+    return webServicesAxios.request({
+      url:'/drumpHTTP_QT.aspx',
+      method: 'post',
+      data: params
+    })
+    }else{
+      return axios.request({
+        url:'/thirdparty',
+        method: 'post',
+        data: params
+      })
+    }
 }
+
 // ======================== webServicesAxios  第三方接口 以上===========================================
