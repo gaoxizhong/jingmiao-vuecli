@@ -27,7 +27,7 @@
           <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
             <div class="items-title">{{ item.sickness_name ? item.sickness_name : item.name }}<div class="gengduo" @click="getarticle( item.sickness_name ? item.sickness_name  : item.name,item.kgid  )">更多>></div></div>
             <!-- 中医库--疾病 -->
-            <div class="tags-list-box" v-if=" tag == 'zysickness' || tag == 'icd10'">
+            <div class="tags-list-box" v-if=" tag == 'zySickNess' || tag == 'ICD10'">
               <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
               <div :class="[{ active: item.apparatus.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'apparatus',item.apparatus.text)">{{item.apparatus.name}}</div>
               <div :class="[{ active: item.pulseCondition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pulseCondition',item.pulseCondition.text)">{{item.pulseCondition.name}}</div>
@@ -35,7 +35,7 @@
               <div :class="[{ active: item.dietTherapy.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'dietTherapy',item.dietTherapy.text)">{{item.dietTherapy.name}}</div>
             </div>
             <!-- 中医库--中药 -->
-            <div class="tags-list-box" v-if=" tag == 'zy'">
+            <div class="tags-list-box" v-if=" tag == 'CnMedicinalCrop'">
               <div :class="[{ active: item.toxicity.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'toxicity',item.toxicity.text)">{{item.toxicity.name}}</div>
               <div :class="[{ active: item.source.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'source',item.source.text)">{{item.source.name}}</div>
               <div :class="[{ active: item.pharmacology.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pharmacology',item.pharmacology.text)">{{item.pharmacology.name}}</div>
@@ -43,14 +43,14 @@
               <div :class="[{ active: item.includedIn.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'includedIn',item.includedIn.text)">{{item.includedIn.name}}</div>
             </div>
             <!-- 中医库--中成药 -->
-            <div class="tags-list-box" v-if=" tag == 'zcy'">
+            <div class="tags-list-box" v-if=" tag == 'CnPatentMedicine'">
               <div :class="[{ active: item.classification.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'classification',item.classification.text)">{{item.classification.name}}</div>
               <div :class="[{ active: item.efficacy.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'efficacy',item.efficacy.text)">{{item.efficacy.name}}</div>
               <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
               <div :class="[{ active: item.source.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'source',item.source.text)">{{item.source.name}}</div>
             </div>
              <!-- 中医库--经络 -->
-            <div class="tags-list-box" v-if=" tag == 'jl'">
+            <div class="tags-list-box" v-if=" tag == 'ChannelCollateral'">
               <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
               <div :class="[{ active: item.aponeuroticSystem.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'aponeuroticSystem',item.aponeuroticSystem.text)">{{item.aponeuroticSystem.name}}</div>
               <div :class="[{ active: item.channelSymptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'channelSymptom',item.channelSymptom.text)">{{item.channelSymptom.name}}</div>
@@ -58,17 +58,17 @@
               <div :class="[{ active: item.collateralSymptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'collateralSymptom',item.collateralSymptom.text)">{{item.collateralSymptom.name}}</div>
             </div>
              <!-- 中医库--方剂 -->
-            <div class="tags-list-box" v-if=" tag == 'fj'">
+            <div class="tags-list-box" v-if=" tag == 'Prescription'">
               <div :class="[{ active: item.composition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'composition',item.composition.text)">{{item.composition.name}}</div>
               <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
               <div :class="[{ active: item.medicinalCrop.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'medicinalCrop',item.medicinalCrop.text)">{{item.medicinalCrop.name}}</div>
             </div>
             <!-- 中医库--药膳 -->
-            <div class="tags-list-box" v-if=" tag == 'ys'">
+            <div class="tags-list-box" v-if=" tag == 'TonicDiet'">
               <div :class="[{ active: item.composition.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'composition',item.composition.text)">{{item.composition.name}}</div>
             </div>
             <!-- 中医库--体质 -->
-            <div class="tags-list-box" v-if=" tag == 'tz'">
+            <div class="tags-list-box" v-if=" tag == 'Constitution'">
               <div :class="[{ active: item.overallFeature.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'overallFeature',item.overallFeature.text)">{{item.overallFeature.name}}</div>
               <div :class="[{ active: item.tendency.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'tendency',item.tendency.text)">{{item.tendency.name}}</div>
               <div :class="[{ active: item.psychologicalFeature.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'psychologicalFeature',item.psychologicalFeature.text)">{{item.psychologicalFeature.name}}</div>
@@ -76,7 +76,7 @@
               <div :class="[{ active: item.meridianHealth.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'meridianHealth',item.meridianHealth.text)">{{item.meridianHealth.name}}</div>
             </div>
              <!-- 中医库--穴位 -->
-            <div class="tags-list-box" v-if=" tag == 'xw'">
+            <div class="tags-list-box" v-if=" tag == 'Acupoint'">
               <div :class="[{ active: item.location.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'location',item.location.text)">{{item.location.name}}</div>
               <div :class="[{ active: item.indications.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indications',item.indications.text)">{{item.indications.name}}</div>
               <div :class="[{ active: item.compatibility.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'compatibility',item.compatibility.text)">{{item.compatibility.name}}</div>
@@ -202,7 +202,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'},{label:'经络',value:'jl'},{label:'穴位',value:'xw'}],
+        options:[{label:'疾病',value:'zySickNess'},{label:'中药',value:'CnMedicinalCrop'},{label:'中成药',value:'CnPatentMedicine'},{label:'方剂',value:'Prescription'},{label:'药膳',value:'TonicDiet'},{label:'经络',value:'ChannelCollateral'},{label:'穴位',value:'Acupoint'}],
         tag:'',
         getListInfo:[],
         name:'',
@@ -280,20 +280,20 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
             for(var i = 0;i<getListInfo.length;i++){
 
               getListInfo[i].index = i;
-              if(that.tag == "zysickness" || that.tag == "icd10"){
+              if(that.tag == "zySickNess" || that.tag == "ICD10"){
                   getListInfo[i].text = getListInfo[i].symptom.text
-                }else if(that.tag == "zy"){
+                }else if(that.tag == "CnMedicinalCrop"){
                   getListInfo[i].text = getListInfo[i].toxicity.text
-                }else if(that.tag == "zcy"){
+                }else if(that.tag == "CnPatentMedicine"){
                   getListInfo[i].text = getListInfo[i].classification.text
-                }else if(that.tag == "fj" || that.tag == "ys" ){
+                }else if(that.tag == "Prescription" || that.tag == "TonicDiet" ){
                   getListInfo[i].text = getListInfo[i].composition.text
-                }else if(that.tag == "tz"){
+                }else if(that.tag == "Constitution"){
                   getListInfo[i].text = getListInfo[i].overallFeature.text
-                }else if(that.tag == "xw"){
+                }else if(that.tag == "Acupoint"){
                   getListInfo[i].text = getListInfo[i].location.text
                 }
-                else if(that.tag == "jl"){
+                else if(that.tag == "ChannelCollateral"){
                   getListInfo[i].text = getListInfo[i].indications.text
                 }
 
@@ -328,7 +328,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         let name = '';
         let kgid = _kgid;
         let tag = that.tag;
-        if(tag == 'zysickness' || tag == 'zy' || tag == 'jl' || tag == 'icd10'){
+        if(tag == 'zySickNess' || tag == 'CnMedicinalCrop' || tag == 'ChannelCollateral' || tag == 'ICD10'){
           name = kgid.text
         }else{
           name = _name
@@ -359,7 +359,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
           background: 'rgba(0, 0, 0, 0.1)',
           target:document.querySelector('.content-box'),
         });
-        if(that.tag == 'zysickness' || that.tag == 'zcy'|| that.tag == 'jl' || that.tag == 'icd10'){
+        if(that.tag == 'zySickNess' || that.tag == 'CnPatentMedicine'|| that.tag == 'ChannelCollateral' || that.tag == 'ICD10'){
          if(that.input3){
            pearms.search = that.input3;
           }else{
@@ -372,11 +372,11 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
               that.total = res.data.data.count;
               for(var i = 0;i<getListInfo.length;i++){
                 getListInfo[i].index = i;
-                if(that.tag == "zysickness" || that.tag == "icd10" ){
+                if(that.tag == "zySickNess" || that.tag == "ICD10" ){
                     getListInfo[i].text = getListInfo[i].symptom.text
-                  }else if(that.tag == "zcy"){
+                  }else if(that.tag == "CnPatentMedicine"){
                     getListInfo[i].text = getListInfo[i].classification.text
-                  }else if(that.tag == "jl"){
+                  }else if(that.tag == "ChannelCollateral"){
                     getListInfo[i].text = getListInfo[i].indications.text
                   }
               }
@@ -396,13 +396,13 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
               that.total = res.data.data.count;
               for(var i = 0;i<getListInfo.length;i++){
                 getListInfo[i].index = i;
-                  if(that.tag == "zy"){
+                  if(that.tag == "CnMedicinalCrop"){
                     getListInfo[i].text = getListInfo[i].toxicity.text
-                  }else if(that.tag == "fj" || that.tag == "ys" ){
+                  }else if(that.tag == "Prescription" || that.tag == "TonicDiet" ){
                     getListInfo[i].text = getListInfo[i].composition.text
-                  }else if(that.tag == "tz"){
+                  }else if(that.tag == "Constitution"){
                     getListInfo[i].text = getListInfo[i].overallFeature.text
-                  }else if(that.tag == "xw"){
+                  }else if(that.tag == "Acupoint"){
                     getListInfo[i].text = getListInfo[i].location.text
                 }
 
@@ -424,7 +424,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         let getListInfo = this.getListInfo;
         getListInfo[index].text = text;
         // 疾病
-        if(this.tag == "zysickness" || this.tag == "icd10"){
+        if(this.tag == "zySickNess" || this.tag == "ICD10"){
           if(type == 'apparatus'){
             getListInfo[index].apparatus.active = true;
             getListInfo[index].symptom.active = false;
@@ -467,7 +467,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
           }
         }
         // 中药
-        if(this.tag == "zy"){
+        if(this.tag == "CnMedicinalCrop"){
           if(type == 'toxicity'){
             getListInfo[index].toxicity.active = true;
             getListInfo[index].source.active = false;
@@ -510,7 +510,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
           }
         }
         // 中成药
-        if(this.tag == "zcy"){
+        if(this.tag == "CnPatentMedicine"){
           if(type == 'classification'){
             getListInfo[index].classification.active = true;
             getListInfo[index].efficacy.active = false;
@@ -542,7 +542,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
 
         }
         // 经络
-        if(this.tag == "jl"){
+        if(this.tag == "ChannelCollateral"){
           if(type == 'indications'){
             getListInfo[index].indications.active = true;
             getListInfo[index].aponeuroticSystem.active = false;
@@ -589,7 +589,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
 
         }
         // 体质
-        if(this.tag == "tz"){
+        if(this.tag == "Constitution"){
           if(type == 'overallFeature'){
             getListInfo[index].overallFeature.active = true;
             getListInfo[index].tendency.active = false;
@@ -634,7 +634,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
 
         }
         // 方剂
-        if(this.tag == "fj"){
+        if(this.tag == "Prescription"){
           if(type == 'composition'){
             getListInfo[index].composition.active = true;
             getListInfo[index].indications.active = false;
@@ -655,7 +655,7 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
           }
         }
         // 穴位
-        if(this.tag == "xw"){
+        if(this.tag == "Acupoint"){
           if(type == 'location'){
             getListInfo[index].location.active = true;
             getListInfo[index].indications.active = false;

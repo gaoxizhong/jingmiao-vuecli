@@ -40,10 +40,10 @@ export default {
       this.type = this.type;
       console.log(this.type)
       if(this.type == 'xy'){
-        this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'}]
+        this.options = [{label:'科普疾病',value:'SickNess'},{label:'医疗疾病',value:'Disease'},{label:'药品',value:'MedicineProduction'},{label:'检查',value:'Inspection'}]
       }
       if(this.type == 'zy'){
-        this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'}]
+        this.options = [{label:'疾病',value:'zySickness'},{label:'中药',value:'CnMedicinalCrop'},{label:'中成药',value:'CnPatentMedicine'},{label:'方剂',value:'Prescription'},{label:'药膳',value:'TonicDiet'}]
       }
     },
     mounted(){

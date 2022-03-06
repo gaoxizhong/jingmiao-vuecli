@@ -26,7 +26,7 @@
       <el-row style="padding-top:20px;">
         <el-col :span="20" :offset="2">
               <!-- 鉴别诊断 -->
-          <template  v-if=" tag == 'identify'">
+          <template  v-if=" tag == 'Identity'">
             <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
               <div class="items-title">{{item.sickness_name}}</div>
               <div class="tags-list-box">
@@ -42,7 +42,7 @@
           <template v-else>
             <div class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
               <div class="items-title">{{item.sickness_name}}<div class="gengduo" @click="getarticle(item.sickness_name)">更多>></div></div>
-              <div class="tags-list-box" v-if=" tag == 'sickness' || tag == 'disease' ">
+              <div class="tags-list-box" v-if=" tag == 'SickNess' || tag == 'Disease' ">
                 <div :class="[{ active: item.symptom.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'symptom',item.symptom.text)">{{item.symptom.name}}</div>
                 <div :class="[{ active: item.pathogenesis.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'pathogenesis',item.pathogenesis.text)">{{item.pathogenesis.name}}</div>
                 <div :class="[{ active: item.complicationsOverview.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'complicationsOverview',item.complicationsOverview.text)">{{item.complicationsOverview.name}}</div>
@@ -51,21 +51,21 @@
                 <div :class="[{ active: item.treatmenCommonSense.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'treatmenCommonSense',item.treatmenCommonSense.text)">{{item.treatmenCommonSense.name}}</div>
               </div>
               <!-- 药品 -->
-              <div class="tags-list-box" v-if=" tag == 'medicine' ">
+              <div class="tags-list-box" v-if=" tag == 'MedicineProduction' ">
                 <div :class="[{ active: item.majorConstituent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'majorConstituent',item.majorConstituent.text)">{{item.majorConstituent.name}}</div>
                 <div :class="[{ active: item.indication.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'indication',item.indication.text)">{{item.indication.name}}</div>
                 <div :class="[{ active: item.notes.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'notes',item.notes.text)">{{item.notes.name}}</div>
                 <div :class="[{ active: item.usageDosage.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'usageDosage',item.usageDosage.text)">{{item.usageDosage.name}}</div>
               </div>
               <!-- 检查 -->
-              <div class="tags-list-box" v-if=" tag == 'inspection' ">
+              <div class="tags-list-box" v-if=" tag == 'Inspection' ">
                 <div :class="[{ active: item.annotation.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'annotation',item.annotation.text)">{{item.annotation.name}}</div>
                 <div :class="[{ active: item.clinicalSignificance.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'clinicalSignificance',item.clinicalSignificance.text)">{{item.clinicalSignificance.name}}</div>
                 <div :class="[{ active: item.principle.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'principle',item.principle.text)">{{item.principle.name}}</div>
                 <div :class="[{ active: item.reagent.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'reagent',item.reagent.text)">{{item.reagent.name}}</div>
               </div>
               <!-- 症状体征 -->
-              <div class="tags-list-box" v-if=" tag == 'symptom' ">
+              <div class="tags-list-box" v-if=" tag == 'Symptom' ">
                 <div :class="[{ active: item.identify.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'identify',item.identify.text)">{{item.identify.name}}</div>
                 <div :class="[{ active: item.precaution.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'precaution',item.precaution.text)">{{item.precaution.name}}</div>
                 <div :class="[{ active: item.inspection.active},'tags-list-items']" :data-index='index' @click.stop="clickTags($event,'inspection',item.inspection.text)">{{item.inspection.name}}</div>
@@ -217,7 +217,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'},{label:'鉴别诊断',value:'identify'},],
+        options:[{label:'科普疾病',value:'SickNess'},{label:'医疗疾病',value:'Disease'},{label:'药品',value:'MedicineProduction'},{label:'检查',value:'Inspection'},{label:'症状体征',value:'Symptom'},{label:'鉴别诊断',value:'Identity'},],
         tag:'',
         getListInfo:[],
         name:'',
@@ -236,9 +236,9 @@ import {getHomeRightList,getSearch} from '@/api/data'
       console.log('created')
         this.select_name = this.$route.query.name;  //接受参数关键代码
         this.tag = this.$route.query.tag;
+        console.log(this.tag)
         let crumbs =  this.$store.state.crumbsarr;
         this.crumbs = crumbs;
-         console.log(crumbs)
         this.getHomeRightList();
     },
     mounted(){
@@ -302,7 +302,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
             that.tag= that.selectSearchChange;
             let getListInfo = res.data.data;
             that.total = res.data.data.count;
-            if(that.tag == "identify"){
+            if(that.tag == "Identity"){
               let showFull =[];
               for (var i = 0; i < getListInfo.length; i++) {
                 let obj = {};
@@ -314,13 +314,13 @@ import {getHomeRightList,getSearch} from '@/api/data'
             }else{
               for(var i = 0;i<getListInfo.length;i++){
                 getListInfo[i].index = i;
-                if(that.tag == "sickness" || that.tag == "disease"){
+                if(that.tag == "SickNess" || that.tag == "Disease"){
                     getListInfo[i].text = getListInfo[i].symptom.text
-                  }else if(that.tag == "medicine"){
+                  }else if(that.tag == "MedicineProduction"){
                     getListInfo[i].text = getListInfo[i].majorConstituent.text
-                  }else if(that.tag == "inspection"){
+                  }else if(that.tag == "Inspection"){
                     getListInfo[i].text = getListInfo[i].annotation.text
-                  }else if(that.tag == "symptom"){
+                  }else if(that.tag == "Symptom"){
                     getListInfo[i].text = getListInfo[i].identify.text
                   }
               }
@@ -388,7 +388,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
           if(res.data.code == 0){
             let getListInfo = res.data.data.list;
             that.total = res.data.data.count;
-            if(that.tag == "identify"){
+            if(that.tag == "Identity"){
               let showFull =[];
               for (var i = 0; i < getListInfo.length; i++) {
                 let obj = {};
@@ -400,13 +400,13 @@ import {getHomeRightList,getSearch} from '@/api/data'
             }else{
               for(var i = 0;i<getListInfo.length;i++){
                 getListInfo[i].index = i;
-                if(that.tag == "sickness" || that.tag == "disease"){
+                if(that.tag == "SickNess" || that.tag == "Disease"){
                     getListInfo[i].text = getListInfo[i].symptom.text
-                  }else if(that.tag == "medicine"){
+                  }else if(that.tag == "MedicineProduction"){
                     getListInfo[i].text = getListInfo[i].majorConstituent.text
-                  }else if(that.tag == "inspection"){
+                  }else if(that.tag == "Inspection"){
                     getListInfo[i].text = getListInfo[i].annotation.text
-                  }else if(that.tag == "symptom"){
+                  }else if(that.tag == "Symptom"){
                     getListInfo[i].text = getListInfo[i].identify.text
                   }
               }
@@ -425,7 +425,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
         let text = _text;
         let getListInfo = this.getListInfo;
         getListInfo[index].text = text;
-        if(this.tag == "sickness" || this.tag == "disease"){
+        if(this.tag == "SickNess" || this.tag == "Disease"){
           if(type == 'symptom'){
             getListInfo[index].symptom.active = true;
             getListInfo[index].pathogenesis.active = false;
@@ -481,7 +481,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
             return
           }
         }
-        if(this.tag == "symptom"){
+        if(this.tag == "Symptom"){
           if(type == 'identify'){
             getListInfo[index].identify.active = true;
             getListInfo[index].precaution.active = false;
@@ -524,7 +524,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
           }
         }
         // 药品
-        if(this.tag == "medicine"){
+        if(this.tag == "MedicineProduction"){
           if(type == 'usageDosage'){
             getListInfo[index].usageDosage.active = true;
             getListInfo[index].indication.active = false;
@@ -555,7 +555,7 @@ import {getHomeRightList,getSearch} from '@/api/data'
           }
         }
         // 检查
-        if(this.tag == "inspection"){
+        if(this.tag == "Inspection"){
           if(type == 'annotation'){
             getListInfo[index].annotation.active = true;
             getListInfo[index].clinicalSignificance.active = false;

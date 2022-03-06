@@ -41,7 +41,7 @@
                   <div class="item-text" v-if=" item.tag !='' && item.is_list == 1">
                     <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a>
                   </div>
-                  <div class="item-text" v-else>{{item.text?item.text:'暂无数据'}}</div>
+                  <div class="item-text" v-else style="white-space:pre-line">{{item.text?item.text:'暂无数据'}}</div>
                 </div>
               </div>
               <div v-if="getinfo.length <= 0">暂无数据</div>
@@ -309,13 +309,13 @@ import {getSickNess,getD3Search} from '@/api/data'
         console.log(barckArr)
         this.$store.dispatch("barckArr",barckArr);
         if(this.type == 'xy'){
-          this.options = [{label:'科普疾病',value:'sickness'},{label:'医疗疾病',value:'disease'},{label:'药品',value:'medicine'},{label:'检查',value:'inspection'},{label:'症状体征',value:'symptom'}]
+          this.options = [{label:'科普疾病',value:'SickNess'},{label:'医疗疾病',value:'Disease'},{label:'药品',value:'MedicineProduction'},{label:'检查',value:'Inspection'},{label:'症状体征',value:'Symptom'}]
         }
         if(this.type == 'zy'){
-          this.options = [{label:'疾病',value:'zysickness'},{label:'中药',value:'zy'},{label:'中成药',value:'zcy'},{label:'方剂',value:'fj'},{label:'药膳',value:'ys'},{label:'经络',value:'jl'},{label:'穴位',value:'xw'},]
+          this.options = [{label:'疾病',value:'zySickNess'},{label:'中药',value:'CnMedicinalCrop'},{label:'中成药',value:'CnPatentMedicine'},{label:'方剂',value:'Prescription'},{label:'药膳',value:'TonicDiet'},{label:'经络',value:'ChannelCollateral'},{label:'穴位',value:'Acupoint'},]
         }
 
-        // if( this.tag !=zysickness ){
+        // if( this.tag !=zySickNess ){
         //   this.name = this.$route.query.name;
         // }
 
@@ -532,7 +532,7 @@ import {getSickNess,getD3Search} from '@/api/data'
                 is_show
               })
             }
-            if(that.tag == 'disease' || that.tag == 'sickness' || that.tag == 'zysickness' || that.tag == 'symptom'|| that.tag == 'ys'){
+            if(that.tag == 'Disease' || that.tag == 'SickNess' || that.tag == 'zySickNess' || that.tag == 'Symptom'|| that.tag == 'TonicDiet'){
               if (segment.end && nodeSet.indexOf(segment.end.identity) == -1) {
                 nodeSet.push(segment.end.identity)
                 let is_show = '';

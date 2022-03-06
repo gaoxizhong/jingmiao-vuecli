@@ -832,7 +832,7 @@ table {
   } */
   .Medicine-checkbox-box{
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding-left: 14px;
   }
   .Medicine-checkbox-box span .el-checkbox {

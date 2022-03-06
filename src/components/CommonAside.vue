@@ -7,8 +7,7 @@
         :background-color="menuBackgroundColor"
         :text-color="menuTextColor"
         default-active="0-0-0-0-0"
-        unique-opened
-    >
+        unique-opened>
     <div class="logo-box" v-show="!isCollapse" >
       <img src="../assets/image/logo-5.png" alt="" class="logo-img"/>
     </div>
@@ -64,13 +63,14 @@
 
                                 <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate"
                                 :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}-${idx_6}`"
-                                :name='item_6.name' :tag='item_6.tag'
+                                :name='item_6.name' :tag='item_6.tag' 
+                                :path='item.path'
                                 :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.level?item_4.level:(item_4.departmentLevel1?item_4.departmentLevel1:item_4.departmentLevel2),item_5.departmentLevel2?item_5.departmentLevel2:item_5.level2,item_6.name]  @click="clickItem_2($event)"><i style="width: 34px;display: inline-block;"></i>{{ item_6.name }}</el-menu-item>
                                 </el-submenu>
                               </template>
                               <!-- 如果第五层没有子菜单 -->
                               <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`"
-                              :key="idx_5" :name='item_5.name' :tag='item_5.tag'
+                              :key="idx_5" :name='item_5.name' :tag='item_5.tag' :path='item.path'
                               :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.level?item_4.level:(item_4.departmentLevel1?item_4.departmentLevel1:item_4.departmentLevel2),item_5.name]  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_5.name }}</el-menu-item>
                               </template>
 														</el-submenu>
@@ -91,28 +91,28 @@
                                   <span slot="title" class="span-text">{{ item_5.departmentLevel2 }}</span>
                                 </template>
 
-                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.departmentLevel1,item_5.departmentLevel2,item_6.name]  @click="clickItem_2($event)"><i style="width: 30px;display: inline-block;"></i>{{ item_6.name }}</el-menu-item>
+                                <el-menu-item v-for="(item_6,idx_6) in item_5.subordinate" :key="idx_6" :path='item.path' :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}--${idx_6}`" :name='item_6.name' :tag='item_6.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.departmentLevel1,item_5.departmentLevel2,item_6.name]  @click="clickItem_2($event)"><i style="width: 30px;display: inline-block;"></i>{{ item_6.name }}</el-menu-item>
                                 </el-submenu>
                               </template>
                               <!-- 如果第五层没有子菜单 -->
-                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :name='item_5.departmentLevel2' :tag='item_5.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.departmentLevel1,item_5.departmentLevel2] @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_5.departmentLevel2 }}</el-menu-item>
+                              <el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :key="idx_5" :path='item.path' :name='item_5.departmentLevel2' :tag='item_5.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.departmentLevel1,item_5.departmentLevel2] @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_5.departmentLevel2 }}</el-menu-item>
                               </template>
-															<!-- <el-menu-item v-for="(item_5,idx_5) in item_4.departmentLevel2.name" :key="idx_5" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item> -->
+															<!-- <el-menu-item v-for="(item_5,idx_5) in item_4.departmentLevel2.name" :key="idx_5" :index="`${index}-${idx_2}-${idx_3}-${idx_4}-${idx_5}`" :path='item.path' :name='item_5.departmentLevel2' :tag='item_5.tag'  @click="clickItem_2($event)">{{ item_5.departmentLevel2 }}</el-menu-item> -->
 														</el-submenu>
 													</template>
 
 													<!-- 如果第四层没有子菜单 -->
-													<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}`" :key="idx_4" :name='item_4.departmentLevel2' :tag='item_4.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.departmentLevel2]  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_4.departmentLevel2 }}</el-menu-item>
+													<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}-${idx_4}`" :path='item.path' :key="idx_4" :name='item_4.departmentLevel2' :tag='item_4.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name,item_4.departmentLevel2]  @click="clickItem_2($event)"><i style="width: 28px;display: inline-block;"></i>{{ item_4.departmentLevel2 }}</el-menu-item>
 												</template>
 											</el-submenu>
 										</template>
 										<!-- 如果第三层没有子菜单 -->
-										<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}`" :key="idx_3" :name='item_3.name' :tag='item_3.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name]  @click="clickItem_2($event)"><i style="width: 20px;display: inline-block;"></i>{{ item_3.name }}</el-menu-item>
+										<el-menu-item v-else :index="`${index}-${idx_2}-${idx_3}`" :key="idx_3" :name='item_3.name' :path='item.path' :tag='item_3.tag' :arr=[item.knowledge_base_name,item_2.name,item_3.name]  @click="clickItem_2($event)"><i style="width: 20px;display: inline-block;"></i>{{ item_3.name }}</el-menu-item>
 									</template>
 								</el-submenu>
 							</template>
 							<!-- 如果第二层没有子菜单 -->
-							<el-menu-item v-else :index="`${index}-${idx_2}`" :key="idx_2" style=" display: flex;justify-content: flex-start;align-items:center; padding-left:30px !important;"  :arr=[item.knowledge_base_name,item_2.name] :tag='item_2.tag' :name='item_2.name' @click="clickItem_2($event)">
+							<el-menu-item v-else :index="`${index}-${idx_2}`" :key="idx_2" style=" display: flex;justify-content: flex-start;align-items:center; padding-left:30px !important;" :path='item.path' :arr=[item.knowledge_base_name,item_2.name] :tag='item_2.tag' :name='item_2.name' @click="clickItem_2($event)">
                 <i class="el-icon-guide"></i>
                 <span slot="title">{{ item_2.name }}</span>
               </el-menu-item>
@@ -121,7 +121,8 @@
 				</template>
 				<!-- 如果第一层没有子菜单 -->
 				<template v-else>
-					<el-menu-item :index="`${index}`" :key="index" style="text-align:left; padding-left:20px !important;" @click="clickMenuItem(index,item.knowledge_base_name)">
+					<!-- <el-menu-item :index="`${index}`" :key="index" style="text-align:left; padding-left:20px !important;" @click="clickMenuItem(index,item.knowledge_base_name)"> -->
+					<el-menu-item :index="`${index}`" :key="index" style="text-align:left; padding-left:20px !important;"  @click="clickItem_2($event)" :name='item.knowledge_base_name' :path='item.path' :is_in='1'>
 					  <i class="el-icon-menu"></i>
 						<span slot="title" style="padding-left: 8px;font-size: 16px;">{{ item.knowledge_base_name }}</span>
 					</el-menu-item>
@@ -213,16 +214,12 @@
 </style>
 <script>
 import { WesternMedicine,getHomeRightList,getzyHomeRightList } from '@/api/data'
-// getHomeRightList ----> 对应类型为 sickness disease medicine inspection symptom identify 中医类： zysickness  zcy  jl icd10
-// getzyHomeRightList ----> 对应类型为 中医类： zy fj ys tz xw
-
 export default {
     // props:['datalist'],
     data() {
         return {
           menuBackgroundColor:'#fff',
           menuTextColor:'#000',
-          oneColumn: '0',
           datalist:[],
         }
     },
@@ -258,142 +255,110 @@ export default {
       })
     },
     aa(){
-      let arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
-      let crumbsarr = [];
-      crumbsarr.push(this.datalist[0].knowledge_base_name);
-      crumbsarr.push(this.datalist[0].subordinate[0].name);
-      crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].name);
-      crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel1);
-      crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0].departmentLevel2);
-      this.$store.dispatch("crumbsarr",crumbsarr);
-      let name = arryinfo.departmentLevel2;
-      let tag = arryinfo.tag;
-      this.$store.dispatch("sickNess",name);
-      let stateurl = this.$store.state.stateurl;
-      if(stateurl){
-        return
-      }else{
-        this.$router.replace({  //核心语句
-          path:'/Home',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-          name,
-          tag,
+      let datalist = this.datalist;
+      let path = datalist[0].path;
+      if(path == '/WesternMedicineCdss' || path == '/QAhome'){
+          // 新页面打开
+          let newUrl = this.$router.resolve({
+            path,
+          });
+          window.open(newUrl.href, "_blank");
+        }else{
+          var arryinfo = {};
+          var name = '';
+          var tag = '';
+          if(path == '/Home'){
+            arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
+            name= arryinfo.departmentLevel2;
+            tag = arryinfo.tag;
           }
-        })
-      }
+          if(path == '/zyHome'){
+            arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].subordinate[0];
+            name= arryinfo.name;
+            tag = arryinfo.tag;
+          }
+          if(path == '/litgHome'){
+            arryinfo = this.datalist[0].subordinate[0];
+            name= arryinfo.name;
+            tag = arryinfo.tag;
+          }
+          if(path == '/VideoHome'){
+            name= '';
+            tag = '';
+          }
+          // let arryinfo = this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0];
+          // let crumbsarr = [];
+          // crumbsarr.push(this.datalist[0].knowledge_base_name);
+          // crumbsarr.push(this.datalist[0].subordinate[0].name);
+          // crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].name);
+          // crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel1);
+          // crumbsarr.push(this.datalist[0].subordinate[0].subordinate[0].department[0].departmentLevel2.name[0].departmentLevel2);
+          // this.$store.dispatch("crumbsarr",crumbsarr);
+          this.$store.dispatch("sickNess",name);
+          let stateurl = this.$store.state.stateurl;
+          if(stateurl){
+            return
+          }else{
+            this.$router.replace({  //核心语句
+              path:'/Home',   //跳转的路径
+              query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+              name,
+              tag,
+              }
+            })
+          }
+        }
     },
     handleOpen(key, keyPath) {
       console.log(key)
-      this.oneColumn = key;
     },
     handleClose(key, keyPath) {
       console.log(key)
-      this.oneColumn = key;
     },
-    // 点击第一级没有子级的
-    clickMenuItem(key,n){
-      console.log(key)
-      this.oneColumn = key;
-      let name = n;
-      // 跳转视频
-      if( name == '视频' ){
-        this.$emit('sickNess');
-        this.$router.replace({path:'/VideoHome'})
-      }
-      // 跳转问答首页
-      if( name == '问答' ){
-        // 新页面打开
-        let newUrl = this.$router.resolve({
-          path: "/QAhome"
-        });
-        window.open(newUrl.href, "_blank");
-      }
-      // cdss
-      if( name == 'CDSS' ){
-        // this.$emit('sickNess')
-        // this.$router.replace({path:'/WesternMedicineCdss',});
-        let newUrl = this.$router.resolve({
-          path: "/WesternMedicineCdss"
-        });
-        window.open(newUrl.href, "_blank");
-        return
-      }
-    },
-
     clickItem_2(e){
-      console.log(e)
       let name = e.$attrs.name;
-      let tag = e.$attrs.tag;
-      let crumbsarr = e.$attrs.arr;
-      let b1 = crumbsarr.slice(); //  不修改原数组
-      this.$store.dispatch("crumbsarr",b1);
-      let barckArr = [];
-      this.$store.dispatch("barckArr",barckArr);
-      // 西医知识库
-      if(this.oneColumn.substring(0,1) == 0){
-        // this.$store.dispatch("sickNess",name);
-        this.$emit('sickNess');
-        if(tag == 'clinicalPathway' || tag == 'clinicTrial'){
-          this.$router.replace({  //核心语句
-            path:'/LcsyHome',   //跳转的路径
-            query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-              name,
-              tag,
-            }
-          })
+      let path = e.$attrs.path;
+      let is_in = e.$attrs.is_in?e.$attrs.is_in:0;
+      if( !is_in ){
+        var tag = e.$attrs.tag;
+        var crumbsarr = e.$attrs.arr;
+        var b1 = crumbsarr.slice(); //  不修改原数组
+        this.$store.dispatch("crumbsarr",b1);
+        var barckArr = [];
+        this.$store.dispatch("barckArr",barckArr);
+      }
+      // this.$store.dispatch("sickNess",name);
+      this.$emit('sickNess');
+      if(tag == 'ClinicalPathway' || tag == 'ClinicalTrial'){
+        this.$router.replace({  //核心语句
+          path:'/LcsyHome',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+            name,
+            tag,
+          }
+        })
+      }else{
+        if(path == '/WesternMedicineCdss' || path == '/QAhome'){
+          // 新页面打开
+          let newUrl = this.$router.resolve({
+            path,
+          });
+          window.open(newUrl.href, "_blank");
         }else{
           this.$router.replace({  //核心语句
-            path:'/Home',   //跳转的路径
+            path:path,   //跳转的路径
             query:{           //路由传参时push和query搭配使用 ，作用时传递参数
               name,
               tag,
             }
           })
         }
+        
+      }
 
-      return
-      }
-      // 中医知识库
-      if(this.oneColumn.substring(0,1) == 1){
-        this.$store.dispatch("sickNess",name);
-        this.$emit('sickNess')
-        this.$router.replace({  //核心语句
-            path:'/zyHome',   //跳转的路径
-            query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-              name,
-              tag,
-            }
-        })
-        return
-      }
-      // 文献指南
-      if(this.oneColumn.substring(0,1) == 2){
-        // this.$store.dispatch("sickNess",name);
-        this.$emit('sickNess')
-        this.$router.replace({  //核心语句
-            path:'/litgHome',   //跳转的路径
-            query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-              name,
-              tag,
-            }
-        })
-        return
-      }
+
     },
-    // 点击临床
-    gotoLc(){
-      let tag = 'lc';
-      let name = '临床';
-      this.$emit('sickNess')
-      this.$router.replace({  //核心语句
-        path:'/LcsyHome',   //跳转的路径
-        query:{        //路由传参时push和query搭配使用 ，作用时传递参数
-          name,
-          tag,
-        }
-      })
-      return
-    }
+
   },
   computed: {
       noChild() {

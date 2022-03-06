@@ -74,8 +74,8 @@ export default {
           title: '搜索节点',
           action: (elm, d) => {
             console.log(d)
-            let name = d.properties.name.text;
-            let kgid = d.properties.kgid.text;
+            let name = d.properties.name.text?d.properties.name.text:'';
+            let kgid = d.properties.kgid?d.properties.kgid.text:'';
             let tag = d.tag;
             this.$emit('getData',tag,name,kgid)
           }
@@ -85,7 +85,7 @@ export default {
           title: '',
           action: (elm, d) => {
             console.log(d)
-            let name = d.properties.name.text;
+            let name = d.properties.name.text?d.properties.name.text:'';
             if(d.is_show == '2'){
               d.is_show = '1';
               this.title = '隐藏节点'
@@ -410,8 +410,6 @@ export default {
         .style('font-size', '12px')
         // .style('font-weight', 'bold')
         .text(d => d.properties.name.text?d.properties.name.text:d.properties.name)
-
-
       // 添加所有的点
       // selectAll("circle")选中所有的圆并绑定数据,圆的直径为d.size
       // 再定义圆的填充色,同样数据驱动样式,圆没有描边,圆的名字为d.id

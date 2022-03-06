@@ -52,7 +52,7 @@ export const getzyHomeRightList = (params) =>{
 //  详情页右侧
 export const getSickNess = (params) =>{
   return axios.request({
-    url:'/zsk/SickNess/detail',
+    url:'/zsk/detail',
     method: 'post',
     data: params
   })
@@ -68,7 +68,7 @@ export const getSearch = (params) =>{
 //  详情页知识图谱搜索
 export const getD3Search = (params) =>{
   return axios.request({
-    url:'/zsk/detailGraph',
+    url:'/zsk/graph',
     method: 'post',
     data: params
   })
@@ -140,7 +140,7 @@ export const getVideoList = (params) =>{
 // 视频阅读量
 export const getVideoRecordPv = (params) =>{
   return axios.request({
-    url:'/recordPv',
+    url:'/record_pv',
     method: 'post',
     data: params
   })

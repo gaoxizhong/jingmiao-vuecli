@@ -33,7 +33,7 @@
             </div>
             <a href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
               <!-- 文献 -->
-              <div v-if="tag == 'document'">
+              <div v-if="tag == 'Document'">
                 <div class="item-title">{{item.title}}</div>
                 <div class="tag-top-box" v-if="item.author && item.author.length > 0">
                     <div class="zuozhe-box" style="width:auto;padding-right:8px;">作者:</div>
@@ -68,7 +68,7 @@
             </a>
             <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
         </div>
-        <div  class="content-box1-right" v-if="tag == 'document'">
+        <div  class="content-box1-right" v-if="tag == 'Document'">
             <div>
               <div class="bubble-box">
                 <d3Bubble :data='data1' v-if="is_show && data1.nodes.length > 0" @getData="bubble_click" />
@@ -119,7 +119,7 @@ export default {
         // select: '请选择',
         // select_name:'',
         // selectSearchChange:'',
-        // options:[{label:'文献',value:'document'},{label:'指南',value:'guide'}],
+        // options:[{label:'文献',value:'Document'},{label:'指南',value:'Guide'}],
         getListInfo:[],
         current_page:1,
         pageSize: 10,
@@ -161,7 +161,7 @@ export default {
         // 获取列表
         this.getHomeRightList();
         // 获取文献气泡图、图谱数据
-        if(this.tag == 'document'){
+        if(this.tag == 'Document'){
           this.getDochots();
           this.getd3Atlas();
         }
@@ -217,7 +217,7 @@ export default {
         that.title = that.search;
         that.current_page = 1;
         that.getHomeRightList();
-       if(that.tag == 'document'){
+       if(that.tag == 'Document'){
           that.getDochots();
           that.getd3Atlas();
         }
@@ -228,7 +228,7 @@ export default {
         let that = this;
         let name = _name;
         let tag = that.tag;
-        if(tag == 'guide'){
+        if(tag == 'Guide'){
           return
         }else{
           this.$router.push({  //核心语句
@@ -280,7 +280,7 @@ export default {
         getLitgSearch(pearms).then( res =>{
           if(res.data.code == 0){
             let getListInfo = res.data.data.list;
-            if(that.tag == "document"){
+            if(that.tag == "Document"){
               let showFull =[];
               for (var i = 0; i < getListInfo.length; i++) {
                 let obj = {};

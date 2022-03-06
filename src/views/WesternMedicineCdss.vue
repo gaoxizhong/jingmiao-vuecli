@@ -451,19 +451,12 @@
         <!-- 左侧底部 -->
         <div class="src-components-Operation-1pym1">
           <div class="srcdiv-box">
-            <span
-              class="src-components-Operation-1PVES"
-              @click="getUserAdvisory"
-            >
-              <img
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAmdJREFUOBGNVN9LVEEUPnN3iUoyQkoiMQhKqIwegghLzJcoMYMelCiKYKN/IhKC8rVXoVWfkn1IfaheEtdUuE9iuisKEu2uEIUVtWaL7d7pfLM7gzPu5h44986c851vfpxzhsiVluicZBECDox6J9MO5vdmXioT3I7Pmc5+XgdIdg0nKyCxnhNEHgxw9E2nEe0rgEYWAtiU+AoJb+9kioIi0QuFvhj9kFGDMp9LgwsdxqxpjaHMIOzaePXxOyPL7acP1dDi2gZFr5+gkChuXO0cAa0Dc3J0aa201+KvbzqDQVZdb8vQ/FUqBG8ArtsTprGeUzS2/I0a9+9mNpF7Gl9Zga96aR2Yv1YJ/b8bsWL0jZjLtbxlJhYQ0dDE13WJSmGJ6Bh1aj1hhyhICm7GFulCQy39yQfUefwAnTtSa+FQhT5fNpiUoABQWCCylt74Wzh/8uBevQB5zJP6mTNzM2CayO1XS1KX0qOJT4oZALU27kqSbIDh+ZVj5HkepZmpq6mObsUSmZfdzY1mk0gjn6RfByCoGhEkVmVIPJi5e+athdcJsIxVTrbGbitbzbEVBNvM/bPmNBpT7l+RsFoCl9RKn+vEnNNymHUc6UHOR7ifoPphgQ+ts03cI2Jeek7k43hKIuU6/SDHGDaURUlM2SpylxBGBmbR4c+KXa0DrT86HjsGFjE7HTmJ7vdXf+nnDDFG8MThvTnKGJYkPiZzKFrheQ+n7jW/hgPCq8L/jhut/cn7NH38kSPdIlhk364QDd5ootjCl83+7/U18csirwJ3+oCYNcLqs2ZLijFsom1ChruHEz3g+QelE7Z+u9Lc3wAAAABJRU5ErkJggg=="
-                alt=""
-              />
+            <span class="src-components-Operation-1PVES" @click="getUserAdvisory">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAmdJREFUOBGNVN9LVEEUPnN3iUoyQkoiMQhKqIwegghLzJcoMYMelCiKYKN/IhKC8rVXoVWfkn1IfaheEtdUuE9iuisKEu2uEIUVtWaL7d7pfLM7gzPu5h44986c851vfpxzhsiVluicZBECDox6J9MO5vdmXioT3I7Pmc5+XgdIdg0nKyCxnhNEHgxw9E2nEe0rgEYWAtiU+AoJb+9kioIi0QuFvhj9kFGDMp9LgwsdxqxpjaHMIOzaePXxOyPL7acP1dDi2gZFr5+gkChuXO0cAa0Dc3J0aa201+KvbzqDQVZdb8vQ/FUqBG8ArtsTprGeUzS2/I0a9+9mNpF7Gl9Zga96aR2Yv1YJ/b8bsWL0jZjLtbxlJhYQ0dDE13WJSmGJ6Bh1aj1hhyhICm7GFulCQy39yQfUefwAnTtSa+FQhT5fNpiUoABQWCCylt74Wzh/8uBevQB5zJP6mTNzM2CayO1XS1KX0qOJT4oZALU27kqSbIDh+ZVj5HkepZmpq6mObsUSmZfdzY1mk0gjn6RfByCoGhEkVmVIPJi5e+athdcJsIxVTrbGbitbzbEVBNvM/bPmNBpT7l+RsFoCl9RKn+vEnNNymHUc6UHOR7ifoPphgQ+ts03cI2Jeek7k43hKIuU6/SDHGDaURUlM2SpylxBGBmbR4c+KXa0DrT86HjsGFjE7HTmJ7vdXf+nnDDFG8MThvTnKGJYkPiZzKFrheQ+n7jW/hgPCq8L/jhut/cn7NH38kSPdIlhk364QDd5ootjCl83+7/U18csirwJ3+oCYNcLqs2ZLijFsom1ChruHEz3g+QelE7Z+u9Lc3wAAAABJRU5ErkJggg=="
+                alt=""/>
               预览
             </span>
-            <span class="src-components-Operation-3GqtE" @click="finish_btn"
-              >保存</span
-            >
+            <span class="src-components-Operation-3GqtE" @click="finish_btn">保存</span>
             <!-- <span class="src-components-Operation-1s8dr src-components-Operation-3GqtE">清除</span> -->
           </div>
         </div>
@@ -473,7 +466,8 @@
         <div class="grid-rightcontent-title">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="辅助诊疗" name="auxiliary"></el-tab-pane>
-            <el-tab-pane label="医学知识" name="medicine"></el-tab-pane>
+            <el-tab-pane label="西医知识" name="medicine"></el-tab-pane>
+            <el-tab-pane label="中医知识" name="cnMedicine"></el-tab-pane>
             <el-tab-pane label="院内相似病例" name="similar"></el-tab-pane>
           </el-tabs>
         </div>
@@ -533,51 +527,32 @@
             </div>
           </div>
           <!-- 辅助诊疗模块结束 -->
-          <!-- 医学知识模块 -->
-          <div
-            class="rightcontent-info-bodybox"
-            v-if="activeName == 'medicine'"
-          >
+          <!-- 西医知识模块 -->
+          <div class="rightcontent-info-bodybox" v-if="activeName == 'medicine'">
             <div class="sousuo-box">
-              <!-- 搜索部分 -->
+              <!-- 搜索头部部分 -->
               <div class="sousuo-top-box">
                 <div class="el-input-box" style="width: 80%">
-                  <el-input
-                    placeholder="搜索症状"
-                    v-model="inputMedicineValue"
-                    class="input-with-select"
-                  >
-                    <el-button slot="append" @click="getMedicineInputBtn()"
-                      >确定</el-button
-                    >
+                  <el-input placeholder="搜索症状" v-model="inputMedicineValue" class="input-with-select">
+                    <el-button slot="append" @click="getMedicineInputBtn()">确定</el-button>
                   </el-input>
                 </div>
                 <div class="Medicine-checkbox-box">
-                  <el-checkbox
-                    :indeterminate="isIndeterminate"
-                    v-model="checkAll"
-                    @change="handleCheckAllChange"
-                    >全选</el-checkbox
-                  >
-                  <el-checkbox-group
-                    v-model="checkMedicineTagList"
-                    @change="checkMedicine"
-                  >
+                  <span style="padding-top:6px;">
+                    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                  </span>
+                  <el-checkbox-group v-model="checkMedicineTagList" @change="checkMedicine">
                     <div class="options-list-box">
                       <div class="oplist-items-box">
-                        <span
-                          v-for="(item, index) in MedicineTagList"
-                          :key="index"
-                        >
-                          <el-checkbox :label="item.tag">{{
-                            item.name
-                          }}</el-checkbox>
+                        <span v-for="(item, index) in MedicineTagList" :key="index">
+                          <el-checkbox :label="item.tag">{{item.name}}</el-checkbox>
                         </span>
                       </div>
                     </div>
                   </el-checkbox-group>
                 </div>
               </div>
+              <!-- 搜索头部部分结束 -->
               <!-- 搜索结果部分 -->
               <div class="MedicineTagList-box">
                 <p class="src-components-MedicalInfo-z8HVu">搜索结果</p>
@@ -585,27 +560,66 @@
                 <div class="MedicineTagList-infodiv">
                   <div v-for="(item, index) in MedicineIfoList" :key="index">
                     <ul v-if="item.list || item.list.length > 0">
-                      <li
-                        v-for="(items, idx) in item.list"
-                        :key="idx"
-                        @click="click_ypxq(item.tag, items.name)"
-                      >
+                      <li v-for="(items, idx) in item.list" :key="idx" @click="click_ypxq(item.tag, items.name)">
                         <span>{{ items.name }}</span>
                         <i>( {{ item.tag_name }} )</i>
                       </li>
                     </ul>
                   </div>
-                  <el-empty
-                    description="暂无数据..."
-                    v-if="!MedicineIfoList || MedicineIfoList.length <= 0"
-                  ></el-empty>
+                  <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
                 </div>
                 <!-- 搜索结果列表部分结束 -->
               </div>
               <!-- 搜索结果部分结束 -->
             </div>
           </div>
-          <!-- 医学知识模块结束 -->
+          <!-- 西医知识模块结束 -->
+          <!-- 中医知识模块 -->
+          <div class="rightcontent-info-bodybox" v-if="activeName == 'cnMedicine'">
+            <div class="sousuo-box">
+              <div class="sousuo-top-box">
+                <div class="el-input-box" style="width: 80%">
+                  <el-input placeholder="搜索症状" v-model="inputcnMedicineValue" class="input-with-select">
+                    <el-button slot="append" @click="getCnMedicineInputBtn()">确定</el-button>
+                  </el-input>
+                </div>
+                <div class="Medicine-checkbox-box">
+                  <span style="padding-top:6px;">
+                    <el-checkbox :indeterminate="cnMedicine_isIndeterminate" v-model="cnMedicine_checkAll" @change="handleCnCheckAllChange">全选</el-checkbox>
+                  </span>
+                  <el-checkbox-group v-model="checkCnMedicineTagList" @change="checkCnMedicine">
+                    <div class="options-list-box">
+                      <div class="oplist-items-box">
+                        <span v-for="(item, index) in cnMedicineTagList" :key="index">
+                          <el-checkbox :label="item.tag">{{item.name}}</el-checkbox>
+                        </span>
+                      </div>
+                    </div>
+                  </el-checkbox-group>
+                </div>
+              </div>
+              <!-- 搜索头部部分结束 -->
+              <!-- 搜索结果部分 -->
+              <div class="MedicineTagList-box">
+                <p class="src-components-MedicalInfo-z8HVu">搜索结果</p>
+                <!-- 搜索结果列表部分 -->
+                <div class="MedicineTagList-infodiv">
+                  <div v-for="(item, index) in cnMedicineIfoList" :key="index">
+                    <ul v-if="item.list || item.list.length > 0">
+                      <li v-for="(items, idx) in item.list" :key="idx" @click="click_ypxq(item.tag, items.name,items.kgid)">
+                        <span>{{ items.name }}</span>
+                        <i>( {{ item.tag_name }} )</i>
+                      </li>
+                    </ul>
+                  </div>
+                  <el-empty description="暂无数据..." v-if="!cnMedicineIfoList || cnMedicineIfoList.length <= 0"></el-empty>
+                </div>
+                <!-- 搜索结果列表部分结束 -->
+              </div>
+              <!-- 搜索结果部分结束 -->
+            </div>
+          </div>
+          <!-- 中医知识模块结束 -->
           <!-- 院内相似病例模块 -->
           <div class="rightcontent-info-bodybox" v-if="activeName == 'similar'">
             <el-empty description="暂无数据..."></el-empty>
@@ -614,8 +628,7 @@
         </div>
 
         <div class="mz-box">
-          <span style="color: #27afa1">免责声明: </span>以上仅供参考,
-          以医生临床诊断为主
+          <span style="color: #27afa1">免责声明: </span>以上仅供参考,以医生临床诊断为主
         </div>
       </div>
       <!-- 右侧智能问诊模块结束 -->
@@ -646,67 +659,36 @@
                 说明书
               </div>
             </div>
-            <div
-              class="cjyp-table-tr"
-              v-for="(item, index) in medicine_list"
-              :key="index"
-            >
+            <div class="cjyp-table-tr" v-for="(item, index) in medicine_list" :key="index">
               <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a
-                class="cjyp-table-tr-r"
-                href="javascript:0;"
-                @click="click_ypxq('medicine', item.name)"
-                >查看详情</a
-              >
+              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('MedicineProduction', item.name)">查看详情</a>
             </div>
-            <el-empty
-              description="暂无数据..."
-              v-if="!medicine_list || medicine_list.length <= 0"
-            ></el-empty>
+            <el-empty description="暂无数据..." v-if="!medicine_list || medicine_list.length <= 0"></el-empty>
           </div>
 
           <!-- 常见检查 -->
           <div class="cjjc-box">
             <div class="cjjc-title">常见检查</div>
-            <div
-              class="cjyp-table-tr"
-              v-for="(item, index) in inspection_list"
-              :key="index"
-            >
+            <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
               <div class="cjyp-table-tr-l">{{ item.name }}</div>
               <a
                 class="cjyp-table-tr-r"
                 href="javascript:0;"
-                @click="click_ypxq('inspection', item.name)"
+                @click="click_ypxq('Inspection', item.name)"
                 >查看详情</a
               >
             </div>
-            <el-empty
-              description="暂无数据..."
-              v-if="!inspection_list || inspection_list.length <= 0"
-            ></el-empty>
+            <el-empty description="暂无数据..." v-if="!inspection_list || inspection_list.length <= 0"></el-empty>
           </div>
 
           <!-- 并发症 -->
           <div class="cjjc-box">
             <div class="cjjc-title">并发症</div>
-            <div
-              class="cjyp-table-tr"
-              v-for="(item, index) in complication_list"
-              :key="index"
-            >
+            <div class="cjyp-table-tr" v-for="(item, index) in complication_list" :key="index">
               <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a
-                class="cjyp-table-tr-r"
-                href="javascript:0;"
-                @click="click_ypxq('disease', item.name)"
-                >查看详情</a
-              >
+              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Disease', item.name)">查看详情</a>
             </div>
-            <el-empty
-              description="暂无数据..."
-              v-if="!complication_list || complication_list.length <= 0"
-            ></el-empty>
+            <el-empty description="暂无数据..." v-if="!complication_list || complication_list.length <= 0"></el-empty>
           </div>
         </div>
 
@@ -716,10 +698,7 @@
             <div style="font-weight: 600">
               <i class="el-icon-share"></i> 疾病图谱
             </div>
-            <div
-              class="main-box-right-r"
-              @click="click_ypxq('disease', hot_name)"
-            >
+            <div class="main-box-right-r" @click="click_ypxq('Disease', hot_name)">
               <i class="el-icon-s-operation"></i>
               <span style="padding-left: 4px">查看详情</span>
             </div>
@@ -731,12 +710,8 @@
               :linkTypes="linkTypes"
               :width="cdssWidth"
               :height="cdssHeight"
-              v-if="data.nodes.length > 0"
-            />
-            <el-empty
-              description="暂无数据..."
-              v-if="!data.nodes || data.nodes.length <= 0"
-            ></el-empty>
+              v-if="data.nodes.length > 0"/>
+            <el-empty description="暂无数据..." v-if="!data.nodes || data.nodes.length <= 0"></el-empty>
           </div>
         </div>
       </div>
@@ -757,14 +732,9 @@
               <div class="item-name">{{ item.name }}</div>
               <div class="item-text" v-if="item.tag != '' && item.is_list == 1">
                 <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
-                <span
-                  class="item-text-a"
-                  v-for="(items, index) in item.text"
-                  :key="index"
-                  >{{ items.kgid ? items.name : items }}</span
-                >
+                <span class="item-text-a" v-for="(items, index) in item.text" :key="index">{{ items.kgid ? items.name : items }}</span>
               </div>
-              <div class="item-text" v-else>
+              <div class="item-text" style="white-space:pre-line" v-else>
                 {{ item.text ? item.text : "暂无数据" }}
               </div>
               <!-- <div class="item-text">{{item.text?item.text:'暂无数据'}}</div> -->
@@ -776,58 +746,14 @@
       </div>
     </div>
     <!-- 点击病例弹窗查看详情弹窗结束 -->
-    <!-- 点击医学知识列表查看详情弹窗 -->
-    <div class="yp-position-mask" v-if="is_yxzslist"></div>
-    <div class="yp-position-box" v-if="is_yxzslist">
-      <div class="yp-position-nbox">
-        <div class="close-box" @click="ypxqclick_close">
-          <i class="el-icon-circle-close"></i>
-        </div>
-        <div class="yp-info-box">
-          <div class="col-left-title">{{ name_1 }}</div>
-          <div class="activi-1">
-            <div v-for="(item, index) in getinfo" :key="index">
-              <div class="item-name">{{ item.name }}</div>
-              <div class="item-text" v-if="item.tag != '' && item.is_list == 1">
-                <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
-                <span
-                  class="item-text-a"
-                  v-for="(items, index) in item.text"
-                  :key="index"
-                  >{{ items.kgid ? items.name : items }}</span
-                >
-              </div>
-              <div class="item-text" v-else>
-                {{ item.text ? item.text : "暂无数据" }}
-              </div>
-              <!-- <div class="item-text">{{item.text?item.text:'暂无数据'}}</div> -->
-            </div>
-          </div>
-
-          <div v-if="getinfo.length <= 0">暂无数据</div>
-        </div>
-      </div>
-    </div>
-    <!-- 点击医学知识列表查看详情弹窗结束 -->
     <!-- 点击预览按钮弹窗 -->
     <div class="src-components-Preview-34-Hv" v-if="is_useradvisory"></div>
-    <div
-      class="src-components-Preview-1CrEY"
-      id="previewWrapper"
-      v-if="is_useradvisory"
-    >
+    <div class="src-components-Preview-1CrEY" id="previewWrapper" v-if="is_useradvisory">
       <div class="src-components-Preview-1MO3X drag-title">预览</div>
-      <img
-        class="src-components-Preview-2DV3S"
-        @click="useradvisory_close"
-        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjgyMDU5MUI4NERDQzExRThBODA0QzAzNjEzMzU4OUZCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjgyMDU5MUI5NERDQzExRThBODA0QzAzNjEzMzU4OUZCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ODIwNTkxQjY0RENDMTFFOEE4MDRDMDM2MTMzNTg5RkIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ODIwNTkxQjc0RENDMTFFOEE4MDRDMDM2MTMzNTg5RkIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4YYCuDAAAA80lEQVR42mL8//8/Ay0BEwONwagFI90CZyeX+0C8Go88GxCvp8QHs4A4BGhIDw75e0AcQLYFe/ftaQdS0UBcDLSkD8nljED8AMiUBmJlfGYwEpOTgYYlAam5QNwAxN1AfBeIJYBYDuiIxxRbALUkBEiB4uMlEH8AYjug4a+oloqAhq0BUn+BWByIlxJjOClBJAykHkODZg4QTwDiNqAl1RT7AGi4KJB6A8S/gdgYaOhEIF0CxFVAuUpK84EekAIFxWsgFgMa/gsaXL1AKhfkCzxJmCgfrIcGjRTQ0J9ocTIFSDWCkjBVUtFoYTdqwcBZABBgAFj3V+zxCrbRAAAAAElFTkSuQmCC"
-        alt=""
-      />
+      <img class="src-components-Preview-2DV3S" @click="useradvisory_close" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjgyMDU5MUI4NERDQzExRThBODA0QzAzNjEzMzU4OUZCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjgyMDU5MUI5NERDQzExRThBODA0QzAzNjEzMzU4OUZCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ODIwNTkxQjY0RENDMTFFOEE4MDRDMDM2MTMzNTg5RkIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ODIwNTkxQjc0RENDMTFFOEE4MDRDMDM2MTMzNTg5RkIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4YYCuDAAAA80lEQVR42mL8//8/Ay0BEwONwagFI90CZyeX+0C8Go88GxCvp8QHs4A4BGhIDw75e0AcQLYFe/ftaQdS0UBcDLSkD8nljED8AMiUBmJlfGYwEpOTgYYlAam5QNwAxN1AfBeIJYBYDuiIxxRbALUkBEiB4uMlEH8AYjug4a+oloqAhq0BUn+BWByIlxJjOClBJAykHkODZg4QTwDiNqAl1RT7AGi4KJB6A8S/gdgYaOhEIF0CxFVAuUpK84EekAIFxWsgFgMa/gsaXL1AKhfkCzxJmCgfrIcGjRTQ0J9ocTIFSDWCkjBVUtFoYTdqwcBZABBgAFj3V+zxCrbRAAAAAElFTkSuQmCC"
+        alt=""/>
       <div class="src-components-PreviewBody-2-yuL">
-        <div
-          class="src-components-PreviewBody-1_yxF"
-          style="margin: 0px auto; max-width: 620px"
-        >
+        <div class="src-components-PreviewBody-1_yxF" style="margin: 0px auto; max-width: 620px">
           <div>
             <div class="src-components-Information-2Lh0V">
               菁苗健康医疗健康数字化平台
@@ -844,11 +770,7 @@
             </table>
           </div>
           <table class="src-components-PreviewBody-37xVG">
-            <tr
-              class="src-components-PreviewBody-2-owb"
-              v-for="(item, index) in getUserAdvisory_list.advisory_content"
-              :key="index"
-            >
+            <tr class="src-components-PreviewBody-2-owb" v-for="(item, index) in getUserAdvisory_list.advisory_content" :key="index">
               <td class="src-components-PreviewBody-9arcl">
                 {{ item.title }}：
               </td>
@@ -1000,6 +922,7 @@ li {
 .src-components-PatInfo-1sipu >>> .el-input__icon{
   line-height: 30px;
 }
+
 /* 媒体查询 */
 @media only screen and (max-width: 1366px) {
   .el-checkbox >>> .el-checkbox__label {
@@ -1094,18 +1017,35 @@ li {
       is_casePop: false, //展示常见药品、检查、图谱弹窗
       is_ypxq: false, //点击常见药品、检查、图谱查看详情弹窗
       name_1: "", // 常见药品、检查、图谱查看详情弹窗标题
-      inputMedicineValue: "", // 左侧医学知识内搜索框
-      checkMedicineTagList: [],
-      checkAll: false, // 全选状态
-      isIndeterminate: false,
-      MedicineTagList: [
-        { name: "诊断", tag: "symptom" },
-        { name: "药品", tag: "medicine" },
-        { name: "检查", tag: "inspection" },
-        { name: "疾病", tag: "disease" },
+      inputMedicineValue: "", // 左侧西医知识内搜索框
+      checkMedicineTagList: [], //西医知识
+      checkAll: false, // 西医知识全选状态
+      isIndeterminate: false, // 西医知识
+      MedicineTagList: [  //西医知识
+        { name: "诊断", tag: "Symptom" },
+        { name: "药品", tag: "MedicineProduction" },
+        { name: "检查", tag: "Inspection" },
+        { name: "疾病", tag: "Disease" },
       ],
-      MedicineIfoList: [], // 搜索结果过数据列表
-      is_yxzslist: false, // 医学知识列表详情弹窗状态
+      MedicineIfoList: [], // 西医知识搜索结果过数据列表、
+
+      inputcnMedicineValue:"", // 左侧中医医知识内搜索框
+      checkCnMedicineTagList: [], //中医知识
+      cnMedicine_checkAll: false, // 中医知识全选状态
+      cnMedicine_isIndeterminate: false, // 中医知识
+      cnMedicineTagList: [  //中医知识
+        { name: "疾病", tag: "zySickNess" },
+        { name: "中药", tag: "CnMedicinalCrop" },
+        { name: "中成药", tag: "CnPatentMedicine" },
+        { name: "方剂", tag: "Prescription" },
+        { name: "药膳", tag: "TonicDiet" },
+        { name: "经络", tag: "ChannelCollateral" },
+        { name: "穴位", tag: "Acupoint" },
+        { name: "体质", tag: "Constitution" },
+      ],
+      cnMedicineIfoList: [], // 中医知识搜索结果过数据列表、
+
+
       dataInfo_id: 0, // 点击保存后返回数据的id,用于预览
       getUserAdvisory_list: {},
       diagnosisList:[], // 主要诊断选项列表
@@ -1377,8 +1317,7 @@ li {
       let index = idx;
       let idx_1 = idx1;
       let infoData = this.infoData;
-      infoData[index].many_select_options[idx_1].obtain_name =
-        infoData[index].many_select_options[idx_1].obtain_name + name;
+      infoData[index].many_select_options[idx_1].obtain_name = infoData[index].many_select_options[idx_1].obtain_name + name;
       infoData[index].total_obtain_name = "";
       infoData.forEach((ele) => {
         ele.total_obtain_name = "";
@@ -1864,14 +1803,21 @@ li {
       this.is_useradvisory = false;
     },
     // 点击查看详情
-    click_ypxq(t, n) {
+    click_ypxq(t, n,k) {
       let that = this;
       let tag = t;
       let name = n;
+      let kgid = k;
+
       let pearms = {
         sickness: name,
         tag: tag,
       };
+
+      if( kgid && (tag == 'CnMedicinalCrop' || tag == 'zySickNess' || tag == 'ChannelCollateral') ){
+        pearms.sickness = kgid
+      }
+
       getSickNess(pearms)
         .then((res) => {
           if (res.data.code == 0) {
@@ -1908,7 +1854,9 @@ li {
           console.log(e);
         });
     },
-    // 医学知识全选按钮事件
+// ===================   西医知识 搜索事件 以下 ===========================
+
+    // 西医知识全选按钮事件
     handleCheckAllChange(val) {
       let MedicineTagList = this.MedicineTagList;
       let newMedicineTagList = [];
@@ -1918,19 +1866,20 @@ li {
       this.checkMedicineTagList = val ? newMedicineTagList : [];
       this.isIndeterminate = false;
     },
-    // 医学知识选项按钮事件
+    // 西医知识选项按钮事件
     checkMedicine(value) {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.MedicineTagList.length;
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.MedicineTagList.length;
     },
-    // 医学知识搜索事件
+    // 西医知识搜索事件
     getMedicineInputBtn() {
       let that = this;
       let checkMedicineTagList = that.checkMedicineTagList;
       let inputMedicineValue = that.inputMedicineValue;
       let pearms = {
+        type:'',
         tag: checkMedicineTagList.join(","),
         keyword: inputMedicineValue,
       };
@@ -1940,24 +1889,14 @@ li {
         });
         return;
       }
-      getMedicineList(pearms)
-        .then((res) => {
+      getMedicineList(pearms).then((res) => {
           if (res.data.code == 0) {
             let list = res.data.data;
             let newList = [];
             for (let key in list) {
               newList.push({
                 tag: key,
-                tag_name:
-                  key == "medicine"
-                    ? "药品"
-                    : key == "inspection"
-                    ? "检查"
-                    : key == "symptom"
-                    ? "诊断"
-                    : key == "disease"
-                    ? "疾病"
-                    : "",
+                tag_name: key == "MedicineProduction" ? "药品" : key == "Inspection" ? "检查" : key == "Symptom" ? "诊断" : key == "Disease" ? "疾病" : "",
                 list: list[key],
               });
             }
@@ -1969,6 +1908,68 @@ li {
           console.log(e);
         });
     },
+// ===================   西医知识 搜索事件 以上 ===========================
+
+// ===================   中医知识 搜索事件 以下 ===========================
+
+    // 中医知识全选按钮事件
+    handleCnCheckAllChange(val) {
+      let cnMedicineTagList = this.cnMedicineTagList;
+      let newMedicineTagList = [];
+      cnMedicineTagList.forEach((ele) => {
+        newMedicineTagList.push(ele.tag);
+      });
+      this.checkCnMedicineTagList = val ? newMedicineTagList : [];
+      this.cnMedicine_isIndeterminate = false;
+    },
+    // 中医知识选项按钮事件
+    checkCnMedicine(value) {
+      let checkedCount = value.length;
+      this.cnMedicine_checkAll = checkedCount === this.cnMedicineTagList.length;
+      this.cnMedicine_isIndeterminate = checkedCount > 0 && checkedCount < this.cnMedicineTagList.length;
+    },
+    // 中医知识搜索事件
+    getCnMedicineInputBtn() {
+      let that = this;
+      let checkCnMedicineTagList = that.checkCnMedicineTagList;
+      let inputcnMedicineValue = that.inputcnMedicineValue;
+      let pearms = {
+        type:'zh',
+        tag: checkCnMedicineTagList.join(","),
+        keyword: inputcnMedicineValue,
+      };
+      if (pearms.keyword == "" || pearms.tag == "") {
+        that.$message.error({
+          message: "请先填写内容和选择选项！",
+        });
+        return;
+      }
+      getMedicineList(pearms).then((res) => {
+          if (res.data.code == 0) {
+            let list = res.data.data;
+            let newList = [];
+            for (let key in list) {
+              newList.push({
+                tag: key,
+                tag_name: key == "Constitution" ? "体质" : key == "Acupoint" ? "穴位" :
+                  key == "ChannelCollateral" ? "经络" : key == "TonicDiet" ? "药膳" :
+                  key == "Prescription" ? "方剂" : key == "CnPatentMedicine" ? "中成药" :
+                  key == "CnMedicinalCrop" ? "中药" :key == "zySickNess" ? "疾病" :"",
+                list: list[key],
+              });
+            }
+            that.cnMedicineIfoList = newList;
+            console.log(that.cnMedicineIfoList)
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+// ===================   中医知识 搜索事件 以上 ===========================
+
+
+
   },
 };
 </script>

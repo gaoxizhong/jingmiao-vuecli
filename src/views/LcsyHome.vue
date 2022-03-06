@@ -26,7 +26,7 @@
         <div class="content-box1-left">
             <div class="paddingSide15">
               <!-- 临床试验 -->
-              <template v-if="tag == 'clinicTrial'">
+              <template v-if="tag == 'ClinicalTrial'">
                 <el-table :data="getListInfo" border stripe style="width: 100%;" >
                   <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
                   <el-table-column prop="register_number" label="登记号"  width="180">
@@ -57,7 +57,7 @@
                 </el-table>
               </template>
               <!-- 临床路径 -->
-              <template v-if="tag == 'clinicalPathway'">
+              <template v-if="tag == 'ClinicalPathway'">
                 <el-table :data="getListInfo" border stripe style="width: 100%;" >
                   <el-table-column type="index" :index="indexMethod" label="序号" width="100"></el-table-column>
                   <el-table-column prop="clinical_pathway" label="临床路径名称">
@@ -106,7 +106,7 @@ export default {
         select: '请选择',
         select_name:'',
         selectSearchChange:'',
-        options:[{label:'临床试验',value:'clinicTrial'},{label:'临床路径',value:'clinicalPathway'}],
+        options:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}],
         getListInfo:[],
         current_page:1,
         pageSize: 10,
