@@ -53,11 +53,7 @@
                   <div style="display: inline-block">
                     <!-- 主诉 ==>  添加症状 信息模块 -->
                     <div style="display: inline-block" v-if="index == 0">
-                      <span class="src-common-components-EditableSpan-G8WSU
-                          largeFontSize
-                          selectColor
-                          src-common-components-EditableSpan-CXPJX"
-                      >
+                      <span class="src-common-components-EditableSpan-G8WSU largeFontSize selectColor src-common-components-EditableSpan-CXPJX">
                         <!-- 下拉框数据 -->
                         <span v-for="(item, index) in searchSymptomsList" :key="index" style="padding: 0 4px">
                           <span>{{ item }}</span>
@@ -114,14 +110,8 @@
                           <!-- 搜索症状 -->
                           <div class="qt-box">
                             <div class="el-input-box">
-                              <el-input
-                                placeholder="搜索症状"
-                                clearable
-                                v-model="inputOtherValue"
-                                @input="getInputBtn"
-                                class="input-with-select"
-                              >
-                                <!-- <el-button slot="append" @click.stop="getInputBtn()">确定</el-button> -->
+                              <el-input placeholder="搜索症状" clearable v-model="inputOtherValue" @input="getInputBtn" auto-complete=""class="input-with-select">
+                                <el-button slot="append" @click.stop="getInputBtn_add">添加</el-button>
                               </el-input>
                             </div>
                             <div class="qt-inputPop-box" v-show="is_symptomSearch" id="is_symptomSearch">
@@ -169,36 +159,16 @@
                           添加症状
                         </div>
                         <!-- 选项弹窗模块 -->
-                        <div
-                          class="src-components-ListItems-3K8km"
-                          style="left: auto"
-                          v-show="addSymptomPop_2"
-                          id="addSymptomPop_2"
-                        >
+                        <div class="src-components-ListItems-3K8km" style="left: auto" v-show="addSymptomPop_2" id="addSymptomPop_2">
                           <div class="clearfix">
                             <!-- <p class="src-components-ListItems-1OJip">按点击顺序成文</p> -->
                             <div class="src-components-ListItems-31jDC">
-                              <span
-                                class="src-components-ListItems-3iV0y"
-                                @click.stop="addSymptomPopEmptyClick_2"
-                                >清空选项</span
-                              >
-                              <span
-                                class="src-components-ListItems-3TE88"
-                                @click.stop="addSymptomPopSureClick_2"
-                                >确定</span
-                              >
+                              <span class="src-components-ListItems-3iV0y" @click.stop="addSymptomPopEmptyClick_2">清空选项</span>
+                              <span class="src-components-ListItems-3TE88" @click.stop="addSymptomPopSureClick_2">确定</span>
                             </div>
                           </div>
-                          <el-checkbox-group
-                            v-model="checkList_2"
-                            @change="checkGroup_2"
-                          >
-                            <div
-                              class="options-list-box"
-                              v-for="(item, index) in optionsList_2"
-                              :key="index"
-                            >
+                          <el-checkbox-group v-model="checkList_2" @change="checkGroup_2">
+                            <div class="options-list-box" v-for="(item, index) in optionsList_2" :key="index">
                               <div class="options-list-title">
                                 {{ item.category }}
                               </div>
@@ -247,14 +217,8 @@
                           <!-- 搜索症状 -->
                           <div class="qt-box">
                             <div class="el-input-box">
-                              <el-input
-                                placeholder="搜索症状"
-                                clearable
-                                v-model="inputOtherValue_2"
-                                @input="getInputBtn_2"
-                                class="input-with-select"
-                              >
-                                <!-- <el-button slot="append" @click.stop="getInputBtn()">确定</el-button> -->
+                              <el-input placeholder="搜索症状" clearable v-model="inputOtherValue_2" @input="getInputBtn_2" class="input-with-select">
+                                <el-button slot="append" @click.stop="getInputBtn_add2">添加</el-button>
                               </el-input>
                             </div>
                             <div
@@ -437,8 +401,34 @@
                 <div class="blxxDiv-title-box zsDiv-title-box">诊断：</div>
                 <div class="blxxDiv-info-box1">
                   <div class="demo-input-suffix" v-for="(item,index) in diagnosisList" :key="index">
-                    <span>{{item.name}}：</span>
-                    <el-input :placeholder="`${item.name}`" v-model="item.input" @input="getIcd(item.input,item.id)"></el-input>
+                    <div>
+                      <span>{{item.name}}：</span>
+                      <el-input :placeholder="`${item.name}`" v-model="item.input" @input="getDiseases(item.input,item.id)"></el-input>
+                    </div>
+                    <div class="qt-inputPop-box" v-if=" is_diseasesSearch == 7 && item.id == is_diseasesSearch ">
+                      <div class="scrollarea" style="max-height: 180px">
+                        <div class="scrollarea-content content">
+                          <ul>
+                            <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa" v-for="(items, index) in diseasesSearch_data" :key="index" @click.stop="getIcd(items.name,item.id)">
+                              {{ items.name }}
+                            </li>
+
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="qt-inputPop-box" v-if=" is_diseasesSearch == 9  && item.id == is_diseasesSearch">
+                      <div class="scrollarea" style="max-height: 180px">
+                        <div class="scrollarea-content content">
+                          <ul>
+                            <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
+                              v-for="(items, index) in diseasesSearch_data" :key="index" @click.stop="getIcd(items.name,item.id)">
+                              {{ items.name }}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div> 
               </div>
@@ -734,8 +724,8 @@
                 <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
                 <span class="item-text-a" v-for="(items, index) in item.text" :key="index">{{ items.kgid ? items.name : items }}</span>
               </div>
-              <div class="item-text" style="white-space:pre-line" v-else>
-                {{ item.text ? item.text : "暂无数据" }}
+              <div class="item-text" style="white-space:pre-line" v-html='item.text ? item.text : "暂无数据"' v-else>
+                {{  }}
               </div>
               <!-- <div class="item-text">{{item.text?item.text:'暂无数据'}}</div> -->
             </div>
@@ -954,9 +944,10 @@ li {
     getUserAdvisory,
     getDiagnosis,
     getIcd,
+    getDiseases,
     DrumpServices_ZK
   } from "@/api/data";
-  const x2js = require("x2js");
+  // const x2js = require("x2js");
   export default {
     name: "WesternMedicineCdss",
     components: {
@@ -971,6 +962,7 @@ li {
       infoData: [], // 主页数据
       optionsList: [], // 添加症状内接口数据
       checkList: [], // 多选框 选中项label
+      symptoms:'',
       searchSymptomsList: [], // 列表下拉框选中数据
       inputOtherValue: "", // 搜索症状
       symptomSearch_name: "", // 搜索症状列表项
@@ -1050,11 +1042,15 @@ li {
       getUserAdvisory_list: {},
       diagnosisList:[], // 主要诊断选项列表
       basyzk_list:[], // 病案首页指控检验错误提示信息
+      is_diseasesSearch:0,
+      diseasesSearch_data:[],
     };
   },
   created() {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
+    this.getWesternSymptomList(); //获取主页 主诉添加选项按钮内 数据
+    this.getWesternSymptomList_2(); //获取主页 现病史添加选项按钮内 数据
     this.getManySelect(); //获取主页展示数据
     this.getDiagnosis(); //主要诊断选项列表
     document.addEventListener("click", (e) => {
@@ -1071,7 +1067,7 @@ li {
       if (!box_2.contains(e.target)) {
         this.is_symptomSearch = false;
         this.symptomSearch_data = [];
-        this.inputOtherValue = "";
+        // this.inputOtherValue = "";
       }
     });
   },
@@ -1081,6 +1077,54 @@ li {
     // 计算属性的 方法名及为 差值表达式属性值
   },
   methods: {
+    // 获取 主诉添加症状数据
+    getWesternSymptomList(){
+      let that = this;
+      getWesternSymptomList({}).then((res) => {
+        if (res.data.code == 0) {
+          let listData =  res.data.data;
+          that.optionsList = listData.slice();
+          that.optionsList_2 = listData.slice();
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    },
+    // 获取 现病史添加症状数据
+    getWesternSymptomList_2(){
+      let that = this;
+      getWesternSymptomList({}).then((res) => {
+        if (res.data.code == 0) {
+          let listData =  res.data.data;
+          that.optionsList_2 = listData.slice();
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    }, 
+    // 诊断获取关键词
+    getDiseases(i_n,t){
+      let that = this;
+      let name = i_n;
+      let id = t;
+      if(id == 7 || id == 9){
+        getDiseases({keyword:name}).then(res =>{
+          if(res.data.code == 0){
+            if(res.data.data.length> 0){
+              that.is_diseasesSearch = id;
+              that.diseasesSearch_data = res.data.data;
+            }else{
+              that.is_diseasesSearch = 0;
+            }
+          }else{
+            that.is_diseasesSearch = 0;
+            that.diseasesSearch_data = [];
+          }
+        })
+      }
+    },
     //  getIcd 获取编码
     getIcd(i_n,t){
       let that = this;
@@ -1103,6 +1147,7 @@ li {
               }
             })
           }
+          that.is_diseasesSearch = 0;
           that.diagnosisList = diagnosisList;
         })
       }
@@ -1117,6 +1162,7 @@ li {
         }
       })
     },
+    // 首页质控第三方接口验证
     DrumpServices_ZK(s_p) {
       let that = this;
       let Services_Params = s_p;
@@ -1192,16 +1238,7 @@ li {
     // 点击 现病史 添加症状-1
     addSymptom_2() {
       let that = this;
-      // 接口获取列表
-      getWesternSymptomList({}).then((res) => {
-          if (res.data.code == 0) {
-            that.optionsList_2 = res.data.data;
-            that.addSymptomPop_2 = true;
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      that.addSymptomPop_2 = true;
     },
     // 点击 现病史 添加症状弹窗内，确定按钮
     addSymptomPopSureClick_2() {
@@ -1223,7 +1260,7 @@ li {
       that.searchSymptomsList_2 = []; // 列表下拉框选中数据
       that.optionsList_2 = optionsList_2;
     },
-    // 点击下来选项
+    // 点击下拉选项
     searchSymptomsChange_2(e) {
       let searchSymptomsList_2 = [];
       let optionsList_2 = this.optionsList_2;
@@ -1270,20 +1307,25 @@ li {
         .then((res) => {
           if (res.data.code == 0) {
             let symptomSearch_data_2 = res.data.data;
-            if (symptomSearch_data_2.length <= 0) {
-              return;
-            } else {
-              that.symptomSearch_data_2 = symptomSearch_data_2;
-              that.is_symptomSearch_2 = true;
-            }
+            that.symptomSearch_data_2 = symptomSearch_data_2;
+            that.is_symptomSearch_2 = true;
           }
         })
         .catch((e) => {
           console.log(e);
         });
     },
+    getInputBtn_add2(){
+      let that = this;
+      if (that.inputOtherValue_2 == "") {
+        that.$message.error({
+          message: "请填写内容",
+        });
+        return;
+      }
+       that.symptomSearch_name_2 = that.inputOtherValue_2;
+    },
     // 点击其他症状列表项
-
     symptomSearchClick_2(n) {
       this.symptomSearch_name_2 = n;
     },
@@ -1340,23 +1382,22 @@ li {
     // cdss(icss)主页面展示信息数据
     getManySelect() {
       let that = this;
-      getManySelect({})
-        .then((res) => {
-          if (res.data.code == 0) {
-            let infoData = res.data.data;
-            infoData.forEach((ele) => {
-              ele.total_obtain_name = "";
-              ele.many_select_options.forEach((ele_1) => {
-                ele_1.obtain_name = "";
-              });
+      getManySelect({}).then((res) => {
+        if (res.data.code == 0) {
+          let infoData = res.data.data;
+          infoData.forEach((ele) => {
+            ele.total_obtain_name = "";
+            ele.many_select_options.forEach((ele_1) => {
+              ele_1.obtain_name = "";
             });
-            that.infoData = infoData;
-            console.log(that.infoData);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+          });
+          that.infoData = infoData;
+          console.log(that.infoData);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     },
     // 点击右侧模块头部分页
     handleClick(tab) {
@@ -1380,17 +1421,7 @@ li {
     // 点击主诉添加症状-1
     addSymptom_1() {
       let that = this;
-      // 接口获取列表
-      getWesternSymptomList({})
-        .then((res) => {
-          if (res.data.code == 0) {
-            that.optionsList = res.data.data;
-            that.addSymptomPop_1 = true;
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      that.addSymptomPop_1 = true;
     },
     // 点击下来选项
     searchSymptomsChange(e) {
@@ -1433,7 +1464,7 @@ li {
       if (symptomSearch_name) {
         symptoms = symptoms + "," + symptomSearch_name;
       }
-      // that.symptoms = symptoms;
+      that.symptoms = symptoms;
       // ====================  主述 添加症状数据处理 以上 ===================
 
       // ====================  现病史 添加症状数据处理 以下 ===================
@@ -1510,25 +1541,15 @@ li {
         background: "rgba(0, 0, 0, 0.1)",
         target: document.querySelector("body"),
       });
-      clickFinishBtn(pearms)
-        .then((res) => {
+      clickFinishBtn(pearms).then((res) => {
           loading.close();
           if (res.data.code == 0) {
-            console.log(res);
             if (res.data.data.symptom_about_sickness.length > 0) {
               that.disease_list = res.data.data.symptom_about_sickness; //疾病列表
               that.dataInfo_id = res.data.data.advisory_content.id;
               // return f(res.data.data.disease_list[0].name,0,that.d3jsonParser)
             }
 
-            // that.$store.dispatch("cdssInfo",pearms);
-            // window.sessionStorage.setItem("cdssInfo",JSON.stringify(pearms));
-            // window.sessionStorage.setItem("zs_values",zs_values)
-            // 新页面打开
-            //   let newUrl = that.$router.resolve({
-            //     path: "/inquiryResultPage"
-            //   });
-            // window.open(newUrl.href, "_blank");
           } else if (res.data.code == 1) {
             that.$message.error({
               message: res.data.msg,
@@ -1617,6 +1638,17 @@ li {
         .catch((e) => {
           console.log(e);
         });
+    },
+    // 点击添加症状内 添加按钮
+    getInputBtn_add(){
+      let that = this;
+      if (that.inputOtherValue == "") {
+        that.$message.error({
+          message: "请填写内容",
+        });
+        return;
+      }
+       that.symptomSearch_name = that.inputOtherValue;
     },
     // 点击其他症状列表项
     symptomSearchClick(n) {
@@ -1808,10 +1840,11 @@ li {
       let tag = t;
       let name = n;
       let kgid = k;
-
+      let symptoms = that.symptoms;
       let pearms = {
         sickness: name,
         tag: tag,
+        symptoms,
       };
 
       if( kgid && (tag == 'CnMedicinalCrop' || tag == 'zySickNess' || tag == 'ChannelCollateral') ){

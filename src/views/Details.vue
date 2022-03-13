@@ -41,7 +41,7 @@
                   <div class="item-text" v-if=" item.tag !='' && item.is_list == 1">
                     <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a>
                   </div>
-                  <div class="item-text" v-else style="white-space:pre-line">{{item.text?item.text:'暂无数据'}}</div>
+                  <div class="item-text" v-else style="white-space:pre-line" v-html='item.text ? item.text : "暂无数据"'></div>
                 </div>
               </div>
               <div v-if="getinfo.length <= 0">暂无数据</div>

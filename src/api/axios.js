@@ -35,7 +35,7 @@ class HttpRequst {
             if(localStorage.getItem('token')){
               config.headers.token = localStorage.getItem('token')
             }
-            console.log('请求拦截器');
+            // console.log('请求拦截器');
             return config;
         }, function (error) {
             // 对请求错误做些什么
@@ -45,7 +45,7 @@ class HttpRequst {
         // 添加响应拦截器
         instanse.interceptors.response.use(function (response) {
             // 对响应数据做点什么
-            console.log('响应拦截器')
+            // console.log('响应拦截器')
               switch (response.data.code) {
                 case 101:
                 store.dispatch('delToken');

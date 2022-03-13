@@ -202,7 +202,7 @@ export const getManySelect = (params) =>{
     data: params
   })
 }
-// cdss(icss)获取主要诊断
+// cdss(icss)获取诊断下 列表
 export const getDiagnosis = (params) =>{
   return axios.request({
     url:'/diagnosis',
@@ -218,7 +218,14 @@ export const getIcd = (params) =>{
     data: params
   })
 }
-
+// cdss(icss)获取主要诊断关键字搜索
+export const getDiseases = (params) =>{
+  return axios.request({
+    url:'/get_diseases',
+    method: 'post',
+    data: params
+  })
+}
 
 // ======================== webServicesAxios 第三方接口 以下 ===========================================
 // cdss(icss)webServicesAxios 
@@ -247,3 +254,4 @@ export const DrumpServices_ZK = (params) =>{
 }
 
 // ======================== webServicesAxios  第三方接口 以上===========================================
+
