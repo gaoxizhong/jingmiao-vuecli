@@ -110,7 +110,7 @@
                           <!-- 搜索症状 -->
                           <div class="qt-box">
                             <div class="el-input-box">
-                              <el-input placeholder="搜索症状" clearable v-model="inputOtherValue" @input="getInputBtn" auto-complete=""class="input-with-select">
+                              <el-input placeholder="搜索症状" clearable v-model="inputOtherValue" @input="getInputBtn" auto-complete="" class="input-with-select">
                                 <el-button slot="append" @click.stop="getInputBtn_add">添加</el-button>
                               </el-input>
                             </div>
@@ -409,7 +409,7 @@
                       <div class="scrollarea" style="max-height: 180px">
                         <div class="scrollarea-content content">
                           <ul>
-                            <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa" v-for="(items, index) in diseasesSearch_data" :key="index" @click.stop="getIcd(items.name,item.id)">
+                            <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa" v-for="(items, idx) in diseasesSearch_data" :key="idx" @click.stop="getIcd(items.name,item.id,index)">
                               {{ items.name }}
                             </li>
 
@@ -422,7 +422,7 @@
                         <div class="scrollarea-content content">
                           <ul>
                             <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
-                              v-for="(items, index) in diseasesSearch_data" :key="index" @click.stop="getIcd(items.name,item.id)">
+                              v-for="(items, idx) in diseasesSearch_data" :key="idx" @click.stop="getIcd(items.name,item.id,index)">
                               {{ items.name }}
                             </li>
                           </ul>
@@ -1126,11 +1126,13 @@ li {
       }
     },
     //  getIcd 获取编码
-    getIcd(i_n,t){
+    getIcd(i_n,t,i){
       let that = this;
       let name = i_n;
       let id = t;
+      let index = i;
       let diagnosisList = that.diagnosisList;
+      diagnosisList[index].input = name;
       if(id == 7 || id == 9){
         getIcd({name}).then(res =>{
           if(id == 7){
@@ -1151,7 +1153,6 @@ li {
           that.diagnosisList = diagnosisList;
         })
       }
-      
     },
     // 获取主要诊断选项
     getDiagnosis(){
