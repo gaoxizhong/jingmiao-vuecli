@@ -67,9 +67,11 @@
                           </span>
                         </span>
                         <!-- 其他症状搜索项 -->
-                        <span v-if="symptomSearch_name != ''">
-                          <span>{{ symptomSearch_name }}</span>
-                          <span>,</span>
+                        <span v-if="symptomSearch_name.length != ''">
+                          <span v-for="(item, index) in symptomSearch_name" :key="index" style="padding: 0 4px">
+                            <span>{{ item }}</span>
+                            <span>,</span>
+                          </span>
                         </span>
                       </span>
                       <div class="src-components-SpreadDrop-2GbRo">
@@ -149,9 +151,11 @@
                           </span>
                         </span>
                         <!-- 其他症状搜索项 -->
-                        <span v-if="symptomSearch_name_2 != ''">
-                          <span>{{ symptomSearch_name_2 }}</span>
-                          <span>,</span>
+                        <span v-if="symptomSearch_name_2.length != ''">
+                          <span v-for="(item, index) in symptomSearch_name_2" :key="index" style="padding: 0 4px">
+                            <span>{{ item }}</span>
+                            <span>,</span>
+                          </span>
                         </span>
                       </span>
                       <div class="src-components-SpreadDrop-2GbRo">
@@ -256,26 +260,11 @@
                     <!-- 各项数据按钮循环遍历模块 -->
                     <div
                       class="src-components-RadioDrop-2by7P prefixUnsetColor"
-                      v-for="(
-                        item_many_select, idx_1
-                      ) in item.many_select_options"
-                      :key="idx_1"
-                    >
+                      v-for="( item_many_select, idx_1 ) in item.many_select_options" :key="idx_1">
                       <div style="display: inline-block">
-                        <div
-                          class="
-                            selectColor
-                            largeFontSize
-                            src-Drop-3C2YP src-Drop-2GRSD
-                          "
+                        <div class="selectColor largeFontSize src-Drop-3C2YP src-Drop-2GRSD"
                           v-if="item_many_select.obtain_name"
-                          @click.stop="
-                            item_many_selectClick(
-                              item_many_select.id,
-                              item_many_select.category
-                            )
-                          "
-                        >
+                          @click.stop=" item_many_selectClick(item_many_select.id,item_many_select.category)">
                           {{ item_many_select.obtain_name }} <span>,</span>
                         </div>
                         <div
@@ -963,28 +952,28 @@ li {
       optionsList: [], // 添加症状内接口数据
       checkList: [], // 多选框 选中项label
       symptoms:'',
-      searchSymptomsList: [], // 列表下拉框选中数据
+      searchSymptomsList: ['咽部不适'], // 列表下拉框选中数据
       inputOtherValue: "", // 搜索症状
-      symptomSearch_name: "", // 搜索症状列表项
+      symptomSearch_name: [], // 搜索症状列表项
       is_symptomSearch: false, // 搜索结果弹窗状态
       symptomSearch_data: [],
       addSymptomPop_1: false, //选项弹窗模块显示状态
       //  现病史------的添加症状字段
       optionsList_2: [], // 现病史---添加症状内接口数据
       checkList_2: [], // 现病史---多选框 选中项
-      searchSymptomsList_2: [], // 现病史---列表下拉框选中数据
+      searchSymptomsList_2: ['鼻塞'], // 现病史---列表下拉框选中数据
       inputOtherValue_2: "", // 现病史---搜索症状
-      symptomSearch_name_2: "", // 现病史---搜索症状列表项
+      symptomSearch_name_2: [], // 现病史---搜索症状列表项
       is_symptomSearch_2: false, // 现病史---搜索结果弹窗状态
       symptomSearch_data_2: [], // 现病史---搜索结果数据
       addSymptomPop_2: false, // 现病史--- 选项弹窗模块显示状态
       //  现病史------的添加症状字段以上
       activeName: "auxiliary",
       form: {
-        name: "",
-        age: "",
-        sex: "",
-        sfzh: "",
+        name: "王明明",
+        age: "58",
+        sex: "男",
+        sfzh: "330127198912311234",
         csrq: "",
         bzyzsnl: "",
         xsecstz: "",
@@ -1083,8 +1072,8 @@ li {
       getWesternSymptomList({}).then((res) => {
         if (res.data.code == 0) {
           let listData =  res.data.data;
-          that.optionsList = listData.slice();
-          that.optionsList_2 = listData.slice();
+          let optionsList = listData.slice();
+          that.optionsList = optionsList;
         }
       })
       .catch((e) => {
@@ -1256,25 +1245,27 @@ li {
           });
         }
       });
-      that.symptomSearch_name_2 = "";
+      that.symptomSearch_name_2 = [];
       that.checkList_2 = []; // 多选框 选中项label
       that.searchSymptomsList_2 = []; // 列表下拉框选中数据
       that.optionsList_2 = optionsList_2;
     },
     // 点击下拉选项
     searchSymptomsChange_2(e) {
-      let searchSymptomsList_2 = [];
-      let optionsList_2 = this.optionsList_2;
-      optionsList_2.forEach((el) => {
-        if (el.select_options.length > 0) {
-          el.select_options.forEach((el_options) => {
-            if (el_options.select_chect) {
-              searchSymptomsList_2.push(el_options.select_chect);
-            }
-          });
-        }
-      });
+      let searchSymptomsList_2 = this.searchSymptomsList_2;
+       searchSymptomsList_2.push(e);
       this.searchSymptomsList_2 = searchSymptomsList_2;
+
+      // let optionsList_2 = this.optionsList_2;
+      // optionsList_2.forEach((el) => {
+      //   if (el.select_options.length > 0) {
+      //     el.select_options.forEach((el_options) => {
+      //       if (el_options.select_chect) {
+      //         searchSymptomsList_2.push(el_options.select_chect);
+      //       }
+      //     });
+      //   }
+      // });
     },
     // 列表多选选项
     checkGroup_2(e) {
@@ -1318,17 +1309,25 @@ li {
     },
     getInputBtn_add2(){
       let that = this;
+      let symptomSearch_name_2 =that.symptomSearch_name_2;
+      let inputOtherValue_2 = that.inputOtherValue_2;
       if (that.inputOtherValue_2 == "") {
         that.$message.error({
           message: "请填写内容",
         });
         return;
       }
-       that.symptomSearch_name_2 = that.inputOtherValue_2;
+      symptomSearch_name_2.push(inputOtherValue_2);
+      that.inputOtherValue_2 = '';
+       that.symptomSearch_name_2 = symptomSearch_name_2;
     },
     // 点击其他症状列表项
     symptomSearchClick_2(n) {
-      this.symptomSearch_name_2 = n;
+      let symptomSearch_name_2 =this.symptomSearch_name_2;
+      symptomSearch_name_2.push(n);
+      this.symptomSearch_name_2 = symptomSearch_name_2;
+      this.inputOtherValue_2 = '';
+
     },
     // ====================   现病史---- 添加症状功能 -- 以上--   ====================
 
@@ -1347,7 +1346,7 @@ li {
           });
         }
       });
-      that.symptomSearch_name = "";
+      that.symptomSearch_name = []; // 搜索框添加的数据
       that.checkList = []; // 多选框 选中项label
       that.searchSymptomsList = []; // 列表下拉框选中数据
       that.optionsList = optionsList;
@@ -1388,12 +1387,44 @@ li {
           let infoData = res.data.data;
           infoData.forEach((ele) => {
             ele.total_obtain_name = "";
-            ele.many_select_options.forEach((ele_1) => {
-              ele_1.obtain_name = "";
+            ele.many_select_options.forEach((ele_m) => {
+               ele_m.obtain_name = "";
             });
           });
+          //  -------------------- 设置页面初始默认数据 ----------------------------------------
+            //  主诉
+          infoData[0].many_select_options[0].obtain_name = '反复';
+          infoData[0].many_select_options[1].obtain_name = '3分钟';
+            //  现病史
+          infoData[1].many_select_options[0].obtain_name = '患者3天前';
+          infoData[1].many_select_options[1].obtain_name = '受凉后';
+          infoData[1].many_select_options[3].obtain_name = '程度较轻';
+          infoData[1].many_select_options[4].obtain_name = '自病以来神清';
+          infoData[1].many_select_options[5].obtain_name = '精神可';
+          infoData[1].many_select_options[6].obtain_name = '食欲较好';
+          infoData[1].many_select_options[7].obtain_name = '睡眠可';
+          infoData[1].many_select_options[8].obtain_name = '二便无殊';
+          infoData[1].many_select_options[9].obtain_name = '体重无明显减轻';
+            //  其他史
+          infoData[2].many_select_options[0].obtain_name = '否认食物及药物过敏';
+          infoData[2].many_select_options[1].obtain_name = '无烟酒嗜好';
+          infoData[2].many_select_options[2].obtain_name = '已婚';
+          infoData[2].many_select_options[3].obtain_name = '父母兄弟姐妹均体健';
+             //  查体
+          infoData[3].many_select_options[0].obtain_name = '神志清';
+          infoData[3].many_select_options[1].obtain_name = '面容正常';
+          infoData[3].many_select_options[2].obtain_name = '鼻粘膜充血';
+          infoData.forEach((ele) => {
+            ele.total_obtain_name = "";
+            ele.many_select_options.forEach((ele_m) => {
+              ele.total_obtain_name += ele_m.obtain_name;
+            });
+          });
+          //  -------------------- 设置页面初始默认数据 ----------------------------------------
+          
           that.infoData = infoData;
-          console.log(that.infoData);
+          // 设置页面初始 调取数据
+          that.finish_btn();
         }
       })
       .catch((e) => {
@@ -1426,18 +1457,19 @@ li {
     },
     // 点击下来选项
     searchSymptomsChange(e) {
-      let searchSymptomsList = [];
-      let optionsList = this.optionsList;
-      optionsList.forEach((el) => {
-        if (el.select_options.length > 0) {
-          el.select_options.forEach((el_options) => {
-            if (el_options.select_chect) {
-              searchSymptomsList.push(el_options.select_chect);
-            }
-          });
-        }
-      });
+      let searchSymptomsList = this.searchSymptomsList;
+      searchSymptomsList.push(e);
       this.searchSymptomsList = searchSymptomsList;
+      // let optionsList = this.optionsList;
+      // optionsList.forEach((el) => {
+      //   if (el.select_options.length > 0) {
+      //     el.select_options.forEach((el_options) => {
+      //       if (el_options.select_chect) {
+      //         searchSymptomsList.push(el_options.select_chect);
+      //       }
+      //     });
+      //   }
+      // });
     },
     // 点击西医问诊 保存按钮
     finish_btn() {
@@ -1462,8 +1494,8 @@ li {
       } else {
         symptoms = checkList.join(",");
       }
-      if (symptomSearch_name) {
-        symptoms = symptoms + "," + symptomSearch_name;
+      if (symptomSearch_name.length > 0) {
+        symptoms = symptoms + "," + symptomSearch_name.join(",");
       }
       that.symptoms = symptoms;
       // ====================  主述 添加症状数据处理 以上 ===================
@@ -1481,8 +1513,8 @@ li {
       } else {
         symptoms_2 = checkList_2.join(",");
       }
-      if (symptomSearch_name_2) {
-        symptoms_2 = symptoms_2 + "," + symptomSearch_name_2;
+      if (symptomSearch_name_2.length > 0) {
+        symptoms_2 = symptoms_2 + "," + symptomSearch_name_2.join(",");
       }
 
       // ====================  现病史 添加症状数据处理 以上 ===================
@@ -1643,17 +1675,25 @@ li {
     // 点击添加症状内 添加按钮
     getInputBtn_add(){
       let that = this;
+      let symptomSearch_name = that.symptomSearch_name;
+      let inputOtherValue = that.inputOtherValue;
       if (that.inputOtherValue == "") {
         that.$message.error({
           message: "请填写内容",
         });
         return;
       }
-       that.symptomSearch_name = that.inputOtherValue;
+      symptomSearch_name.push(inputOtherValue);
+      that.symptomSearch_name = symptomSearch_name;
+      that.inputOtherValue = '';
     },
     // 点击其他症状列表项
     symptomSearchClick(n) {
-      this.symptomSearch_name = n;
+      let symptomSearch_name = this.symptomSearch_name;
+      symptomSearch_name.push(n);
+      this.symptomSearch_name = symptomSearch_name;
+      that.inputOtherValue = '';
+
     },
 
     // ================================================================
