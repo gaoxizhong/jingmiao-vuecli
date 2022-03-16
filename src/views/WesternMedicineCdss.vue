@@ -135,133 +135,130 @@
                     </div>
                     <!-- 主诉 ==>  添加症状 信息模块 结束 -->
 
-                    <!-- 现病史 ==>  添加症状 信息模块 -->
-                    <div style="display: inline-block" v-if="index == 1">
-                      <span class=" src-common-components-EditableSpan-G8WSU largeFontSize selectColor src-common-components-EditableSpan-CXPJX">
-                        <!-- 下拉框数据 -->
-                        <span v-for="(item, index) in searchSymptomsList_2" :key="index" style="padding: 0 4px">
-                          <span>{{ item }}</span>
-                          <span>,</span>
-                        </span>
-                        <!-- 多选框数据 -->
-                        <span v-if="checkList_2.length > 0">
-                          <span v-for="(item, index) in checkList_2" :key="index" style="padding: 0 4px">
-                            <span>{{ item }}</span>
-                            <span>,</span>
-                          </span>
-                        </span>
-                        <!-- 其他症状搜索项 -->
-                        <span v-if="symptomSearch_name_2.length != ''">
-                          <span v-for="(item, index) in symptomSearch_name_2" :key="index" style="padding: 0 4px">
-                            <span>{{ item }}</span>
-                            <span>,</span>
-                          </span>
-                        </span>
-                      </span>
-                      <div class="src-components-SpreadDrop-2GbRo">
-                        <div class="src-components-SpreadDrop-XVhKz largeFontSize selectColor" @click.stop="addSymptom_2">
-                          添加症状
-                        </div>
-                        <!-- 选项弹窗模块 -->
-                        <div class="src-components-ListItems-3K8km" style="left: auto" v-show="addSymptomPop_2" id="addSymptomPop_2">
-                          <div class="clearfix">
-                            <!-- <p class="src-components-ListItems-1OJip">按点击顺序成文</p> -->
-                            <div class="src-components-ListItems-31jDC">
-                              <span class="src-components-ListItems-3iV0y" @click.stop="addSymptomPopEmptyClick_2">清空选项</span>
-                              <span class="src-components-ListItems-3TE88" @click.stop="addSymptomPopSureClick_2">确定</span>
-                            </div>
-                          </div>
-                          <el-checkbox-group v-model="checkList_2" @change="checkGroup_2">
-                            <div class="options-list-box" v-for="(item, index) in optionsList_2" :key="index">
-                              <div class="options-list-title">
-                                {{ item.category }}
-                              </div>
-                              <div class="oplist-items-box">
-                                <div>
-                                  <span v-if="item.select_options.length > 0">
-                                    <el-select
-                                      class="el-oplistselect-box el-select"
-                                      :placeholder="
-                                        items_options.select_name + '选项'
-                                      "
-                                      v-model="items_options.select_chect"
-                                      slot="prepend"
-                                      v-for="(
-                                        items_options, index_options
-                                      ) in item.select_options"
-                                      :key="index_options"
-                                      @change="searchSymptomsChange_2"
-                                    >
-                                      <el-option
-                                        v-for="(
-                                          it, inx
-                                        ) in items_options.select_values"
-                                        :key="inx"
-                                        :label="it"
-                                        :value="it"
-                                      ></el-option>
-                                    </el-select>
-                                  </span>
-
-                                  <span
-                                    v-for="(items, idx) in item.options"
-                                    :key="idx"
-                                  >
-                                    <el-checkbox
-                                      :label="items"
-                                      v-if="items != ''"
-                                      >{{ items }}</el-checkbox
-                                    >
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </el-checkbox-group>
-
-                          <!-- 搜索症状 -->
-                          <div class="qt-box">
-                            <div class="el-input-box">
-                              <el-input placeholder="搜索症状" clearable v-model="inputOtherValue_2" @input="getInputBtn_2" class="input-with-select">
-                                <el-button slot="append" @click.stop="getInputBtn_add2">添加</el-button>
-                              </el-input>
-                            </div>
-                            <div
-                              class="qt-inputPop-box"
-                              v-show="is_symptomSearch_2"
-                              id="is_symptomSearch_2"
-                            >
-                              <div class="scrollarea" style="max-height: 180px">
-                                <div class="scrollarea-content content">
-                                  <ul>
-                                    <li
-                                      class="
-                                        src-common-components-LiItem-2PM-m
-                                        src-common-components-LiItem-3S7Fa
-                                      "
-                                      v-for="(
-                                        item, index
-                                      ) in symptomSearch_data_2"
-                                      :key="index"
-                                      @click.stop="symptomSearchClick_2(item)"
-                                    >
-                                      {{ item }}
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- 选项弹窗模块结束 -->
-                      </div>
-                    </div>
-                    <!-- 现病史 ==>  添加症状 信息模块 结束 -->
-
                     <!-- 各项数据按钮循环遍历模块 -->
-                    <div
-                      class="src-components-RadioDrop-2by7P prefixUnsetColor"
-                      v-for="( item_many_select, idx_1 ) in item.many_select_options" :key="idx_1">
-                      <div style="display: inline-block">
+                    <div class="src-components-RadioDrop-2by7P prefixUnsetColor" v-for="( item_many_select, idx_1 ) in item.many_select_options" :key="idx_1">
+                      <!-- 现病史 ==>  添加症状 信息模块 -->
+                      <div style="display: inline-block" v-if="index == 1 && idx_1 == 2">
+                        <span class=" src-common-components-EditableSpan-G8WSU largeFontSize selectColor src-common-components-EditableSpan-CXPJX">
+                          <!-- 下拉框数据 -->
+                          <span v-for="(item, index) in searchSymptomsList_2" :key="index" style="padding: 0 4px">
+                            <span>{{ item }}</span>
+                            <span>,</span>
+                          </span>
+                          <!-- 多选框数据 -->
+                          <span v-if="checkList_2.length > 0">
+                            <span v-for="(item, index) in checkList_2" :key="index" style="padding: 0 4px">
+                              <span>{{ item }}</span>
+                              <span>,</span>
+                            </span>
+                          </span>
+                          <!-- 其他症状搜索项 -->
+                          <span v-if="symptomSearch_name_2.length != ''">
+                            <span v-for="(item, index) in symptomSearch_name_2" :key="index" style="padding: 0 4px">
+                              <span>{{ item }}</span>
+                              <span>,</span>
+                            </span>
+                          </span>
+                        </span>
+                        <div class="src-components-SpreadDrop-2GbRo">
+                          <div class="src-components-SpreadDrop-XVhKz largeFontSize selectColor" @click.stop="addSymptom_2">
+                            添加症状
+                          </div>
+                          <!-- 选项弹窗模块 -->
+                          <div class="src-components-ListItems-3K8km" style="left: auto" v-show="addSymptomPop_2" id="addSymptomPop_2">
+                            <div class="clearfix">
+                              <!-- <p class="src-components-ListItems-1OJip">按点击顺序成文</p> -->
+                              <div class="src-components-ListItems-31jDC">
+                                <span class="src-components-ListItems-3iV0y" @click.stop="addSymptomPopEmptyClick_2">清空选项</span>
+                                <span class="src-components-ListItems-3TE88" @click.stop="addSymptomPopSureClick_2">确定</span>
+                              </div>
+                            </div>
+                            <el-checkbox-group v-model="checkList_2" @change="checkGroup_2">
+                              <div class="options-list-box" v-for="(item, index) in optionsList_2" :key="index">
+                                <div class="options-list-title">
+                                  {{ item.category }}
+                                </div>
+                                <div class="oplist-items-box">
+                                  <div>
+                                    <span v-if="item.select_options.length > 0">
+                                      <el-select
+                                        class="el-oplistselect-box el-select"
+                                        :placeholder="
+                                          items_options.select_name + '选项'
+                                        "
+                                        v-model="items_options.select_chect"
+                                        slot="prepend"
+                                        v-for="(
+                                          items_options, index_options
+                                        ) in item.select_options"
+                                        :key="index_options"
+                                        @change="searchSymptomsChange_2"
+                                      >
+                                        <el-option
+                                          v-for="(
+                                            it, inx
+                                          ) in items_options.select_values"
+                                          :key="inx"
+                                          :label="it"
+                                          :value="it"
+                                        ></el-option>
+                                      </el-select>
+                                    </span>
+
+                                    <span
+                                      v-for="(items, idx) in item.options"
+                                      :key="idx"
+                                    >
+                                      <el-checkbox
+                                        :label="items"
+                                        v-if="items != ''"
+                                        >{{ items }}</el-checkbox
+                                      >
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </el-checkbox-group>
+
+                            <!-- 搜索症状 -->
+                            <div class="qt-box">
+                              <div class="el-input-box">
+                                <el-input placeholder="搜索症状" clearable v-model="inputOtherValue_2" @input="getInputBtn_2" class="input-with-select">
+                                  <el-button slot="append" @click.stop="getInputBtn_add2">添加</el-button>
+                                </el-input>
+                              </div>
+                              <div
+                                class="qt-inputPop-box"
+                                v-show="is_symptomSearch_2"
+                                id="is_symptomSearch_2"
+                              >
+                                <div class="scrollarea" style="max-height: 180px">
+                                  <div class="scrollarea-content content">
+                                    <ul>
+                                      <li
+                                        class="
+                                          src-common-components-LiItem-2PM-m
+                                          src-common-components-LiItem-3S7Fa
+                                        "
+                                        v-for="(
+                                          item, index
+                                        ) in symptomSearch_data_2"
+                                        :key="index"
+                                        @click.stop="symptomSearchClick_2(item)"
+                                      >
+                                        {{ item }}
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- 选项弹窗模块结束 -->
+                        </div>
+                      </div>
+                      <!-- 现病史 ==>  添加症状 信息模块 结束 -->
+                      <div style="display: inline-block" :index='idx_1'>
                         <div class="selectColor largeFontSize src-Drop-3C2YP src-Drop-2GRSD"
                           v-if="item_many_select.obtain_name"
                           @click.stop=" item_many_selectClick(item_many_select.id,item_many_select.category)">
@@ -1398,13 +1395,13 @@ li {
             //  现病史
           infoData[1].many_select_options[0].obtain_name = '患者3天前';
           infoData[1].many_select_options[1].obtain_name = '受凉后';
-          infoData[1].many_select_options[3].obtain_name = '程度较轻';
-          infoData[1].many_select_options[4].obtain_name = '自病以来神清';
-          infoData[1].many_select_options[5].obtain_name = '精神可';
-          infoData[1].many_select_options[6].obtain_name = '食欲较好';
-          infoData[1].many_select_options[7].obtain_name = '睡眠可';
-          infoData[1].many_select_options[8].obtain_name = '二便无殊';
-          infoData[1].many_select_options[9].obtain_name = '体重无明显减轻';
+          infoData[1].many_select_options[2].obtain_name = '程度较轻';
+          infoData[1].many_select_options[3].obtain_name = '自病以来神清';
+          infoData[1].many_select_options[4].obtain_name = '精神可';
+          infoData[1].many_select_options[5].obtain_name = '食欲较好';
+          infoData[1].many_select_options[6].obtain_name = '睡眠可';
+          infoData[1].many_select_options[7].obtain_name = '二便无殊';
+          infoData[1].many_select_options[8].obtain_name = '体重无明显减轻';
             //  其他史
           infoData[2].many_select_options[0].obtain_name = '否认食物及药物过敏';
           infoData[2].many_select_options[1].obtain_name = '无烟酒嗜好';
