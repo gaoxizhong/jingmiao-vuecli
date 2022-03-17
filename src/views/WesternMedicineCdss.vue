@@ -949,7 +949,7 @@ li {
       optionsList: [], // 添加症状内接口数据
       checkList: [], // 多选框 选中项label
       symptoms:'',
-      searchSymptomsList: ['咽部不适'], // 列表下拉框选中数据
+      searchSymptomsList: ['鼻塞'], // 列表下拉框选中数据
       inputOtherValue: "", // 搜索症状
       symptomSearch_name: [], // 搜索症状列表项
       is_symptomSearch: false, // 搜索结果弹窗状态
@@ -1574,11 +1574,9 @@ li {
       clickFinishBtn(pearms).then((res) => {
           loading.close();
           if (res.data.code == 0) {
-            if (res.data.data.symptom_about_sickness.length > 0) {
-              that.disease_list = res.data.data.symptom_about_sickness; //疾病列表
+               that.disease_list = res.data.data.symptom_about_sickness; //疾病列表
               that.dataInfo_id = res.data.data.advisory_content.id;
               // return f(res.data.data.disease_list[0].name,0,that.d3jsonParser)
-            }
 
           } else if (res.data.code == 1) {
             that.$message.error({
