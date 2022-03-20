@@ -611,8 +611,8 @@ table {
     background: #00000080;
   }
   .casePop-module-box {
-    width: 80%;
-    max-width: 1000px;
+    width: 70%;
+    max-width: 800px;
     height: 88%;
     max-height: 560px;
     background: #fff;
@@ -697,7 +697,6 @@ table {
     padding: 0 5px;
   }
   .cjyp-table-tr-r {
-    width: 80px;
     color: #53bfb4;
     text-align: right;
     padding: 0 5px;
@@ -1081,6 +1080,12 @@ img.src-components-Preview-2DV3S {
   width:auto;
   text-align: right;
 }
+.src-Items-list{
+  margin-top: 10px;
+}
+
+
+
 /* ===============   ==================== */
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){

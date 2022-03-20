@@ -433,7 +433,6 @@
               预览
             </span>
             <span class="src-components-Operation-3GqtE" @click="finish_btn">保存</span>
-            <!-- <span class="src-components-Operation-1s8dr src-components-Operation-3GqtE">清除</span> -->
           </div>
         </div>
       </div>
@@ -451,25 +450,21 @@
           <!-- 辅助诊疗模块 -->
           <div class="rightcontent-info-bodybox" v-if="activeName == 'auxiliary'">
             <div class="src-components-PushItems-RKWqd">
-              <!-- 初步诊断模块开始 -->
+              <!-- 疑似诊断模块开始 -->
               <div class="src-components-PushItems-1jpJi src-Items-cbzd">
                 <h1> 
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAfRJREFUOBGtVDEzxFAQ3ncSBa2CRqdUUPgBFAztxQw5nEZDqzyFK9UajRyOIkpuruEHKCiUOgoKLYWEZ3fz9k2Si4wZMnPv7e1++82+9+0+gL982lupc75ero+VEllkIUqiulp7SvgW/SYZuupr3j3/sAIa1jgqizO4zaakSRVKALSzM45WQbv7ANGNCtuj6TgDpABO8GqXAhBmZtRefViFwYsmgNbzAlLnbROvPYsPKzdHsR4sBa+rsEbCaDwigJoDZ2BcnR28pvJ+Z2ZP7fmPAO4UqGgTHPdInQYPPTT5GtP1WXAaxCc3kQwYQYHNQEN0E582elZAwax1iri4I/MF+1klYljaGMqoYsA2mQ9o/tGlpsEWVCBCr945UPYesQyI3++xoC52zrow054BpgNkU/0Qv+2xpBzUXcCGLZO2kJAb5iO+BqUaKjwOmMssfGatm9DvTBcpnCEsI0qTkv0TMROao90CVHbyFXGykUrmIk2eqPS1i1cxSVeREHo0OM4EDZeA80Mmft6V6qjwZEF8NJgA8R36RpzEiZdNnQ/QEFAmoaTCBP+5RYqTXaGFpccxomEoajQUp4M/+25QDn2E5QFy+1rSPhlRGESP5w8KM4shwjenUOkeQptExFF0hZ3aSp4/jNC10EPqujNFLSO5/7p/A6iJBGKnQxzOAAAAAElFTkSuQmCC" alt=""/>
-                  初步诊断
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  疑似诊断
                 </h1>
-                <!-- 初步诊断列表 -->
+                <!-- 疑似诊断列表 -->
                 <div v-if="disease_list.length > 0">
-                  <div class="ysblList-items-box" :class="index == clickIndex ? 'hoverClass' : ''"
-                    v-for="(item, index) in disease_list"
-                    :key="index"
-                    @click.stop="clickYsbl(item.name, index)"
-                  >
-                    <div style="font-weight: 600">
+                  <div class="ysblList-items-box" :class="index == clickIndex ? 'hoverClass' : ''" v-for="(item, index) in disease_list"
+                    :key="index" @click.stop="clickYsbl(item.name, index)">
+                    <div style="font-weight: 600;padding-bottom: 5px;display: flex;align-items: center; justify-content: space-between;">
                       <span>{{ item.name }}</span>
-                      <i
-                        class="el-icon-s-operation"
-                        style="color: #53bfb4; margin-left: 6px"
-                      ></i>
+                      <a href="javascript:0;" class="cjyp-table-tr-r" style="font-weight: 100;font-size:13px;" @click.stop="clickCktp(item.name, index)">
+                       <i class="el-icon-share" style="color: #53bfb4; margin-right: 6px"></i>查看图谱
+                      </a>
                     </div>
                     <div class="ysblList-items-text">
                       {{ item.pathogenesis ? item.pathogenesis : "暂无" }}
@@ -477,9 +472,64 @@
                   </div>
                 </div>
                 <div style="padding: 6px 0 6px 15px" v-else>暂无</div>
-                <!-- 初步诊断列表结束 -->
+                <!-- 疑似诊断列表结束 -->
               </div>
-              <!-- 初步诊断模块结束 -->
+              <!-- 疑似诊断模块结束 -->
+
+
+              <!-- 常见药品模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1 style="background: #EAF7FA;"> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAfRJREFUOBGtVDEzxFAQ3ncSBa2CRqdUUPgBFAztxQw5nEZDqzyFK9UajRyOIkpuruEHKCiUOgoKLYWEZ3fz9k2Si4wZMnPv7e1++82+9+0+gL982lupc75ero+VEllkIUqiulp7SvgW/SYZuupr3j3/sAIa1jgqizO4zaakSRVKALSzM45WQbv7ANGNCtuj6TgDpABO8GqXAhBmZtRefViFwYsmgNbzAlLnbROvPYsPKzdHsR4sBa+rsEbCaDwigJoDZ2BcnR28pvJ+Z2ZP7fmPAO4UqGgTHPdInQYPPTT5GtP1WXAaxCc3kQwYQYHNQEN0E582elZAwax1iri4I/MF+1klYljaGMqoYsA2mQ9o/tGlpsEWVCBCr945UPYesQyI3++xoC52zrow054BpgNkU/0Qv+2xpBzUXcCGLZO2kJAb5iO+BqUaKjwOmMssfGatm9DvTBcpnCEsI0qTkv0TMROao90CVHbyFXGykUrmIk2eqPS1i1cxSVeREHo0OM4EDZeA80Mmft6V6qjwZEF8NJgA8R36RpzEiZdNnQ/QEFAmoaTCBP+5RYqTXaGFpccxomEoajQUp4M/+25QDn2E5QFy+1rSPhlRGESP5w8KM4shwjenUOkeQptExFF0hZ3aSp4/jNC10EPqujNFLSO5/7p/A6iJBGKnQxzOAAAAAElFTkSuQmCC" alt=""/>
+                  常见药品
+                </h1>
+                <!-- 常见药品列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in medicine_list" :key="index">
+                    <div class="cjyp-table-tr-l">{{ item.name }}</div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('MedicineProduction', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!medicine_list || medicine_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 常见药品列表结束 -->
+              </div>
+              <!-- 常见药品模块结束 -->
+
+              <!-- 常见检查模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  常见检查
+                </h1>
+                <!-- 常见检查列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+                    <div class="cjyp-table-tr-l">{{ item.name }}</div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 常见检查列表结束 -->
+              </div>
+              <!-- 常见检查模块结束 -->
+
+              <!-- 并发症模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1 style="background: #EAF7FA;"> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAfRJREFUOBGtVDEzxFAQ3ncSBa2CRqdUUPgBFAztxQw5nEZDqzyFK9UajRyOIkpuruEHKCiUOgoKLYWEZ3fz9k2Si4wZMnPv7e1++82+9+0+gL982lupc75ero+VEllkIUqiulp7SvgW/SYZuupr3j3/sAIa1jgqizO4zaakSRVKALSzM45WQbv7ANGNCtuj6TgDpABO8GqXAhBmZtRefViFwYsmgNbzAlLnbROvPYsPKzdHsR4sBa+rsEbCaDwigJoDZ2BcnR28pvJ+Z2ZP7fmPAO4UqGgTHPdInQYPPTT5GtP1WXAaxCc3kQwYQYHNQEN0E582elZAwax1iri4I/MF+1klYljaGMqoYsA2mQ9o/tGlpsEWVCBCr945UPYesQyI3++xoC52zrow054BpgNkU/0Qv+2xpBzUXcCGLZO2kJAb5iO+BqUaKjwOmMssfGatm9DvTBcpnCEsI0qTkv0TMROao90CVHbyFXGykUrmIk2eqPS1i1cxSVeREHo0OM4EDZeA80Mmft6V6qjwZEF8NJgA8R36RpzEiZdNnQ/QEFAmoaTCBP+5RYqTXaGFpccxomEoajQUp4M/+25QDn2E5QFy+1rSPhlRGESP5w8KM4shwjenUOkeQptExFF0hZ3aSp4/jNC10EPqujNFLSO5/7p/A6iJBGKnQxzOAAAAAElFTkSuQmCC" alt=""/>
+                  并发症
+                </h1>
+                <!-- 并发症列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in complication_list" :key="index">
+                    <div class="cjyp-table-tr-l">{{ item.name }}</div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Disease', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!complication_list || complication_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 并发症列表结束 -->
+              </div>
+              <!-- 并发症模块结束 -->
 
               <!-- 病案首页质控模块开始 -->
               <div class="src-Items-hlyy">
@@ -618,56 +668,6 @@
         <i class="el-icon-circle-close"></i>
       </div>
       <div class="main-box">
-        <!-- main 左侧 -->
-        <div class="ypjc-div-box">
-          <div class="aside-icontitle-box">
-            <i class="el-icon-printer"></i
-            ><span style="padding-left: 10px">处置建议</span>
-          </div>
-
-          <!-- 常见药品 -->
-          <div class="cjyp-table-box">
-            <div class="cjyp-table-th">
-              <div style="color: #53bfb4; text-align: left; flex: 1">
-                常见药品
-              </div>
-              <div style="color: #a9acac; text-align: right; width: 80px">
-                说明书
-              </div>
-            </div>
-            <div class="cjyp-table-tr" v-for="(item, index) in medicine_list" :key="index">
-              <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('MedicineProduction', item.name)">查看详情</a>
-            </div>
-            <el-empty description="暂无数据..." v-if="!medicine_list || medicine_list.length <= 0"></el-empty>
-          </div>
-
-          <!-- 常见检查 -->
-          <div class="cjjc-box">
-            <div class="cjjc-title">常见检查</div>
-            <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
-              <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a
-                class="cjyp-table-tr-r"
-                href="javascript:0;"
-                @click="click_ypxq('Inspection', item.name)"
-                >查看详情</a
-              >
-            </div>
-            <el-empty description="暂无数据..." v-if="!inspection_list || inspection_list.length <= 0"></el-empty>
-          </div>
-
-          <!-- 并发症 -->
-          <div class="cjjc-box">
-            <div class="cjjc-title">并发症</div>
-            <div class="cjyp-table-tr" v-for="(item, index) in complication_list" :key="index">
-              <div class="cjyp-table-tr-l">{{ item.name }}</div>
-              <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Disease', item.name)">查看详情</a>
-            </div>
-            <el-empty description="暂无数据..." v-if="!complication_list || complication_list.length <= 0"></el-empty>
-          </div>
-        </div>
-
         <!-- main 右侧图谱 -->
         <div class="main-box-left">
           <div class="main-box-left-t">
@@ -1696,6 +1696,11 @@ li {
     // 点击疑似病例
     clickYsbl(n, i) {
       let that = this;
+      that.click_ysbl(n, i);
+    },
+    // 点击疑似病例---  查看图谱
+    clickCktp(n, i){
+      let that = this;
       that.click_ysbl(n, i, that.d3jsonParser);
     },
     click_ysbl(n, i, f) {
@@ -1707,21 +1712,23 @@ li {
       let pearms = {
         disease_name: name,
       };
-      clickYsbl(pearms)
-        .then((res) => {
-          if (res.data.code == 0) {
-            let graph = res.data.data.graph; //图谱
+      clickYsbl(pearms).then((res) => {
+        if (res.data.code == 0) {
             that.medicine_list = res.data.data.medicine_list; //药品列表
             that.inspection_list = res.data.data.inspection_list; //检查列表
             that.complication_list = res.data.data.complication_list; //并发症
+          if( typeof(f) == "function"){
+            let graph = res.data.data.graph; //图谱
             that.is_casePop = true;
             return f(graph);
           }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     },
+
     // 获取图谱数据
     d3jsonParser(data) {
       let that = this;
