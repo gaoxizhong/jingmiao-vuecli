@@ -1,5 +1,7 @@
 <template>
-  <el-container :style="`height:${viewHeight}px;`">
+  <!-- <el-container :style="`height:${viewHeight}px;`"> -->
+  <el-container>
+
     <!-- 头部开始 -->
     <el-header>
       <CommonHeader></CommonHeader>

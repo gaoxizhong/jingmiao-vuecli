@@ -57,9 +57,9 @@ header{
   position: relative;
 }
 .l-content-title{
-  font-size:18px;
+  font-size:28px;
   padding-left:20px;
-  color:#5578F0;
+  color:#00C792;
   font-weight:600;
   font-family: '宋体';
 }
@@ -74,6 +74,15 @@ header{
 .r-content span{
   margin: 0 10px;
 }
+    /* 媒体查询 */
+  @media only screen and (max-width: 1366px){
+    .content-box{
+      width: 900px;
+    }
+    .l-content-title{
+      font-size: 24px;
+    }
+  }
 </style>
 <script>
 export default {
