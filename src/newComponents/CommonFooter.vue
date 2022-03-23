@@ -11,7 +11,7 @@
 <style scoped>
 footer{
   width:100%;
-  height: 55px;
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,7 +31,6 @@ footer{
 export default {
   data() {
     return {
-      phone:''
     }
   },
   mounted(){

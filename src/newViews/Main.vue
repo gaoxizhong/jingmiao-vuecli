@@ -6,8 +6,8 @@
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
-    <el-main>
-      11
+    <el-main :style="main_bg">
+      <CommponMain></CommponMain>
     </el-main>
     <!-- 主题结束 -->
     <!-- 底部开始 -->
@@ -21,6 +21,7 @@
 <script>
 import CommonHeader from "../newComponents/CommonHeader";
 import CommonFooter from "../newComponents/CommonFooter";
+import CommponMain from "../newComponents/CommponMain";
 // import Home from "../components/Home";
 
 export default {
@@ -32,7 +33,8 @@ export default {
   name: 'Main',
   components: {
     CommonHeader,
-    CommonFooter
+    CommonFooter,
+    CommponMain
     // Home
   },
   data(){
@@ -40,7 +42,13 @@ export default {
       viewHeight:'',
       viewWidth:'',
       sickNess1:[],
-      is_view: true
+      is_view: true,
+      main_bg:{
+        backgroundImage:'url(' + require('../assets/image/home/icon_bjt.png') + ')',
+        backgroundRepeat:'no-repeat',
+        backgroundSize: '100% 100%'
+      }
+
     }
   },
   mounted(){
@@ -65,6 +73,7 @@ export default {
 </script>
 <style lang="scss" scoped>
   .el-header{
+    height: 80px !important;
     background: #fff;
     border-bottom: 1px solid #ececec;
   }
@@ -75,4 +84,9 @@ export default {
   .el-main{
     padding: 20px 36px;
   }
+  .el-footer{
+    width: 100%;
+    padding: 0;
+  }
+
 </style>
