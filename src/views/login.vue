@@ -5,12 +5,16 @@
       <form @submit.prevent="RegisterUserInfo" autocomplete="off">
         <h1>创建一个新账号</h1>
         <span>请使用您的手机号进行注册</span>
-        <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入企业名称"></el-input>
+        <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入单位名称"></el-input>
+        <el-input type="text" v-model="newuser.department" name="department" placeholder="请输入部门"></el-input>
+        <el-input type="text" v-model="newuser.username" name="username" placeholder="请输入用户名"></el-input>
+        <el-input type="email" v-model="newuser.email" name="email" placeholder="请输入邮箱"></el-input>
         <el-input v-model="newuser.phone" name="phone" placeholder="请输入手机号"></el-input>
         <el-input type="password" v-model="newuser.password" name="password" placeholder="请输入密码"></el-input>
         <button type="submit">注册</button>
       </form>
     </div>
+
     <div class="form-container sign-in-container">
       <form @submit.prevent="LoginUserInfo" autocomplete="off">
         <h1>登录</h1>
@@ -21,6 +25,7 @@
         <button type="submit">登录</button>
       </form>
     </div>
+
     <div class="overlay-container">
       <div class="overlay">
         <div class="overlay-panel overlay-left">
@@ -50,6 +55,9 @@ export default {
       viewWidth:'',
       newuser: {
         company_name: '',
+        department: '',
+        email: '',
+        username: '',
         phone: '',
         password:'',
       },
@@ -80,33 +88,67 @@ export default {
     },
     // 注册用户信息
     RegisterUserInfo(e){
-        console.log(e)
+      console.log(e)
       let that = this;
+      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
       let newuser = that.newuser;
-        if(newuser.company_name == ''){
-          this.$message.error({
-              message:'请输入企业名称'
-            })
-            return
-        }
-        if(newuser.phone ==''){
-          this.$message.error({
-              message:'请输入手机号'
-            })
-            return
-        }
-        if(newuser.password ==''){
-          this.$message.error({
-              message:'请输入密码'
-            })
-            return
-        }
+      if(newuser.company_name == ''){
+        this.$message.error({
+            message:'请输入单位名称'
+          })
+          return
+      }
+      if(newuser.department == ''){
+        this.$message.error({
+          message:'请输入部门'
+        })
+        return
+      }
+      if(newuser.username == ''){
+        this.$message.error({
+          message:'请输入用户名'
+        })
+        return
+      }
+      if(newuser.email == ''){
+        this.$message.error({
+          message:'请输入邮箱'
+        })
+        return
+      }
+
+      if ( !mailReg.test(newuser.email) ){
+       this.$message.error({
+          message:'请输入正确的邮箱格式'
+        })
+        return
+      }
+
+      if(newuser.phone ==''){
+        this.$message.error({
+            message:'请输入手机号'
+          })
+          return
+      }
+      if(newuser.password ==''){
+        this.$message.error({
+            message:'请输入密码'
+          })
+          return
+      }
       RegisterUserInfo(newuser).then( res =>{
         if(res.data.code == 0){
           that.$message.success({
             message:'注册成功'
           })
           this.is_sign = false;
+          return
+        }
+         if(res.data.code == 1){
+          that.$message.error({
+            message:res.data.msg
+          })
+          return
         }
       }).catch(e =>{
         console.log(e)
@@ -182,6 +224,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+*{
+  font-family: '宋体';
+}
   h1 {
     font-weight: bold;
     margin: 0;
@@ -248,7 +293,7 @@ export default {
     width: 100%;
   }
   .el-input{
-   margin: 8px 0;
+   margin: 5px 0;
   }
   .container {
     background-color: #fff;
@@ -280,6 +325,9 @@ export default {
     width: 50%;
     opacity: 0;
     z-index: 1;
+  }
+ form>.el-input:nth-of-type(1){
+    margin-top: 20px;
   }
   .container.right-panel-active .sign-up-container {
     transform: translateX(100%);
