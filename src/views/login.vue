@@ -195,7 +195,9 @@ export default {
 
                   that.$router.push({path:decodeURIComponent(stateurl)});
                 }else{
-                  that.$router.push('/Main');
+                  // that.$router.push('/Main');
+                  that.$router.push('/FrontPage'); // 新版本首页
+
                 }
                 } else {
 

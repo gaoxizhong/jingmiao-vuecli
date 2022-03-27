@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store/index'
+
 
 import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
@@ -7,14 +9,11 @@ import QAhome from '../views/QAhome.vue'
 import VideoDetails from '../views/VideoDetails.vue'
 import inquiryResultPage from '../views/inquiryResultPage.vue'
 // =============================新版本 以下============================================
-// import Login from '../newViews/Login.vue'
-// import Main from '../newViews/Main.vue'
-
-
-
+import FrontPage from '../views/FrontPage.vue'  // 首页
+import XyRepositoryPage from '../views/XyRepositoryPage.vue'     // 西医知识库页
+import XyRepositoryClassBrowsePage from '../views/XyRepositoryClassBrowsePage.vue' 
 
 // ================================新版本 以上=========================================
-import store from '../store/index'
 
 
 const originalPush = VueRouter.prototype.push
@@ -23,25 +22,6 @@ VueRouter.prototype.push = function push(location, onResolve, onReject) {
   return originalPush.call(this, location)
 }
 Vue.use(VueRouter)
-
-// =============================新版本 以下============================================
-// const routes = [
-//   {
-//     path:'/',
-//     name: 'Login',
-//     component: Login
-//   },
-//   {
-//     path:'/Main',
-//     name: 'Main',
-//     component: Main
-//   },
-// ]
-
-
-
-
-// ================================新版本 以上=========================================
 
 const routes = [
   {
@@ -152,6 +132,23 @@ const routes = [
       requireAuth:true
     }
   },
+  // ===================  新版本添加 以下 ==============================
+  {
+    path:'/FrontPage',
+    name: 'FrontPage',
+    component: FrontPage
+  },
+  {
+    path: '/XyRepositoryPage',
+    name : 'XyRepositoryPage',
+    component: XyRepositoryPage,
+    meta:{
+      title:'西医知识库',
+    },
+  },
+
+  // ===================  新版本添加 以上  ==============================
+
 ]
 
 // 页面刷新时，重新赋值token

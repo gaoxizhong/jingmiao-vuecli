@@ -53,6 +53,31 @@ a{
   color: #333 !important;
   font-weight: 600;
 }
+.el-header{
+  padding: 0px !important;
+  width: 100%;
+  height: auto !important;
+  background: #fff;
+  border-bottom: 1px solid #ececec;
+  // box-shadow: 0px 2px 6px 0px rgba(197, 197, 197, 0.5);
+}
+.el-container{
+  // background: #f7f7f7;
+  height: 100%;
+}
+.el-footer{
+  width: 100%;
+  height: auto !important;
+  padding: 0;
+}
+.pagecontent-box{
+  width: 1200px;
+}
+@media only screen and (max-width: 1366px){
+  .pagecontent-box{
+    width: 900px;
+  }
+}
 </style>
 <script>
 export default {

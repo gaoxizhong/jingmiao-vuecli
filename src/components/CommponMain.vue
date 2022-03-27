@@ -16,13 +16,13 @@
 
 <style scoped>
 .main-box{
+  width: 1200px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #fff;
 }
 .content-box{
-  width: 1200px;
   padding: 10px;
   background: #fff;
 }
@@ -69,11 +69,14 @@
     border-radius: 20px;
     text-align: center;
     line-height: 38px;
+    cursor: pointer;
   }
     /* 媒体查询 */
   @media only screen and (max-width: 1366px){
-    .content-box{
+    .main-box{
       width: 900px;
+    }
+    .content-box{
       padding: 5px;
     }
     .content-col-box{
@@ -99,10 +102,10 @@ export default {
   data() {
     return {
       contentItems:[
-        {name:'西医知识库',path:'/XyHome',tag:'XyHome',image:'/home/icon_xyzsk.png'},
-        {name:'西医CDSS',path:'/WesternMedicineCdss',tag:'WesternMedicineCdss',image:'/home/icon_xycdss.png'},
-        {name:'中医知识库',path:'/ZyHome',tag:'ZyHome',image:'/home/icon_zyzsk.png'},
-        {name:'智能问答',path:'/QAhome',tag:'QAhome',image:'/home/icon_znwd.png'}
+        {name:'西医知识库',path:'/XyRepositoryPage',tag:'xyzsk',image:'/home/icon_xyzsk.png'},
+        {name:'西医CDSS',path:'/WesternMedicineCdss',tag:'xycdss',image:'/home/icon_xycdss.png'},
+        {name:'中医知识库',path:'/ZyRepositoryPage',tag:'zyzsk',image:'/home/icon_zyzsk.png'},
+        {name:'智能问答',path:'/QAhome',tag:'znwd',image:'/home/icon_znwd.png'}
       ]
     }
   },
@@ -110,7 +113,19 @@ export default {
 
   },
   methods:{
-    
+    clickMore(p,t){
+      let that = this;
+      let path = p;
+      let tag = t;
+      // 新页面打开
+      let newUrl = this.$router.resolve({
+        path,
+        query:{
+          tag,
+        }
+      });
+      window.open(newUrl.href, "_blank");
+    }
   }
 }
 </script>

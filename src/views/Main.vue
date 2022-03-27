@@ -5,12 +5,12 @@
     </el-aside>
     <el-container >
       <el-header>
-        <CommonHeader></CommonHeader>
+        <CommonHeader1></CommonHeader1>
       </el-header>
       <el-main>
-      <keep-alive v-if="is_view">
-        <router-view v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
+        <keep-alive v-if="is_view">
+          <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
         <router-view v-if="!$route.meta.keepAlive"/>
       </el-main>
     </el-container>
@@ -19,7 +19,7 @@
 
 <script>
 import CommonAside from "../components/CommonAside";
-import CommonHeader from "../components/CommonHeader";
+import CommonHeader1 from "../components/CommonHeader1";
 // import Home from "../components/Home";
 
 import {WesternMedicine} from '@/api/data'
@@ -32,7 +32,7 @@ export default {
   name: 'Main',
   components: {
     CommonAside,
-    CommonHeader,
+    CommonHeader1,
     // Home
   },
   data(){

@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import CommonHeader from "../newComponents/CommonHeader";
-import CommonFooter from "../newComponents/CommonFooter";
-import CommponMain from "../newComponents/CommponMain";
+import CommonHeader from "../components/CommonHeader";
+import CommonFooter from "../components/CommonFooter";
+import CommponMain from "../components/CommponMain";
 // import Home from "../components/Home";
 
 export default {
@@ -32,7 +32,7 @@ export default {
       setsickNess: this.setsickNess
     }
   },
-  name: 'Main',
+  name: 'FrontPage',
   components: {
     CommonHeader,
     CommonFooter,
@@ -74,21 +74,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .el-header{
-    height: 80px !important;
-    background: #fff;
-    border-bottom: 1px solid #ececec;
-  }
-  .el-container{
-    // background: #f7f7f7;
-    height: 100%;
-  }
   .el-main{
-    padding: 20px 36px;
+    padding: 0 36px;
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .el-footer{
-    width: 100%;
-    padding: 0;
-  }
-
 </style>
