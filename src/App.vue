@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :style="`main-height:${viewHeight}px;`" >
     <router-view v-if="isRouterAlive"/>
   </div>
 </template>
@@ -75,7 +75,7 @@ a{
 }
 @media only screen and (max-width: 1366px){
   .pagecontent-box{
-    width: 900px;
+    width: 970px;
   }
 }
 </style>
@@ -89,9 +89,10 @@ export default {
   },
   data() {
     return {
-        isCollapse: false,
-        is_view: true,
-        isRouterAlive: true
+      isCollapse: false,
+      is_view: true,
+      isRouterAlive: true,
+      viewHeight:0
     };
   },
 
@@ -104,7 +105,8 @@ export default {
     }
   },
   created(){
-
+    let getViewportSize = this.$getViewportSize();
+    this.viewHeight = getViewportSize.height;
   }
 }
 </script>

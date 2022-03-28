@@ -1,6 +1,6 @@
 <template>
-  <!-- <el-container :style="`height:${viewHeight}px;`"> -->
-  <el-container>
+  <el-container :style="`height:${viewHeight}px;`">
+  <!-- <el-container> -->
 
     <!-- 头部开始 -->
     <el-header>
@@ -41,7 +41,7 @@ export default {
   },
   data(){
     return {
-      viewHeight:'',
+      viewHeight:0,
       viewWidth:'',
       sickNess1:[],
       is_view: true,
@@ -76,9 +76,16 @@ export default {
 <style lang="scss" scoped>
   .el-main{
     padding: 0 36px;
-    padding-top: 10px;
+    padding-top: 30px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    
+  }
+    /* 媒体查询 */
+  @media only screen and (max-width: 1366px){
+    .el-main{
+      padding-top: 10px;
+    }
   }
 </style>

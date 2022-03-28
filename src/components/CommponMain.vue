@@ -6,7 +6,7 @@
           <img :src="require('../assets/image' + item.image)" alt=""  class="content-items-img img-responsive" />
           <div class="content-items-title">
             <p class="items-title-p">{{item.name}}</p>
-            <p class="items-title-m" @click="clickMore(item.path,item.tag)">查看详情</p>
+            <p class="items-title-m" @click="clickMore(item.path,item.tag_pages)">查看详情</p>
           </div>
         </div>
       </el-col>
@@ -74,7 +74,7 @@
     /* 媒体查询 */
   @media only screen and (max-width: 1366px){
     .main-box{
-      width: 900px;
+      width: 970px;
     }
     .content-box{
       padding: 5px;
@@ -102,10 +102,10 @@ export default {
   data() {
     return {
       contentItems:[
-        {name:'西医知识库',path:'/XyRepositoryPage',tag:'xyzsk',image:'/home/icon_xyzsk.png'},
-        {name:'西医CDSS',path:'/WesternMedicineCdss',tag:'xycdss',image:'/home/icon_xycdss.png'},
-        {name:'中医知识库',path:'/ZyRepositoryPage',tag:'zyzsk',image:'/home/icon_zyzsk.png'},
-        {name:'智能问答',path:'/QAhome',tag:'znwd',image:'/home/icon_znwd.png'}
+        {name:'西医知识库',path:'/RepositoryPage',tag_pages:'xyzsk',image:'/home/icon_xyzsk.png'},
+        {name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss',image:'/home/icon_xycdss.png'},
+        {name:'中医知识库',path:'/RepositoryPage',tag_pages:'zyzsk',image:'/home/icon_zyzsk.png'},
+        {name:'智能问答',path:'/QAhome',tag_pages:'znwd',image:'/home/icon_znwd.png'}
       ]
     }
   },
@@ -116,12 +116,12 @@ export default {
     clickMore(p,t){
       let that = this;
       let path = p;
-      let tag = t;
+      let tag_pages = t;
       // 新页面打开
       let newUrl = this.$router.resolve({
         path,
         query:{
-          tag,
+          tag_pages,
         }
       });
       window.open(newUrl.href, "_blank");

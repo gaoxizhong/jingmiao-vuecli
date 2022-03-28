@@ -35,6 +35,7 @@
 .l-content-title-span{
   font-size: 14px;
   padding-left: 20px;
+  margin-top: 15px;
 }
 .r-phone{
   color: #333333;
@@ -78,8 +79,8 @@ header{
   position: relative;
 }
 .l-content-title{
-  font-size:28px;
-  padding-left:20px;
+  font-size:34px;
+  padding-left:10px;
   color:#00C792;
   font-weight:600;
   font-family: '宋体';
@@ -155,7 +156,7 @@ header{
     width: 900px;
   }
   .navitems-box{
-    width: 900px;
+    width: 970px;
   }
   .l-content-title{
     font-size: 24px;

@@ -9,17 +9,9 @@
     <!-- 头部结束 -->
     <!-- 主题开始 -->
     <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <!-- <router-view /> -->
+      <div class="pagecontent-box" :style="`height:${viewHeight}px;`">
         <div class="classBrowseContent-box">
-          <div class="classBrowse-title">分类浏览</div>
-          <div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
+
         </div>
 
       </div>
@@ -37,14 +29,14 @@
 import CommonHeader from "../components/CommonHeader";
 import CommonFooter from "../components/CommonFooter";
 // import Home from "../components/Home";
-
+import { getClassBrowseList } from "@/api/data"
 export default {
   // provide(){
   //   return {
   //     setsickNess: this.setsickNess
   //   }
   // },
-  name: 'XyRepositoryPage',
+  name: 'NewDetails',
   components: {
     CommonHeader,
     CommonFooter,
@@ -59,26 +51,28 @@ export default {
       main_bg:{
         backgroundImage:'url(' + require('../assets/image/home/icon_bjt.png') + ')',
         backgroundRepeat:'no-repeat',
-        backgroundSize: '100% 100%'
+        backgroundSize: '100% 100%',
       },
       tag_pages:'',
       is_pages:'',
-      classBrowseList: [],
+      name:''
     }
   },
   mounted(){
   },
   created(){
     let getViewportSize = this.$getViewportSize();
-    this.viewHeight = getViewportSize.height;
+    this.viewHeight = getViewportSize.height -200;
     this.viewWidth = getViewportSize.width;
-    this.tag_pages = this.$route.query.tag;
-    // this.$router.push({ 
-    //   path:'/XyRepositoryClassBrowsePage',
-    //   query:{
-    //     tag:this.tag_pages,
-    //   }
-    // })
+    this.tag_pages = this.$route.query.tag_pages;
+    this.name = this.$route.query.name;
+    if(this.tag_pages == 'xyzsk'){
+        document.title = '西医知识库'
+      }
+      if(this.tag_pages == 'zyzsk'){
+        document.title = '中医知识库'
+      }
+    this.getClassBrowseList();
   },
 
   methods: {
@@ -89,43 +83,52 @@ export default {
     //     console.log(this.is_view)
     //   })
     // },
+    // 获取分类浏览列表
+    // getClassBrowseList(){
+    //   let that = this;
+    //   let tag_pages = that.tag_pages;
+    //   let t = '';
+    //   if(tag_pages == 'xyzsk'){
+    //     t = 'xy'
+    //   }
+    //   if(tag_pages == 'zyzsk'){
+    //     t = 'zy'
+    //   }
+    //   getClassBrowseList({
+    //     tag: t,
+    //   }).then(res =>{
+    //     if(res.data.code == 0){
+    //       that.classBrowseList = res.data.data
+    //     }
+    //   })
+    // },
   },
 }
 </script>
 <style lang="scss" scoped>
   .el-main{
     padding: 0 36px;
-    padding-top: 10px;
+    padding-top: 30px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
   }
   .classBrowseContent-box{
-    width: 1200px;
+    width: 100%;
     height: auto;
     min-height: 500px;
     background: #FFFFFF;
     border-radius: 13px;
     border: 1px solid #20C3A7;
     margin: 10px 0;
-    display: flex;
     overflow: hidden;
   }
-  .classBrowse-title{
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    background: linear-gradient(to bottom,#EEFFFA,#fff);;
-    font-size: 16px;
-    text-align: left;
-    padding: 0 10px;
-    color: #20C3A7;
 
-  }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
-    .classBrowseContent-box{
-      width: 900px;
+    .el-main{
+      padding-top: 10px;
     }
+
   }
 </style>

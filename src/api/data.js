@@ -226,7 +226,19 @@ export const getDiseases = (params) =>{
     data: params
   })
 }
+// ========================  新版接口 以下 ===========================================
+export const getClassBrowseList = (params) =>{
+  return axios.request({
+    url:'/index',
+    method: 'post',
+    data: params
+  })
+}
 
+
+
+
+// ======================== 新版接口 以上 ===========================================
 // ======================== webServicesAxios 第三方接口 以下 ===========================================
 // cdss(icss)webServicesAxios 
 // export const DrumpServices_ZK = (params) =>{
