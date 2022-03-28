@@ -39,6 +39,9 @@ a{
     }
   }
 }
+.el-main{
+  min-height: 580px;
+}
 .el-breadcrumb__separator {
     margin: 0 !important;
 }

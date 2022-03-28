@@ -21,12 +21,15 @@
         </el-col>
       </el-row>
     </header>
+    <!-- 导航分类模块 -->
     <div class="nav-center-box" v-if="tag_name">
       <div class="navitems-box">
         <div class="navitems navitems-active">{{tag_name}}</div>
         <!-- <div class="navitems">中医知识库</div> -->
       </div>
     </div>
+    <!-- 导航分类模块 -->
+
   </div>
 
 </template>
@@ -153,7 +156,7 @@ header{
     height: 60px;
   }
   .content-box{
-    width: 900px;
+    width: 970px;
   }
   .navitems-box{
     width: 970px;

@@ -9,7 +9,7 @@
     <!-- 头部结束 -->
     <!-- 主题开始 -->
     <el-main :style="main_bg">
-      <div class="pagecontent-box" :style="`height:${viewHeight}px;`">
+      <div class="pagecontent-box">
         <!-- <router-view /> -->
         <div class="classBrowseContent-box">
           <div class="classBrowse-title">分类浏览</div>
@@ -73,7 +73,7 @@ export default {
   },
   created(){
     let getViewportSize = this.$getViewportSize();
-    this.viewHeight = getViewportSize.height -200;
+    // this.viewHeight = getViewportSize.height -100;
     this.viewWidth = getViewportSize.width;
     this.tag_pages = this.$route.query.tag_pages;
     if(this.tag_pages == 'xyzsk'){
