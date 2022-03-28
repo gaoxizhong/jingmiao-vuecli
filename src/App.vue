@@ -41,6 +41,11 @@ a{
 }
 .el-main{
   min-height: 580px;
+  padding: 0 36px;
+  padding-top: 30px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 .el-breadcrumb__separator {
     margin: 0 !important;
@@ -79,6 +84,9 @@ a{
 @media only screen and (max-width: 1366px){
   .pagecontent-box{
     width: 970px;
+  }
+  .el-main{
+    padding-top: 10px;
   }
 }
 </style>

@@ -130,13 +130,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .el-main{
-    padding: 0 36px;
-    padding-top: 30px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-  }
   .classBrowseContent-box{
     width: 100%;
     height: auto;
@@ -197,9 +190,6 @@ export default {
   }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
-    .el-main{
-      padding-top: 10px;
-    }
     .classBrowse-title{
       height: 40px;
       line-height: 40px;

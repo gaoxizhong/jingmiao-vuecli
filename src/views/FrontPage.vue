@@ -74,18 +74,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .el-main{
-    padding: 0 36px;
-    padding-top: 30px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    
-  }
     /* 媒体查询 */
   @media only screen and (max-width: 1366px){
-    .el-main{
-      padding-top: 10px;
-    }
+ 
   }
 </style>
