@@ -14,16 +14,27 @@
         <div class="diseaseAttributes-box">
 
           <div class="diseaseAttributes-title">
-            <span>{{name}}</span>
+            <span>{{name}} -- </span>
             <a href="javascript:0;" class="cktp-span">查看图谱</a>
           </div>
           
           <div class="dabutes-c-box">
-
             <div class="dabutes-centent-box">
 
               <div class="dabutes-items-box">
-
+                <div class="chapter">
+                  <div class="chapter-title">概览</div>
+                  <div class="chapter-li-box">
+                    <a href="javascript:0;" class="chapter-li-a">简介</a>
+                    <a href="javascript:0;" class="chapter-li-a">名称与编码</a>
+                    <a href="javascript:0;" class="chapter-li-a">精要</a>
+                    <a href="javascript:0;" class="chapter-li-a">历史</a>
+                    <a href="javascript:0;" class="chapter-li-a">简介</a>
+                    <a href="javascript:0;" class="chapter-li-a">名称与编码</a>
+                    <a href="javascript:0;" class="chapter-li-a">精要</a>
+                    <a href="javascript:0;" class="chapter-li-a">历史</a>
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -145,37 +156,92 @@
     font-size: 16px;
     text-align: left;
     padding: 0 10px;
-    color: #20C3A7;
     display: flex;
     align-items: center;
     justify-content: space-between;
     // border-bottom: 1px dashed #bdbdbd;
-    } 
-    .dabutes-c-box{
-      width: 100%;
-      padding: 0 10px;
-    }
-    .dabutes-centent-box{
-      padding: 10px 0;
-      width: 100%;  
-      height: auto;
-      overflow-x: auto;
-      border-top: 1px solid #dfdfdf;
-    }
-    .dabutes-items-box{
-      width: auto;
-    }
-
-
-    .cktp-span:hover{
-      color: #20C3A7;
-    }
+  } 
+  .dabutes-c-box{
+    width: 100%;
+    padding: 0 10px;
+  }
+  .dabutes-centent-box{
+    padding: 10px 0;
+    width: 100%;  
+    height: auto;
+    overflow-x: auto;
+    border-top: 1px solid #dfdfdf;
+  }
+  .dabutes-items-box{
+    width: auto;
+  }
+  .chapter{
+    width: 126px;
+    height: auto;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+  }
+  .chapter-title{
+    width: 126px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    font-size: 18px;
+    background: #AFE1D3;
+    border-radius: 7px;
+  }
+  .chapter-li-box{
+    margin-top: 10px;
+    width: 100%;
+    height: auto;
+    background: #afe1d32e;
+    border-radius: 0px 0px 7px 7px;
+    text-align: center;
+    padding: 4px 0;
+  }
+  .chapter-li-box>a{
+    display: inline-block;
+    width: 100%;
+    font-size: 15px;
+    padding: 4px 6px;
+    text-align: center;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 1;
+    box-orient: vertical;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .chapter-li-a:hover{
+    color: #20C3A7;
+  }
+  .cktp-span:hover{
+    color: #20C3A7;
+  }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
  
-  .diseaseAttributes-title{
+    .diseaseAttributes-title{
       height: 40px;
       line-height: 40px;
-    } 
+    }
+    .chapter{
+      width: 108px;
+    }
+    .chapter-title{
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      font-size: 16px;
+    }
+    .chapter-li-box>a{
+      font-size: 13px;
+    }
+    
   }
 </style>

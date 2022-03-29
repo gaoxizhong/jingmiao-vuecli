@@ -8,9 +8,9 @@
             <span class="l-content-title-span">{{tag_name}}</span>
           </div>
 
-          <div class="header-input-box" v-if="tag_name">
-            <el-input placeholder="请输入内容" class="input-with-select">
-              <el-button slot="append">搜索</el-button>
+          <div class="header-input-box" v-if="tag_name && !is_search">
+            <el-input placeholder="请输入内容" v-model="headerInput" class="input-with-select">
+              <el-button slot="append" @click="headerInputClick">搜索</el-button>
             </el-input>
           </div>
 
@@ -117,6 +117,7 @@ header{
   color: #fff;
   border: 1px solid #00C792;
   border-radius: 0;
+  margin-bottom: -5px
 }
 .header-input-box-i{
   flex: 1;
@@ -181,11 +182,13 @@ header{
 export default {
   props:{
     tag_pages: String,
+    is_search: null,
   },
   data() {
     return {
       phone:'',
       tag_name:'',
+      headerInput:''
     }
   },
   created(){
@@ -207,6 +210,20 @@ export default {
     toLogin(){
       this.$router.push({name: 'Login'});
     },
+    headerInputClick(){
+      let tag_pages = this.tag_pages;
+      let input_name = this.headerInput;
+      // 新页面打开
+      let newUrl = this.$router.resolve({
+        path: '/SearchPages',
+        query:{
+          input_name,
+          tag_pages,
+          is_search: 1,
+        }
+      });
+      window.open(newUrl.href, "_blank");
+    }
   }
 }
 </script>

@@ -12,6 +12,8 @@ import inquiryResultPage from '../views/inquiryResultPage.vue'
 import FrontPage from '../views/FrontPage.vue'  // 首页
 import RepositoryPage from '../views/RepositoryPage.vue'     // 知识库页
 import NewDetails from '../views/NewDetails.vue'     // 知识库疾病详情页
+import SearchPages from '../views/SearchPages.vue'  
+
 
 
 // ================================新版本 以上=========================================
@@ -149,7 +151,11 @@ const routes = [
     name : 'NewDetails',
     component: NewDetails,
   },
-  
+  {
+    path: '/SearchPages',
+    name : 'SearchPages',
+    component: SearchPages,
+  },
   // ===================  新版本添加 以上  ==============================
 
 ]
