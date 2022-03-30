@@ -176,6 +176,9 @@ header{
   .header-input-box >>> .el-button{ 
     padding: 8px 20px;
   }
+  .l-content-title-span{
+    margin-top: 10px;
+  }
 }
 </style>
 <script>
