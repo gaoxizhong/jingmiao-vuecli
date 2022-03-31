@@ -16,7 +16,7 @@
           <div class="classBrowse-items-centent">
 
             <div class="classBrowse-items-box" v-for="(item,index) in classBrowseList" :key="index">
-              <a href="javascript:0;" class="classBrowse-items-title" @click="clickDepartment(items.department)">{{item.department}}</a>
+              <a href="javascript:0;" class="classBrowse-items-title" @click="clickDepartment(item.department)">{{item.department}}</a>
               <div class="classBrowse-items-list">
                 <a href="javascript:0;" v-for="(items,idx) in item.diseases" :key="idx" @click="clickDiseases(items.name)">{{items.name}}</a>
               </div>

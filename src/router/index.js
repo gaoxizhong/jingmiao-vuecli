@@ -153,6 +153,11 @@ const routes = [
     component: NewDetails,
   },
   {
+    path: '/SearchPages',
+    name : 'SearchPages',
+    component: SearchPages,
+  },
+  {
     path: '/departmentDisasePages',
     name : 'departmentDisasePages',
     component: departmentDisasePages,

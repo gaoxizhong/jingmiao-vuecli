@@ -74,7 +74,8 @@
     /* 媒体查询 */
   @media only screen and (max-width: 1366px){
     .main-box{
-      width: 970px;
+      /* width: 970px; */
+      padding: 0 120px;
     }
     .content-box{
       padding: 5px;

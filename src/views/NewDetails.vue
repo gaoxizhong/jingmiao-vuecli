@@ -59,7 +59,6 @@
   import CommonHeader from "../components/CommonHeader";
   import CommonFooter from "../components/CommonFooter";
   // import Home from "../components/Home";
-  import { getClassBrowseList } from "@/api/data"
   export default {
     // provide(){
     //   return {
@@ -102,7 +101,6 @@
       if(this.tag_pages == 'zyzsk'){
         document.title = '中医知识库'
       }
-      this.getClassBrowseList();
     },
 
     methods: {
@@ -113,25 +111,7 @@
       //     console.log(this.is_view)
       //   })
       // },
-      // 获取分类浏览列表
-      // getClassBrowseList(){
-      //   let that = this;
-      //   let tag_pages = that.tag_pages;
-      //   let t = '';
-      //   if(tag_pages == 'xyzsk'){
-      //     t = 'xy'
-      //   }
-      //   if(tag_pages == 'zyzsk'){
-      //     t = 'zy'
-      //   }
-      //   getClassBrowseList({
-      //     tag: t,
-      //   }).then(res =>{
-      //     if(res.data.code == 0){
-      //       that.classBrowseList = res.data.data
-      //     }
-      //   })
-      // },
+
     },
   }
 </script>

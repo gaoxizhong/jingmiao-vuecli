@@ -67,6 +67,7 @@ export default {
       input_name:'',
       options:[],
       cur_tab:0,
+      tag:'',
     }
   },
   mounted(){
@@ -82,11 +83,12 @@ export default {
     if(this.tag_pages == 'xyzsk'){
       document.title = '西医知识库';
       this.options = [{label:'科普疾病',value:'SickNess'},{label:'医疗疾病',value:'Disease'},{label:'药品',value:'MedicineProduction'},{label:'检查',value:'Inspection'},{label:'症状体征',value:'Symptom'}]
+      this.tag = this.options[this.cur_tab].value;
     }
     if(this.tag_pages == 'zyzsk'){
       document.title = '中医知识库';
       this.options = [{label:'疾病',value:'zySickNess'},{label:'中药',value:'CnMedicinalCrop'},{label:'中成药',value:'CnPatentMedicine'},{label:'方剂',value:'Prescription'},{label:'药膳',value:'TonicDiet'},{label:'经络',value:'ChannelCollateral'},{label:'穴位',value:'Acupoint'},]
-      
+      this.tag = this.options[this.cur_tab].value;
     }
   },
 
@@ -100,7 +102,16 @@ export default {
     // },
     // 获取分类浏览列表
     inputClick(n){
-      console.log(1)
+      let that = this;
+      let name = n;
+      let tag = that.tag;
+      if(name == ''){
+        this.$message.error({
+          message:'请先填写内容!'
+        })
+        return
+      }
+      
     }
   },
 }
@@ -138,7 +149,6 @@ export default {
     background: #fff;
     border-radius: 8px;
     padding: 12px 20px;
-    border: 1px solid #aaa;
   }
   .classinput-box{
     width: 680px;
@@ -197,6 +207,9 @@ export default {
   .classinfo-box>a{
     margin: 0 6px;
     font-size: 15px;
+  }
+  .classinfo-box>a:hover{
+    color: #00C792;
   }
   .classinfo-box>a.cur-tab{
     color: #00C792;

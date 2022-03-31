@@ -10,10 +10,25 @@
     <!-- 主题开始 -->
     <el-main :style="main_bg">
       <div class="pagecontent-box">
+        <!-- 筛选模块开始 -->
+        <div class="section-filter-box-common">
+          <div class="section-filter-box-label">筛选</div>
+          <!-- 字母按钮模块开始 -->
+          <div class="section-filter-box-wrap normal">
+            <div class="tag-button active">A</div>
+            <div class="tag-button">B</div>
+            <div class="tag-button">C</div>
+            <div class="tag-button">D</div>
+            <div class="tag-button">E</div>
+            <div class="tag-button">F</div>
+            <div class="tag-button">J</div>
+
+          </div>
+          <!-- 字母按钮模块结束 -->
+        </div>
+        <!-- 筛选模块结束 -->
 
       </div>
-
-
     </el-main>
     <!-- 主题结束 -->
     <!-- 底部开始 -->
@@ -88,15 +103,59 @@
   .pagecontent-box{
     height: auto;
     background: #FFFFFF;
-    margin: 10px 0;
   }
-
-
-
+  .section-filter-box-common {
+    display: flex;
+    justify-content: flex-start;
+    align-content: flex-start;
+    padding: 28px 0 16px;
+    margin: 0 30px;
+  }
+  .section-filter-box-label{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #444c57;
+    width: 122px;
+  }
+  .section-filter-box-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 1;
+    min-height: 38px;
+  }
+  .tag-button {
+    width: 100px;
+    border-radius: 4px;
+    background-color: #f2f3f5;
+    cursor: pointer;
+    display: -webkit-box;
+    word-break: break-all;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    white-space: normal!important;
+    font-size: 13px;
+    line-height: 18px;
+    color: #5b626b;
+    text-align: center;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    padding: 4px 0;
+    box-sizing: border-box;
+    height: 26px;
+  }
+  .tag-button.active, .tag-button:hover {
+    background-color: #00c792;
+    color: #fff;
+    font-weight: 500;
+  }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
- 
-
+    .letterFilter-box{
+      font-size: 14px;
+    }
     
   }
 </style>

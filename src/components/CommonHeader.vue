@@ -156,12 +156,12 @@ header{
   header{
     height: 60px;
   }
-  .content-box{
+  /* .content-box{
     width: 970px;
   }
   .navitems-box{
     width: 970px;
-  }
+  } */
   .l-content-title{
     font-size: 24px;
   }

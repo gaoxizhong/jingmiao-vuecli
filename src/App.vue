@@ -40,11 +40,13 @@ a{
   }
 }
 .el-main{
+  min-height: 580px;
   padding: 30px 36px 80px 36px;
   padding-top: 30px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  background: #f5f5f5;
 }
 .el-breadcrumb__separator {
     margin: 0 !important;
@@ -87,9 +89,9 @@ a{
   z-index: 1000;
 }
 @media only screen and (max-width: 1366px){
-  .pagecontent-box{
-    width: 970px;
-  }
+  // .pagecontent-box{
+  //   width: 970px;
+  // }
   .el-main{
     padding: 10px 36px 56px 36px;
   }
@@ -118,20 +120,13 @@ export default {
         this.isRouterAlive = true;
       })
     },
-    hasScrollbar() {
-      if(document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight)){
-        this.$store.dispatch("is_pom",false);
-      }else{
-        this.$store.dispatch("is_pom",true);
-      }
-        
-    }
+
   },
   created(){
     let getViewportSize = this.$getViewportSize();
     let viewHeight = getViewportSize.height
     this.viewHeight = viewHeight;
-    this.hasScrollbar();
+
   },
 
 
