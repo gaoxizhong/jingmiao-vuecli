@@ -40,8 +40,7 @@ a{
   }
 }
 .el-main{
-  min-height: 580px;
-  padding: 0 36px;
+  padding: 30px 36px 80px 36px;
   padding-top: 30px;
   display: flex;
   align-items: flex-start;
@@ -81,12 +80,18 @@ a{
 .pagecontent-box{
   width: 1200px;
 }
+.is_pom{
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 1000;
+}
 @media only screen and (max-width: 1366px){
   .pagecontent-box{
     width: 970px;
   }
   .el-main{
-    padding-top: 10px;
+    padding: 10px 36px 56px 36px;
   }
 }
 </style>
@@ -97,27 +102,38 @@ export default {
     return {
       reload: this.reload
     }
-  },
+  }, 
   data() {
     return {
       isCollapse: false,
       is_view: true,
       isRouterAlive: true,
-      viewHeight:0
+      viewHeight:0,
     };
   },
-
   methods: {
     reload(){
       this.isRouterAlive = false;
       this.$nextTick( function(){
         this.isRouterAlive = true;
       })
+    },
+    hasScrollbar() {
+      if(document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight)){
+        this.$store.dispatch("is_pom",false);
+      }else{
+        this.$store.dispatch("is_pom",true);
+      }
+        
     }
   },
   created(){
     let getViewportSize = this.$getViewportSize();
-    this.viewHeight = getViewportSize.height;
-  }
+    let viewHeight = getViewportSize.height
+    this.viewHeight = viewHeight;
+    this.hasScrollbar();
+  },
+
+
 }
 </script>

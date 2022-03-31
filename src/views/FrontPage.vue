@@ -49,11 +49,12 @@ export default {
         backgroundImage:'url(' + require('../assets/image/home/icon_bjt.png') + ')',
         backgroundRepeat:'no-repeat',
         backgroundSize: '100% 100%'
-      }
+      },
 
     }
   },
   mounted(){
+    let that = this;
   },
   created(){
     let getViewportSize = this.$getViewportSize();

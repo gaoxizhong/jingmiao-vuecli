@@ -48,3 +48,6 @@ export const barckArr = ({commit},data) =>{
 export const cdssInfo = ({commit},data) =>{
   commit('cdssInfo',data);
 }
+export const is_pom = ({commit},data) =>{
+  commit('is_pom',data);
+}

@@ -97,11 +97,11 @@
       this.tag_pages = this.$route.query.tag_pages;
       this.name = this.$route.query.name;
       if(this.tag_pages == 'xyzsk'){
-          document.title = '西医知识库'
-        }
-        if(this.tag_pages == 'zyzsk'){
-          document.title = '中医知识库'
-        }
+        document.title = '西医知识库'
+      }
+      if(this.tag_pages == 'zyzsk'){
+        document.title = '中医知识库'
+      }
       this.getClassBrowseList();
     },
 

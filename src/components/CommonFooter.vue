@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer :class="is_pom?'is_pom':''">
     <div class="content-box">
       <span>@Copyright 2020.</span>
       <span>北京菁苗健康科技有限公司</span>
@@ -41,10 +41,14 @@ footer{
 export default {
   data() {
     return {
+      is_pom:false
     }
   },
   mounted(){
 
+  },
+  created(){
+    this.is_pom =  this.$store.state.is_pom;
   },
   methods:{
     

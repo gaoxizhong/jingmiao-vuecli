@@ -16,7 +16,7 @@
           <div class="classBrowse-items-centent">
 
             <div class="classBrowse-items-box" v-for="(item,index) in classBrowseList" :key="index">
-              <a href="javascript:0;" class="classBrowse-items-title">{{item.department}}</a>
+              <a href="javascript:0;" class="classBrowse-items-title" @click="clickDepartment(items.department)">{{item.department}}</a>
               <div class="classBrowse-items-list">
                 <a href="javascript:0;" v-for="(items,idx) in item.diseases" :key="idx" @click="clickDiseases(items.name)">{{items.name}}</a>
               </div>
@@ -112,6 +112,7 @@ export default {
         }
       })
     },
+    // 点击疾病名称
     clickDiseases(n){
       let that = this;
       let name = n;
@@ -125,7 +126,22 @@ export default {
         }
       });
       window.open(newUrl.href, "_blank");
-    }
+    },
+    // 点击科室名称
+    clickDepartment(n){
+      let that = this;
+      let name = n;
+      let tag_pages = that.tag_pages;
+      // 新页面打开
+      let newUrl = this.$router.resolve({
+        path: '/departmentDisasePages',
+        query:{
+          name,
+          tag_pages,
+        }
+      });
+      window.open(newUrl.href, "_blank");
+    },
   },
 }
 </script>

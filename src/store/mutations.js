@@ -48,3 +48,6 @@ export const barckArr = (state,barckArr) =>{
 export const cdssInfo = (state,cdssInfo) =>{
   state.cdssInfo = cdssInfo
 }
+export const is_pom = (state,is_pom) =>{
+  state.is_pom = is_pom
+}

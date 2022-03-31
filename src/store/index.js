@@ -20,6 +20,7 @@ const state ={
   barckArr:[],  //  面包屑数组
   stateurl:'',  //  保存路径
   cdssInfo:'', // cdss问诊数据
+  is_pom:false
 }
 export default new Vuex.Store({
   state,
