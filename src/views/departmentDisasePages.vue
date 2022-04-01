@@ -15,14 +15,10 @@
           <div class="section-filter-box-label">筛选</div>
           <!-- 字母按钮模块开始 -->
           <div class="section-filter-box-wrap normal">
-            <div class="tag-button active">A</div>
-            <div class="tag-button">B</div>
-            <div class="tag-button">C</div>
-            <div class="tag-button">D</div>
-            <div class="tag-button">E</div>
-            <div class="tag-button">F</div>
-            <div class="tag-button">J</div>
-
+            <div class="tag-button" :class=" letter_index == index?'active':'' "
+              v-for="(item,index) in firstLetterList" 
+              :key="index" @click="clickLetterList(index,item)">{{item}}
+            </div>
           </div>
           <!-- 字母按钮模块结束 -->
         </div>
@@ -42,7 +38,7 @@
 <script>
   import CommonHeader from "../components/CommonHeader";
   import CommonFooter from "../components/CommonFooter";
-  // import Home from "../components/Home";
+  import {getFirstLetterList,getLetterSearch} from "@/api/data"
   export default {
     // provide(){
     //   return {
@@ -68,7 +64,10 @@
         },
         tag_pages:'',
         is_pages:'',
-        name:''
+        name:'',
+        firstLetterList:[], // 字母数组
+        letter_index: 0,   // 字母数组下标
+        letterSearchList:[], // 根据字母搜索结果数组
       }
     },
     mounted(){
@@ -85,6 +84,7 @@
       if(this.tag_pages == 'zyzsk'){
         document.title = '中医知识库'
       }
+      that.getFirstLetterList();
     },
 
     methods: {
@@ -96,6 +96,42 @@
       //   })
       // },
 
+      // 科室筛选页字母接口
+      getFirstLetterList(){
+        let that = this;
+        let params = {
+          department: that.name,
+        }
+        getFirstLetterList(params).then(res =>{
+          if(res.data.code == 0){
+            let firstLetterList = res.data.data;
+            let letter_index = that.letter_index;
+            that.firstLetterList = firstLetterList;
+            that.clickLetterList(letter_index,firstLetterList[letter_index])
+          }
+        }).catch(e =>{
+          console.log(e)
+        })
+      },
+      // 点击字母按钮
+      clickLetterList(ix,n){
+        let that = this;
+        let letter_index = ix;
+        let department = that.name;
+        let first_letter = n;
+        that.letter_index = letter_index;
+        let params = {
+          department,
+          first_letter
+        }
+        getLetterSearch(params).then(res =>{
+          if(res.data.code == 0){
+            that.letterSearchList = res.data.data.searchs;
+          }
+        }).catch(e =>{
+          console.log(e)
+        })
+      }
     },
   }
 </script>

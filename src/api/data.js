@@ -227,9 +227,42 @@ export const getDiseases = (params) =>{
   })
 }
 // ========================  新版接口 以下 ===========================================
-export const getClassBrowseList = (params) =>{
+// 首页分类浏览列表
+export const getClassBrowseList = (params) =>{  
   return axios.request({
     url:'/index',
+    method: 'post',
+    data: params
+  })
+}
+// 疾病详情属性栏目列表
+export const getNewDetail = (params) =>{  
+  return axios.request({
+    url:'/detail',
+    method: 'post',
+    data: params
+  })
+}
+// 疾病详情属性详情接口
+export const getPropertyDetail = (params) =>{  
+  return axios.request({
+    url:'/property/detail',
+    method: 'post',
+    data: params
+  })
+}
+// 科室筛选页字母接口
+export const getFirstLetterList  = (params) =>{  
+  return axios.request({
+    url:'/department/exist/diseases/letters',
+    method: 'post',
+    data: params
+  })
+}
+// 科室筛选页根据字母搜索出列表接口
+export const getLetterSearch  = (params) =>{  
+  return axios.request({
+    url:'/letter/search',
     method: 'post',
     data: params
   })

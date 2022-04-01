@@ -57,16 +57,11 @@ export default {
   methods:{
     hasScrollbar() {
       this.$nextTick(function(){
-        console.log(document.body.scrollHeight)
-        console.log(window.innerHeight)
-        console.log(document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight))
         if(document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight)){
           this.is_pom = false;
         }else{
           this.is_pom = true;
-          // this.$store.dispatch("is_pom",false);
         }
-        console.log(this.is_pom)
 
       })
     },

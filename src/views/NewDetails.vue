@@ -14,29 +14,29 @@
         <div class="diseaseAttributes-box">
 
           <div class="diseaseAttributes-title">
-            <span>{{name}} -- </span>
+            <span>{{name}} -- <span style="color:#FA6400;font-size:15px;">{{properties_name}}</span></span>
             <a href="javascript:0;" class="cktp-span">查看图谱</a>
           </div>
           
           <div class="dabutes-c-box">
             <div class="dabutes-centent-box">
-
+              <!-- 属性模块展示开始 -->
               <div class="dabutes-items-box">
-                <div class="chapter">
-                  <div class="chapter-title">概览</div>
-                  <div class="chapter-li-box">
-                    <a href="javascript:0;" class="chapter-li-a">简介</a>
-                    <a href="javascript:0;" class="chapter-li-a">名称与编码</a>
-                    <a href="javascript:0;" class="chapter-li-a">精要</a>
-                    <a href="javascript:0;" class="chapter-li-a">历史</a>
-                    <a href="javascript:0;" class="chapter-li-a">简介</a>
-                    <a href="javascript:0;" class="chapter-li-a">名称与编码</a>
-                    <a href="javascript:0;" class="chapter-li-a">精要</a>
-                    <a href="javascript:0;" class="chapter-li-a">历史</a>
+                <div class="chapter" v-for="(item,index) in dabutes" :key="index">
+                  <div class="chapter-title">{{item.name}}</div>
+                  <div class="chapter-li-box" v-if="item.DiseaseCategoryProperties.length > 0">
+                    <a href="javascript:0;" class="chapter-li-a" :class="(li_index == index && a_idx == idx) ? 'chapterA-active' :'' "
+                    v-for="(items,idx) in item.DiseaseCategoryProperties" 
+                    :key="idx" 
+                    @click="clickDiseaseCategoryProperties(index,idx,items.property_ch_name,items.property_zh_name)"
+                    >{{items.property_zh_name}}</a>
                   </div>
                 </div>
               </div>
-
+              <!-- 属性模块展示结束 -->
+              <!-- 属性值内容模块开始 -->
+              <div></div>
+              <!-- 属性值内容模块结束 -->
             </div>
 
           </div>
@@ -59,6 +59,7 @@
   import CommonHeader from "../components/CommonHeader";
   import CommonFooter from "../components/CommonFooter";
   // import Home from "../components/Home";
+  import {getNewDetail,getPropertyDetail} from "@/api/data"
   export default {
     // provide(){
     //   return {
@@ -84,7 +85,11 @@
         },
         tag_pages:'',
         is_pages:'',
-        name:''
+        name:'',
+        dabutes:[], //疾病的属性类数组
+        li_index: 0,
+        a_idx: 0,
+        properties_name:'',
       }
     },
     mounted(){
@@ -101,6 +106,7 @@
       if(this.tag_pages == 'zyzsk'){
         document.title = '中医知识库'
       }
+      this.getNewDetail();
     },
 
     methods: {
@@ -111,6 +117,47 @@
       //     console.log(this.is_view)
       //   })
       // },
+
+      //获取详情页默认展示
+      getNewDetail(){
+        let that = this;
+        let params = {};
+        getNewDetail(params).then(res =>{
+          if(res.data.code == 0){
+            let dabutes = res.data.data;
+            let li_index= that.li_index;
+            let a_idx= that.a_idx;
+            let property_zh_name = dabutes[li_index].DiseaseCategoryProperties[a_idx].property_zh_name;
+            let property_ch_name = dabutes[li_index].DiseaseCategoryProperties[a_idx].property_ch_name;
+            that.dabutes = dabutes;
+            that.clickDiseaseCategoryProperties(li_index,a_idx,property_ch_name,property_zh_name);
+          }
+        }).catch( e =>{
+          console.log(e)
+        })
+      },
+      // 点击上面属性名称请求下方属性详情
+      clickDiseaseCategoryProperties(i,ix,ch,zh){
+        let that = this;
+        let index = i;
+        let idx = ix;
+        let property_zh_name = zh;
+        this.properties_name = property_zh_name;
+        this.li_index = index;
+        this.a_idx = idx;
+        let params = {
+          name: that.name,
+          property_zh_name,
+          property_ch_name: ch,
+        }
+        getPropertyDetail(params).then(res =>{
+          if(res.data.code == 0){
+
+          }
+        }).catch(e =>{
+          console.log(e)
+        })
+      }
 
     },
   }
@@ -129,17 +176,16 @@
     overflow: hidden;
   }
  .diseaseAttributes-title{
-    width: 100%;
     height: 50px;
     line-height: 50px;
     background: linear-gradient(to bottom, #EEFFFA, #fff);
     font-size: 16px;
     text-align: left;
-    padding: 0 10px;
+    margin: 0 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // border-bottom: 1px dashed #bdbdbd;
+    border-bottom: 1px dashed #bdbdbd;
   } 
   .dabutes-c-box{
     width: 100%;
@@ -150,10 +196,10 @@
     width: 100%;  
     height: auto;
     overflow-x: auto;
-    border-top: 1px solid #dfdfdf;
   }
   .dabutes-items-box{
     width: auto;
+    display: flex;
   }
   .chapter{
     width: 126px;
@@ -161,9 +207,9 @@
     font-size: 16px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     overflow: hidden;
+    margin-left: 10px;
   }
   .chapter-title{
     width: 126px;
@@ -198,10 +244,13 @@
     overflow: hidden;
   }
   .chapter-li-a:hover{
-    color: #20C3A7;
+    color: #FA6400;
   }
   .cktp-span:hover{
     color: #20C3A7;
+  }
+  .chapterA-active{
+    color: #FA6400;
   }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
