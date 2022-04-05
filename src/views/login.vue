@@ -1,49 +1,50 @@
 <template>
-  <div :style="`height:${viewHeight}px;`" class="page-box">
-  <div :class="is_sign?'right-panel-active':'' " class="container" id="container" >
-    <div class="form-container sign-up-container">
-      <form @submit.prevent="RegisterUserInfo" autocomplete="off">
-        <h1>创建一个新账号</h1>
-        <span>请使用您的手机号进行注册</span>
-        <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入单位名称"></el-input>
-        <el-input type="text" v-model="newuser.department" name="department" placeholder="请输入部门"></el-input>
-        <el-input type="text" v-model="newuser.username" name="username" placeholder="请输入用户名"></el-input>
-        <el-input type="email" v-model="newuser.email" name="email" placeholder="请输入邮箱"></el-input>
-        <el-input v-model="newuser.phone" name="phone" placeholder="请输入手机号"></el-input>
-        <el-input type="password" v-model="newuser.password" name="password" placeholder="请输入密码"></el-input>
-        <button type="submit">注册</button>
-      </form>
-    </div>
+<div :style="`height:${viewHeight}px;`">
+  <div :style="login_bgurl" class="page-box">
+    <div :class="is_sign?'right-panel-active':'' " class="container" id="container" >
+      <div class="form-container sign-up-container">
+        <form @submit.prevent="RegisterUserInfo" autocomplete="off">
+          <h1>创建一个新账号</h1>
+          <span>请使用您的手机号进行注册</span>
+          <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入单位名称"></el-input>
+          <el-input type="text" v-model="newuser.department" name="department" placeholder="请输入部门"></el-input>
+          <el-input type="text" v-model="newuser.username" name="username" placeholder="请输入用户名"></el-input>
+          <el-input type="email" v-model="newuser.email" name="email" placeholder="请输入邮箱"></el-input>
+          <el-input v-model="newuser.phone" name="phone" placeholder="请输入手机号"></el-input>
+          <el-input type="password" v-model="newuser.password" name="password" placeholder="请输入密码"></el-input>
+          <button type="submit">注册</button>
+        </form>
+      </div>
 
-    <div class="form-container sign-in-container">
-      <form @submit.prevent="LoginUserInfo" autocomplete="off">
-        <h1>登录</h1>
-        <span>使用您的账号登录</span>
-        <el-input v-model="user.phone" type="tel" name="phone" placeholder="请输入手机号"></el-input>
-        <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"></el-input>
-        <a href="#">如没有账号，请先注册</a>
-        <button type="submit">登录</button>
-      </form>
-    </div>
+      <div class="form-container sign-in-container">
+        <form @submit.prevent="LoginUserInfo" autocomplete="off">
+          <h1>登录</h1>
+          <span>使用您的账号登录</span>
+          <el-input v-model="user.phone" type="tel" name="phone" placeholder="请输入手机号"></el-input>
+          <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"></el-input>
+          <a href="#">如没有账号，请先注册</a>
+          <button type="submit">登录</button>
+        </form>
+      </div>
 
-    <div class="overlay-container">
-      <div class="overlay">
-        <div class="overlay-panel overlay-left">
-          <h1>欢迎回来！</h1>
-          <p>请使用您的个人信息登录</p>
-          <button class="ghost" id="signIn"  @click="signIn()">登录</button>
-        </div>
-        <div class="overlay-panel overlay-right">
-          <h1>菁苗健康</h1>
-          <p>输入您的个人详细信息进行注册</p>
-          <button class="ghost" id="signUp" @click="signUp()">注册</button>
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>欢迎回来！</h1>
+            <p>请使用您的个人信息登录</p>
+            <button class="ghost" id="signIn"  @click="signIn()">登录</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1>菁苗健康</h1>
+            <p>输入您的个人详细信息进行注册</p>
+            <button class="ghost" id="signUp" @click="signUp()">注册</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-
-  </div>
 </template>
 
 <script>
@@ -66,7 +67,8 @@ export default {
         password:'',
       },
       is_sign: false,
-      stateurl:''
+      stateurl:'',
+      login_bgurl:{},
     }
   },
   mounted(){ // 可以当做初始化后加载，只加载一次
@@ -78,6 +80,8 @@ export default {
     this.$store.dispatch('delToken');
     let stateurl = this.$store.state.stateurl;
     this.stateurl = stateurl;
+    this.login_bgurl = this.$root.login_bgurl;
+    console.log(this.login_bgurl)
   },
   methods: {
     signIn(){
@@ -226,9 +230,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-*{
-  font-family: '宋体';
-}
+  *{
+    font-family: '宋体';
+  }
   h1 {
     font-weight: bold;
     margin: 0;
@@ -251,6 +255,10 @@ export default {
     font-size: 14px;
     text-decoration: none;
     margin: 15px 0;
+  }
+  .page-box{
+    width: 100%;
+    height: 100%;
   }
   button {
     border-radius: 20px;

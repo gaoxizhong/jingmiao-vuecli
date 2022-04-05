@@ -59,13 +59,13 @@
   .items-title-p{
     font-size: 26px;
     font-weight: 600;
-    color: #0b7969;
+    color: #FFFFFF;
   }
   .items-title-m{
     width: 130px;
     height: 38px;
-    background:#0b7969;
-    color: #fff;
+    background: #fff;
+    color: #20C3A7;
     border-radius: 20px;
     text-align: center;
     line-height: 38px;
@@ -90,10 +90,6 @@
       font-size: 14px;
       width: 100px;
       height: 30px;
-      background:#0b7969;
-      color: #fff;
-      border-radius: 20px;
-      text-align: center;
       line-height: 30px;
     }
   }

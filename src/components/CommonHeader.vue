@@ -9,7 +9,7 @@
           </div>
 
           <div class="header-input-box" v-if="tag_name && !is_search">
-            <el-input placeholder="请输入内容" v-model="headerInput" class="input-with-select">
+            <el-input placeholder="搜索疾病、药品、检查、临床路径等" v-model="headerInput" class="input-with-select">
               <el-button slot="append" @click="headerInputClick">搜索</el-button>
             </el-input>
           </div>
@@ -166,7 +166,7 @@ header{
     font-size: 24px;
   }
   .header-input-box{
-    width: 320px;
+    width: 400px;
     height: 30px;
   }
   .header-input-box >>> .el-input__inner{

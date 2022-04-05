@@ -2,6 +2,7 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
+/* ==============  滚动条样式   ==================== */
 ::-webkit-scrollbar { 
   width:8px; 
   height:10px; 
@@ -12,6 +13,8 @@ table {
   background-color:#27afa1; 
   border-radius: 50px;
 }
+/* ==============  滚动条样式   ==================== */
+
   table {
     line-height: 30px;
   }

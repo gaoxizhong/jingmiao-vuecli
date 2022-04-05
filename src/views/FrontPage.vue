@@ -45,11 +45,7 @@ export default {
       viewWidth:'',
       sickNess1:[],
       is_view: true,
-      main_bg:{
-        backgroundImage:'url(' + require('../assets/image/home/icon_bjt.png') + ')',
-        backgroundRepeat:'no-repeat',
-        backgroundSize: '100% 100%'
-      },
+      main_bg:{},
 
     }
   },
@@ -60,6 +56,7 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
+    this.main_bg = this.$root.main_bg;
   },
 
   methods: {

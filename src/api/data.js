@@ -252,7 +252,7 @@ export const getPropertyDetail = (params) =>{
   })
 }
 // 科室筛选页字母接口
-export const getFirstLetterList  = (params) =>{  
+export const getFirstLetterList = (params) =>{  
   return axios.request({
     url:'/department/exist/diseases/letters',
     method: 'post',
@@ -260,9 +260,17 @@ export const getFirstLetterList  = (params) =>{
   })
 }
 // 科室筛选页根据字母搜索出列表接口
-export const getLetterSearch  = (params) =>{  
+export const getLetterSearch = (params) =>{  
   return axios.request({
     url:'/letter/search',
+    method: 'post',
+    data: params
+  })
+}
+// 搜索页面关键字接口
+export const getExistLabels = (params) =>{  
+  return axios.request({
+    url:'/exist/labels',
     method: 'post',
     data: params
   })

@@ -258,7 +258,7 @@ import {getSickNess,getD3Search} from '@/api/data'
         options:[],
         selectcheng:'',
         results: [],
-            // 后台请求到的json数据
+            // 后台请求到的json数据nodes
         // json: require('../data/top1.json'),
         json:[],
         data: {

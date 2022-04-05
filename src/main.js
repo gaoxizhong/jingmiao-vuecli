@@ -60,6 +60,20 @@ Vue.prototype.$getViewportSize = function() {
 
 new Vue({
   router,
+  data: function(){
+    return {
+      main_bg:{    // 内容页背景图
+        backgroundImage:'url(' + require('./assets/image/home/icon_bjt.png') + ')',
+        backgroundRepeat:'no-repeat',
+        backgroundSize: '100% 100%'
+      },  // 登录注册页背景图
+      login_bgurl:{
+        backgroundImage:'url(' + require('./assets/image/demo2.png') + ')',
+        backgroundRepeat:'no-repeat',
+        backgroundSize: '100% 100%',
+      },
+    }
+  },
   store,
   render: h => h(App)
 }).$mount('#app')

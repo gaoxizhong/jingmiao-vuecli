@@ -1,6 +1,6 @@
 {
   "name": "jingmiao-vuecli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -30,6 +30,7 @@
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
     "babel-plugin-component": "^1.1.1",
+    "better-scroll": "^2.4.2",
     "d3": "^7.0.4",
     "d3-context-menu": "^2.1.0",
     "echarts": "^5.2.1",

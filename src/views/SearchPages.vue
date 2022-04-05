@@ -14,15 +14,28 @@
          <!-- 搜索框模块开始 -->
          <div class="classinput-box">
            <div class="header-input-box">
-            <input placeholder="请输入内容" v-model="input_name" class="input-with-select" />
-            <button slot="append" @click="inputClick(input_name)" class="input-button-box">搜索</button>
+            <input placeholder="搜索疾病、药品、检查、临床路径等" v-model="input_name" class="input-with-select" />
+            <button slot="append" @click="getExistLabels" class="input-button-box">搜索</button>
            </div>
            <div class="classinfo-box">
-              <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" :tag="item.value">{{item.label}}</a>
+              <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname(all_options,100)">全部</a>
+              <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" @click="clickTagname(item.key,index)">{{item.value}}</a>
            </div>
           </div>
          <!-- 搜索框模块结束 -->
-
+          <!-- 搜索结果列表部分 -->
+          <div class="MedicineTagList-infodiv">
+            <div v-for="(item, index) in MedicineIfoList" :key="index">
+              <ul>
+                <li @click="click_gotoxq( item.tag,item.name )">
+                  <span>{{ item.name }}</span>
+                  <i>( {{item.description}} )</i>
+                </li>
+              </ul>
+            </div>
+            <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
+          </div>
+          <!-- 搜索结果列表部分结束 -->
        </div>
       </div>
     </el-main>
@@ -38,6 +51,7 @@
 <script>
 import CommonHeader from "../components/CommonHeader";
 import CommonFooter from "../components/CommonFooter";
+import { getMedicineList,getExistLabels } from "@/api/data"
 export default {
   // provide(){
   //   return {
@@ -56,18 +70,16 @@ export default {
       viewWidth:'',
       sickNess1:[],
       is_view: true,
-      main_bg:{
-        backgroundImage:'url(' + require('../assets/image/home/icon_bjt.png') + ')',
-        backgroundRepeat:'no-repeat',
-        backgroundSize: '100% 100%',
-      },
+      main_bg:{},
       tag_pages:'',
       input_name:'',
       is_search:0,
       input_name:'',
       options:[],
-      cur_tab:0,
+      all_options:'',   //  全部 tag标识
+      cur_tab:100,
       tag:'',
+      MedicineIfoList:[], // 搜索结果列表
     }
   },
   mounted(){
@@ -79,17 +91,11 @@ export default {
     this.tag_pages = this.$route.query.tag_pages;
     this.input_name = this.$route.query.input_name;
     this.is_search = this.$route.query.is_search?true:false;
+    this.main_bg = this.$root.main_bg;  // 背景图
+
     console.log(this.input_name)
-    if(this.tag_pages == 'xyzsk'){
-      document.title = '西医知识库';
-      this.options = [{label:'科普疾病',value:'SickNess'},{label:'医疗疾病',value:'Disease'},{label:'药品',value:'MedicineProduction'},{label:'检查',value:'Inspection'},{label:'症状体征',value:'Symptom'}]
-      this.tag = this.options[this.cur_tab].value;
-    }
-    if(this.tag_pages == 'zyzsk'){
-      document.title = '中医知识库';
-      this.options = [{label:'疾病',value:'zySickNess'},{label:'中药',value:'CnMedicinalCrop'},{label:'中成药',value:'CnPatentMedicine'},{label:'方剂',value:'Prescription'},{label:'药膳',value:'TonicDiet'},{label:'经络',value:'ChannelCollateral'},{label:'穴位',value:'Acupoint'},]
-      this.tag = this.options[this.cur_tab].value;
-    }
+    // 获取分类项
+    this.getExistLabels();
   },
 
   methods: {
@@ -100,20 +106,133 @@ export default {
     //     console.log(this.is_view)
     //   })
     // },
+    clickTagname(t,i){
+      this.tag = t;
+      this.cur_tab = i;
+      this.inputClick(this.input_name);
+    },
     // 获取分类浏览列表
     inputClick(n){
       let that = this;
       let name = n;
-      let tag = that.tag;
+      let tag_pages = that.tag_pages;
       if(name == ''){
         this.$message.error({
           message:'请先填写内容!'
         })
         return
       }
+      that.getMedicineInputBtn(name,tag_pages);
       
-    }
+    },
+    // 知识搜索事件
+    getMedicineInputBtn(n,t_p) {
+      let that = this;
+      let inputMedicineValue = n;
+      let tag_pages = t_p;
+      let tag = that.tag;
+      let pearms = {
+        tag,
+        keyword: inputMedicineValue,
+      };
+      if(tag_pages == 'xyzsk'){
+        pearms.type = '';
+      }
+      if(tag_pages == 'zyzsk'){
+        pearms.type = 'zh';
+      }
+      const loading = that.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.1)',
+          target:document.querySelector('.el-main'),
+        });
+      getMedicineList(pearms).then((res) => {
+        loading.close();
+        if (res.data.code == 0) {
+          let list = res.data.data;
+          let newList = [];
+          for (let key in list) {
+            list[key].forEach(ele => {
+              newList.push({
+                tag: key,
+                name: ele.name,
+                description: ele.description,
+                kgid: ele.kgid?ele.kgid:''
+              })
+            });
+          }
+          that.MedicineIfoList = newList;
+        }
+      })
+      .catch((e) => {
+        loading.close();
+        console.log(e);
+      });
+    },
+    // 点击跳转详情页
+    click_gotoxq(t,n){
+      let tag = t;
+      let name = n;
+      let tag_pages = this.tag_pages;
+      // 新页面打开
+      let newUrl = this.$router.resolve({
+        path: '/NewDetails',
+        query:{
+          name,
+          tag_pages,
+          tag,
+        }
+      });
+      window.open(newUrl.href, "_blank");
+    },
+    // 获取分类项 及请求
+    getExistLabels(){
+      let that = this;
+      let tag_pages = that.tag_pages;
+      let pearms = {
+        keyword: that.input_name,
+        type:''
+      }
+      if(tag_pages == 'xyzsk'){
+        pearms.type = '';
+      }
+      if(tag_pages == 'zyzsk'){
+        pearms.type = 'zh';
+      }
+      getExistLabels(pearms).then((res) => {
+        if (res.data.code == 0) {
+          let options = res.data.data;
+          let tagList = [];
+          options.forEach(ele => {
+            tagList.push(ele.key)
+          });
+          let all_options = tagList.join(",");
+          that.cur_tab = 100;  // 全部 的下标字段
+          that.all_options = all_options;  // 全部 的标识字段
+          that.tag = all_options;   // 默认第一次请求的标识字段
+          that.options = options;  // 所有分类项
+          if(that.tag_pages == 'xyzsk'){
+            document.title = '西医知识库--搜索';
+          }
+          if(this.tag_pages == 'zyzsk'){
+            document.title = '中医知识库--搜索';
+          }
+          if(options.length <= 0){
+            that.$message.error({
+              message: '暂无数据！'
+            })
+          }
+          that.inputClick(that.input_name);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    },
   },
+
 }
 </script>
 <style lang="scss" scoped>
@@ -151,7 +270,7 @@ export default {
     padding: 12px 20px;
   }
   .classinput-box{
-    width: 680px;
+    width: 700px;
     margin: 0 auto;
   }
   .header-input-box{
@@ -223,7 +342,35 @@ export default {
     border-radius: 1px;
     display: block;
     margin-top: 1px;
-}
+  }
+  .MedicineTagList-infodiv {
+    width: 780px;
+    margin: 0 auto;
+    flex: 1;
+    overflow-y: auto;
+  }
+  .MedicineTagList-infodiv ul li {
+    border-bottom: 1px #e9e9e9 solid;
+    line-height: 30px;
+    padding-top: 5px;
+    cursor: pointer;
+    text-align: left;
+    padding-left: 10px;
+  }
+  .MedicineTagList-infodiv ul li span {
+    font-size: 14px;
+    color: #000;
+  }
+  .MedicineTagList-infodiv ul li:hover{
+    border-bottom: 1px solid #27afa1;
+  }
+  .MedicineTagList-infodiv ul li:hover span{
+    color: #27afa1;
+  }
+  .MedicineTagList-infodiv ul li i {
+    font-size: 12px;
+    color: #27afa1;
+  }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
   

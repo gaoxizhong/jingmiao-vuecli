@@ -16,12 +16,16 @@
           <div class="classBrowse-items-centent">
 
             <div class="classBrowse-items-box" v-for="(item,index) in classBrowseList" :key="index">
-              <a href="javascript:0;" class="classBrowse-items-title" @click="clickDepartment(item.department)">{{item.department}}</a>
+              <a href="javascript:0;" class="classBrowse-items-title" @click="clickDepartment(item.department,item.tag)">{{item.department}}</a>
               <div class="classBrowse-items-list">
-                <a href="javascript:0;" v-for="(items,idx) in item.diseases" :key="idx" @click="clickDiseases(items.name)">{{items.name}}</a>
+                <a href="javascript:0;" class="listitems-a" v-for="(items,idx) in item.diseases" :key="idx" @click="clickDiseases(items.name,item.tag,items.kgid?items.kgid:'')">{{items.name}}</a>
+                <a href="javascript:0;" class="gengduo-a" @click="clickDepartment(item.department,item.tag)">更多</a>
               </div>
             </div>
-
+            <div class="demo-block-control" style="left: 0px;" @click="clickMore" v-if="modeStatus">
+              <i class="el-icon-caret-bottom"></i>
+              <span>加载更多...</span>
+            </div>
           </div>
         </div>
 
@@ -59,14 +63,13 @@ export default {
       viewWidth:'',
       sickNess1:[],
       is_view: true,
-      main_bg:{
-        backgroundImage:'url(' + require('../assets/image/home/icon_bjt.png') + ')',
-        backgroundRepeat:'no-repeat',
-        backgroundSize: '100% 100%',
-      },
+      main_bg:{},
       tag_pages:'',
       is_pages:'',
       classBrowseList: [],
+      pageIndex:1,
+      pageSize:10,
+      modeStatus: true
     }
   },
   mounted(){
@@ -75,12 +78,14 @@ export default {
     let getViewportSize = this.$getViewportSize();
     // this.viewHeight = getViewportSize.height -100;
     this.viewWidth = getViewportSize.width;
+    this.main_bg = this.$root.main_bg;  // 背景图
+
     this.tag_pages = this.$route.query.tag_pages;
     if(this.tag_pages == 'xyzsk'){
-        document.title = '西医知识库'
+        document.title = '西医知识库--分类浏览'
       }
       if(this.tag_pages == 'zyzsk'){
-        document.title = '中医知识库'
+        document.title = '中医知识库--分类浏览'
       }
     this.getClassBrowseList();
   },
@@ -106,37 +111,56 @@ export default {
       }
       getClassBrowseList({
         tag: t,
+        page: that.pageIndex
       }).then(res =>{
         if(res.data.code == 0){
-          that.classBrowseList = res.data.data
+          let newlist = res.data.data;
+          if(newlist.length < that.pageSize){
+            that.modeStatus = false;
+          }
+          that.classBrowseList = that.classBrowseList.concat(newlist);
         }
       })
     },
+    //点击加载更多
+    clickMore(){
+      let that = this;
+      that.pageIndex = that.pageIndex+1;
+      that.getClassBrowseList();
+    },
+
+
     // 点击疾病名称
-    clickDiseases(n){
+    clickDiseases(n,t,k){
       let that = this;
       let name = n;
+      let tag = t;
+      let kgid = k;
       let tag_pages = that.tag_pages;
       // 新页面打开
       let newUrl = this.$router.resolve({
         path: '/NewDetails',
         query:{
           name,
+          tag, 
+          kgid,
           tag_pages,
         }
       });
       window.open(newUrl.href, "_blank");
     },
     // 点击科室名称
-    clickDepartment(n){
+    clickDepartment(n,t){
       let that = this;
       let name = n;
+      let tag = t;
       let tag_pages = that.tag_pages;
       // 新页面打开
       let newUrl = this.$router.resolve({
         path: '/departmentDisasePages',
         query:{
           name,
+          tag,
           tag_pages,
         }
       });
@@ -146,6 +170,35 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .demo-block-control {
+    border-top: 1px solid #eaeefb;
+    height: 44px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    text-align: center;
+    margin-top: -1px;
+    color: #20C3A7;
+    color: #999;
+    cursor: pointer;
+    position: relative;
+  }
+  .demo-block-control:hover{
+    color: #20C3A7;
+  }
+  .demo-block-control i {
+    font-size: 16px;
+    line-height: 44px;
+    transition: .3s;
+  }
+  .demo-block-control>span {
+    font-size: 15px;
+    line-height: 44px;
+    transition: .3s;
+    display: inline-block;
+    padding-left: 4px;
+  }
   .classBrowseContent-box{
     width: 100%;
     height: auto;
@@ -200,6 +253,9 @@ export default {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  .classBrowse-items-list>a.gengduo-a{
+    color: #fa6400;
   }
   .classBrowse-items-title:hover,.classBrowse-items-list>a:hover{
     color: #20C3A7;

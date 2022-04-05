@@ -726,9 +726,7 @@
                 <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
                 <span class="item-text-a" v-for="(items, index) in item.text" :key="index">{{ items.kgid ? items.name : items }}</span>
               </div>
-              <div class="item-text" style="white-space:pre-line" v-html='item.text ? item.text : "暂无数据"' v-else>
-                {{  }}
-              </div>
+              <div class="item-text" style="white-space:pre-line" v-html='item.text ? item.text : "暂无数据"' v-else></div>
               <!-- <div class="item-text">{{item.text?item.text:'暂无数据'}}</div> -->
             </div>
           </div>
@@ -1592,7 +1590,6 @@ li {
           if (res.data.code == 0) {
                that.disease_list = res.data.data.symptom_about_sickness; //疾病列表
               that.dataInfo_id = res.data.data.advisory_content.id;
-              // return f(res.data.data.disease_list[0].name,0,that.d3jsonParser)
 
           } else if (res.data.code == 1) {
             that.$message.error({
