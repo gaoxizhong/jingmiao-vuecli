@@ -4,7 +4,7 @@
       <el-row class="content-box">
         <el-col :span="24" class="content-col-box">
           <div class="l-content">
-            <div class="l-content-title">菁苗健康</div>
+            <div class="l-content-title" @click="clickLogo">菁苗健康</div>
             <span class="l-content-title-span">{{tag_name}}</span>
           </div>
 
@@ -87,6 +87,7 @@ header{
   color:#00C792;
   font-weight:600;
   font-family: '宋体';
+  cursor: pointer;
 }
 
 .r-content{
@@ -224,6 +225,15 @@ export default {
           tag_pages,
           is_search: 1,
         }
+      });
+      window.open(newUrl.href, "_blank");
+    },
+    // 点击LOGO
+    clickLogo(){
+      // 新页面打开
+      let newUrl = this.$router.resolve({
+        path: '/FrontPage',
+        query:{}
       });
       window.open(newUrl.href, "_blank");
     }

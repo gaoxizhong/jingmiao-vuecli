@@ -251,6 +251,7 @@
           name: that.name,
           property_zh_name,
           property_ch_name: ch,
+          label: that.tag
         }
         if(that.tag_pages == 'xyzsk'){
           params.type = '';
