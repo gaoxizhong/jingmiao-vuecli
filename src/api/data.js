@@ -270,7 +270,7 @@ export const getLetterSearch = (params) =>{
 // 搜索页面关键字接口
 export const getExistLabels = (params) =>{  
   return axios.request({
-    url:'/exist/labels',
+    url:'/labels',
     method: 'post',
     data: params
   })

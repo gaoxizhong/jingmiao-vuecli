@@ -13,7 +13,7 @@
       <!-- 疾病属性分类展示模块开始 -->
         <div class="diseaseAttributes-box">
           <div class="diseaseAttributes-title">
-            <span>{{name}} -- <span style="color:#FA6400;font-size:15px;">{{properties_name}}</span></span>
+            <span>{{name}} -- <span style="color:#FA6400;font-size:15px;">{{properties_name?properties_name:'无'}}</span></span>
             <a href="javascript:0;" class="cktp-span" @click="clickCktp">查看图谱</a>
           </div>
           <!-- 属性模块展示开始 -->
@@ -32,6 +32,7 @@
                   </div>
                 </div>
                 <!-- 属性项 -->
+
               </div>
             </div>
           </div>
@@ -43,7 +44,7 @@
           <div class="diseaseAttributes-box">
             <!-- 标题开始 -->
             <div class="diseaseAttributes-title">
-              <span style="color:#FA6400;font-size:15px;">{{properties_name}}</span>
+              <span style="color:#FA6400;font-size:15px;">{{properties_name?properties_name:"无"}}</span>
             </div>
             <!-- 标题结束 -->
             <!-- 内容详情板块开始 -->
@@ -217,7 +218,9 @@
       //获取详情页默认展示
       getNewDetail(){
         let that = this;
-        let params = {};
+        let params = {
+          label: that.tag
+        };
         if(that.tag_pages == 'xyzsk'){
           params.type = '';
         }
@@ -227,11 +230,11 @@
         getNewDetail(params).then(res =>{
           if(res.data.code == 0){
             let dabutes = res.data.data;
+            that.dabutes = dabutes;
             let li_index= that.li_index;
             let a_idx= that.a_idx;
             let property_zh_name = dabutes[li_index].DiseaseCategoryProperties[a_idx].property_zh_name;
             let property_ch_name = dabutes[li_index].DiseaseCategoryProperties[a_idx].property_ch_name;
-            that.dabutes = dabutes;
             that.clickDiseaseCategoryProperties(li_index,a_idx,property_ch_name,property_zh_name);
           }
         }).catch( e =>{

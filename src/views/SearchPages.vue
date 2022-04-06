@@ -192,7 +192,6 @@ export default {
       let that = this;
       let tag_pages = that.tag_pages;
       let pearms = {
-        keyword: that.input_name,
         type:''
       }
       if(tag_pages == 'xyzsk'){
