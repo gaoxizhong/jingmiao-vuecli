@@ -11,7 +11,7 @@
                 <span>姓名：</span><el-input v-model="form.name"></el-input>
               </td>
               <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu" style="min-width:180px;">
-                <span>年龄：</span><el-input v-model="form.age"></el-input>
+                <span>年龄：</span><el-input type="number" v-model="form.age"></el-input>
               </td>
               <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu" style="min-width:180px;">
                 <span>性别：</span><el-input v-model="form.sex"></el-input>
@@ -26,13 +26,13 @@
               <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu" style="min-width:220px;">
                 <span>身份证：</span><el-input v-model="form.sfzh"></el-input>
               </td>
-              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex">
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex" v-if="Number(form.age) < 6">
                 <span>不足一周岁天龄:</span><el-input v-model="form.bzyzsnl"></el-input>
               </td>
-              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex">
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex" v-if="Number(form.age) < 6">
                 <span>新生儿出生体重:</span><el-input v-model="form.xsecstz"></el-input>
               </td>
-              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex">
+              <td class="src-components-PatInfo-vDMlM src-components-PatInfo-1sipu divflex" v-if="Number(form.age) < 6">
                 <span>新生儿入院体重:</span><el-input v-model="form.xserytz"></el-input>
               </td>
 
