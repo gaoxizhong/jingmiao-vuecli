@@ -118,7 +118,7 @@ header{
   color: #fff;
   border: 1px solid #00C792;
   border-radius: 0;
-  margin-bottom: -5px
+  margin-bottom: -10px
 }
 .header-input-box-i{
   flex: 1;
@@ -176,6 +176,7 @@ header{
   }
   .header-input-box >>> .el-button{ 
     padding: 8px 20px;
+    margin-bottom: -5px
   }
   .l-content-title-span{
     margin-top: 10px;
