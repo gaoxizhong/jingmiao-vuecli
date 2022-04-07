@@ -25,7 +25,7 @@
          <!-- 搜索框模块结束 -->
           <!-- 搜索结果列表部分 -->
           <div class="MedicineTagList-infodiv">
-            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="item.tag == 'ClinicalPathway'?item.url:'javascript:0;'" :target="item.tag == 'ClinicalPathway'?'_blank':''" @click="item.tag == 'ClinicalPathway'?'':click_gotoxq( item.tag,item.name )">
+            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="item.tag == 'ClinicalPathway'?item.file:'javascript:0;'" :target="item.tag == 'ClinicalPathway'?'_blank':''" @click="item.tag == 'ClinicalPathway'?click_file(item.file):click_gotoxq( item.tag,item.name )">
               <span>{{ item.name }}</span>
               <i>( {{item.description}} )</i>
             </a>
@@ -102,10 +102,28 @@ export default {
     //     console.log(this.is_view)
     //   })
     // },
+    click_file(f){
+      let file = f;
+      if(!file || file == ''){
+        this.$message.error({
+          message:'暂无数据！'
+        })
+        return
+      }
+    },
     clickTagname(t,i){
       this.tag = t;
       this.cur_tab = i;
       this.inputClick(this.input_name);
+    },
+    click_file(f){
+      let file = f;
+      if(!file || file == ''){
+        this.$message.error({
+          message:'暂无数据！'
+        })
+        return
+      }
     },
     // 获取分类浏览列表
     inputClick(n){
@@ -137,6 +155,7 @@ export default {
       if(tag_pages == 'zyzsk'){
         pearms.type = 'zh';
       }
+      that.MedicineIfoList = [];
       const loading = that.$loading({
           lock: true,
           text: 'Loading',
@@ -156,6 +175,7 @@ export default {
                 name: ele.name,
                 description: ele.description,
                 kgid: ele.kgid?ele.kgid:'',
+                file: ele.file?ele.file:'',
               })
             });
           }
