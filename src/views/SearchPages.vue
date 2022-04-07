@@ -25,14 +25,10 @@
          <!-- 搜索框模块结束 -->
           <!-- 搜索结果列表部分 -->
           <div class="MedicineTagList-infodiv">
-            <div v-for="(item, index) in MedicineIfoList" :key="index">
-              <ul>
-                <li @click="click_gotoxq( item.tag,item.name )">
-                  <span>{{ item.name }}</span>
-                  <i>( {{item.description}} )</i>
-                </li>
-              </ul>
-            </div>
+            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="item.tag == 'ClinicalPathway'?item.url:'javascript:0;'" :target="item.tag == 'ClinicalPathway'?'_blank':''" @click="item.tag == 'ClinicalPathway'?'':click_gotoxq( item.tag,item.name )">
+              <span>{{ item.name }}</span>
+              <i>( {{item.description}} )</i>
+            </a>
             <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
           </div>
           <!-- 搜索结果列表部分结束 -->
@@ -159,7 +155,7 @@ export default {
                 tag: key,
                 name: ele.name,
                 description: ele.description,
-                kgid: ele.kgid?ele.kgid:''
+                kgid: ele.kgid?ele.kgid:'',
               })
             });
           }
@@ -346,9 +342,12 @@ export default {
     width: 780px;
     margin: 0 auto;
     flex: 1;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
   }
-  .MedicineTagList-infodiv ul li {
+  .MedicineTagList-infodiv a {
+    display: inline-block;
     border-bottom: 1px #e9e9e9 solid;
     line-height: 30px;
     padding-top: 5px;
@@ -356,17 +355,17 @@ export default {
     text-align: left;
     padding-left: 10px;
   }
-  .MedicineTagList-infodiv ul li span {
+  .MedicineTagList-infodiv a span {
     font-size: 14px;
     color: #000;
   }
-  .MedicineTagList-infodiv ul li:hover{
+  .MedicineTagList-infodiv a:hover{
     border-bottom: 1px solid #27afa1;
   }
-  .MedicineTagList-infodiv ul li:hover span{
+  .MedicineTagList-infodiv a:hover span{
     color: #27afa1;
   }
-  .MedicineTagList-infodiv ul li i {
+  .MedicineTagList-infodiv a i {
     font-size: 12px;
     color: #27afa1;
   }
