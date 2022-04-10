@@ -10,7 +10,7 @@ import VideoDetails from '../views/VideoDetails.vue'
 import inquiryResultPage from '../views/inquiryResultPage.vue'
 // =============================新版本 以下============================================
 import FrontPage from '../views/FrontPage.vue'  // 首页
-import RepositoryPage from '../views/RepositoryPage.vue'     // 知识库页
+// import RepositoryPage from '../views/RepositoryPage.vue'     // 知识库页
 import NewDetails from '../views/NewDetails.vue'     // 知识库疾病详情页
 import SearchPages from '../views/SearchPages.vue'  // 知识库疾病搜索页
 import departmentDisasePages from '../views/departmentDisasePages.vue'  //  科室疾病页面
@@ -140,13 +140,25 @@ const routes = [
   {
     path:'/FrontPage',
     name: 'FrontPage',
-    component: FrontPage
+    component: FrontPage,
+    children:[
+      { 
+        path: '/RepositoryPage',
+        name: 'RepositoryPage',
+        component: () => import('@/views/RepositoryPage'),
+          meta: {
+            keepAlive: true,
+            scollTopPosition: 0,
+            requireAuth:true
+          }
+      },
+    ]
   },
-  {
-    path: '/RepositoryPage',
-    name : 'RepositoryPage',
-    component: RepositoryPage,
-  },
+  // {
+  //   path: '/RepositoryPage',
+  //   name : 'RepositoryPage',
+  //   component: RepositoryPage,
+  // },
   {
     path: '/NewDetails',
     name : 'NewDetails',

@@ -15,17 +15,16 @@
           </div>
 
           <div class="r-content" v-if="phone">
-            <span class="r-phone" v-if=" !tag_name || tag_name == '' ">{{ phone }}</span>
+            <!-- <span class="r-phone" v-if=" !tag_name || tag_name == '' ">{{ phone }}</span> -->
             <div class="r-toLogin" @click="toLogin"><img src="../assets/image/tui-icon.png" alt="" /> 退出</div>
           </div>
         </el-col>
       </el-row>
     </header>
     <!-- 导航分类模块 -->
-    <div class="nav-center-box" v-if="tag_name">
+    <div class="nav-center-box">
       <div class="navitems-box">
-        <div class="navitems navitems-active">{{tag_name}}</div>
-        <!-- <div class="navitems">中医知识库</div> -->
+        <div class="navitems" :class=" item.id == nav_id?'navitems-active':'' " v-for="(item,index) in contentItems" :key="index">{{item.name}}</div>
       </div>
     </div>
     <!-- 导航分类模块 -->
@@ -184,37 +183,91 @@ header{
 }
 </style>
 <script>
+import {WesternMedicine} from '@/api/data'
 export default {
   props:{
     tag_pages: String,
+    is_norouter: Number,
     is_search: null,
   },
   data() {
     return {
       phone:'',
       tag_name:'',
-      headerInput:''
+      headerInput:'',
+      contentItems:[],
+      nav_id: 1
     }
   },
   created(){
- 
+    
   },
   mounted(){
     let phone = window.localStorage.getItem('setUser');
     this.phone = phone;
-    let tag_name = '';
-    if(this.tag_pages == 'xyzsk'){
-      tag_name = '西医知识库';
-    }
-    if(this.tag_pages == 'zyzsk'){
-      tag_name = '中医知识库';
-    }
-    this.tag_name = tag_name;
+    this.WesternMedicine();
   },
   methods:{
     toLogin(){
       this.$router.push({name: 'Login'});
     },
+    // 获取左侧信息
+    async WesternMedicine(){
+      let that = this;
+      await  WesternMedicine({}).then( res =>{
+        if(res.data.code == 0){
+          let contentItems = [
+            {id:1,name:'西医知识库',path:'/RepositoryPage',tag_pages:'xyzsk'},
+            {id:2,name:'中医知识库',path:'/RepositoryPage',tag_pages:'zyzsk'},
+            {id:3,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},
+            {id:4,name:'智能问答',path:'/QAhome',tag_pages:'znwd'}
+          ];
+          that.$store.dispatch('delStateurl')
+          that.contentItems = contentItems;
+          if(this.is_norouter){
+            that.aa();
+          }
+        }
+      }).catch(e =>{
+          console.log(e)
+      })
+    },
+    aa(){
+      let contentItems = this.contentItems;
+      let path = contentItems[0].path;
+      let tag_pages = contentItems[0].tag_pages;
+      let id = this.nav_id;
+      if(path == '/WesternMedicineCdss' || path == '/QAhome'){
+          // 新页面打开
+          let newUrl = this.$router.resolve({
+            path,
+          });
+          window.open(newUrl.href, "_blank");
+        }else{
+          var tag = '';
+          let stateurl = this.$store.state.stateurl;
+          if(stateurl){
+            return
+          }else{
+            this.$router.replace({  //核心语句
+              path,   //跳转的路径
+              query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+              id,
+              tag_pages,
+              }
+            })
+          }
+        }
+    },
+
+
+
+
+
+
+
+
+
     headerInputClick(){
       let tag_pages = this.tag_pages;
       let input_name = this.headerInput;

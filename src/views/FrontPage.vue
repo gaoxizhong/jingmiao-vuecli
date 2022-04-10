@@ -4,12 +4,15 @@
 
     <!-- 头部开始 -->
     <el-header>
-      <CommonHeader></CommonHeader>
+      <CommonHeader :is_norouter="is_norouter" @sickNess="setsickNess"></CommonHeader>
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
     <el-main :style="main_bg">
-      <CommponMain></CommponMain>
+      <keep-alive v-if="is_view">
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"/>
     </el-main>
     <!-- 主题结束 -->
     <!-- 底部开始 -->
@@ -23,7 +26,6 @@
 <script>
 import CommonHeader from "../components/CommonHeader";
 import CommonFooter from "../components/CommonFooter";
-import CommponMain from "../components/CommponMain";
 // import Home from "../components/Home";
 
 export default {
@@ -36,7 +38,6 @@ export default {
   components: {
     CommonHeader,
     CommonFooter,
-    CommponMain
     // Home
   },
   data(){
@@ -46,7 +47,7 @@ export default {
       sickNess1:[],
       is_view: true,
       main_bg:{},
-
+      is_norouter: 0
     }
   },
   mounted(){
@@ -56,6 +57,7 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
+    this.is_norouter = this.$route.query.is_norouter;
     this.main_bg = this.$root.main_bg;
   },
 

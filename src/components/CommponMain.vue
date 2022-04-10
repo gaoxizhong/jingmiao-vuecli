@@ -59,7 +59,7 @@
   .items-title-p{
     font-size: 26px;
     font-weight: 600;
-    color: #FFFFFF;
+    color: #fff;
   }
   .items-title-m{
     width: 130px;

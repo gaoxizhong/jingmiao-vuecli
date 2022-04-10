@@ -200,8 +200,13 @@ export default {
                   that.$router.push({path:decodeURIComponent(stateurl)});
                 }else{
                   // that.$router.push('/Main');
-                  that.$router.push('/FrontPage'); // 新版本首页
-
+                  // that.$router.push('/FrontPage'); 
+                  that.$router.replace({  //核心语句
+                    path:'/FrontPage',   //跳转的路径
+                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                    is_norouter:1,
+                    }
+                  })
                 }
                 } else {
 

@@ -1,62 +1,36 @@
 <template>
-  <!-- <el-container :style="`height:${viewHeight}px;`"> -->
-  <el-container>
+  <div class="pagecontent-box">
+    <div class="classBrowseContent-box">
+      <div class="classBrowse-title">分类浏览</div>
+      <div class="classBrowse-items-centent">
 
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :tag_pages="tag_pages"></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <!-- <router-view /> -->
-        <div class="classBrowseContent-box">
-          <div class="classBrowse-title">分类浏览</div>
-          <div class="classBrowse-items-centent">
-
-            <div class="classBrowse-items-box" v-for="(item,index) in classBrowseList" :key="index">
-              <a href="javascript:0;" class="classBrowse-items-title" @click="clickDepartment(item.department,item.tag)">{{item.department}}</a>
-              <div class="classBrowse-items-list">
-                <a href="javascript:0;" class="listitems-a" v-for="(items,idx) in item.diseases" :key="idx" @click="clickDiseases(items.name,item.tag,items.kgid?items.kgid:'')">{{items.name}}</a>
-                <a href="javascript:0;" class="gengduo-a" @click="clickDepartment(item.department,item.tag)">更多</a>
-              </div>
-            </div>
-            <div class="demo-block-control" style="left: 0px;" @click="clickMore" v-if="modeStatus">
-              <i class="el-icon-caret-bottom"></i>
-              <span>加载更多...</span>
-            </div>
+        <div class="classBrowse-items-box" v-for="(item,index) in classBrowseList" :key="index">
+          <a href="javascript:0;" class="classBrowse-items-title" @click="clickDepartment(item.department,item.tag)">{{item.department}}</a>
+          <div class="classBrowse-items-list">
+            <a href="javascript:0;" class="listitems-a" v-for="(items,idx) in item.diseases" :key="idx" @click="clickDiseases(items.name,item.tag,items.kgid?items.kgid:'')">{{items.name}}</a>
+            <a href="javascript:0;" class="gengduo-a" @click="clickDepartment(item.department,item.tag)">更多</a>
           </div>
         </div>
-
+        <div class="demo-block-control" style="left: 0px;" @click="clickMore" v-if="modeStatus">
+          <i class="el-icon-caret-bottom"></i>
+          <span>加载更多...</span>
+        </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+    </div>
+
+  </div>
 </template>
 
 <script>
-import CommonHeader from "../components/CommonHeader";
-import CommonFooter from "../components/CommonFooter";
-// import Home from "../components/Home";
 import { getClassBrowseList } from "@/api/data"
 export default {
-  // provide(){
-  //   return {
-  //     setsickNess: this.setsickNess
-  //   }
-  // },
-  name: 'RepositoryPage',
-  components: {
-    CommonHeader,
-    CommonFooter,
-    // Home
+  provide(){
+    return {
+      setsickNess: this.setsickNess
+    }
   },
+  name: 'RepositoryPage',
+  components: {},
   data(){
     return {
       viewHeight:'',
@@ -69,17 +43,15 @@ export default {
       classBrowseList: [],
       pageIndex:1,
       pageSize:10,
-      modeStatus: true
+      modeStatus: true,
+      is_norouter: 0
     }
   },
   mounted(){
   },
   created(){
     let getViewportSize = this.$getViewportSize();
-    // this.viewHeight = getViewportSize.height -100;
     this.viewWidth = getViewportSize.width;
-    this.main_bg = this.$root.main_bg;  // 背景图
-
     this.tag_pages = this.$route.query.tag_pages;
     if(this.tag_pages == 'xyzsk'){
         document.title = '西医知识库--分类浏览'
@@ -138,6 +110,7 @@ export default {
       let kgid = k;
       let tag_pages = that.tag_pages;
       // 新页面打开
+
       let newUrl = this.$router.resolve({
         path: '/NewDetails',
         query:{
