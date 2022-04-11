@@ -3,7 +3,7 @@
 
     <!-- 头部开始 -->
     <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages"></CommonHeader>
+      <CommonHeader :id="id" :tag_pages="tag_pages"></CommonHeader>
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
@@ -76,7 +76,7 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewWidth = getViewportSize.width;
     this.tag_pages = this.$route.query.tag_pages;
-    this.id = Number(this.$route.query.id);
+    this.id = this.$route.query.id;
     if(this.tag_pages == 'xyzsk'){
         document.title = '西医知识库--分类浏览'
       }

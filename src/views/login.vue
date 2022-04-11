@@ -195,18 +195,18 @@ export default {
                 that.$store.dispatch("setIsAuthenticated",true)
                 let stateurl = that.stateurl;
                 if(stateurl){
-                  console.log(1)
-
                   that.$router.push({path:decodeURIComponent(stateurl)});
                 }else{
                   // that.$router.push('/Main');
                   // that.$router.push('/FrontPage'); 
-                  that.$router.replace({  //核心语句
-                    path:'/FrontPage',   //跳转的路径
-                    query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                    is_norouter:1,
-                    }
-                  })
+
+                  // that.$router.replace({  
+                  //   path:'/FrontPage',  
+                  //   query:{          
+                  //   is_norouter:1,
+                  //   }
+                  // })
+                  that.getNavList();
                 }
                 } else {
 
@@ -227,9 +227,39 @@ export default {
         this.$message.error('账号或密码错误');
       })
 
-    }
-  },
+    },
+    // 获取导航信息
+    getNavList(){
+      let that = this;
+      let headerNavItems = [
+        {id:1,name:'西医知识库',path:'/RepositoryPage',tag_pages:'xyzsk'},
+        {id:2,name:'中医知识库',path:'/RepositoryPage',tag_pages:'zyzsk'},
+        {id:3,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},
+        {id:4,name:'智能问答',path:'/QAhome',tag_pages:'znwd'}
+      ];
+      this.$store.dispatch("headerNavItems",headerNavItems);
+      sessionStorage.setItem('headerNavItems',JSON.stringify(this.$store.state.headerNavItems) );
+      console.log(JSON.parse(sessionStorage.getItem('headerNavItems')))
 
+      let path = headerNavItems[0].path;
+      let tag_pages = headerNavItems[0].tag_pages;
+      let id = headerNavItems[0].id;
+      if(path == '/WesternMedicineCdss' || path == '/QAhome'){
+         that.$router.replace({  //核心语句
+            path,   //跳转的路径
+            query:{}
+          })
+      }else{
+        this.$router.replace({  //核心语句
+          path,   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+          id,
+          tag_pages,
+          }
+        })
+      }
+    },
+  },
 }
 
 </script>

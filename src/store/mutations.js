@@ -51,3 +51,6 @@ export const cdssInfo = (state,cdssInfo) =>{
 export const is_pom = (state,is_pom) =>{
   state.is_pom = is_pom
 }
+export const headerNavItems = (state,headerNavItems) =>{
+  state.headerNavItems = headerNavItems
+}

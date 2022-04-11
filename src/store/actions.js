@@ -51,3 +51,6 @@ export const cdssInfo = ({commit},data) =>{
 export const is_pom = ({commit},data) =>{
   commit('is_pom',data);
 }
+export const headerNavItems = ({commit},data) =>{
+  commit('headerNavItems',data);
+}

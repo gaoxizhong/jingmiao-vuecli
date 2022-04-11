@@ -226,6 +226,7 @@
         }
         if(that.tag_pages == 'zyzsk'){
           params.type = 'zh';
+          params.name = that.name
         }
         getNewDetail(params).then(res =>{
           if(res.data.code == 0){

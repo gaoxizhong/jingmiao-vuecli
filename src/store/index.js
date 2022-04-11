@@ -21,6 +21,7 @@ const state ={
   stateurl:'',  //  保存路径
   cdssInfo:'', // cdss问诊数据
   is_pom:false,
+  headerNavItems:[], // 头部导航
 }
 export default new Vuex.Store({
   state,
