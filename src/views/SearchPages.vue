@@ -14,7 +14,7 @@
          <!-- 搜索框模块开始 -->
          <div class="classinput-box">
            <div class="header-input-box">
-            <input placeholder="搜索疾病、药品、检查、临床路径等" v-model="input_name" class="input-with-select" />
+            <input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="input_name" class="input-with-select" />
             <button slot="append" @click="getExistLabels" class="input-button-box">搜索</button>
            </div>
            <div class="classinfo-box">
@@ -25,7 +25,7 @@
          <!-- 搜索框模块结束 -->
           <!-- 搜索结果列表部分 -->
           <div class="MedicineTagList-infodiv">
-            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="item.tag == 'ClinicalPathway'?item.file:'javascript:0;'" :target="item.tag == 'ClinicalPathway'?'_blank':''" @click="item.tag == 'ClinicalPathway'?click_file(item.file):click_gotoxq( item.tag,item.name )">
+            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?'_blank':''" @click="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?click_file(item.file):click_gotoxq( item.tag,item.name )">
               <span>{{ item.name }}</span>
               <i>( {{item.description}} )</i>
             </a>
@@ -101,13 +101,13 @@ export default {
   },
 
   methods: {
-    // setsickNess(){
-    //   this.is_view = false;
-    //   this.$nextTick(() => {
-    //     this.is_view = true
-    //     console.log(this.is_view)
-    //   })
-    // },
+    setsickNess(){
+      this.is_view = false;
+      this.$nextTick(() => {
+        this.is_view = true
+        console.log(this.is_view)
+      })
+    },
     click_file(f){
       let file = f;
       if(!file || file == ''){

@@ -27,7 +27,7 @@
                     <a href="javascript:0;" class="chapter-li-a" :class="(li_index == index && a_idx == idx) ? 'chapterA-active' :'' "
                     v-for="(items,idx) in item.DiseaseCategoryProperties" 
                     :key="idx" 
-                    @click="clickDiseaseCategoryProperties(index,idx,items.property_ch_name,items.property_zh_name)"
+                    @click="clickDiseaseCategoryProperties(index,idx,item.name,items.property_ch_name,items.property_zh_name)"
                     >{{items.property_zh_name}}</a>
                   </div>
                 </div>
@@ -236,19 +236,21 @@
             that.dabutes = dabutes;
             let li_index= that.li_index;
             let a_idx= that.a_idx;
+            let name = dabutes[li_index].name;
             let property_zh_name = dabutes[li_index].DiseaseCategoryProperties[a_idx].property_zh_name;
             let property_ch_name = dabutes[li_index].DiseaseCategoryProperties[a_idx].property_ch_name;
-            that.clickDiseaseCategoryProperties(li_index,a_idx,property_ch_name,property_zh_name);
+            that.clickDiseaseCategoryProperties(li_index,a_idx,name,property_ch_name,property_zh_name);
           }
         }).catch( e =>{
           console.log(e)
         })
       },
       // 点击上面属性名称请求下方属性详情
-      clickDiseaseCategoryProperties(i,ix,ch,zh){
+      clickDiseaseCategoryProperties(i,ix,na,ch,zh){
         let that = this;
         let index = i;
         let idx = ix;
+        let name = na;
         let property_zh_name = zh;
         this.properties_name = property_zh_name;
         this.li_index = index;
@@ -264,7 +266,12 @@
         }
         if(that.tag_pages == 'zyzsk'){
           params.type = 'zh';
-          params.name = that.kgid?that.kgid:that.name;
+          if(params.label == 'zySickNess'){
+            params.name = name;
+          }else{
+            params.name = that.kgid?that.kgid:that.name;
+          }
+          
         }
         getPropertyDetail(params).then(res =>{
           if(res.data.code == 0){

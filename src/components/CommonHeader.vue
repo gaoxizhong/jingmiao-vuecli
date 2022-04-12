@@ -9,7 +9,7 @@
           </div>
 
           <div class="header-input-box" v-if="!is_search">
-            <el-input placeholder="搜索疾病、药品、检查、临床路径等" v-model="headerInput" class="input-with-select">
+            <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="headerInput" class="input-with-select">
               <el-button slot="append" @click="headerInputClick">搜索</el-button>
             </el-input>
           </div>
@@ -205,7 +205,7 @@ export default {
       tag_name:'',
       headerInput:'',
       contentItems:[],
-      nav_id: ''
+      nav_id: '',
     }
   },
   created(){
