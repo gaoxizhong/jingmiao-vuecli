@@ -4,7 +4,7 @@
 
     <!-- 头部开始 -->
     <el-header>
-      <CommonHeader :tag_pages="tag_pages"></CommonHeader>
+      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" @sickNess="setsickNess"></CommonHeader>
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
@@ -14,7 +14,7 @@
         <div class="diseaseAttributes-box">
           <div class="diseaseAttributes-title">
             <span>{{name}} -- <span style="color:#FA6400;font-size:15px;">{{properties_name?properties_name:'无'}}</span></span>
-            <a href="javascript:0;" class="cktp-span" @click="clickCktp">查看图谱</a>
+            <a href="javascript:0;" class="cktp-span" @click="clickCktp" v-if="tag == 'Disease' || tag == 'SickNess' || tag == 'zySickNess' ">查看图谱</a>
           </div>
           <!-- 属性模块展示开始 -->
           <div class="dabutes-c-box">
@@ -143,6 +143,7 @@
         linkTypes: [],
         cdssWidth: 800,
         cdssHeight: 600,
+        id: 0
       }
     },
     mounted(){
@@ -169,18 +170,19 @@
       this.name = this.$route.query.name;
       this.tag = this.$route.query.tag?this.$route.query.tag:'';
       this.kgid = this.$route.query.kgid?this.$route.query.kgid:'';
+      this.id = Number(this.$route.query.id);
       document.title = this.name;
       this.getNewDetail();
     },
 
     methods: {
-      // setsickNess(){
-      //   this.is_view = false;
-      //   this.$nextTick(() => {
-      //     this.is_view = true
-      //     console.log(this.is_view)
-      //   })
-      // },
+      setsickNess(){
+        this.is_view = false;
+        this.$nextTick(() => {
+          this.is_view = true
+          console.log(this.is_view)
+        })
+      },
 
 
       // 属性模块初始化

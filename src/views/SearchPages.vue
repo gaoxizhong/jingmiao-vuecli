@@ -4,7 +4,7 @@
 
     <!-- 头部开始 -->
     <el-header>
-      <CommonHeader :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
+      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" @sickNess="setsickNess" :is_search='is_search'></CommonHeader>
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
@@ -76,6 +76,7 @@ export default {
       cur_tab:100,
       tag:'',
       MedicineIfoList:[], // 搜索结果列表
+      id: 0
     }
   },
   mounted(){
@@ -88,8 +89,13 @@ export default {
     this.input_name = this.$route.query.input_name;
     this.is_search = this.$route.query.is_search?true:false;
     this.main_bg = this.$root.main_bg;  // 背景图
-
-    console.log(this.input_name)
+    this.id = Number(this.$route.query.id);
+    if(this.tag_pages == 'xyzsk'){
+      document.title = '西医知识库--搜索';
+    }
+    if(this.tag_pages == 'zyzsk'){
+      document.title = '中医知识库--搜索';
+    }
     // 获取分类项
     this.getExistLabels();
   },
@@ -192,6 +198,7 @@ export default {
       let tag = t;
       let name = n;
       let tag_pages = this.tag_pages;
+      let id = this.id
       // 新页面打开
       let newUrl = this.$router.resolve({
         path: '/NewDetails',
@@ -199,6 +206,7 @@ export default {
           name,
           tag_pages,
           tag,
+          id
         }
       });
       window.open(newUrl.href, "_blank");
@@ -228,12 +236,7 @@ export default {
           that.all_options = all_options;  // 全部 的标识字段
           that.tag = all_options;   // 默认第一次请求的标识字段
           that.options = options;  // 所有分类项
-          if(that.tag_pages == 'xyzsk'){
-            document.title = '西医知识库--搜索';
-          }
-          if(this.tag_pages == 'zyzsk'){
-            document.title = '中医知识库--搜索';
-          }
+
           if(options.length <= 0){
             that.$message.error({
               message: '暂无数据！'

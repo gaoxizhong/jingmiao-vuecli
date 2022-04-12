@@ -4,7 +4,7 @@
 
     <!-- 头部开始 -->
     <el-header>
-      <CommonHeader :tag_pages="tag_pages"></CommonHeader>
+      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" @sickNess="setsickNess"></CommonHeader>
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
@@ -77,6 +77,7 @@
         firstLetterList:[], // 字母数组
         letter_index: 0,   // 字母数组下标
         letterSearchList:[], // 根据字母搜索结果数组
+        id: 0
       }
     },
     mounted(){
@@ -90,6 +91,8 @@
       this.tag_pages = this.$route.query.tag_pages;
       this.name = this.$route.query.name;
       this.tag = this.$route.query.tag;
+      this.id = Number(this.$route.query.id);
+
       if(this.tag_pages == 'xyzsk'){
         document.title = '西医知识库--筛选'
       }
@@ -164,6 +167,7 @@
         let name = n;
         let tag = that.tag;
         let tag_pages = that.tag_pages;
+        let id = that.id;
         // 新页面打开
         let newUrl = this.$router.resolve({
           path: '/NewDetails',
@@ -171,6 +175,7 @@
             name,
             tag,
             tag_pages,
+            id,
           }
         });
         window.open(newUrl.href, "_blank");

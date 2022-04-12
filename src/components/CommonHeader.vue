@@ -4,7 +4,7 @@
       <el-row class="content-box">
         <el-col :span="24" class="content-col-box">
           <div class="l-content">
-            <div class="l-content-title" @click="clickLogo">菁苗健康</div>
+            <div class="l-content-title">菁苗健康</div>
             <span class="l-content-title-span">{{tag_name}}</span>
           </div>
 
@@ -205,7 +205,7 @@ export default {
       tag_name:'',
       headerInput:'',
       contentItems:[],
-      nav_id: 1
+      nav_id: ''
     }
   },
   created(){
@@ -213,7 +213,7 @@ export default {
     if (sessionStorage.getItem('headerNavItems')) {
       this.$store.dispatch('headerNavItems',JSON.parse(sessionStorage.getItem('headerNavItems') ))
       let headerNavItems =  this.$store.state.headerNavItems;
-      this.nav_id = this.id;
+      this.nav_id = Number(this.id);
       this.contentItems = headerNavItems;
       let tag_name = '';
       this.contentItems.forEach(element => {
@@ -252,13 +252,21 @@ export default {
         this.nav_id = id;
         this.tag_name = name;
         this.$emit('sickNess');
-        this.$router.replace({  //核心语句
-          path,   //跳转的路径
-          query:{ //路由传参时push和query搭配使用 ，作用时传递参数
+        // this.$router.replace({
+        //   path,  
+        //   query:{
+        //     id,
+        //     tag_pages,
+        //   }
+        // })
+       let newUrl = this.$router.resolve({
+          path,
+          query:{
             id,
             tag_pages,
           }
-        })
+        });
+        window.open(newUrl.href, "_blank");
       }
     },
 
@@ -268,6 +276,7 @@ export default {
 
     headerInputClick(){
       let tag_pages = this.tag_pages;
+      let id = this.nav_id;
       let input_name = this.headerInput;
       // 新页面打开
       let newUrl = this.$router.resolve({
@@ -276,19 +285,19 @@ export default {
           input_name,
           tag_pages,
           is_search: 1,
+          id
         }
       });
       window.open(newUrl.href, "_blank");
     },
     // 点击LOGO
-    clickLogo(){
-      // 新页面打开
-      let newUrl = this.$router.resolve({
-        path: '/FrontPage',
-        query:{}
-      });
-      window.open(newUrl.href, "_blank");
-    }
+    // clickLogo(){
+    //   let newUrl = this.$router.resolve({
+    //     path: '/FrontPage',
+    //     query:{}
+    //   });
+    //   window.open(newUrl.href, "_blank");
+    // }
   }
 }
 </script>

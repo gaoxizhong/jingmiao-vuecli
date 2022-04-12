@@ -3,7 +3,7 @@
 
     <!-- 头部开始 -->
     <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages"></CommonHeader>
+      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" @sickNess="setsickNess"></CommonHeader>
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
@@ -71,6 +71,7 @@ export default {
     }
   },
   mounted(){
+
   },
   created(){
     let getViewportSize = this.$getViewportSize();
@@ -87,13 +88,14 @@ export default {
   },
 
   methods: {
-    // setsickNess(){
-    //   this.is_view = false;
-    //   this.$nextTick(() => {
-    //     this.is_view = true
-    //     console.log(this.is_view)
-    //   })
-    // },
+    setsickNess(){
+      console.log(2)
+      this.is_view = false;
+      this.$nextTick(() => {
+        this.is_view = true
+        console.log(this.is_view)
+      })
+    },
     // 获取分类浏览列表
     getClassBrowseList(){
       let that = this;
@@ -133,8 +135,8 @@ export default {
       let tag = t;
       let kgid = k;
       let tag_pages = that.tag_pages;
+      let id = that.id;
       // 新页面打开
-
       let newUrl = this.$router.resolve({
         path: '/NewDetails',
         query:{
@@ -142,6 +144,7 @@ export default {
           tag, 
           kgid,
           tag_pages,
+          id
         }
       });
       window.open(newUrl.href, "_blank");
@@ -152,6 +155,7 @@ export default {
       let name = n;
       let tag = t;
       let tag_pages = that.tag_pages;
+      let id = that.id;
       // 新页面打开
       let newUrl = this.$router.resolve({
         path: '/departmentDisasePages',
@@ -159,6 +163,7 @@ export default {
           name,
           tag,
           tag_pages,
+          id
         }
       });
       window.open(newUrl.href, "_blank");

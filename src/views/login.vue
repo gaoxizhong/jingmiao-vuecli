@@ -208,11 +208,11 @@ export default {
                   // })
                   that.getNavList();
                 }
-                } else {
+              } else {
 
-                this.$router.push('/');
+              this.$router.push('/');
 
-                }
+              }
 
 
             }
