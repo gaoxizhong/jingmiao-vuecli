@@ -59,7 +59,7 @@
               <div class="infoDetail-centent-box" style="padding:10px 20px;" v-if="data_type == 'many' ">
                 <div class="results_cont">
 
-                  <a href="javascript:0;" class="results_block" v-for="(item,index) in guide_list" :key="index">
+                  <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="results_block" v-for="(item,index) in guide_list" :key="index">
                     <div class="results_tit">
                       <div class="results_name">{{item.title}}</div>
                       <div class="clear"></div>
