@@ -1,41 +1,55 @@
 <template>
-  <div class="content-box">
-    <div class="back-box">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item v-for="(item,index) in crumbs" :key="index">{{item}}</el-breadcrumb-item>
-      </el-breadcrumb>
-      <a href="#" class="box2-span" @click="fanhui_btn()">
-        <img src="../assets/image/fan-left.png" alt /> 返回
-      </a>
-    </div>
-    <div class="info-box" :style="`height:${viewHeight - 150}px;`">
-      <div class="info-box1">
-        <div class="info-box2">
-          <div class="infoDetail-title">{{infoDetail.name}}</div>
-          <div class="tap-top-span">
-            <span>{{infoDetail.organization?infoDetail.organization:''}}</span>
-          </div>
-          <div class="info-box3">
-            <div class="info-box3-title">作者关注领域</div>
-            <div class="info-box3-text icon-info-keys">
-                <span v-for="(keys,index) in infoDetail.focusField" :key="index">{{keys}}</span>
-            </div>
-          </div>
-          <!-- 参考文献 -->
-          <div class="daohang-box">
-            <div class="daohang-tags">
-              <a href="javascript:0;" class="active">作者文献</a>
-            </div>
-            <div class="tagspane-box">
-              <a v-for="(auts,index) in infoDetail.authorDocument" :key="index" class="auts-box" @click="clickAuts(auts)">[{{index+1}}]{{auts}}</a>
+  <el-container>
+    <!-- 头部开始 -->
+    <el-header>
+      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
+    </el-header>
+    <!-- 头部结束 -->
+    <!-- 主题开始 -->
+    <el-main :style="main_bg">
+      <div class="pagecontent-box">
+        <div class="info-box">
+          <div class="info-box1">
+            <div class="info-box2">
+              <div class="infoDetail-title">{{infoDetail.name}}</div>
+              <div class="tap-top-span">
+                <span>{{infoDetail.organization?infoDetail.organization:''}}</span>
+              </div>
+              <div class="info-box3">
+                <div class="info-box3-title">作者关注领域</div>
+                <div class="info-box3-text icon-info-keys">
+                    <span v-for="(keys,index) in infoDetail.focusField" :key="index">{{keys}}</span>
+                </div>
+              </div>
+              <!-- 参考文献 -->
+              <div class="daohang-box">
+                <div class="daohang-tags">
+                  <a href="javascript:0;" class="active">作者文献</a>
+                </div>
+                <div class="tagspane-box">
+                  <a v-for="(auts,index) in infoDetail.authorDocument" :key="index" class="auts-box" @click="clickAuts(auts)">[{{index+1}}]{{auts}}</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </el-main>
+    <!-- 主题结束 -->
+    <!-- 底部开始 -->
+    <el-footer>
+      <CommonFooter></CommonFooter>
+    </el-footer>
+    <!-- 底部结束 -->
+  </el-container>
 </template>
 <style scoped>
+  .pagecontent-box{
+    height: auto;
+    background: #FFFFFF;
+    margin: 10px 0;
+    padding: 12px;
+  }
 .content-box {
   width: 100%;
   height: 100%;
@@ -164,15 +178,25 @@
 }
 </style>
 <script>
+import CommonHeader from "../components/CommonHeader";
+import CommonFooter from "../components/CommonFooter";
 import { getAuthorDetail } from "@/api/data";
 export default {
+  components: {
+    CommonHeader,
+    CommonFooter,
+  },
   data() {
     return {
       viewHeight: "",
       infoDetail: {},
       tag: "",
       kgid:"",
-      crumbs:[]
+      tagspane: false,
+      is_search:true,
+      main_bg:{},
+      tag_pages:'',
+      id: 0,
     };
   },
   created() {
@@ -182,6 +206,9 @@ export default {
     this.viewWidth = getViewportSize.width;
     this.kgid = this.$route.query.kgid; //接受参数关键代码
     this.tag = this.$route.query.tag;
+    this.tag_pages = this.$route.query.tag_pages;
+    this.main_bg = this.$root.main_bg;  // 背景图
+    this.id = Number(this.$route.query.id);
     this.getDetail(this.kgid);
   },
   methods: {
@@ -190,13 +217,6 @@ export default {
       this.$message.error({
         message: '暂无数据...'
       });
-    },
-    // 返回上一步
-    fanhui_btn() {
-      let crumbs = this.crumbs;
-      crumbs.pop();
-      // this.$router.go(-1);  // ios 不支持
-      location.href = "javascript:history.go(-2);"
     },
 
     // 获取详情
@@ -211,9 +231,7 @@ export default {
         .then(res => {
           if (res.data.code == 0) {
             that.infoDetail = res.data.data;
-            let crumbs =  that.$store.state.crumbsarr;
-            crumbs.push(res.data.data.name)
-            this.crumbs = crumbs;
+            document.title = res.data.data.name;
           } else {
             this.$message.error({
               message: res.data.msg

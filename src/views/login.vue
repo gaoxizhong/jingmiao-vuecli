@@ -234,8 +234,10 @@ export default {
       let headerNavItems = [
         {id:1,name:'西医知识库',path:'/RepositoryPage',tag_pages:'xyzsk'},
         {id:2,name:'中医知识库',path:'/RepositoryPage',tag_pages:'zyzsk'},
-        {id:3,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},
-        {id:4,name:'智能问答',path:'/QAhome',tag_pages:'znwd'}
+        {id:3,name:'文献',path:'/DocumentGuidePages',tag_pages:'Document'},
+        {id:4,name:'指南',path:'/DocumentGuidePages',tag_pages:'Guide'},
+        {id:5,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},
+        {id:6,name:'智能问答',path:'/QAhome',tag_pages:'znwd'},
       ];
       this.$store.dispatch("headerNavItems",headerNavItems);
       sessionStorage.setItem('headerNavItems',JSON.stringify(this.$store.state.headerNavItems) );

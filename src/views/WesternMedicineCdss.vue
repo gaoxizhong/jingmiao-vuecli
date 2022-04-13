@@ -1014,7 +1014,7 @@ li {
       checkAll: false, // 西医知识全选状态
       isIndeterminate: false, // 西医知识
       MedicineTagList: [  //西医知识
-        { name: "诊断", tag: "Symptom" },
+        { name: "诊断", tag: "Identity" },
         { name: "药品", tag: "MedicineProduction" },
         { name: "检查", tag: "Inspection" },
         { name: "疾病", tag: "Disease" },
@@ -1986,7 +1986,7 @@ li {
             for (let key in list) {
               newList.push({
                 tag: key,
-                tag_name: key == "MedicineProduction" ? "药品" : key == "Inspection" ? "检查" : key == "Symptom" ? "诊断" : key == "Disease" ? "疾病" : "",
+                tag_name: key == "MedicineProduction" ? "药品" : key == "Inspection" ? "检查" : key == "Identity" ? "诊断" : key == "Disease" ? "疾病" : "",
                 list: list[key],
               });
             }

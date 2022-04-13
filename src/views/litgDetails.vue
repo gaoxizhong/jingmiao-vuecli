@@ -1,70 +1,81 @@
 <template>
-  <div class="content-box">
-    <div class="back-box">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item v-for="(item,index) in crumbs" :key="index">{{item}}</el-breadcrumb-item>
-      </el-breadcrumb>
-      <div>
-        <a href="#" class="box2-span" @click="fanhui_btn()">
-          <img src="../assets/image/fan-left.png" alt /> 返回
-        </a>
-      </div>
-    </div>
-    <div class="info-box" :style="`height:${viewHeight - 140}px;`">
-      <div class="info-box1">
-        <div class="info-box2">
-          <div class="infoDetail-title">{{infoDetail.title}}</div>
-          <div class="tap-top-span">
-            <a href="javascript:0;" v-for="(items,index) in infoDetail.author" :key="index" @click.prevent="goToauthor(items.kgid)">{{items.name?items.name:''}}</a>
-          </div>
-          <div class="info-box3">
-            <div>
-              <div class="info-box3-title">摘要:</div>
-              <div class="info-box3-text">{{ infoDetail.abstract }}</div>
-            </div>
-            <div style="padding:2px 0;" v-if="infoDetail.keyword.length > 0">
-              <div class="info-box3-title">关键词:</div>
-              <div class="info-box3-text icon-info-keys">
-                <span v-for="(keys,index) in infoDetail.keyword" :key="index">{{keys}}</span>
+  <el-container>
+    <!-- 头部开始 -->
+    <el-header>
+      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
+    </el-header>
+    <!-- 头部结束 -->
+    <!-- 主题开始 -->
+    <el-main :style="main_bg">
+      <div class="pagecontent-box">
+        <div class="info-box">
+          <div class="info-box1">
+            <div class="info-box2">
+              <div class="infoDetail-title">{{infoDetail.title}}</div>
+              <div class="tap-top-span">
+                <a href="javascript:0;" v-for="(items,index) in infoDetail.author" :key="index" @click.prevent="goToauthor(items.kgid)">{{items.name?items.name:''}}</a>
               </div>
-            </div>
-            <div>
-              <div class="info-box3-title">期刊:</div>
-              <div class="info-box3-text">{{ infoDetail.publishMagazine }}</div>
-            </div>
-            <!-- <div class="zaixian" @click.stop="goToyuedu(item.id)"><i class="el-icon-reading"></i>在线阅读</div> -->
-          </div>
-          <!-- 参考文献 -->
-          <div class="daohang-box">
-            <div class="daohang-tags">
-              <a href="javascript:0;" :class="!tagspane?'active':''" @click="clickSpan(1)">参考文献</a>
-              <a href="javascript:0;" :class="tagspane?'active':''" @click="clickSpan(2)">引证文献</a>
-            </div>
-            <div class="tagspane-box" v-if="!tagspane">
-              <div v-if="infoDetail.similarDocument && infoDetail.similarDocument.length != 0">
-                <a href="javascript:0;" v-for="(auts,index) in infoDetail.similarDocument.titles" :key="index" class="auts1-box" @click="clickAuts(auts)">
-                  [{{index+1}}]{{auts}}
-                </a>
+              <div class="info-box3">
+                <div>
+                  <div class="info-box3-title">摘要:</div>
+                  <div class="info-box3-text">{{ infoDetail.abstract }}</div>
+                </div>
+                <div style="padding:2px 0;" v-if="infoDetail.keyword?infoDetail.keyword.length > 0:''">
+                  <div class="info-box3-title">关键词:</div>
+                  <div class="info-box3-text icon-info-keys">
+                    <span v-for="(keys,index) in infoDetail.keyword" :key="index">{{keys}}</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="info-box3-title">期刊:</div>
+                  <div class="info-box3-text">{{ infoDetail.publishMagazine }}</div>
+                </div>
               </div>
-              <div v-else>暂无信息...</div>
-            </div>
-            <div class="tagspane-box" v-if="tagspane">
-              <div v-if="infoDetail.citationDocument && infoDetail.citationDocument.length != 0">
-                <a href="javascript:0;" v-for="(auts2,idx) in infoDetail.citationDocument.titles" :key="idx" class="auts2-box" @click="clickAuts(auts2)">
-                  [{{idx+1}}]{{auts2}}
-                </a>
+              <!-- 参考文献 -->
+              <div class="daohang-box">
+                <div class="daohang-tags">
+                  <a href="javascript:0;" :class="!tagspane?'active':''" @click="clickSpan(1)">参考文献</a>
+                  <a href="javascript:0;" :class="tagspane?'active':''" @click="clickSpan(2)">引证文献</a>
+                </div>
+                <div class="tagspane-box" v-if="!tagspane">
+                  <div v-if="infoDetail.similarDocument && infoDetail.similarDocument.length != 0">
+                    <a href="javascript:0;" v-for="(auts,index) in infoDetail.similarDocument.titles" :key="index" class="auts1-box" @click="clickAuts(auts)">
+                      [{{index+1}}]{{auts}}
+                    </a>
+                  </div>
+                  <div v-else>暂无信息...</div>
+                </div>
+                <div class="tagspane-box" v-if="tagspane">
+                  <div v-if="infoDetail.citationDocument && infoDetail.citationDocument.length != 0">
+                    <a href="javascript:0;" v-for="(auts2,idx) in infoDetail.citationDocument.titles" :key="idx" class="auts2-box" @click="clickAuts(auts2)">
+                      [{{idx+1}}]{{auts2}}
+                    </a>
+                  </div>
+                  <div v-else>暂无信息...</div>
+                </div>
               </div>
-              <div v-else>暂无信息...</div>
-            </div>
-          </div>
 
 
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </el-main>
+    <!-- 主题结束 -->
+    <!-- 底部开始 -->
+    <el-footer>
+      <CommonFooter></CommonFooter>
+    </el-footer>
+    <!-- 底部结束 -->
+  </el-container>
 </template>
 <style scoped>
+  .pagecontent-box{
+    height: auto;
+    background: #FFFFFF;
+    margin: 10px 0;
+    padding: 12px;
+  }
 .content-box {
   width: 100%;
   height: 100%;
@@ -100,8 +111,6 @@
 }
 .info-box1 {
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 .info-box2 {
   height: auto;
@@ -228,16 +237,25 @@
 </style>
 
 <script>
+import CommonHeader from "../components/CommonHeader";
+import CommonFooter from "../components/CommonFooter";
 import { getDocDetail } from "@/api/data";
 export default {
+  components: {
+    CommonHeader,
+    CommonFooter,
+  },
   data() {
     return {
       viewHeight: "",
-      infoDetail: {},
+      infoDetail: {citationDocument:[]},
       title: "",
       tag: "",
       tagspane: false,
-      crumbs:[]
+      is_search:true,
+      main_bg:{},
+      tag_pages:'',
+      id: 0,
     };
   },
   created() {
@@ -247,10 +265,13 @@ export default {
     this.viewWidth = getViewportSize.width;
     this.title = this.$route.query.name; //接受参数关键代码
     this.tag = this.$route.query.tag;
+    this.tag_pages = this.$route.query.tag_pages;
+    this.main_bg = this.$root.main_bg;  // 背景图
+    this.id = Number(this.$route.query.id);
+    document.title = this.$route.query.name;
     this.getDetail(this.title);
   },
   methods: {
-
     // 点击在线阅读
     goToyuedu(name){
       let that = this;
@@ -264,18 +285,26 @@ export default {
         message: '暂无数据...'
       });
     },
-      // 点击作者
-      goToauthor(_kgid){
-          let kgid = _kgid;
-          let tag = tag;
-          this.$router.push({  //核心语句
-              path:'/authorDetails',   //跳转的路径
-              query:{
-                  kgid,
-                  tag,
-              }
-          })
-      },
+    // 点击作者
+    goToauthor(_kgid){
+      let that = this;
+      let kgid = _kgid;
+      let tag = that.tag;
+      let tag_pages = that.tag_pages;
+      let id = that.id;
+      // 新页面打开
+      let newUrl = this.$router.resolve({
+        path: '/authorDetails',
+        query:{
+          kgid,
+          tag,
+          tag_pages,
+          id
+        }
+      });
+      window.open(newUrl.href, "_blank");
+      return
+    },
     // 参考印证切换
     clickSpan(tab){
       let is_tab = tab;
@@ -287,12 +316,11 @@ export default {
     },
 
     // 返回上一步
-    fanhui_btn() {
-      let crumbs = this.crumbs;
-      crumbs.pop();
-      // this.$router.go(-1);  // ios 不支持
-      location.href = "javascript:history.go(-2);"
-    },
+    // fanhui_btn() {
+    //   let crumbs = this.crumbs;
+    //   crumbs.pop();
+    //   location.href = "javascript:history.go(-2);"
+    // },
 
     // 获取详情
     getDetail(name) {
@@ -315,9 +343,6 @@ export default {
           loading.close();
           if (res.data.code == 0) {
             that.infoDetail = res.data.data;
-            let crumbs =  that.$store.state.crumbsarr;
-            crumbs.push(res.data.data.title)
-            this.crumbs = crumbs;
           } else {
             this.$message.error({
               message: res.data.msg

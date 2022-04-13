@@ -209,10 +209,14 @@ export default {
     }
   },
   created(){
-    // 在页面加载时读取sessionStorage里的状态信息
-    if (sessionStorage.getItem('headerNavItems')) {
-      this.$store.dispatch('headerNavItems',JSON.parse(sessionStorage.getItem('headerNavItems') ))
-      let headerNavItems =  this.$store.state.headerNavItems;
+      let headerNavItems = [
+        {id:1,name:'西医知识库',path:'/RepositoryPage',tag_pages:'xyzsk'},
+        {id:2,name:'中医知识库',path:'/RepositoryPage',tag_pages:'zyzsk'},
+        {id:3,name:'文献',path:'/DocumentGuidePages',tag_pages:'Document'},
+        {id:4,name:'指南',path:'/DocumentGuidePages',tag_pages:'Guide'},
+        {id:5,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},
+        {id:6,name:'智能问答',path:'/QAhome',tag_pages:'znwd'},
+      ];
       this.nav_id = Number(this.id);
       this.contentItems = headerNavItems;
       let tag_name = '';
@@ -222,12 +226,27 @@ export default {
         }
       });
       this.tag_name = tag_name;
-    }
+    // ============================================
+    // 在页面加载时读取sessionStorage里的状态信息
     // 在页面刷新时将vuex里的信息保存到sessionStorage里
     // beforeunload事件在页面刷新时先触发
-    window.addEventListener('beforeunload', () => {
-      sessionStorage.setItem('headerNavItems', JSON.stringify(this.$store.state.headerNavItems))
-    })
+    // if (sessionStorage.getItem('headerNavItems')) {
+    //   this.$store.dispatch('headerNavItems',JSON.parse(sessionStorage.getItem('headerNavItems') ))
+    //   let headerNavItems =  this.$store.state.headerNavItems;
+    //   this.nav_id = Number(this.id);
+    //   this.contentItems = headerNavItems;
+    //   let tag_name = '';
+    //   this.contentItems.forEach(element => {
+    //     if(element.id == this.nav_id){
+    //       tag_name = element.name
+    //     }
+    //   });
+    //   this.tag_name = tag_name;
+    // }
+    // window.addEventListener('beforeunload', () => {
+    //   sessionStorage.setItem('headerNavItems', JSON.stringify(this.$store.state.headerNavItems))
+    // })
+    // ============================================
   },
   mounted(){
     let phone = window.localStorage.getItem('setUser');
@@ -237,6 +256,11 @@ export default {
     toLogin(){
       this.$router.push({name: 'Login'});
     },
+
+
+
+
+
     clickItem_2(i,n,p,t){
       let id = i;
       let name = n;

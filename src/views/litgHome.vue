@@ -10,13 +10,6 @@
         <el-col :span="12" :offset="5">
           <div class="el-input-box el-col">
             <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-              <!-- <el-select class="el-select-box" v-model="select" slot="prepend" @change="searchDownChange">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"></el-option>
-              </el-select> -->
               <el-button slot="append" icon="el-icon-search" @click="getInputBtn()" style=" padding: 12px 30px;"></el-button>
             </el-input>
           </div>
@@ -29,7 +22,6 @@
                   <span style="margin-right:4px;">按年份排序</span>
                   <i class="el-icon-sort" style="color:#5578F0;"></i>
                 </a>
-                <!-- <div>找到<span style="color:#5578F0;">{{count}}</span>条结果</div> -->
             </div>
             <a href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
               <!-- 文献 -->

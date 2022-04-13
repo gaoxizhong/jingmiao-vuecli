@@ -47,12 +47,40 @@
               <span style="color:#FA6400;font-size:15px;">{{properties_name?properties_name:"无"}}</span>
             </div>
             <!-- 标题结束 -->
+
             <!-- 内容详情板块开始 -->
             <div class="infoDetail-box">
-              <div class="infoDetail-centent-box">
+              <!-- 普通数据展示开始 -->
+              <div class="infoDetail-centent-box" v-if="data_type == 'single' ">
                 <div style="text-align:left;white-space:pre-line;font-size:15px;" v-html="infoDetail_text?infoDetail_text:'暂无数据...' "></div>
               </div>
+              <!-- 普通数据展示结束 -->
+              <!-- 指南数据展示开始 -->
+              <div class="infoDetail-centent-box" style="padding:10px 20px;" v-if="data_type == 'many' ">
+                <div class="results_cont">
+
+                  <a href="javascript:0;" class="results_block" v-for="(item,index) in guide_list" :key="index">
+                    <div class="results_tit">
+                      <div class="results_name">{{item.title}}</div>
+                      <div class="clear"></div>
+                    </div>
+                    <div class="results_infor">{{item.author}}</div>
+                    <div class="results_instr">
+                      <div class="results_time">{{item.publish_time}}</div>
+                      <div class="clear"></div>
+                    </div>
+                  </a>
+
+                </div>
+              </div>
+              <!-- 指南数据展示结束 -->
+
+              <!-- 参考文献详情开始 -->
+              <!-- <references></references> -->
+              <!-- 参考文献详情结束 -->
             </div>
+            
+
             <!-- 内容详情板块结束 -->
 
           </div>
@@ -100,6 +128,7 @@
 <script>
   import CommonHeader from "../components/CommonHeader";
   import CommonFooter from "../components/CommonFooter";
+  import References from "../components/References"; // 文献指南
   import d3Atlas from "../components/d3Atlas";
   import BScroll  from "better-scroll";
   // import Home from "../components/Home";
@@ -114,6 +143,7 @@
     components: {
       CommonHeader,
       CommonFooter,
+      References,
       d3Atlas
       // Home
     },
@@ -133,7 +163,9 @@
         li_index: 0,
         a_idx: 0,
         properties_name:'',
-        infoDetail_text:'',
+        data_type:'',  // 数据格式
+        infoDetail_text:'',  // 字符串数据
+        guide_list: [],  // 指南数组数据
         is_casePop:false,
         data: { //  图谱数据
           nodes: [],
@@ -143,7 +175,7 @@
         linkTypes: [],
         cdssWidth: 800,
         cdssHeight: 600,
-        id: 0
+        id: 0,
       }
     },
     mounted(){
@@ -275,7 +307,15 @@
         }
         getPropertyDetail(params).then(res =>{
           if(res.data.code == 0){
-            that.infoDetail_text = res.data.data[0].value
+            let data_type = res.data.data.data_type;
+            that.data_type = data_type;
+            if(data_type == 'single'){
+              that.infoDetail_text = res.data.data.value; // 字符串状态数据
+            }
+            if(data_type == 'many'){
+              that.guide_list = res.data.data.value;  // 指南数组数据
+            }
+            
           }
         }).catch(e =>{
           console.log(e)
@@ -545,6 +585,36 @@
     z-index: 1000;
     padding: 10px;
   }
+  .results_block {
+    border-bottom: 1px solid #ececec;
+    padding: 10px 20px;
+    font-size: 12px;
+    line-height: 24px;
+    color: #666;
+    display: block;
+  }
+  .results_name {
+    float: left;
+    width: 100%;
+    padding-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+  }
+  .clear {
+    clear: both;
+  }
+  .results_time {
+    width: 80px;
+    float: right;
+    text-align: right;
+  }
+  .results_infor{
+    text-align: left;
+  }
+
+
 
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
