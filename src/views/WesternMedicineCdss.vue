@@ -424,8 +424,8 @@
               <div class="blxxDiv-box zsDiv-box">
                 <div class="blxxDiv-title-box zsDiv-title-box">检查：</div>
                 <div class="blxxDiv-info-box1">
-                  <div class="demo-input-suffix">
-                    <div>
+                  <div class="jcyy-input-suffix">
+                    <div class="jcyy-input-boxx">
                       <span>请输入检查：</span>
                       <el-input type="text" placeholder="请输入检查" v-model="cdssInspection"></el-input>
                     </div>
@@ -435,8 +435,8 @@
               <div class="blxxDiv-box zsDiv-box">
                 <div class="blxxDiv-title-box zsDiv-title-box">用药：</div>
                 <div class="blxxDiv-info-box1">
-                  <div class="demo-input-suffix">
-                    <div>
+                  <div class="jcyy-input-suffix">
+                    <div class="jcyy-input-boxx">
                       <span>请输入用药：</span>
                       <el-input type="text" placeholder="请输入用药药品" v-model="cdssMedication"></el-input>
                     </div>
@@ -512,7 +512,10 @@
                 <!-- 常见药品列表 -->
                 <div>
                   <div class="cjyp-table-tr" v-for="(item, index) in medicine_list" :key="index">
-                    <div class="cjyp-table-tr-l">{{ item.name }}</div>
+                    <div class="cjyp-table-tr-l">
+                      <i class="el-icon-circle-plus-outline" title="点击使用此项" @click="clickMedicineIcon(item.name)"></i>
+                      <span style="padding-left:4px;">{{ item.name }}</span>
+                    </div>
                     <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('MedicineProduction', item.name)">查看详情</a>
                   </div>
                   <div style="padding: 6px 0 6px 15px" v-if="!medicine_list || medicine_list.length <= 0">暂无数据...</div>
@@ -530,7 +533,10 @@
                 <!-- 常见检查列表 -->
                 <div>
                   <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
-                    <div class="cjyp-table-tr-l">{{ item.name }}</div>
+                    <div class="cjyp-table-tr-l">
+                      <i class="el-icon-circle-plus-outline" title="点击使用此项" @click="clickInspectionIcon(item.name)"></i>
+                      <span style="padding-left:4px;">{{ item.name }}</span>
+                    </div>
                     <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
                   </div>
                   <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
@@ -541,7 +547,7 @@
               <!-- 鉴别诊断模块开始 -->
               <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
                 <h1 style="background: #EAF7FA;"> 
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAfRJREFUOBGtVDEzxFAQ3ncSBa2CRqdUUPgBFAztxQw5nEZDqzyFK9UajRyOIkpuruEHKCiUOgoKLYWEZ3fz9k2Si4wZMnPv7e1++82+9+0+gL982lupc75ero+VEllkIUqiulp7SvgW/SYZuupr3j3/sAIa1jgqizO4zaakSRVKALSzM45WQbv7ANGNCtuj6TgDpABO8GqXAhBmZtRefViFwYsmgNbzAlLnbROvPYsPKzdHsR4sBa+rsEbCaDwigJoDZ2BcnR28pvJ+Z2ZP7fmPAO4UqGgTHPdInQYPPTT5GtP1WXAaxCc3kQwYQYHNQEN0E582elZAwax1iri4I/MF+1klYljaGMqoYsA2mQ9o/tGlpsEWVCBCr945UPYesQyI3++xoC52zrow054BpgNkU/0Qv+2xpBzUXcCGLZO2kJAb5iO+BqUaKjwOmMssfGatm9DvTBcpnCEsI0qTkv0TMROao90CVHbyFXGykUrmIk2eqPS1i1cxSVeREHo0OM4EDZeA80Mmft6V6qjwZEF8NJgA8R36RpzEiZdNnQ/QEFAmoaTCBP+5RYqTXaGFpccxomEoajQUp4M/+25QDn2E5QFy+1rSPhlRGESP5w8KM4shwjenUOkeQptExFF0hZ3aSp4/jNC10EPqujNFLSO5/7p/A6iJBGKnQxzOAAAAAElFTkSuQmCC" alt=""/>
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAk1JREFUOBGNVM1qFEEQrprs+ASevEoIZJ8hQRQ8qAcDmRiyG/CQBCQXfQBhwQfwFASTg5BNiFlBQZODoCz6CllJMLl78AmcZMuvaqbanskmsWHo6q+qvuqpnya6csl8e2qEkWStXwGWbPG2HyoKByu7ZO29AMjC4/FwKIWE8jxVWWZbYnvWPkxI6K4ZMBfuIt/YtJ1OQoPjj8S8z7ubawaaQrn/5O+JaQ7eA2DPYPSQe91bqreFGAcu13cBs8y37jTsyiJNN/CLgW0PbA8svNC9gjFr992wvsvc4qpi4Y560BB0xmskMoHjOr/bWlF85KpkL7IIjDDog+kDdC8Rp4k/36Vr6Qxvv/kZ7C+qklbSS2K/Ts3xG8ErEri3+dVyqxhCHka6UDfHEG1SZdRQJmD8SQ/+IyGXBtLA9ABf69mXG4fzbOupy+RJDUAkwLEfjtrLbuyMVuOomUMe1au8xjLqfERjsso7W1+crWLooDlpOU/pEZymy5Ki4CBAw1KD3sYksV+F0MbuTHrEyQuavPmKO52hkRfDI9Z1APT69OPkCcnwOY1xxjvd7zGpyZoE/+9zyksA9akkUG01J/j+pb9GoIn15NZUdlTfMq/EZihSDI7Ob697350qOgcvs4GuiIB29JZzv3hHdNEvxmJZfRHcWjoxBUqvY2TJji1LGQPL+o1QFQXSEVQOrGBkY5bnqFayYNM0yruGFQ/tcJvSdMrnORC6bUF8uo5+uw5sAyE/l8+fhtcHQR/SJfTkb0oby07k/v+1a3Hw2SRf5fAXDTEdluow+PQAAAAASUVORK5CYII=" alt=""/>
                   鉴别诊断
                 </h1>
                 <!-- 鉴别诊断列表 -->
@@ -927,12 +933,18 @@ li {
   line-height: 30px;
   margin-right: 12px;
 }
-.demo-input-suffix >>> .el-input .el-input__inner{
+.jcyy-input-suffix>>> .el-input{
+  flex: 1;
+  height: 30px;
+  line-height: 30px;
+  margin-right: 12px;
+}
+.demo-input-suffix >>> .el-input .el-input__inner,.jcyy-input-suffix >>> .el-input .el-input__inner{
   height: 30px;
   line-height: 30px;
 }
 
-.demo-input-suffix >>> .el-input .el-input__inner:focus {
+.demo-input-suffix >>> .el-input .el-input__inner:focus,.jcyy-input-suffix >>> .el-input .el-input__inner:focus {
   border-color: #27afa1;
 }
 .src-components-PatInfo-1sipu >>> .el-input__icon{
@@ -1105,6 +1117,16 @@ li {
     // 计算属性的 方法名及为 差值表达式属性值
   },
   methods: {
+    // 点击右侧检查项名称前图标
+    clickInspectionIcon(n){
+      let name = n;
+      this.cdssInspection = name;
+    },
+    // 点击右侧常见药品项名称前图标
+    clickMedicineIcon(n){
+      let name = n;
+      this.cdssMedication = name;
+    },
     // 获取 主诉添加症状数据
     getWesternSymptomList(){
       let that = this;
@@ -1433,7 +1455,7 @@ li {
           //  -------------------- 设置页面初始默认数据 ----------------------------------------
             //  主诉
           infoData[0].many_select_options[0].obtain_name = '反复';
-          infoData[0].many_select_options[1].obtain_name = '3分钟';
+          infoData[0].many_select_options[1].obtain_name = '3天';
             //  现病史
           infoData[1].many_select_options[0].obtain_name = '患者3天前';
           infoData[1].many_select_options[1].obtain_name = '受凉后';

@@ -14,7 +14,13 @@ table {
   border-radius: 50px;
 }
 /* ==============  滚动条样式   ==================== */
-
+  .el-icon-circle-plus-outline{
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .el-icon-circle-plus-outline:hover{
+    color: #27afa1;
+  }
   table {
     line-height: 30px;
   }
@@ -218,7 +224,7 @@ table {
 .src-components-PushItems-1jpJi>div {
   flex: 1;
   font-size: 14px;
-  padding: 0 10px;
+  padding: 0 5px;
   overflow-y: auto;
 }
 
@@ -697,7 +703,6 @@ table {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    padding: 0 5px;
   }
   .cjyp-table-tr-r {
     color: #53bfb4;
@@ -1086,8 +1091,23 @@ img.src-components-Preview-2DV3S {
 .src-Items-list{
   margin-top: 10px;
 }
-
-
+.jcyy-input-suffix{
+  display: flex;
+  align-items: center;
+  width: 60%;
+  font-size: 14px;
+  margin-bottom: 14px;
+  position: relative;
+}
+.jcyy-input-boxx{
+  display: flex;
+  align-items: center;
+}
+.jcyy-input-suffix>span{
+  display: inline-block;
+  width:auto;
+  text-align: right;
+}
 
 /* ===============   ==================== */
   /* 媒体查询 */
