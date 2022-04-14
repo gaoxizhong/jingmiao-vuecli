@@ -89,9 +89,6 @@ a{
   z-index: 1000;
 }
 @media only screen and (max-width: 1366px){
-  // .pagecontent-box{
-  //   width: 970px;
-  // }
   .el-main{
     padding: 10px 36px 56px 36px;
   }

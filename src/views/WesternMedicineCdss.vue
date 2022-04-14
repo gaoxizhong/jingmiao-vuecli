@@ -419,6 +419,32 @@
                 </div> 
               </div>
               <!-- 主要诊断模块结束 -->
+
+              <!-- 检查和用药模块开始 -->
+              <div class="blxxDiv-box zsDiv-box">
+                <div class="blxxDiv-title-box zsDiv-title-box">检查：</div>
+                <div class="blxxDiv-info-box1">
+                  <div class="demo-input-suffix">
+                    <div>
+                      <span>请输入检查：</span>
+                      <el-input type="text" placeholder="请输入检查" v-model="cdssInspection"></el-input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="blxxDiv-box zsDiv-box">
+                <div class="blxxDiv-title-box zsDiv-title-box">用药：</div>
+                <div class="blxxDiv-info-box1">
+                  <div class="demo-input-suffix">
+                    <div>
+                      <span>请输入用药：</span>
+                      <el-input type="text" placeholder="请输入用药药品" v-model="cdssMedication"></el-input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 检查和用药模块结束 -->
+
             </div>
             <!-- 左侧主诉、个人史、现病史、其他史列表选项结束 -->
           </div>
@@ -443,7 +469,7 @@
             <el-tab-pane label="辅助诊疗" name="auxiliary"></el-tab-pane>
             <el-tab-pane label="西医知识" name="medicine"></el-tab-pane>
             <el-tab-pane label="中医知识" name="cnMedicine"></el-tab-pane>
-            <el-tab-pane label="院内相似病例" name="similar"></el-tab-pane>
+            <el-tab-pane label="相似病例" name="similar"></el-tab-pane>
           </el-tabs>
         </div>
         <div class="grid-rightcontent-info-box">
@@ -662,11 +688,11 @@
             </div>
           </div>
           <!-- 中医知识模块结束 -->
-          <!-- 院内相似病例模块 -->
+          <!-- 相似病例模块 -->
           <div class="rightcontent-info-bodybox" v-if="activeName == 'similar'">
             <el-empty description="暂无数据..."></el-empty>
           </div>
-          <!-- 院内相似病例模块结束 -->
+          <!-- 相似病例模块结束 -->
         </div>
 
         <div class="mz-box">
@@ -979,6 +1005,8 @@ li {
       symptomSearch_data_2: [], // 现病史---搜索结果数据
       addSymptomPop_2: false, // 现病史--- 选项弹窗模块显示状态
       //  现病史------的添加症状字段以上
+      cdssInspection:'', // cdss-- 检查项字段
+      cdssMedication:'', // cdss -- 用药项字段
       activeName: "auxiliary",
       form: {
         name: "王明明",
@@ -1575,6 +1603,7 @@ li {
         "xsecstz": that.form.xsecstz,
         "xserytz": that.form.xserytz,
       }
+      // 第三方检验接口
       that.DrumpServices_ZK(Services_Params);
 
 

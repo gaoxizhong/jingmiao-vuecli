@@ -12,7 +12,7 @@
 <style scoped>
 footer{
   width:100%;
-  height: 60px;
+  height: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,9 +31,7 @@ footer{
 }
 /* 媒体查询 */
 @media only screen and (max-width: 1366px){
-  footer{
-    height: 36px;
-  }
+
 }  
 
 </style>
