@@ -88,6 +88,43 @@ a{
   bottom: 0;
   z-index: 1000;
 }
+  table{
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  table::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid #dfdcdc;
+    transform-origin: 0 0;
+    transform: scale(0.5);
+  }
+
+  table tbody tr{
+    padding: 4px 0;
+    height: 30px;
+  }
+  table tbody tr th,table tbody tr td{
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+  }
+  table tbody tr th::before,table tbody tr td::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid #dfdcdc;
+    transform-origin: 0 0;
+    transform: scale(0.5);
+  }
 @media only screen and (max-width: 1366px){
   .el-main{
     padding: 10px 36px 56px 36px;
