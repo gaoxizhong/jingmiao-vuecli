@@ -14,11 +14,13 @@ table {
   border-radius: 50px;
 }
 /* ==============  滚动条样式   ==================== */
-  .el-icon-circle-plus-outline{
-    font-size: 15px;
+  .icon-outline{
+    font-size: 18px;
+    font-weight: 600;
+    color: #fa6400;
     cursor: pointer;
   }
-  .el-icon-circle-plus-outline:hover{
+  .icon-outline:hover{
     color: #27afa1;
   }
   table {
@@ -703,6 +705,7 @@ table {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    cursor: pointer;
   }
   .cjyp-table-tr-r {
     color: #53bfb4;
@@ -1094,19 +1097,30 @@ img.src-components-Preview-2DV3S {
 .jcyy-input-suffix{
   display: flex;
   align-items: center;
-  width: 60%;
+  width: 300px;
   font-size: 14px;
   margin-bottom: 14px;
   position: relative;
 }
 .jcyy-input-boxx{
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  width: 100%;
 }
 .jcyy-input-suffix>span{
   display: inline-block;
   width:auto;
   text-align: right;
+}
+.span-info{
+  padding: 0 4px;
+  position: relative;
+}
+.icon-error-span{
+  position: absolute;
+  right: -2px;
+  top: -8px;
+  color: #b5cdd8;
 }
 
 /* ===============   ==================== */
