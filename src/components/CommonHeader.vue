@@ -9,8 +9,8 @@
           </div>
 
           <div class="header-input-box" v-if="!is_search">
-            <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="headerInput" class="input-with-select">
-              <el-button slot="append" @click="headerInputClick">搜索</el-button>
+            <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+              <el-button slot="append" @click="headerInputClick" >搜索</el-button>
             </el-input>
           </div>
 
@@ -319,6 +319,13 @@ export default {
     //   });
     //   window.open(newUrl.href, "_blank");
     // }
+    // 回车键点击
+    searchEnterFun(e){
+      var keyCode = window.event?e.keyCode:e.which;
+      if(keyCode == 13){
+        this.headerInputClick();
+      }
+    },
   }
 }
 </script>

@@ -491,7 +491,7 @@
               <!-- 搜索头部部分 -->
               <div class="sousuo-top-box">
                 <div class="el-input-box" style="width: 80%">
-                  <el-input placeholder="搜索症状" v-model="inputMedicineValue" class="input-with-select">
+                  <el-input placeholder="搜索症状" v-model="inputMedicineValue" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
                     <el-button slot="append" @click="getMedicineInputBtn()">确定</el-button>
                   </el-input>
                 </div>
@@ -537,7 +537,7 @@
             <div class="sousuo-box">
               <div class="sousuo-top-box">
                 <div class="el-input-box" style="width: 80%">
-                  <el-input placeholder="搜索症状" v-model="inputcnMedicineValue" class="input-with-select">
+                  <el-input placeholder="搜索症状" v-model="inputcnMedicineValue" class="input-with-select"  @keydown.enter.native="CnMedicinesearchEnterFun($event)">
                     <el-button slot="append" @click="getCnMedicineInputBtn()">确定</el-button>
                   </el-input>
                 </div>
@@ -627,31 +627,9 @@
     <!-- 点击左侧病例弹窗结束 -->
 
     <!-- 点击病例弹窗查看详情 -->
-    <div class="yp-position-mask" v-if="is_ypxq"></div>
-    <div class="yp-position-box" v-if="is_ypxq">
-      <div class="yp-position-nbox">
-        <div class="close-box" @click="ypxqclick_close">
-          <i class="el-icon-circle-close"></i>
-        </div>
-        <div class="yp-info-box">
-          <div class="col-left-title">{{ name_1 }}</div>
-          <div class="activi-1">
-            <div v-for="(item, index) in getinfo" :key="index">
-              <div class="item-name">{{ item.name }}</div>
-              <div class="item-text" v-if="item.tag != '' && item.is_list == 1">
-                <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
-                <span class="item-text-a" v-for="(items, index) in item.text" :key="index">{{ items.kgid ? items.name : items }}</span>
-              </div>
-              <div class="item-text" style="white-space:pre-line" v-html='item.text ? item.text : "暂无数据"' v-else></div>
-              <!-- <div class="item-text">{{item.text?item.text:'暂无数据'}}</div> -->
-            </div>
-          </div>
-
-          <div v-if="getinfo.length <= 0">暂无数据</div>
-        </div>
-      </div>
-    </div>
+    <DetailsMask :getinfo="getinfo" :name_1="name_1" @ypxqclick_close="ypxqclick_close" v-if="is_ypxq"/>
     <!-- 点击病例弹窗查看详情弹窗结束 -->
+    
     <!-- 点击预览按钮弹窗 -->
     <div class="src-components-Preview-34-Hv" v-if="is_useradvisory"></div>
     <div class="src-components-Preview-1CrEY" id="previewWrapper" v-if="is_useradvisory">
@@ -857,6 +835,7 @@ li {
   import d3Atlas from "../components/d3Atlas";
   import Qs from 'qs';
   import Time from '../assets/js/time';
+  import DetailsMask from '../components/WesternMedicineCdss/DetailsMask';
 
   import {
     getWesternSymptomList,
@@ -877,6 +856,7 @@ li {
     name: "WesternMedicineCdss",
     components: {
     d3Atlas,
+    DetailsMask
   },
   data() {
     return {
@@ -1988,6 +1968,13 @@ li {
           console.log(e);
         });
     },
+    // 回车键点击
+    searchEnterFun(e){
+      var keyCode = window.event?e.keyCode:e.which;
+      if(keyCode == 13){
+        this.getMedicineInputBtn();
+      }
+    },
 // ===================   西医知识 搜索事件 以上 ===========================
 
 // ===================   中医知识 搜索事件 以下 ===========================
@@ -2045,6 +2032,13 @@ li {
         .catch((e) => {
           console.log(e);
         });
+    },
+    // 回车键点击
+    CnMedicinesearchEnterFun(e){
+      var keyCode = window.event?e.keyCode:e.which;
+      if(keyCode == 13){
+        this.getCnMedicineInputBtn();
+      }
     },
 // ===================   中医知识 搜索事件 以上 ===========================
 

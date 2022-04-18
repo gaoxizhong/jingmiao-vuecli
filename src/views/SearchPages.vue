@@ -14,8 +14,9 @@
          <!-- 搜索框模块开始 -->
          <div class="classinput-box">
            <div class="header-input-box">
-            <input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="input_name" class="input-with-select" />
-            <button slot="append" @click="getExistLabels" class="input-button-box">搜索</button>
+            <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="input_name" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+              <el-button slot="append" @click="getExistLabels">搜索</el-button>
+            </el-input>
            </div>
            <div class="classinfo-box">
               <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname(all_options,100)">全部</a>
@@ -211,6 +212,13 @@ export default {
       });
       window.open(newUrl.href, "_blank");
     },
+    // 回车键点击
+    searchEnterFun(e){
+      var keyCode = window.event?e.keyCode:e.which;
+      if(keyCode == 13){
+        this.getExistLabels();
+      }
+    },
     // 获取分类项 及请求
     getExistLabels(){
       let that = this;
@@ -313,23 +321,29 @@ export default {
     border-radius: 0px;
   }
   .header-input-box .input-with-select{
-    display: inline-block;
-    border: 1px solid#00C792;
+    display: flex;
+    align-items: center;
     flex: 1;
     height: 35px;
-    padding-left: 10px;
     border-radius: 0px;
   }
   .header-input-box .input-with-select:focus{
     outline:none;
-    border: 1px solid#00C792;
+    border: 1px solid#20C3A7;
   }
-
+  .classinput-box /deep/.el-input-group--append .el-input__inner{
+    flex: 1;
+    border: 1px solid #20C3A7;
+  }
+  .header-input-box /deep/.el-input-group__append{
+    width: auto;
+  }
   .header-input-box .el-button{ 
     background: #00C792;
     color: #fff;
     border: 1px solid #00C792;
     border-radius: 0;
+    padding: 12px 36px;
   }
   .header-input-box-i{
     flex: 1;
