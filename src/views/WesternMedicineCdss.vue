@@ -593,7 +593,7 @@
     </div>
     <!-- 以下各种弹窗功能 -->
     <!-- 数据弹窗 -->
-    <!-- 点击右侧医学知识列表弹窗 -->
+    <!-- 点击右侧医学知识列表图谱弹窗 -->
     <div class="casePop-mask" v-if="is_casePop"></div>
     <div class="casePop-module-box" v-if="is_casePop">
       <div class="close-box" @click="click_close">
@@ -826,12 +826,12 @@ li {
   line-height: 30px;
   margin-right: 12px;
 }
-.demo-input-suffix >>> .el-input .el-input__inner,.jcyy-input-suffix >>> .el-input .el-input__inner{
+.demo-input-suffix >>> .el-input .el-input__inner{
   height: 30px;
   line-height: 30px;
 }
 
-.demo-input-suffix >>> .el-input .el-input__inner:focus,.jcyy-input-suffix >>> .el-input .el-input__inner:focus {
+.demo-input-suffix >>> .el-input .el-input__inner:focus,.jcyy-input-suffix >>> .el-textarea .el-textarea__inner:focus {
   border-color: #27afa1;
 }
 .src-components-PatInfo-1sipu >>> .el-input__icon{
