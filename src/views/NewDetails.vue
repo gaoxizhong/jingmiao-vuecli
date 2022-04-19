@@ -58,8 +58,7 @@
               <!-- 指南数据展示开始 -->
               <div class="infoDetail-centent-box" style="padding:10px 20px;" v-if="data_type == 'many' ">
                 <div class="results_cont">
-
-                  <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="results_block" v-for="(item,index) in guide_list" :key="index">
+                  <!-- <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="results_block" v-for="(item,index) in guide_list" :key="index">
                     <div class="results_tit">
                       <div class="results_name">{{item.title}}</div>
                       <div class="clear"></div>
@@ -69,8 +68,41 @@
                       <div class="results_time">{{item.publish_time}}</div>
                       <div class="clear"></div>
                     </div>
-                  </a>
-
+                  </a> -->
+                  <div class="guide_text" v-for="(item,index) in guide_list" :key="index">
+                    <h1 class="text_title">{{item.title_trans?item.title_trans:'无'}}</h1>
+                    <div class="guide_info_list">
+                      <div class="one_info clearfix">
+                        <label>发布日期：</label>
+                        <p>{{item.publish_time?item.publish_time:'无'}}</p>
+                      </div>
+                      <div class="one_info clearfix">
+                        <label>英文标题：</label>
+                        <p>{{item.title?item.title:'无'}}</p>
+                      </div>
+                      <div class="one_info clearfix">
+                        <label>制定者：</label>
+                        <p style="color:#20C3A7;">{{item.author?item.author:'无'}}</p>
+                      </div>
+                      <!-- <div class="one_info clearfix">
+                        <label>出处：</label>
+                        <p>无</p>
+                      </div> -->
+                      <div class="one_info clearfix">
+                        <label>中文摘要：</label>
+                        <div id="all_content">
+                          <p>{{item.abstract_trans?item.abstract_trans:'无'}}</p>
+                        </div>
+                      </div>
+                      <div class="one_info clearfix">
+                        <label>英文摘要：</label>
+                        <div id="all_content">
+                          <p>{{item.abstract?item.abstract:'无'}}</p>
+                        </div>
+                      </div>
+                      <a :href="item.guide_file?item.guide_file:'javascript:0;'" class="zaixian" :target="item.guide_file?'_blank':''" @click.stop="goToyuedu($event,item.guide_file)"><i class="el-icon-reading"></i>在线阅读</a>
+                    </div>
+                  </div>
                 </div>
               </div>
               <!-- 指南数据展示结束 -->
@@ -410,6 +442,17 @@
         that.data = { nodes, links };
         console.log(that.data.nodes);
       },
+      // 点击在线阅读
+      goToyuedu(event,u){
+        let url = u;
+        event.stopPropagation();
+        if(!url || url == ''){
+          this.$message.error({
+            message: '暂无数据'
+          });
+          return
+        }
+      },
     },
   }
 </script>
@@ -613,7 +656,84 @@
   .results_infor{
     text-align: left;
   }
-
+// =======================指南列表===========================
+  .guide_text {
+    padding-top: 6px;
+    text-align: left;
+    border-bottom: 1px #e9e9e9 solid;
+  }
+  .text_title {
+    font-size: 16px;
+    font-family: "微软雅黑";
+    line-height: 30px;
+    font-weight: normal;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .clearfix {
+    height: 1%;
+    display: flex;
+  }
+  .one_info {
+    margin-bottom: 2px;
+    overflow: hidden;
+  }
+  .one_info label {
+    width: 98px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+    float: left;
+    padding-right: 10px;
+  }
+  .one_info p {
+    flex: 1;
+    // width: 595px;
+    line-height: 20px;
+    float: left;
+    margin-top: 2px;
+    font-size: 14px;
+  }
+  .clearfix:after {
+    clear: both;
+    content: ".";
+    display: block;
+    font-size: 0;
+    height: 0;
+    visibility: hidden;
+  }
+  .one_info>div{
+    flex: 1;
+  }
+  .editor_mirror {
+    flex: 1;
+    font: 14px/1.5 "宋体",Arial,Helvetica,sans_serif;
+    background: #FFF;
+    margin: 0 auto;
+    width: 621px;
+    border: none;
+    height: auto;
+    overflow: auto;
+    margin: 0 auto;
+    padding: 4px 12px;
+  }
+  .zaixian{
+    color: #20C3A7;
+    border: 1px solid #20C3A7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+    font-size: 13px;
+    margin: 4px 0;
+    width: 84px;
+    margin-bottom: 8px;
+  }
+  .zaixian:hover{
+    background: #ece9e93f;
+  }
+// =======================指南列表===========================
 
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
