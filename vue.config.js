@@ -1,4 +1,5 @@
-const Version = new Date().getTime()
+const Version = new Date().getTime();
+const webpack = require("webpack");
 module.exports = {
   lintOnSave: false,
   // publicPath:'././',
@@ -15,9 +16,16 @@ module.exports = {
   },
   configureWebpack: {
     output: { // 输出重构  打包编译后的 文件名称  【模块名称.版本号.时间戳】
-         filename: `aa/js/[name].${Version}.js`,
-         chunkFilename: `aa/js/[name].${Version}.js`
-       }
+      filename: `aa/js/[name].${Version}.js`,
+      chunkFilename: `aa/js/[name].${Version}.js`
+    },
+    plugins: [
+      new webpack.ProvidePlugin({
+          $:"jquery",
+          jQuery:"jquery",
+          "windows.jQuery":"jquery"
+      })
+    ]
   },
   chainWebpack(config) {
 		// img的文件名修改

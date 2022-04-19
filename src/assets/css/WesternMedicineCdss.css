@@ -771,9 +771,9 @@ table {
     background: #00000080;
   }
   .yp-position-box {
-    width: 860px;
-    height: 85%;
-    max-height: 530px;
+    width: 80%;
+    height: 80%;
+    /* max-height: 530px; */
     background: #fff;
     border-radius: 6px;
     position: fixed;
@@ -789,6 +789,7 @@ table {
     flex: 1;
     width: 100%;
     height: 100%;
+    padding: 0 220px 0 10px;
     overflow-y: auto;
   }
   .yp-info-box {
@@ -807,7 +808,7 @@ table {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     text-align: center;
-    font-size: 18px;
+    font-size: 28px;
     font-family: Source Han Sans CN;
     font-weight: 600;
     line-height: 37px;
@@ -818,11 +819,11 @@ table {
     height: auto;
   }
   .item-name {
-    font-size: 16px;
+    font-size: 18px;
     font-family: Source Han Sans CN;
-    font-weight: 400;
-    line-height: 31px;
-    color: #5578F0;
+    font-weight: bold;
+    line-height: 32px;
+    color: #1E1E1E;
     opacity: 1;
     text-align: left;
     padding-left: 0;
@@ -836,6 +837,7 @@ table {
     padding: 4px 10px 4px 10px;
     box-sizing: border-box;
     text-align: left;
+    margin:10px 0;
   }
   .item-text-a{
     padding:4px 6px;
