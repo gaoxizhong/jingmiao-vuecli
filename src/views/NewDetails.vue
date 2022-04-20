@@ -70,8 +70,11 @@
                     </div>
                   </a> -->
                   <div class="guide_text" v-for="(item,index) in guide_list" :key="index">
-                    <h1 class="text_title">{{item.title_trans?item.title_trans:'无'}}</h1>
-                    <div class="guide_info_list">
+                    <div class="text_title_box">
+                      <h1 class="text_title" :title="item.title_trans">{{item.title_trans?item.title_trans:'无'}}</h1>
+                      <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
+                    </div>
+                    <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
                       <div class="one_info clearfix">
                         <label>发布日期：</label>
                         <p>{{item.publish_time?item.publish_time:'无'}}</p>
@@ -94,13 +97,16 @@
                           <p>{{item.abstract_trans?item.abstract_trans:'无'}}</p>
                         </div>
                       </div>
-                      <div class="one_info clearfix">
+                      <div class="one_info clearfix" style="margin-top:4px;">
                         <label>英文摘要：</label>
                         <div id="all_content">
                           <p>{{item.abstract?item.abstract:'无'}}</p>
                         </div>
                       </div>
-                      <a :href="item.guide_file?item.guide_file:'javascript:0;'" class="zaixian" :target="item.guide_file?'_blank':''" @click.stop="goToyuedu($event,item.guide_file)"><i class="el-icon-reading"></i>在线阅读</a>
+                      <div class="asub-box">
+                        <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="zaixian"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
+                        <a :href="item.guide_file?item.guide_file:'javascript:0;'" class="zaixian" :target="item.guide_file?'_blank':''" @click.stop="goToyuedu($event,item.guide_file)"><i class="el-icon-reading"></i>pdf在线阅读</a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -208,6 +214,8 @@
         cdssWidth: 800,
         cdssHeight: 600,
         id: 0,
+        showFull: [],
+
       }
     },
     mounted(){
@@ -345,7 +353,15 @@
               that.infoDetail_text = res.data.data.value; // 字符串状态数据
             }
             if(data_type == 'many'){
-              that.guide_list = res.data.data.value;  // 指南数组数据
+              let guide_list = res.data.data.value;  // 指南数组数据
+              let showFull =[];
+              for (var i = 0; i < guide_list.length; i++) {
+                let obj = {};
+                obj.status = false;
+                showFull.push(obj);
+              }
+              that.guide_list = guide_list;
+              that.showFull = showFull;
             }
             
           }
@@ -442,6 +458,17 @@
         that.data = { nodes, links };
         console.log(that.data.nodes);
       },
+      // 点击原文链接
+      goTofullText(event,u){
+        let url = u;
+        event.stopPropagation();
+        if(!url || url == ''){
+          this.$message.error({
+            message: '暂无数据'
+          });
+          return
+        }
+      },
       // 点击在线阅读
       goToyuedu(event,u){
         let url = u;
@@ -452,6 +479,12 @@
           });
           return
         }
+      },
+      //打开全文
+      openFulltxt(idx) {
+        let index = idx;
+        this.showFull[index].status = !this.showFull[index].status
+        this.showFull= this.showFull
       },
     },
   }
@@ -661,17 +694,37 @@
     padding-top: 6px;
     text-align: left;
     border-bottom: 1px #e9e9e9 solid;
+    margin: 5px 0;
+  }
+  .text_title_box{
+    display: flex;
+  }
+  .text_title_a{
+    width: 80px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: rgb(250, 100, 0);
   }
   .text_title {
+    flex:1;
     font-size: 16px;
     font-family: "微软雅黑";
     line-height: 30px;
     font-weight: normal;
     margin-bottom: 6px;
     position: relative;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 1;
+    box-orient: vertical;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #313131;
+    font-weight: bold;
   }
   .clearfix {
-    height: 1%;
     display: flex;
   }
   .one_info {
@@ -681,7 +734,7 @@
   .one_info label {
     width: 98px;
     font-size: 14px;
-    font-weight: bold;
+    // font-weight: bold;
     text-align: right;
     float: left;
     padding-right: 10px;
@@ -693,6 +746,7 @@
     float: left;
     margin-top: 2px;
     font-size: 14px;
+    color: #626262;
   }
   .clearfix:after {
     clear: both;
@@ -717,21 +771,27 @@
     margin: 0 auto;
     padding: 4px 12px;
   }
+  .asub-box{
+    width: 100%;
+    padding: 8px 10px;
+  }
   .zaixian{
     color: #20C3A7;
-    border: 1px solid #20C3A7;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     align-items: center;
     padding: 6px;
     font-size: 13px;
-    margin: 4px 0;
-    width: 84px;
-    margin-bottom: 8px;
+    margin: 4px;
+    width: 64px;
+  }
+  .zaixian .el-icon-reading{
+    margin-right: 4px;
   }
   .zaixian:hover{
-    background: #ece9e93f;
+    color: rgb(250, 100, 0);
+  }
+  .guide_info_list.cool{
+    height: 50px;
+    overflow: hidden;
   }
 // =======================指南列表===========================
 
