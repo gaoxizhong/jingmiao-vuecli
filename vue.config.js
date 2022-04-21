@@ -2,8 +2,8 @@ const Version = new Date().getTime();
 const webpack = require("webpack");
 module.exports = {
   lintOnSave: false,
-  // publicPath:'././',
-  publicPath:'/',
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  // publicPath:'/',
   outputDir:'dist',
   assetsDir:'aa',
   css: {
