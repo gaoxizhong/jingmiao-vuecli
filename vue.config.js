@@ -2,22 +2,27 @@ const Version = new Date().getTime();
 const webpack = require("webpack");
 module.exports = {
   lintOnSave: false,
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  //配置 运行和打包时的文件路径
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/', 
   // publicPath:'/',
   outputDir:'dist',
-  assetsDir:'aa',
+  // assetsDir:'aa',
+  // 放置生成的静态资源 (js、css、img、fonts)的目录，资源放的目录 。 (相对于 outputDir)
+  assetsDir: "static",
+  // 指定生成的 index.html 的输出路径，也可以是一个绝对路径。index的路劲和名字 (相对于 outputDir 的)
+  indexPath: './index.html',
   css: {
     // 是否使用css分离插件 ExtractTextPlugin
     extract: {
       // 修改打包后css文件名
-      filename: `aa/css/[name].${Version}.css`,
-      chunkFilename: `aa/css/[name].${Version}.css`
+      filename: `static/css/[name].${Version}.css`,
+      chunkFilename: `static/css/[name].${Version}.css`
     }
   },
   configureWebpack: {
     output: { // 输出重构  打包编译后的 文件名称  【模块名称.版本号.时间戳】
-      filename: `aa/js/[name].${Version}.js`,
-      chunkFilename: `aa/js/[name].${Version}.js`
+      filename: `static/js/[name].${Version}.js`,
+      chunkFilename: `static/js/[name].${Version}.js`
     },
     plugins: [
       new webpack.ProvidePlugin({
@@ -33,11 +38,11 @@ module.exports = {
 	      .rule('images')
 	      .use('url-loader')
 	      .tap(options => {
-	        options.name = `aa/img/[name].${Version}.[ext]`
+	        options.name = `static/img/[name].${Version}.[ext]`
 	        options.fallback = {
 	          loader: 'file-loader',
 	          options: {
-	            name: `aa/img/[name].${Version}.[ext]`
+	            name: `static/img/[name].${Version}.[ext]`
 	          }
 	        }
 	        return options

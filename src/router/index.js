@@ -187,13 +187,16 @@ const routes = [
 // 页面刷新时，重新赋值token
 if (localStorage.getItem('token')) {
   store.dispatch("setToken",localStorage.getItem('token'));
-  }
+}
+
 const router = new VueRouter({
-  // mode: 'history',
-  // base: process.env.BASE_URL,
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
-// console.log(process.env.BASE_URL)
+
+
+console.log(process.env.BASE_URL)
 router.afterEach((to) => {
   if(to.meta.title){
     document.title = to.meta.title
