@@ -1,46 +1,57 @@
 <template>
 <div :style="`height:${viewHeight}px;`">
   <div :style="login_bgurl" class="page-box">
-    <div :class="is_sign?'right-panel-active':'' " class="container" id="container" >
-      <div class="form-container sign-up-container">
-        <form @submit.prevent="RegisterUserInfo" autocomplete="off">
-          <h1>创建一个新账号</h1>
-          <span>请使用您的手机号进行注册</span>
-          <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入单位名称"></el-input>
-          <el-input type="text" v-model="newuser.department" name="department" placeholder="请输入部门"></el-input>
-          <el-input type="text" v-model="newuser.username" name="username" placeholder="请输入用户名"></el-input>
-          <el-input type="email" v-model="newuser.email" name="email" placeholder="请输入邮箱"></el-input>
-          <el-input v-model="newuser.phone" name="phone" placeholder="请输入手机号"></el-input>
-          <el-input type="password" v-model="newuser.password" name="password" placeholder="请输入密码"></el-input>
-          <button type="submit">注册</button>
-        </form>
-      </div>
+    <div v-if="isLoginModule">
+      <div :class="is_sign?'right-panel-active':'' " class="container" id="container" >
+        <!-- 注册 -->
+        <div class="form-container sign-up-container">
+          <form @submit.prevent="RegisterUserInfo" autocomplete="off">
+            <h1>创建一个新账号</h1>
+            <span>请使用您的手机号进行注册</span>
+            <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入单位名称"></el-input>
+            <el-input type="text" v-model="newuser.department" name="department" placeholder="请输入部门"></el-input>
+            <el-input type="text" v-model="newuser.username" name="username" placeholder="请输入用户名"></el-input>
+            <el-input type="email" v-model="newuser.email" name="email" placeholder="请输入邮箱"></el-input>
+            <el-input v-model="newuser.phone" name="phone" placeholder="请输入手机号"></el-input>
+            <el-input type="password" v-model="newuser.password" name="password" placeholder="请输入密码"></el-input>
+            <button type="submit">注册</button>
+          </form>
+        </div>
+        <!-- 注册 -->
+        <!-- 登录 -->
+        <div class="form-container sign-in-container">
+          <form @submit.prevent="LoginUserInfo" autocomplete="off">
+            <h1>登录</h1>
+            <span>使用您的账号登录</span>
+            <el-input v-model="user.phone" type="tel" name="phone" placeholder="请输入手机号"></el-input>
+            <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"></el-input>
+            <div class="sign-a-div">
+              <a href="javascript:0;">如没有账号，请先注册</a>
+              <a href="javascript:0;" class="sign-a-wjmm" @click.stop="goToForgetModule">忘记密码</a>
+            </div>
+            <button type="submit">登录</button>
+          </form>
+        </div>
+        <!-- 登录 -->
 
-      <div class="form-container sign-in-container">
-        <form @submit.prevent="LoginUserInfo" autocomplete="off">
-          <h1>登录</h1>
-          <span>使用您的账号登录</span>
-          <el-input v-model="user.phone" type="tel" name="phone" placeholder="请输入手机号"></el-input>
-          <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"></el-input>
-          <a href="#">如没有账号，请先注册</a>
-          <button type="submit">登录</button>
-        </form>
-      </div>
-
-      <div class="overlay-container">
-        <div class="overlay">
-          <div class="overlay-panel overlay-left">
-            <h1>欢迎回来！</h1>
-            <p>请使用您的个人信息登录</p>
-            <button class="ghost" id="signIn"  @click="signIn()">登录</button>
-          </div>
-          <div class="overlay-panel overlay-right">
-            <h1>菁苗健康</h1>
-            <p>输入您的个人详细信息进行注册</p>
-            <button class="ghost" id="signUp" @click="signUp()">注册</button>
+        <div class="overlay-container">
+          <div class="overlay">
+            <div class="overlay-panel overlay-left">
+              <h1>欢迎回来！</h1>
+              <p>请使用您的个人信息登录</p>
+              <button class="ghost" id="signIn"  @click="signIn()">登录</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+              <h1>菁苗健康</h1>
+              <p>输入您的个人详细信息进行注册</p>
+              <button class="ghost" id="signUp" @click="signUp()">注册</button>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <div class="container">dasda</div>
     </div>
   </div>
 </div>
@@ -69,6 +80,7 @@ export default {
       is_sign: false,
       stateurl:'',
       login_bgurl:{},
+      isLoginModule: true
     }
   },
   mounted(){ // 可以当做初始化后加载，只加载一次
@@ -89,6 +101,10 @@ export default {
     },
     signUp(){
       this.is_sign = true;
+    },
+    // 点击忘记密码
+    goToForgetModule(){
+      this.isLoginModule = false
     },
     // 注册用户信息
     RegisterUserInfo(e){
@@ -302,7 +318,7 @@ export default {
     border: 1px solid #3EACFF;
     background-color: #3EACFF;
     color: #FFFFFF;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     padding: 12px 45px;
     letter-spacing: 1px;
@@ -345,8 +361,7 @@ export default {
   .container {
     background-color: #fff;
     border-radius: 10px;
-      box-shadow: 0 14px 28px rgba(0,0,0,0.25),
-        0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     position: relative;
     overflow: hidden;
     width: 768px;
@@ -479,5 +494,18 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+  }
+  .sign-a-div{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sign-a-div>a{
+    font-size: 13px;
+  }
+  .sign-a-wjmm{
+    color: #3EACFF;
+    font-weight: bold;
   }
 </style>
