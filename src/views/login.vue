@@ -51,7 +51,32 @@
       </div>
     </div>
     <div v-else>
-      <div class="container">dasda</div>
+      <div class="auth-modal-box">
+        <div class="auth-form">
+          <div class="panel">
+            <div class="reset-password-box">
+              <h1 class="title">手机重置密码</h1>
+              <div class="input-group">
+                <div class="input-box dropdown-box">
+                  <input class="input" maxlength="11" placeholder="请输入手机号码" v-model="loginPhoneOrEmail"  name="loginPhoneOrEmail" />
+                </div>
+                <div class="input-box">
+                  <input class="input" maxlength="4" placeholder="验证码" v-model="registerSmsCode" name="registerSmsCode"/>
+                  <button class="send-vcode-btn">获取验证码</button>
+                </div>
+                <div class="input-box">
+                  <input class="input" type="password" maxlength="64" placeholder="请输入新密码" v-model="loginPassword" name="loginPassword"/>
+                </div>
+              </div>
+              <button class="btn">修改</button>
+              <div class="prompt-box">
+                <span></span>
+                <span class="right clickable" @click="clickable">账密登录</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -80,7 +105,10 @@ export default {
       is_sign: false,
       stateurl:'',
       login_bgurl:{},
-      isLoginModule: true
+      isLoginModule: true,
+      loginPhoneOrEmail:'', // 重置密码模块 手机号
+      registerSmsCode:'', // 重置密码模块 验证码
+      loginPassword:'', // 重置密码模块 密码
     }
   },
   mounted(){ // 可以当做初始化后加载，只加载一次
@@ -105,6 +133,10 @@ export default {
     // 点击忘记密码
     goToForgetModule(){
       this.isLoginModule = false
+    },
+    // 点击重置密码上 账号登录
+    clickable(){
+      this.isLoginModule = true
     },
     // 注册用户信息
     RegisterUserInfo(e){
@@ -507,5 +539,97 @@ export default {
   .sign-a-wjmm{
     color: #3EACFF;
     font-weight: bold;
+  }
+  .auth-modal-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 500;
+  }
+  .auth-form {
+    position: relative;
+    padding: 20px 30px;
+    width: 370px;
+    max-width: 100%;
+    font-size: 16px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-sizing: border-box;
+  }
+  .title {
+    font-size: 28px;
+    margin: 0 0 16px;
+  }
+  .input-group {
+    margin-bottom: 10px;
+  }
+  .input-box {
+    position: relative;
+    margin-bottom: 10px;
+    display: flex;
+  }
+  .dropdown-box[data-v-14de1f73] {
+    border: 1px solid #d9d9d9;
+    display: flex;
+    border-radius: 2px;
+    justify-content: center;
+    align-items: center;
+  }
+  .input {
+    padding: 14px 10px;
+    width: 100%;
+    border: 1px solid #e9e9e9;
+    border-radius: 2px;
+    outline: none;
+    box-sizing: border-box;
+    display: block;
+    box-shadow: none;
+    transition: border .3s;
+    background-color: #fff;
+    resize: none;
+  }
+  .send-vcode-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    color: #007fff;
+    line-height: 1;
+    background-color: transparent;
+    border: none;
+    padding: 5px 10px;
+    outline: none;
+    cursor: pointer;
+    transition: background-color .3s,color .3s;
+    margin-top: 0;
+  }
+  .btn{
+    width: 100%;
+    height: 40px;
+    color: #fff;
+    background-color: #007fff;
+    border-radius: 2px;
+    outline: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin-top: 5px;
+    border: none;
+    transition: background-color .3s,color .3s;
+  }
+  .prompt-box{
+    margin: 10px 0 0;
+    color: #767676;
+  }
+  .prompt-box .right {
+    float: right;
+  }
+  .prompt-box .clickable {
+    color: #007fff;
+    cursor: pointer;
   }
 </style>
