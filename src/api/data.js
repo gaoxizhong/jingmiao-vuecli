@@ -226,6 +226,22 @@ export const getDiseases = (params) =>{
     data: params
   })
 }
+// 点击发送验证码
+export const getEmailCode = (params) =>{
+  return axios.request({
+    url:'/getEmailCode',
+    method: 'post',
+    data: params
+  })
+}
+// 点击修改按钮
+export const getRevise = (params) =>{
+  return axios.request({
+    url:'/getEmailCode',
+    method: 'post',
+    data: params
+  })
+}
 // ========================  新版接口 以下 ===========================================
 // 首页分类浏览列表
 export const getClassBrowseList = (params) =>{  

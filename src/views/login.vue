@@ -55,20 +55,20 @@
         <div class="auth-form">
           <div class="panel">
             <div class="reset-password-box">
-              <h1 class="title">手机重置密码</h1>
+              <h1 class="title">邮箱重置密码</h1>
               <div class="input-group">
                 <div class="input-box dropdown-box">
-                  <input class="input" maxlength="11" placeholder="请输入手机号码" v-model="loginPhoneOrEmail"  name="loginPhoneOrEmail" />
+                  <input class="input" type="email" placeholder="请输入邮箱" v-model="loginPhoneOrEmail"  name="loginPhoneOrEmail" />
                 </div>
                 <div class="input-box">
                   <input class="input" maxlength="4" placeholder="验证码" v-model="registerSmsCode" name="registerSmsCode"/>
-                  <button class="send-vcode-btn">获取验证码</button>
+                  <button class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="clickVcode">{{statusMsg}}</button>
                 </div>
                 <div class="input-box">
                   <input class="input" type="password" maxlength="64" placeholder="请输入新密码" v-model="loginPassword" name="loginPassword"/>
                 </div>
               </div>
-              <button class="btn">修改</button>
+              <button class="btn" @click.stop="clickRevise">修改</button>
               <div class="prompt-box">
                 <span></span>
                 <span class="right clickable" @click="clickable">账密登录</span>
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import {RegisterUserInfo,LoginUserInfo} from '@/api/data'
+import {RegisterUserInfo,LoginUserInfo,getEmailCode,getRevise} from '@/api/data'
 export default {
   data() {
     return {
@@ -106,9 +106,11 @@ export default {
       stateurl:'',
       login_bgurl:{},
       isLoginModule: true,
-      loginPhoneOrEmail:'', // 重置密码模块 手机号
+      loginPhoneOrEmail:'', // 重置密码模块 邮箱
       registerSmsCode:'', // 重置密码模块 验证码
       loginPassword:'', // 重置密码模块 密码
+      isDisable: false,
+      statusMsg:'获取验证码'
     }
   },
   mounted(){ // 可以当做初始化后加载，只加载一次
@@ -129,6 +131,99 @@ export default {
     },
     signUp(){
       this.is_sign = true;
+    },
+    // 点击获取验证码
+    clickVcode(){
+      let that = this;
+      let loginPhoneOrEmail = that.loginPhoneOrEmail; // 重置密码模块 邮箱
+      let registerSmsCode = that.registerSmsCode; // 重置密码模块 验证码
+      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+      if(loginPhoneOrEmail == ''){
+        this.$message.error({
+          message:'请输入邮箱'
+        })
+        return
+      }
+      if ( !mailReg.test(loginPhoneOrEmail) ){
+       this.$message.error({
+          message:'请输入正确的邮箱格式'
+        })
+        return
+      }
+      that.isDisable = true;
+      getEmailCode({loginPhoneOrEmail}).then(res =>{
+        if(res.data.code == 0){
+          that.$message({
+            showClose: true,
+            message: '发送成功，验证码有效期5分钟',
+            type: 'success'
+          })
+          let count = 60;
+          that.statusMsg = `${count--}秒后重新发送`;
+          let timerid = window.setInterval(function() {
+            that.statusMsg = `${count--}秒后重新发送`
+            if (Number(count)<= 0) {
+              window.clearInterval(timerid);
+              that.isDisable = false;
+              that.statusMsg = '获取验证码'
+            }
+          }, 1000)
+        }
+      }).catch(err => {
+          that.isDisable = false;
+          console.log(err.response.data.message)
+        })
+
+    },
+    // 点击修改按钮
+    clickRevise(){
+      let that = this;
+      let loginPhoneOrEmail = that.loginPhoneOrEmail; // 重置密码模块 邮箱
+      let registerSmsCode = that.registerSmsCode; // 重置密码模块 验证码
+      let loginPassword = that.loginPassword;  // 重置密码模块 密码
+      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+      if(!loginPhoneOrEmail || loginPhoneOrEmail == ''){
+        this.$message.error({
+          message:'请输入邮箱'
+        })
+        return
+      }
+      if ( !mailReg.test(loginPhoneOrEmail) ){
+       this.$message.error({
+          message:'请输入正确的邮箱格式'
+        })
+        return
+      }
+      if(!registerSmsCode || registerSmsCode == ''){
+        this.$message.error({
+          message:'请输入验证码'
+        })
+        return
+      }
+      if(!loginPassword || loginPassword == ''){
+        this.$message.error({
+          message:'请输入密码'
+        })
+        return
+      }
+      getRevise({
+        email: loginPhoneOrEmail,
+        registerSmsCode: registerSmsCode,
+        loginPassword: loginPassword
+      }).then(res =>{
+        if(res.data.code == 0){
+          that.$message({
+            showClose: true,
+            message: '重置成功！',
+            type: 'success'
+          })
+          setTimeout(function(){
+            that.isLoginModule= true;
+          },1500)
+        }
+      }).catch(e =>{
+        console.log(e)
+      })
     },
     // 点击忘记密码
     goToForgetModule(){
@@ -558,7 +653,7 @@ export default {
     max-width: 100%;
     font-size: 16px;
     background-color: #fff;
-    border-radius: 2px;
+    border-radius: 8px;
     box-sizing: border-box;
   }
   .title {
@@ -581,6 +676,7 @@ export default {
     align-items: center;
   }
   .input {
+    font-size: 16px;
     padding: 14px 10px;
     width: 100%;
     border: 1px solid #e9e9e9;
