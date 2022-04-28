@@ -27,7 +27,7 @@
                   <i class="el-icon-sort" style="color:#5578F0;"></i>
                 </a>
               </div>
-              <a href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
+              <div href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
                 <!-- 文献 -->
                 <div v-if="tag == 'Document'">
                   <div class="item-title">{{item.title}}</div>
@@ -51,17 +51,47 @@
                   <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian"  :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"  v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
                 </div>
                 <!-- 指南 -->
-                <div v-else>
-                  <div class="item-title">{{item.title}}</div>
-                  <div class="tag-top-box">
-                    <div class="zuozhe-box" style="width:auto;padding-right:8px;">数据来源:</div>
-                    <div class="tap-top-span">{{item.source?item.source:'暂无'}}</div>
+                <div class="guide_text" v-else>
+                  <div class="text_title_box">
+                    <h1 class="text_title" :title="item.title_trans">{{item.title_trans?item.title_trans:'无'}}</h1>
+                    <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
                   </div>
-                  <div class="item-center-box"><span>制定者：</span> {{item.constitutor?item.constitutor:"暂无"}}</div>
-                  <div class="item-center-box"><span>年份:</span> {{item.year}}</div>
-                  <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)" v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
+                  <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
+                    <div class="one_info clearfix">
+                      <label>发布日期：</label>
+                      <p>{{item.publish_time?item.publish_time:'无'}}</p>
+                    </div>
+                    <div class="one_info clearfix">
+                      <label>英文标题：</label>
+                      <p>{{item.title?item.title:'无'}}</p>
+                    </div>
+                    <div class="one_info clearfix">
+                      <label>制定者：</label>
+                      <p style="color:#20C3A7;">{{item.author?item.author:'无'}}</p>
+                    </div>
+                    <!-- <div class="one_info clearfix">
+                      <label>出处：</label>
+                      <p>无</p>
+                    </div> -->
+                    <div class="one_info clearfix">
+                      <label>中文摘要：</label>
+                      <div id="all_content">
+                        <p>{{item.abstract_trans?item.abstract_trans:'无'}}</p>
+                      </div>
+                    </div>
+                    <div class="one_info clearfix" style="margin-top:4px;">
+                      <label>英文摘要：</label>
+                      <div id="all_content">
+                        <p>{{item.abstract?item.abstract:'无'}}</p>
+                      </div>
+                    </div>
+                    <div class="asub-box">
+                      <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="zaixian"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
+                      <a :href="item.guide_file?item.guide_file:'javascript:0;'" class="zaixian" :target="item.guide_file?'_blank':''" @click.stop="goToyuedu($event,item.guide_file)"><i class="el-icon-reading"></i>pdf在线阅读</a>
+                    </div>
+                  </div>
                 </div>
-              </a>
+              </div>
               <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
             </div>
             <div  class="content-box1-right" v-if="tag == 'Document'">
@@ -294,16 +324,13 @@
         getLitgSearch(pearms).then( res =>{
           if(res.data.code == 0){
             let getListInfo = res.data.data.list;
-            if(that.tag == "Document"){
-              let showFull =[];
-              for (var i = 0; i < getListInfo.length; i++) {
-                let obj = {};
-                obj.leng = getListInfo[i].abstract.length;
-                obj.status = false;
-                showFull.push(obj);
-              }
-              that.showFull = showFull;
+            let showFull =[];
+            for (var i = 0; i < getListInfo.length; i++) {
+              let obj = {};
+              obj.status = false;
+              showFull.push(obj);
             }
+            that.showFull = showFull;
             that.count = res.data.data.count;
             that.getListInfo= getListInfo;
           }
@@ -495,7 +522,17 @@
       this.showFull[index].status = !this.showFull[index].status
       this.showFull= this.showFull
     },
-
+    // 点击原文链接
+    goTofullText(event,u){
+      let url = u;
+      event.stopPropagation();
+      if(!url || url == ''){
+        this.$message.error({
+          message: '暂无数据'
+        });
+        return
+      }
+    },
     // 点击在线阅读
     goToyuedu(event,u){
       let url = u;
@@ -573,9 +610,10 @@
     display: block;
     border-bottom: 1px solid #EDEDED;
     padding-bottom: 6px;
+    cursor: pointer;
   }
-  a.bg-purple-dark:hover{
-    opacity: 0.8;
+  .bg-purple-dark:hover{
+    opacity: 0.7;
   }
   .title-info-box{
     width: 100%;
@@ -721,6 +759,81 @@
     text-align: right;
     font-size: 14px;
     padding: 2px 20px;
+  }
+  .guide_text {
+    padding-top: 6px;
+    text-align: left;
+    border-bottom: 1px #e9e9e9 solid;
+    margin: 5px 0;
+  }
+  .text_title_box {
+    display: flex;
+  }
+  .text_title[data-v-31622588] {
+    flex: 1;
+    font-size: 16px;
+    font-family: "微软雅黑";
+    line-height: 30px;
+    font-weight: normal;
+    margin-bottom: 6px;
+    position: relative;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 1;
+    box-orient: vertical;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #313131;
+    font-weight: bold;
+  }
+  .text_title_a {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: #fa6400;
+  }
+  .guide_info_list.cool {
+    height: 50px;
+    overflow: hidden;
+  }
+  .clearfix {
+    display: flex;
+  }
+  .one_info {
+    margin-bottom: 2px;
+    overflow: hidden;
+  }
+  .asub-box {
+    width: 100%;
+    padding: 8px 10px;
+  }
+  .one_info label {
+    width: 98px;
+    font-size: 14px;
+    text-align: right;
+    float: left;
+    padding-right: 10px;
+  }
+  .one_info p {
+    flex: 1;
+    line-height: 20px;
+    float: left;
+    margin-top: 2px;
+    font-size: 14px;
+    color: #626262;
+  }
+  .zaixian {
+    color: #20C3A7;
+    align-items: center;
+    padding: 6px;
+    font-size: 13px;
+    margin: 4px;
+    width: 64px;
+  }
+  .zaixian .el-icon-reading {
+    margin-right: 4px;
   }
 </style>
 <style scoped>
