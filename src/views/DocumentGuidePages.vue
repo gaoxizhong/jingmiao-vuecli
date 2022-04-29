@@ -53,26 +53,26 @@
                 <!-- 指南 -->
                 <div class="guide_text" v-else>
                   <div class="text_title_box">
-                    <h1 class="text_title" :title="item.title_trans">{{item.title_trans?item.title_trans:'无'}}</h1>
+                    <h1 class="text_title" :title="item.title">{{item.title?item.title:'无'}}</h1>
                     <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
                   </div>
                   <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
                     <div class="one_info clearfix">
                       <label>发布日期：</label>
-                      <p>{{item.publish_time?item.publish_time:'无'}}</p>
+                      <p>{{item.year?item.year:'无'}}</p>
                     </div>
                     <div class="one_info clearfix">
                       <label>英文标题：</label>
-                      <p>{{item.title?item.title:'无'}}</p>
+                      <p>{{item.enTitle?item.enTitle:'无'}}</p>
+                    </div>
+                    <div class="one_info clearfix">
+                      <label>数据来源：</label>
+                      <p style="color:#20C3A7;">{{item.source?item.source:'无'}}</p>
                     </div>
                     <div class="one_info clearfix">
                       <label>制定者：</label>
-                      <p style="color:#20C3A7;">{{item.author?item.author:'无'}}</p>
+                      <p style="color:#20C3A7;">{{item.constitutor?item.constitutor:'无'}}</p>
                     </div>
-                    <!-- <div class="one_info clearfix">
-                      <label>出处：</label>
-                      <p>无</p>
-                    </div> -->
                     <div class="one_info clearfix">
                       <label>中文摘要：</label>
                       <div id="all_content">
@@ -86,8 +86,8 @@
                       </div>
                     </div>
                     <div class="asub-box">
-                      <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="zaixian"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
-                      <a :href="item.guide_file?item.guide_file:'javascript:0;'" class="zaixian" :target="item.guide_file?'_blank':''" @click.stop="goToyuedu($event,item.guide_file)"><i class="el-icon-reading"></i>pdf在线阅读</a>
+                      <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="asub-zaixian"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
+                      <a :href="item.onlineRead?item.onlineRead:'javascript:0;'" class="asub-zaixian" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"><i class="el-icon-reading"></i>pdf在线阅读</a>
                     </div>
                   </div>
                 </div>
@@ -768,8 +768,10 @@
   }
   .text_title_box {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  .text_title[data-v-31622588] {
+  .text_title {
     flex: 1;
     font-size: 16px;
     font-family: "微软雅黑";
@@ -824,7 +826,7 @@
     font-size: 14px;
     color: #626262;
   }
-  .zaixian {
+  .asub-zaixian {
     color: #20C3A7;
     align-items: center;
     padding: 6px;
@@ -832,8 +834,12 @@
     margin: 4px;
     width: 64px;
   }
-  .zaixian .el-icon-reading {
+  .asub-zaixian .el-icon-reading {
     margin-right: 4px;
+  }
+  .asub-zaixian:hover{
+    color: #fa6400;
+
   }
 </style>
 <style scoped>

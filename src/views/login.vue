@@ -227,7 +227,8 @@ export default {
     },
     // 点击忘记密码
     goToForgetModule(){
-      this.isLoginModule = false
+      return
+      this.isLoginModule = false;
     },
     // 点击重置密码上 账号登录
     clickable(){
