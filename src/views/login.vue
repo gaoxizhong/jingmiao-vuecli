@@ -151,11 +151,11 @@ export default {
         return
       }
       that.isDisable = true;
-      getEmailCode({loginPhoneOrEmail}).then(res =>{
+      getEmailCode({email:loginPhoneOrEmail}).then(res =>{
         if(res.data.code == 0){
           that.$message({
             showClose: true,
-            message: '发送成功，验证码有效期5分钟',
+            message: '发送成功，请注意邮箱查收！',
             type: 'success'
           })
           let count = 60;
@@ -168,6 +168,11 @@ export default {
               that.statusMsg = '获取验证码'
             }
           }, 1000)
+        }else{
+        this.$message.error({
+          message:'请求错误！'
+        })
+          that.isDisable = false;
         }
       }).catch(err => {
           that.isDisable = false;
@@ -208,8 +213,8 @@ export default {
       }
       getRevise({
         email: loginPhoneOrEmail,
-        registerSmsCode: registerSmsCode,
-        loginPassword: loginPassword
+        code: Number(registerSmsCode),
+        password: loginPassword
       }).then(res =>{
         if(res.data.code == 0){
           that.$message({
@@ -219,7 +224,14 @@ export default {
           })
           setTimeout(function(){
             that.isLoginModule= true;
+            that.loginPhoneOrEmail = ''; 
+            that.registerSmsCode = ''; 
+            that.loginPassword = ''; 
           },1500)
+        }else{
+          this.$message.error({
+            message: res.data.msg
+          })
         }
       }).catch(e =>{
         console.log(e)
@@ -227,7 +239,6 @@ export default {
     },
     // 点击忘记密码
     goToForgetModule(){
-      return
       this.isLoginModule = false;
     },
     // 点击重置密码上 账号登录

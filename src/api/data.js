@@ -229,7 +229,7 @@ export const getDiseases = (params) =>{
 // 点击发送验证码
 export const getEmailCode = (params) =>{
   return axios.request({
-    url:'/getEmailCode',
+    url:'/send-email',
     method: 'post',
     data: params
   })
@@ -237,7 +237,7 @@ export const getEmailCode = (params) =>{
 // 点击修改按钮
 export const getRevise = (params) =>{
   return axios.request({
-    url:'/getEmailCode',
+    url:'/forget-password',
     method: 'post',
     data: params
   })

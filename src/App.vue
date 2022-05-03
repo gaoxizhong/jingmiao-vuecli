@@ -20,6 +20,9 @@ a{
   a:hover{
     color: #026ae0;
   }
+  img, svg {
+    vertical-align: middle;
+}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

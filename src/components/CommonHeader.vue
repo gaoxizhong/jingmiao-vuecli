@@ -15,8 +15,17 @@
           </div>
 
           <div class="r-content" v-if="phone">
+            <div class="position-relative ms-2 dropdown">
+              <a href="javascript:0;">
+                <img src="../assets/image/img-user1.png" alt="" class="rounded-circle d-lg-inline-block" @click="clickUserset">
+              </a>
+            </div>
+            <div class="s-top-userset-menu c-floating-box c-font-normal" v-if="is_userset">
+              <!-- <a href="javascript:;" class="user-menu-item">帐号设置</a> -->
+              <a href="javascript:;" class="user-menu-item" @click="toLogin">退出登录</a>
+            </div>
             <!-- <span class="r-phone" v-if=" !tag_name || tag_name == '' ">{{ phone }}</span> -->
-            <div class="r-toLogin" @click="toLogin"><img src="../assets/image/tui-icon.png" alt="" /> 退出</div>
+            <!-- <div class="r-toLogin" @click="toLogin"><img src="../assets/image/tui-icon.png" alt="" /> 退出</div> -->
           </div>
         </el-col>
       </el-row>
@@ -36,6 +45,36 @@
 </template>
 
 <style scoped>
+.s-top-userset-menu {
+  /* display: none; */
+  width: auto;
+  padding: 8px 10px;
+  top: 48px;
+  position: absolute;
+  right: 10px;
+  float: right;
+  z-index: 999;
+  text-align: left;
+}
+.c-floating-box {
+  background: #fff;
+  box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
+  -webkit-box-shadow: 0 2px 10px 0 rgb(0 0 0 / 15%);
+  -moz-box-shadow: 0 2px 10px 0 rgba(0,0,0,.15);
+  -o-box-shadow: 0 2px 10px 0 rgba(0,0,0,.15);
+  border-radius: 6px;
+  *border: 1px solid #d7d9e0;
+}
+.s-top-userset-menu a {
+  display: block;
+  padding: 5px 10px;
+  color: #939393;
+  font-size: 15px;
+  border-bottom: 1px solid #f2f2f2;
+}
+.s-top-userset-menu a:hover{
+  color: #fa6400;
+}
 .l-content-title-span{
   font-size: 14px;
   padding-left: 20px;
@@ -55,6 +94,7 @@
   justify-content: center;
   color: #7B7B7B;
   font-size: 15px;
+  cursor: pointer;
 }
 .r-toLogin>img{
   width: 14px;
@@ -159,14 +199,23 @@ header{
 .navitems.navitems-active{
   background: #325296;
 }
+.position-relative {
+    position: relative!important;
+}
+.rounded-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%!important;
+}
 /* 媒体查询 */
 @media only screen and (max-width: 1366px){
-  /* .content-box{
-    width: 970px;
+  .content-box{
+    padding: 0 30px;
   }
-  .navitems-box{
+  /*.navitems-box{
     width: 970px;
   } */
+  
   .l-content-title{
     font-size: 24px;
   }
@@ -203,6 +252,7 @@ export default {
       headerInput:'',
       contentItems:[],
       nav_id: '',
+      is_userset: false
     }
   },
   created(){
@@ -254,9 +304,12 @@ export default {
       this.$router.push({name: 'Login'});
     },
 
-
-
-
+    clickUserset(){
+      this.is_userset = true;
+    },
+    mouseLeave(){
+      this.is_userset = false;
+    },
 
     clickItem_2(i,n,p,t){
       let id = i;
