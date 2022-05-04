@@ -305,12 +305,8 @@ export default {
     },
 
     clickUserset(){
-      this.is_userset = true;
+      this.is_userset = !this.is_userset;
     },
-    mouseLeave(){
-      this.is_userset = false;
-    },
-
     clickItem_2(i,n,p,t){
       let id = i;
       let name = n;

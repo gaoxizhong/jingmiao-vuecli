@@ -86,8 +86,8 @@
                       </div>
                     </div>
                     <div class="asub-box">
-                      <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="asub-zaixian"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
-                      <a :href="item.onlineRead?item.onlineRead:'javascript:0;'" class="asub-zaixian" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"><i class="el-icon-reading"></i>pdf在线阅读</a>
+                      <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" :class="item.full_text_url?'asub-zaixian':'no-zaixian'"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
+                      <a :href="item.onlineRead?item.onlineRead:'javascript:0;'" :class="item.onlineRead?'asub-zaixian':'no-zaixian'" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"><i class="el-icon-reading"></i>pdf在线阅读</a>
                     </div>
                   </div>
                 </div>
@@ -527,9 +527,9 @@
       let url = u;
       event.stopPropagation();
       if(!url || url == ''){
-        this.$message.error({
-          message: '暂无数据'
-        });
+        // this.$message.error({
+        //   message: '暂无数据'
+        // });
         return
       }
     },
@@ -538,9 +538,9 @@
       let url = u;
       event.stopPropagation();
       if(!url || url == ''){
-        this.$message.error({
-          message: '暂无数据'
-        });
+        // this.$message.error({
+        //   message: '暂无数据'
+        // });
         return
       }
     },
@@ -812,7 +812,7 @@
     padding: 8px 10px;
   }
   .one_info label {
-    width: 98px;
+    width: auto;
     font-size: 14px;
     text-align: right;
     float: left;
@@ -825,6 +825,9 @@
     margin-top: 2px;
     font-size: 14px;
     color: #626262;
+  }
+  .one_info #all_content{
+    flex: 1;
   }
   .asub-zaixian {
     color: #20C3A7;
@@ -839,7 +842,15 @@
   }
   .asub-zaixian:hover{
     color: #fa6400;
-
+  }
+  .no-zaixian{
+    color: #777777;
+    align-items: center;
+    padding: 6px;
+    font-size: 13px;
+    margin: 4px;
+    width: 64px;
+    cursor: not-allowed;
   }
 </style>
 <style scoped>

@@ -104,8 +104,8 @@
                         </div>
                       </div>
                       <div class="asub-box">
-                        <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="zaixian"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
-                        <a :href="item.guide_file?item.guide_file:'javascript:0;'" class="zaixian" :target="item.guide_file?'_blank':''" @click.stop="goToyuedu($event,item.guide_file)"><i class="el-icon-reading"></i>pdf在线阅读</a>
+                        <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" :class="item.full_text_url?'zaixian':'no-zaixian'"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
+                        <a :href="item.guide_file?item.guide_file:'javascript:0;'" :class="item.guide_file?'zaixian':'no-zaixian'" :target="item.guide_file?'_blank':''" @click.stop="goToyuedu($event,item.guide_file)"><i class="el-icon-reading"></i>pdf在线阅读</a>
                       </div>
                     </div>
                   </div>
@@ -463,9 +463,9 @@
         let url = u;
         event.stopPropagation();
         if(!url || url == ''){
-          this.$message.error({
-            message: '暂无数据'
-          });
+          // this.$message.error({
+          //   message: '暂无数据'
+          // });
           return
         }
       },
@@ -474,9 +474,9 @@
         let url = u;
         event.stopPropagation();
         if(!url || url == ''){
-          this.$message.error({
-            message: '暂无数据'
-          });
+          // this.$message.error({
+          //   message: '暂无数据'
+          // });
           return
         }
       },
@@ -788,6 +788,15 @@
   }
   .zaixian:hover{
     color: rgb(250, 100, 0);
+  }
+    .no-zaixian{
+    color: #777777;
+    align-items: center;
+    padding: 6px;
+    font-size: 13px;
+    margin: 4px;
+    width: 64px;
+    cursor: not-allowed;
   }
   .guide_info_list.cool{
     height: 50px;
