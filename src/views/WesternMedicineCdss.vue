@@ -41,7 +41,7 @@
         </div>
         <!-- 左侧上部结束 -->
 
-        <!-- 左侧结束问诊下部模块 -->
+        <!-- 左侧主体模块开始 -->
         <div class="leftcontent-bottom-box">
           <div class="leftnav-box"></div>
           <div class="info-list-box">
@@ -330,7 +330,7 @@
             <!-- 左侧主诉、个人史、现病史、其他史列表选项结束 -->
           </div>
         </div>
-        <!-- 左侧结束问诊下部模块结束 -->
+        <!-- 左侧主体模块结束 -->
         <!-- 左侧底部 -->
         <div class="src-components-Operation-1pym1">
           <div class="srcdiv-box">
@@ -1124,6 +1124,8 @@ li {
       if(id == 7 || id == 9){
         getIcd({name}).then(res =>{
           if(id == 7){
+            // ========================================================================
+            that.click_ysbl(name, -1);
             diagnosisList.forEach(el =>{
               if(el.id == 8){
                 el.input = res.data.data.length > 0 ? (res.data.data[0].icd?res.data.data[0].icd: el.input): el.input

@@ -19,6 +19,10 @@ import departmentDisasePages from '../views/departmentDisasePages.vue'  //  科�
 import DocumentGuidePages from '../views/DocumentGuidePages.vue'  //  指南文献页面
 import litgDetails from '../views/litgDetails.vue'  //  文献详情页面
 import authorDetails from '../views/authorDetails.vue'  //  文献作者详情页面
+import CaseLibrary from '../views/CaseLibrary.vue'  //  病例库列表页面
+import ImagesList from '../views/ImagesList.vue'  //  图像库列表页面
+import ImagesListDetails from '../views/ImagesListDetails.vue'  //  图像库详情页面
+
 // ================================新版本 以上=========================================
 
 
@@ -179,6 +183,21 @@ const routes = [
     name : 'authorDetails',
     component: authorDetails,
   },
+  {
+    path: '/ImagesList',
+    name : 'ImagesList',
+    component: ImagesList,
+  },
+  {
+    path: '/ImagesListDetails',
+    name : 'ImagesListDetails',
+    component: ImagesListDetails,
+  },
+  {
+    path: '/CaseLibrary',
+    name : 'CaseLibrary',
+    component: CaseLibrary,
+  },
   
   // ===================  新版本添加 以上  ==============================
 
@@ -190,8 +209,8 @@ if (localStorage.getItem('token')) {
 }
 
 const router = new VueRouter({
-  // mode: 'history',
-  // base: process.env.BASE_URL,
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
 

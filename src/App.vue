@@ -11,6 +11,15 @@
   font-family:Source Han Serif CN;
   box-sizing: border-box;
 }
+h6 {
+  font-size: 16px;
+  line-height: 25px;
+  font-family: 'Lora', serif;
+  font-weight: 400;
+  margin-bottom: 10px;
+  color: #222222;
+  margin-top: 0px;
+}
 a{
   text-decoration: none;
 }

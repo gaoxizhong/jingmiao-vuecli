@@ -263,6 +263,9 @@ export default {
         {id:4,name:'指南',path:'/DocumentGuidePages',tag_pages:'Guide'},
         {id:5,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},
         {id:6,name:'智能问答',path:'/QAhome',tag_pages:'znwd'},
+        {id:7,name:'疾病图像库',path:'/ImagesList',tag_pages:'jbtxk'},
+        {id:8,name:'疾病病例库',path:'/CaseLibrary',tag_pages:'jbblk'},
+        
       ];
       this.nav_id = Number(this.id);
       this.contentItems = headerNavItems;

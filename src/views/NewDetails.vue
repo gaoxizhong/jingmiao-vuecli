@@ -58,17 +58,6 @@
               <!-- 指南数据展示开始 -->
               <div class="infoDetail-centent-box" style="padding:10px 20px;" v-if="data_type == 'many' ">
                 <div class="results_cont">
-                  <!-- <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" class="results_block" v-for="(item,index) in guide_list" :key="index">
-                    <div class="results_tit">
-                      <div class="results_name">{{item.title}}</div>
-                      <div class="clear"></div>
-                    </div>
-                    <div class="results_infor">{{item.author}}</div>
-                    <div class="results_instr">
-                      <div class="results_time">{{item.publish_time}}</div>
-                      <div class="clear"></div>
-                    </div>
-                  </a> -->
                   <div class="guide_text" v-for="(item,index) in guide_list" :key="index">
                     <div class="text_title_box">
                       <h1 class="text_title" :title="item.title_trans">{{item.title_trans?item.title_trans:'无'}}</h1>
@@ -112,6 +101,28 @@
                 </div>
               </div>
               <!-- 指南数据展示结束 -->
+
+              <!-- CT影像图展示开始 -->
+              <div class="infoDetail-centent-box content-box1"  v-if="data_type == 'image' ">
+                <div class="listItems-div" v-if="infoDetail_image">
+                  <a href="javascript:0;" title="" class="listItems-n-div" @click="goToDetails(img_name)">
+                    <img :src="infoDetail_image" alt="" class="lower-img"/>
+                    <div class="lower-content">
+                      <!-- <div class="title">
+                        <h6>水电费楼上的</h6>
+                      </div> -->
+                      <!-- <div class="sj-sx-box">
+                        <span>{{item.attribute?item.attribute:''}}</span>
+                        <span style="font-size:12px;color:#8b8989;">{{item.publish_time?item.publish_time:'暂无发布时间'}}</span>
+                      </div> -->
+                    </div>
+                  </a>
+                </div>
+                <div style="text-align:left;white-space:pre-line;font-size:15px;" v-else>暂无数据...</div>
+              </div>
+              <!--CT影像图展示结束 -->
+
+
 
               <!-- 参考文献详情开始 -->
               <!-- <references></references> -->
@@ -204,6 +215,8 @@
         data_type:'',  // 数据格式
         infoDetail_text:'',  // 字符串数据
         guide_list: [],  // 指南数组数据
+        infoDetail_image:'', // 图像数据
+        img_name:'',// 图像数据名称
         is_casePop:false,
         data: { //  图谱数据
           nodes: [],
@@ -256,7 +269,24 @@
         })
       },
 
-
+      goToDetails(_name){
+        let that = this;
+        let name = _name;
+        let tag = that.tag;
+        let tag_pages = that.tag_pages;
+        let id = that.id;
+        // 新页面打开
+        let newUrl = this.$router.resolve({
+          path: '/ImagesListDetails',
+          query:{
+            name,
+            tag,
+            tag_pages,
+            id,
+          }
+        });
+        window.open(newUrl.href, "_blank");
+      },
       // 属性模块初始化
       _initScroll() {
         if (!this.scroll) {
@@ -351,6 +381,10 @@
             that.data_type = data_type;
             if(data_type == 'single'){
               that.infoDetail_text = res.data.data.value; // 字符串状态数据
+            }
+            if(data_type == 'image'){
+              that.infoDetail_image = res.data.data.value; // 图像状态数据
+              that.img_name = res.data.data.img_name;
             }
             if(data_type == 'many'){
               let guide_list = res.data.data.value;  // 指南数组数据
@@ -635,7 +669,50 @@
     padding-top: 10px;
   }
 
-
+  .content-box1{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .content-box1>div.listItems-div{
+    width: 25%;
+    padding: 5px;
+  }
+  .listItems-n-div{
+    width: 100%;
+    height: auto;
+    border: 1px solid #d4d4d4;
+    display: inline-block;
+    padding: 5px;
+  }
+  a.listItems-n-div:hover{
+    color: #333;
+  }
+    .lower-img{
+    width: 100%;
+    height: 200px;
+  }
+  .lower-content{
+    padding: 4px 0px 0px 0px;
+  }
+  .lower-content h6{
+    font-size: 14px;
+    text-align: left;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 2;
+    box-orient: vertical;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .sj-sx-box{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
 // ========================  图谱弹窗 ===========================
 
   .casePop-mask{

@@ -291,6 +291,31 @@ export const getExistLabels = (params) =>{
     data: params
   })
 }
+// 图像库列表接口
+export const getImagesList = (params) =>{  
+  return axios.request({
+    url:'/images',
+    method: 'post',
+    data: params
+  })
+}
+// 图像库列表接口
+export const getImagesListDetails = (params) =>{  
+  return axios.request({
+    url:'/image-detail',
+    method: 'post',
+    data: params
+  })
+}
+// 疾病病例库列表接口
+export const getCaseReports = (params) =>{  
+  return axios.request({
+    url:'/case-reports',
+    method: 'post',
+    data: params
+  })
+}
+
 
 
 
