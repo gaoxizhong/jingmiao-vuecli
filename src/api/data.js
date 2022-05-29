@@ -307,6 +307,13 @@ export const getImagesListDetails = (params) =>{
     data: params
   })
 }
+export const getImagesLabels = (params) =>{  
+  return axios.request({
+    url:'/image-type',
+    method: 'post',
+    data: params
+  })
+}
 // 疾病病例库列表接口
 export const getCaseReports = (params) =>{  
   return axios.request({

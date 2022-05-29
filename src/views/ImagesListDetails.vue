@@ -15,20 +15,8 @@
             </div>
             <div class="guide_info_list">
               <div class="one_info clearfix">
-                <label>发布日期：</label>
-                <p>{{infoDetail.year?infoDetail.year:'无'}}</p>
-              </div>
-              <div class="one_info clearfix">
                 <label>英文标题：</label>
                 <p>{{infoDetail.enTitle?infoDetail.enTitle:'无'}}</p>
-              </div>
-              <div class="one_info clearfix">
-                <label>数据来源：</label>
-                <p style="color:#20C3A7;">{{infoDetail.source?infoDetail.source:'无'}}</p>
-              </div>
-              <div class="one_info clearfix">
-                <label>制定者：</label>
-                <p style="color:#20C3A7;">{{infoDetail.constitutor?infoDetail.constitutor:'无'}}</p>
               </div>
               <div class="one_info clearfix">
                 <label>中文摘要：</label>
@@ -41,6 +29,18 @@
                 <div id="all_content">
                   <p v-html="infoDetail.abstract?infoDetail.abstract:'无'"></p>
                 </div>
+              </div>
+              <div class="one_info clearfix">
+                <label>数据来源：</label>
+                <p>{{infoDetail.source?infoDetail.source:'无'}}</p>
+              </div>
+              <div class="one_info clearfix">
+                <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者：</label>
+                <p>{{infoDetail.constitutor?infoDetail.constitutor:'无'}}</p>
+              </div>
+              <div class="one_info clearfix">
+                <label>发布日期：</label>
+                <p>{{infoDetail.year?infoDetail.year:'无'}}</p>
               </div>
               <div class="asub-box">
                 <a :href="infoDetail.full_text_url?infoDetail.full_text_url:'javascript:0;'" :target="infoDetail.full_text_url?'_blank':''" :class="infoDetail.full_text_url?'asub-zaixian':'no-zaixian'"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
@@ -116,6 +116,7 @@
   .one_info label {
     width: auto;
     font-size: 14px;
+    font-weight: bold;
     text-align: right;
     float: left;
     padding-right: 10px;

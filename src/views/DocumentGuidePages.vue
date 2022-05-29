@@ -10,15 +10,15 @@
     <el-main :style="main_bg">
       <div class="pagecontent-box">
         <div class="inside-content-box" id="inside-content-box">
-          <el-row>
-            <el-col :span="12" :offset="5">
-              <div class="el-input-box el-col">
-                <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-                  <el-button slot="append" icon="el-icon-search" @click="getInputBtn()" style=" padding: 12px 30px;"></el-button>
-                </el-input>
-              </div>
-            </el-col>
-          </el-row>
+        <!-- 搜索框模块开始 -->
+          <div class="classinput-box">
+            <div class="header-input-box">
+              <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+                <el-button slot="append" @click="getInputBtn">搜索</el-button>
+              </el-input>
+            </div>
+          </div>
+         <!-- 搜索框模块结束 -->
           <div class="content-box1">
             <div class="content-box1-left">
               <div class="title-info-box">
@@ -563,6 +563,53 @@
   }
 </script>
 <style scoped>
+
+  /* =================================  搜索框部分  =================================== */
+  .classinput-box{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .classinput-box /deep/.el-input-group--append .el-input__inner{
+    flex: 1;
+    border: 1px solid #fa6502;
+  }
+  .header-input-box{
+    width:700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .header-input-box .input-with-select{
+    display: flex;
+    align-items: center;
+    flex: 1;
+    height: 35px;
+    border-radius: 0px;
+  }
+  .header-input-box .input-with-select:focus{
+    outline:none;
+    border: 1px solid#fa6502;
+  }
+   .header-input-box /deep/.el-input-group__append{
+    width: auto;
+  }
+  .header-input-box .el-button{ 
+    background: #fa6502;
+    color: #fff;
+    border: 1px solid #fa6502;
+    border-radius: 0;
+    padding: 12px 36px;
+  }
+  .header-input-box-i{
+    flex: 1;
+    display: flex;
+  }
+  /* =================================  搜索框部分  =================================== */
   .pagecontent-box{
     height: auto;
     background: #FFFFFF;

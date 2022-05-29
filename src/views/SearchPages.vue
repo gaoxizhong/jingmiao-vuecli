@@ -69,7 +69,6 @@ export default {
       is_view: true,
       main_bg:{},
       tag_pages:'',
-      input_name:'',
       is_search:0,
       input_name:'',
       options:[],
@@ -219,7 +218,7 @@ export default {
         this.getExistLabels();
       }
     },
-    // 获取分类项 及请求
+    // 获取搜索框下分类项
     getExistLabels(){
       let that = this;
       let tag_pages = that.tag_pages;
@@ -284,7 +283,7 @@ export default {
     min-height: 500px;
     background: #FFFFFF;
     border-radius: 13px;
-    border: 1px solid #20C3A7;
+    border: 1px solid #fa6502;
     margin: 10px 0;
     overflow: hidden;
   }
@@ -310,7 +309,7 @@ export default {
   }
   .input-button-box{
     padding: 8px 24px;
-    background: #00C792;
+    background: #fa6502;
     color: #fff;
     white-space: nowrap;
     cursor: pointer;
@@ -329,19 +328,19 @@ export default {
   }
   .header-input-box .input-with-select:focus{
     outline:none;
-    border: 1px solid#20C3A7;
+    border: 1px solid#fa6502;
   }
   .classinput-box /deep/.el-input-group--append .el-input__inner{
     flex: 1;
-    border: 1px solid #20C3A7;
+    border: 1px solid #fa6502;
   }
   .header-input-box /deep/.el-input-group__append{
     width: auto;
   }
   .header-input-box .el-button{ 
-    background: #00C792;
+    background: #fa6502;
     color: #fff;
-    border: 1px solid #00C792;
+    border: 1px solid #fa6502;
     border-radius: 0;
     padding: 12px 36px;
   }

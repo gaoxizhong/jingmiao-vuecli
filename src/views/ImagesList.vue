@@ -9,15 +9,21 @@
     <el-main :style="main_bg">
       <div class="pagecontent-box">
         <div class="inside-content-box" id="inside-content-box">
-          <el-row>
-            <el-col :span="12" :offset="5">
-              <div class="el-input-box el-col">
-                <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-                  <el-button slot="append" icon="el-icon-search" @click="getInputBtn()" @keyup.enter.native="getInp(event)" style=" padding: 12px 30px;"></el-button>
-                </el-input>
-              </div>
-            </el-col>
-          </el-row>
+          <!-- 搜索框模块开始 -->
+         <div class="classinput-box">
+           <div class="header-input-box">
+            <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+              <el-button slot="append" @click="getImagesLabels">搜索</el-button>
+            </el-input>
+           </div>
+           <div class="classinfo-box">
+              <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname('',100)">全部</a>
+              <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" @click="clickTagname(item.key,index)">{{item.value}}</a>
+           </div>
+          </div>
+         <!-- 搜索框模块结束 -->
+
+
           <div class="content-box1">
             
             <div class="listItems-div" v-for="(item,index) in getListInfo" :key="index">
@@ -43,14 +49,20 @@
           </div>
           <!-- 分页展示 -->
           <div class="pagination-box">
-            <el-pagination
+            <!-- <el-pagination
             background
             @current-change="handleCurrentChange"
             layout=" prev, pager, next"
             :total="count"
             :page-size="pageSize"
             :current-page='current_page'>
-            </el-pagination>
+            </el-pagination> -->
+            <div class="el-pagination is-background">
+              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
+              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
+              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
+              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
+            </div>
           </div>
         </div>
       </div>
@@ -75,7 +87,7 @@
 <script>
   import CommonHeader from "../components/CommonHeader";
   import CommonFooter from "../components/CommonFooter";
-  import { getImagesList } from "@/api/data"
+  import { getImagesList,getImagesLabels } from "@/api/data"
   export default {
     name: 'ImagesList',
     components: {
@@ -92,14 +104,18 @@
         search:'',
         getListInfo:[],
         current_page:1,
-        pageSize: 10,
+        total_page:0, // 总页数
+        pageSize: 12,
         active: true,
         count:0,
         tag: '',
         is_show:false,
         showFull: [],
         checkedImg:'', // 选中的图片，查看大图
-        show_checkedImg:false
+        show_checkedImg:false,
+        options:[],
+        cur_tab:100,
+        labelsType:'', // 选中的类型
       }
     },
     mounted(){
@@ -114,10 +130,18 @@
       this.id = Number(this.$route.query.id);
       document.title = '疾病图像库';
       // 获取列表
-      this.getHomeRightList();
+      // this.getHomeRightList();
+      // 获取分类项
+      this.getImagesLabels();
     },
 
     methods: {
+      clickTagname(t,i){
+        this.labelsType = t;
+        this.cur_tab = i;
+        this.current_page = 1;
+        this.getHomeRightList();
+      },
       // 点击查看大图图标
       clickZoom(img){
         this.checkedImg = img;
@@ -150,7 +174,7 @@
       // 点击分页功能
       handleCurrentChange(val) {
         let that = this;
-        that.current_page = val;
+        that.current_page = Number(val);
         console.log(that.current_page)
         that.getHomeRightList();
       },
@@ -158,26 +182,14 @@
       searchEnterFun(e){
         var keyCode = window.event?e.keyCode:e.which;
         if(keyCode == 13){
-          this.getInputBtn();
+          this.getImagesLabels();
         }
-      },
-      getInp(e){
-        console.log(111)
-      },
-      // 点击搜索
-      getInputBtn(){
-        let that = this;
-        that.hot_name = that.search;
-        that.title = that.search;
-        that.current_page = 1;
-        that.getHomeRightList();
       },
       // 获取列表
       getHomeRightList(){
         let that = this;
-        // let search = that.search;
-
         let pearms = {
+            type: that.labelsType,
             search: that.search,
             pn: that.current_page,
           }
@@ -193,6 +205,7 @@
             }
             that.showFull = showFull;
             that.count = res.data.data.total;
+            that.total_page = res.data.data.total_page;
             that.getListInfo= getListInfo;
           }
         }).catch(e =>{
@@ -200,25 +213,127 @@
         })
       },
 
-    //打开全文
-    openFulltxt(idx) {
-      let index = idx;
-      this.showFull[index].status = !this.showFull[index].status
-      this.showFull= this.showFull
-    },
+      //打开全文
+      openFulltxt(idx) {
+        let index = idx;
+        this.showFull[index].status = !this.showFull[index].status
+        this.showFull= this.showFull
+      },
 
-    setsickNess(){
-      this.is_show = false;
-      // 在组件移除后，重新渲染组件
-      // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
-      this.$nextTick(() => {
-        this.is_show = true
-      })
-    },
+      setsickNess(){
+        this.is_show = false;
+        // 在组件移除后，重新渲染组件
+        // this.$nextTick可实现在DOM 状态更新后，执行传入的方法。
+        this.$nextTick(() => {
+          this.is_show = true
+        })
+      },
+      // 获取搜索框下分类项
+      getImagesLabels(){
+        let that = this;
+        that.hot_name = that.search;
+        that.title = that.search;
+        that.current_page = 1;
+        let pearms = {
+
+        }
+        getImagesLabels(pearms).then((res) => {
+          if (res.data.code == 0) {
+            let options = res.data.data;
+            that.options = options;  // 所有分类项
+            if(options.length <= 0){
+              that.$message.error({
+                message: '暂无数据！'
+              })
+            }
+            that.getHomeRightList();
+
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      },
     },
   }
 </script>
 <style scoped>
+  .el-pagination>button{
+    padding: 0 20px !important;
+  }
+  .classinput-box{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  /* =================================  搜索框部分  =================================== */
+  .classinput-box /deep/.el-input-group--append .el-input__inner{
+    flex: 1;
+    border: 1px solid #fa6502;
+  }
+  .header-input-box{
+    width:700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .header-input-box .input-with-select{
+    display: flex;
+    align-items: center;
+    flex: 1;
+    height: 35px;
+    border-radius: 0px;
+  }
+  .header-input-box .input-with-select:focus{
+    outline:none;
+    border: 1px solid#fa6502;
+  }
+   .header-input-box /deep/.el-input-group__append{
+    width: auto;
+  }
+  .header-input-box .el-button{ 
+    background: #fa6502;
+    color: #fff;
+    border: 1px solid #fa6502;
+    border-radius: 0;
+    padding: 12px 36px;
+  }
+  .header-input-box-i{
+    flex: 1;
+    display: flex;
+  }
+  .classinfo-box{
+    width: auto;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+  }
+  .classinfo-box>a{
+    margin: 0 6px;
+    font-size: 15px;
+  }
+  .classinfo-box>a:hover{
+    color: #00C792;
+  }
+  .classinfo-box>a.cur-tab{
+    color: #00C792;
+  }
+  .classinfo-box>a.cur-tab:after {
+    content: '';
+    width: auto;
+    min-width: 44px;
+    height: 2px;
+    background: #00C792;
+    border-radius: 1px;
+    display: block;
+    margin-top: 1px;
+  }
+  /* =================================  搜索框部分  =================================== */
+
   .viewer-button>i{
     height: 20px;
     width: 20px;
