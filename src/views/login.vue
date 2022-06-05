@@ -404,8 +404,8 @@ export default {
       let tag_pages = headerNavItems[0].tag_pages;
       let id = headerNavItems[0].id;
       if(path == '/WesternMedicineCdss' || path == '/QAhome'){
-         that.$router.replace({  //核心语句
-            path,   //跳转的路径
+         that.$router.replace({ 
+            path,  
             query:{}
           })
       }else{

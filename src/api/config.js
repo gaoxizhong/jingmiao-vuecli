@@ -2,9 +2,9 @@ export default {
     title:'admin',
     baseURL: {
         // 开发
-        dev: 'https://zskweb.jiankangche.cn/jmjk/',
+        dev: 'https://jm.jiankangche.cn/jmjk/',
         // 生产
-        pro: 'https://zskweb.jiankangche.cn/jmjk/',
+        pro: 'https://jm.jiankangche.cn/jmjk/',
         // webServices开发环境
         webServicesUrl:'/api',
         // webServices生产环境
