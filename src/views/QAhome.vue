@@ -140,7 +140,6 @@ export default {
     onSendClcik(){
       let that = this;
       let input_textarea = that.input_textarea;
-
       if(input_textarea == ''){
         return
       }
@@ -163,7 +162,7 @@ export default {
           // 选中ref
           that.$refs.msg_end.scrollIntoView({
             behavior: "smooth",  // 平滑过渡
-            block:    "start"  // 上边框与视窗顶部平齐。默认值
+            block:    "end"  // 上边框与视窗顶部平齐。默认值
           });
 
         }

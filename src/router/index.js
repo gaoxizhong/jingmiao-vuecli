@@ -22,9 +22,11 @@ import authorDetails from '../views/authorDetails.vue'  //  文献作者详情�
 import CaseLibrary from '../views/CaseLibrary.vue'  //  病例库列表页面
 import ImagesList from '../views/ImagesList.vue'  //  图像库列表页面
 import ImagesListDetails from '../views/ImagesListDetails.vue'  //  图像库详情页面
-
 // ================================新版本 以上=========================================
 
+// ===============================  H5 页面 ============================================
+import intelGuide from '../views/h5pages/intelGuide.vue' // h5 智能导诊页面
+import department from '../views/h5pages/department.vue' // h5 智能导诊页面
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location, onResolve, onReject) {
@@ -198,7 +200,16 @@ const routes = [
     name : 'CaseLibrary',
     component: CaseLibrary,
   },
-  
+  {
+    path: '/intelGuide',
+    name : 'intelGuide',
+    component: intelGuide,
+  },
+  {
+    path: '/department',
+    name : 'department',
+    component: department,
+  },
   // ===================  新版本添加 以上  ==============================
 
 ]

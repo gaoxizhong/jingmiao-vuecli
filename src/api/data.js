@@ -323,6 +323,37 @@ export const getCaseReports = (params) =>{
   })
 }
 
+// =================  h5页面方法 ==================
+export const getConfig = (params) =>{  
+  return axios.request({
+    url:'/getConfig',
+    method: 'post',
+    data: params
+  })
+}
+export const getSymptom = (params) =>{  
+  return axios.request({
+    url:'/getSymptom',
+    method: 'post',
+    data: params
+  })
+}
+export const getGuidance = (params) =>{  
+  return axios.request({
+    url:'/getGuidance',
+    method: 'post',
+    data: params
+  })
+}
+
+export const evaluate = (params) =>{  
+  return axios.request({
+    url:'/evaluate',
+    method: 'post',
+    data: params
+  })
+}
+// =================  h5页面方法 ==================
 
 
 

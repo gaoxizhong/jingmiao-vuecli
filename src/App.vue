@@ -23,14 +23,17 @@ h6 {
 a{
   text-decoration: none;
 }
-  a{
-    color: #333;
-  }
-  a:hover{
-    color: #026ae0;
-  }
-  img, svg {
-    vertical-align: middle;
+a{
+  color: #333;
+}
+a:hover{
+  color: #026ae0;
+}
+img, svg {
+  vertical-align: middle;
+}
+button{
+  outline:none;
 }
 #app {
   -webkit-font-smoothing: antialiased;
