@@ -322,6 +322,14 @@ export const getCaseReports = (params) =>{
     data: params
   })
 }
+// 获取指南脑图文案结构列表
+export const getStructureList = (params) =>{  
+  return axios.request({
+    url:'/guide-structure',
+    method: 'post',
+    data: params
+  })
+}
 
 // =================  h5页面方法 ==================
 export const getConfig = (params) =>{  

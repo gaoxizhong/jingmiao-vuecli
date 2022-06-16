@@ -22,6 +22,8 @@ import authorDetails from '../views/authorDetails.vue'  //  文献作者详情�
 import CaseLibrary from '../views/CaseLibrary.vue'  //  病例库列表页面
 import ImagesList from '../views/ImagesList.vue'  //  图像库列表页面
 import ImagesListDetails from '../views/ImagesListDetails.vue'  //  图像库详情页面
+import structureCopy from '../views/structureCopy.vue'  //  指南脑图结构文案页面
+
 // ================================新版本 以上=========================================
 
 // ===============================  H5 页面 ============================================
@@ -209,6 +211,11 @@ const routes = [
     path: '/department',
     name : 'department',
     component: department,
+  },
+  {
+    path: '/structureCopy',
+    name : 'structureCopy',
+    component: structureCopy,
   },
   // ===================  新版本添加 以上  ==============================
 

@@ -198,18 +198,34 @@ export default {
       let tag = t;
       let name = n;
       let tag_pages = this.tag_pages;
-      let id = this.id
-      // 新页面打开
-      let newUrl = this.$router.resolve({
-        path: '/NewDetails',
-        query:{
-          name,
-          tag_pages,
-          tag,
-          id
-        }
-      });
-      window.open(newUrl.href, "_blank");
+      let id = this.id;
+      console.log(tag)
+      if(tag == 'GuideStructure'){
+        // 新页面打开
+        let newUrl = this.$router.resolve({
+          path: '/structureCopy',
+          query:{
+            name,
+            tag_pages,
+            tag,
+            id
+          }
+        });
+        window.open(newUrl.href, "_blank");
+      }else{
+        // 新页面打开
+        let newUrl = this.$router.resolve({
+          path: '/NewDetails',
+          query:{
+            name,
+            tag_pages,
+            tag,
+            id
+          }
+        });
+        window.open(newUrl.href, "_blank");
+      }
+
     },
     // 回车键点击
     searchEnterFun(e){
@@ -295,7 +311,7 @@ export default {
     padding: 12px 20px;
   }
   .classinput-box{
-    width: 700px;
+    width: 1200px;
     margin: 0 auto;
   }
   .header-input-box{
@@ -322,7 +338,8 @@ export default {
   .header-input-box .input-with-select{
     display: flex;
     align-items: center;
-    flex: 1;
+    // flex: 1;
+    width: 700px;
     height: 35px;
     border-radius: 0px;
   }
@@ -353,6 +370,7 @@ export default {
     padding: 10px 0;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
   .classinfo-box>a{
     margin: 0 6px;
