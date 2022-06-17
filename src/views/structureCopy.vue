@@ -302,18 +302,6 @@
     opacity: 0.7;
   }
 
-  .zaixian{
-    padding: 9px;
-    color: #5578F0;
-    border: 1px solid #5578F0;
-    font-size: 14px;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100px;
-    align-items: center;
-  }
   .el-icon-reading{
       margin-right: 6px;
   }
@@ -385,12 +373,6 @@
 </style>
 <style scoped>
   @media only screen and (max-width: 1390px){
-    .zaixian {
-      padding: 6px;
-      font-size: 12px;
-      margin: 6px 0;
-      width: 78px;
-    }
     .el-icon-reading {
       margin-right: 0px;
     }

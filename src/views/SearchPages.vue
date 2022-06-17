@@ -212,6 +212,18 @@ export default {
           }
         });
         window.open(newUrl.href, "_blank");
+      }else if(tag == 'DrugTarget'){
+        // 新页面打开
+        let newUrl = this.$router.resolve({
+          path: '/drugTarget',
+          query:{
+            name,
+            tag_pages,
+            tag,
+            id
+          }
+        });
+        window.open(newUrl.href, "_blank");
       }else{
         // 新页面打开
         let newUrl = this.$router.resolve({

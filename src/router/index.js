@@ -23,6 +23,7 @@ import CaseLibrary from '../views/CaseLibrary.vue'  //  病例库列表页面
 import ImagesList from '../views/ImagesList.vue'  //  图像库列表页面
 import ImagesListDetails from '../views/ImagesListDetails.vue'  //  图像库详情页面
 import structureCopy from '../views/structureCopy.vue'  //  指南脑图结构文案页面
+import drugTarget from '../views/drugTarget.vue'  //  药物靶点页面
 
 // ================================新版本 以上=========================================
 
@@ -217,6 +218,12 @@ const routes = [
     name : 'structureCopy',
     component: structureCopy,
   },
+  {
+    path: '/drugTarget',
+    name : 'drugTarget',
+    component: drugTarget,
+  },
+  
   // ===================  新版本添加 以上  ==============================
 
 ]

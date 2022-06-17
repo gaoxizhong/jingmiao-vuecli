@@ -330,6 +330,14 @@ export const getStructureList = (params) =>{
     data: params
   })
 }
+// 获取药物靶点列表
+export const getDrugTargetList = (params) =>{  
+  return axios.request({
+    url:'/medicine-target-spot',
+    method: 'post',
+    data: params
+  })
+}
 
 // =================  h5页面方法 ==================
 export const getConfig = (params) =>{  
