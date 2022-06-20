@@ -338,7 +338,14 @@ export const getDrugTargetList = (params) =>{
     data: params
   })
 }
-
+// 结构化脑图展示
+export const getGuideMindMapZh = (params) =>{  
+  return axios.request({
+    url:'/guide-mindMap-zh',
+    method: 'post',
+    data: params
+  })
+}
 // =================  h5页面方法 ==================
 export const getConfig = (params) =>{  
   return axios.request({

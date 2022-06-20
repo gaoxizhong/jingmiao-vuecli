@@ -26,7 +26,7 @@
          <!-- 搜索框模块结束 -->
           <!-- 搜索结果列表部分 -->
           <div class="MedicineTagList-infodiv">
-            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?'_blank':''" @click="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?click_file(item.file):click_gotoxq( item.tag,item.name )">
+            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?'_blank':''" @click="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?click_file(item.file):click_gotoxq( item.tag,item.name,item.type )">
               <span>{{ item.name }}</span>
               <i>( {{item.description}} )</i>
             </a>
@@ -182,6 +182,7 @@ export default {
                 description: ele.description,
                 kgid: ele.kgid?ele.kgid:'',
                 file: ele.file?ele.file:'',
+                type:ele.tag?ele.tag:'',
               })
             });
           }
@@ -194,16 +195,16 @@ export default {
       });
     },
     // 点击跳转详情页
-    click_gotoxq(t,n){
+    click_gotoxq(t,n,y){
       let tag = t;
       let name = n;
+      let type = y;
       let tag_pages = this.tag_pages;
       let id = this.id;
       console.log(tag)
-      if(tag == 'GuideStructure'){
-        // 新页面打开
+      if(tag == 'GuideMap' && type == 'zh'){  //指南结构脑图
         let newUrl = this.$router.resolve({
-          path: '/structureCopy',
+          path: '/brainMap',
           query:{
             name,
             tag_pages,
@@ -212,7 +213,19 @@ export default {
           }
         });
         window.open(newUrl.href, "_blank");
-      }else if(tag == 'DrugTarget'){
+      }else if(tag == 'GuideStructure'){  // 指南结构化
+        // 新页面打开
+        let newUrl = this.$router.resolve({
+           path: '/structureCopy',
+          query:{
+            name,
+            tag_pages,
+            tag,
+            id
+          }
+        });
+        window.open(newUrl.href, "_blank");
+      }else if(tag == 'DrugTarget'){ // 药物靶点
         // 新页面打开
         let newUrl = this.$router.resolve({
           path: '/drugTarget',

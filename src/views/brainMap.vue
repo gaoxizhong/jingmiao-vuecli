@@ -22,34 +22,13 @@
           <div class="content-box1">
             <div class="content-box1-left">
               <div href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
-                <div class="guide_text">
-                  <div class="text_title_box">
-                    <h1 class="text_title" :title="item.title">{{item.title?item.title:'无'}}</h1>
-                    <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
-                  </div>
-                  <p class="text_titlep">来源：<a :href="item.pdf_link" target="_blank" v-if="item.pdf_link">nccn食管癌诊疗指南2022v2脑图（中文）</a><span style="padding:0 6px;">页码：{{item.page}}</span></p>
-                  <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
-                    <div class="one_info clearfix">
-                      <div id="all_content">
-                        <p v-html="item.content?item.content:'无'"></p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <superMindmap v-if="showMindMap" :active='active' :data="item" @activeChange="activeChange"/>
               </div>
               <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
             </div>
           </div>
 
-          <!-- 分页展示 -->
-          <div class="pagination-box">
-            <div class="el-pagination is-background">
-              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
-              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
-              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
-              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
-            </div>
-          </div>
+
         </div>
       </div>
     </el-main>
@@ -65,12 +44,16 @@
 <script>
   import CommonHeader from "../components/CommonHeader";
   import CommonFooter from "../components/CommonFooter";
-  import { getStructureList } from "@/api/data"
+  // 导入思维导图组件
+  import superMindmap from "../components/superMindmap";
+
+  import { getGuideMindMapZh } from "@/api/data"
   export default {
     name: 'RepositoryPage',
     components: {
       CommonHeader,
       CommonFooter,
+      superMindmap
     },
     data(){
       return {
@@ -85,18 +68,19 @@
         ////  以下文献指南数据
         search:'',
         getListInfo:[],
-        current_page:1,
-        total_page:0, // 总页数
-        pageSize: 10,
         active: true,
         count:0,
         tag: '',
         is_show:false,
         is_Atlas:false,
         showFull: [],
+        active: '',
+        mapData: null,
+        showMindMap: false
       }
     },
     mounted(){
+
 
     },
     created(){
@@ -107,19 +91,27 @@
       this.title = this.$route.query.name;
       this.main_bg = this.$root.main_bg;  // 背景图
       this.id = Number(this.$route.query.id);
-      document.title = '指南结构化-'+ this.$route.query.name;
+      document.title = '结构化脑图-'+ this.$route.query.name;
       // 获取列表
       this.getHomeRightList();
 
     },
 
     methods: {
-      // 点击分页功能
-      handleCurrentChange(val) {
-        let that = this;
-        that.current_page = val;
-        that.getHomeRightList();
-      },
+       // 点击思维导图节点后，触发变量更新
+            activeChange(newLabel) {
+                this.active = newLabel
+                this.reloadMindMap()
+            },
+            // 重载思维导图
+            reloadMindMap() {
+                this.showMindMap = false
+                this.$nextTick(
+                    () => {
+                        this.showMindMap = true
+                    }
+                )
+            },
       // 回车键点击
       searchEnterFun(e){
         var keyCode = window.event?e.keyCode:e.which;
@@ -131,7 +123,6 @@
       getInputBtn(){
         let that = this;
         that.hot_name = that.search;
-        that.current_page = 1;
         that.getHomeRightList();
       },
       // 获取列表
@@ -140,57 +131,21 @@
         let search = that.search;
         let pearms  = {
           search,
-          page: that.current_page,
         }
         that.getListInfo = [];
-        getStructureList(pearms).then( res =>{
+        getGuideMindMapZh(pearms).then( res =>{
           if(res.data.code == 0){
-            let getListInfo = res.data.data.list;
-            let showFull =[];
-            for (var i = 0; i < getListInfo.length; i++) {
-              let obj = {};
-              obj.status = false;
-              showFull.push(obj);
-            }
-            that.showFull = showFull;
-            that.count = res.data.data.total;
-            that.total_page = res.data.data.total_page;
+            let getListInfo = res.data.data;
             that.getListInfo= getListInfo;
+              // 获取到数据后，再加载思维导图
+            that.showMindMap = true
           }
         }).catch(e =>{
             console.log(e)
         })
       },
 
-
-    //打开全文
-    openFulltxt(idx) {
-      let index = idx;
-      this.showFull[index].status = !this.showFull[index].status
-      this.showFull= this.showFull
-    },
-    // 点击原文链接
-    goTofullText(event,u){
-      let url = u;
-      event.stopPropagation();
-      if(!url || url == ''){
-        // this.$message.error({
-        //   message: '暂无数据'
-        // });
-        return
-      }
-    },
-    // 点击在线阅读
-    goToyuedu(event,u){
-      let url = u;
-      event.stopPropagation();
-      if(!url || url == ''){
-        // this.$message.error({
-        //   message: '暂无数据'
-        // });
-        return
-      }
-    },
+ 
     setsickNess(){
       this.is_show = false;
       // 在组件移除后，重新渲染组件
@@ -298,9 +253,9 @@
     padding-bottom: 6px;
     cursor: pointer;
   }
-  .bg-purple-dark:hover{
+  /* .bg-purple-dark:hover{
     opacity: 0.7;
-  }
+  } */
 
   .el-icon-reading{
       margin-right: 6px;
@@ -311,77 +266,10 @@
     text-align: left;
     margin: 5px 0;
   }
-  .text_title_box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .text_titlep{
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    margin-bottom: 6px;
-  }
-  .text_titlep>a{
-    color: #fa6400;
-    margin-left: 10px;
-  }
-  .text_titlep>a:hover{
-    color: #008c68;
-  }
-  .text_title {
-    flex: 1;
-    font-size: 16px;
-    font-family: "微软雅黑";
-    line-height: 30px;
-    font-weight: normal;
-    position: relative;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    line-clamp: 1;
-    box-orient: vertical;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    color: #313131;
-    font-weight: bold;
-  }
-  .text_title_a {
-    width: 56px;
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-    color: #fa6400;
-  }
-  .guide_info_list.cool {
-    height: 66px;
-    overflow: hidden;
-  }
-  .clearfix {
-    display: flex;
-  }
-  .one_info {
-    margin-bottom: 2px;
-    overflow: hidden;
-  }
-  .one_info label {
-    width: auto;
-    font-size: 14px;
-    text-align: right;
-    float: left;
-    padding-right: 10px;
-  }
-  .one_info p {
-    flex: 1;
-    line-height: 20px;
-    float: left;
-    margin-top: 2px;
-    font-size: 14px;
-    color: #626262;
-  }
-  .one_info #all_content{
-    flex: 1;
-  }
+
+
+
+
 </style>
 <style scoped>
   @media only screen and (max-width: 1390px){
