@@ -376,6 +376,14 @@ export const evaluate = (params) =>{
     data: params
   })
 }
+// 诊断指南详情页
+export const getGuideDetail = (params) =>{  
+  return axios.request({
+    url:'/guide-detail',
+    method: 'post',
+    data: params
+  })
+}
 // =================  h5页面方法 ==================
 
 

@@ -26,7 +26,7 @@
          <!-- 搜索框模块结束 -->
           <!-- 搜索结果列表部分 -->
           <div class="MedicineTagList-infodiv">
-            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?'_blank':''" @click="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?click_file(item.file):click_gotoxq( item.tag,item.name,item.type )">
+            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?'_blank':''" @click="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?click_file(item.file):click_gotoxq( item.tag,item.name,item.type,item.id )">
               <span>{{ item.name }}</span>
               <i>( {{item.description}} )</i>
             </a>
@@ -183,6 +183,7 @@ export default {
                 kgid: ele.kgid?ele.kgid:'',
                 file: ele.file?ele.file:'',
                 type:ele.tag?ele.tag:'',
+                id:ele.id?ele.id:'',
               })
             });
           }
@@ -195,12 +196,13 @@ export default {
       });
     },
     // 点击跳转详情页
-    click_gotoxq(t,n,y){
+    click_gotoxq(t,n,y,i){
       let tag = t;
       let name = n;
       let type = y;
+      let t_id = i; // 数据id
       let tag_pages = this.tag_pages;
-      let id = this.id;
+      let id = this.id; // 导航id
       console.log(tag)
       if(tag == 'GuideMap' && type == 'zh'){  //指南结构脑图
         let newUrl = this.$router.resolve({
@@ -234,6 +236,19 @@ export default {
             tag_pages,
             tag,
             id
+          }
+        });
+        window.open(newUrl.href, "_blank");
+      }else if(tag == 'DiagnosisTreatment'){  // 诊断指南
+        // 新页面打开
+        let newUrl = this.$router.resolve({
+          path: '/guideDetails',
+          query:{
+            name,
+            tag_pages,
+            tag,
+            id,
+            t_id,
           }
         });
         window.open(newUrl.href, "_blank");

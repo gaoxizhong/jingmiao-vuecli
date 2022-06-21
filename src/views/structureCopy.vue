@@ -27,7 +27,7 @@
                     <h1 class="text_title" :title="item.title">{{item.title?item.title:'无'}}</h1>
                     <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
                   </div>
-                  <p class="text_titlep">来源：<a :href="item.pdf_link" target="_blank" v-if="item.pdf_link">nccn食管癌诊疗指南2022v2脑图（中文）</a><span style="padding:0 6px;">页码：{{item.page}}</span></p>
+                  <p class="text_titlep">来源：<a :href="item.pdf_link" target="_blank" v-if="item.pdf_link">nccn食管癌诊疗指南2022v2（中文）</a><span style="padding:0 6px;">页码：{{item.page}}</span></p>
                   <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
                     <div class="one_info clearfix">
                       <div id="all_content">

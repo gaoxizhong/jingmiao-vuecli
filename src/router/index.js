@@ -25,6 +25,7 @@ import ImagesListDetails from '../views/ImagesListDetails.vue'  //  图像库详
 import structureCopy from '../views/structureCopy.vue'  //  指南脑图结构文案页面
 import drugTarget from '../views/drugTarget.vue'  //  药物靶点页面
 import brainMap from '../views/brainMap.vue'  //  脑图页面
+import guideDetails from '../views/guideDetails.vue'  //  诊断指南
 
 // ================================新版本 以上=========================================
 
@@ -228,6 +229,11 @@ const routes = [
     path: '/brainMap',
     name : 'brainMap',
     component: brainMap,
+  },
+  {
+    path: '/guideDetails',
+    name : 'guideDetails',
+    component: guideDetails,
   },
   // ===================  新版本添加 以上  ==============================
 

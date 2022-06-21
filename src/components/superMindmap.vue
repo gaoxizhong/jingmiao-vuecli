@@ -244,7 +244,7 @@
                     })
                     // .attr("text-anchor", function(d) { return d.children ?"end" :"start"; })
                     .text(function (d) {
-                        return d.children ?d.data.category_name_substr:d.data.category_name;
+                        return d.children ?d.data.category_name_substr:(d.data.category_name.length>=40?d.data.category_name.substring(0,40)+"...":d.data.category_name);
                     })
                     // =========================
                     let tooltip = d3.select('#' + this.id)
