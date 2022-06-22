@@ -436,11 +436,11 @@
                 </h1>
                 <!-- 鉴别诊断列表 -->
                 <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in identify_list" :key="index">
-                    <div class="cjyp-table-tr-l">{{ item.name }}</div>
+                  <div class="cjyp-table-tr" style="padding:5px;" v-for="(item, index) in identity_list" :key="index">
+                    <div class="cjyp-table-tr-l" style="-webkit-line-clamp: 3;" :title="item.name">{{ item.name }}</div>
                     <!-- <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('', item.name)">查看详情</a> -->
                   </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!identify_list || identify_list.length <= 0">暂无数据...</div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!identity_list || identity_list.length <= 0">暂无数据...</div>
                 </div>
                 <!-- 鉴别诊断列表结束 -->
               </div>
@@ -904,7 +904,7 @@ li {
       medicine_list: [], //  常见药品
       inspection_list: [], // 常见检查
       complication_list: [], // 并发症
-      identify_list: [], // 鉴别诊断
+      identity_list: [], // 鉴别诊断
       data: {
         //  图谱数据
         nodes: [],
@@ -1702,7 +1702,7 @@ li {
             that.medicine_list = res.data.data.medicine_list; //药品列表
             that.inspection_list = res.data.data.inspection_list; //检查列表
             that.complication_list = res.data.data.complication_list; //并发症
-            that.identify_list = res.data.data.identify_list; //鉴别诊断
+            that.identity_list = res.data.data.identity_list; //鉴别诊断
           if( typeof(f) == "function"){
             let graph = res.data.data.graph; //图谱
             that.is_casePop = true;
