@@ -868,7 +868,7 @@ li {
       optionsList: [], // 添加症状内接口数据
       checkList: [], // 多选框 选中项label
       symptoms:'',
-      searchSymptomsList: ['鼻塞'], // 列表下拉框选中数据
+      searchSymptomsList: ['腿疼'], // 列表下拉框选中数据
       inputOtherValue: "", // 搜索症状
       symptomSearch_name: [], // 搜索症状列表项
       is_symptomSearch: false, // 搜索结果弹窗状态
@@ -878,7 +878,7 @@ li {
       //  现病史------的添加症状字段
       optionsList_2: [], // 现病史---添加症状内接口数据
       checkList_2: [], // 现病史---多选框 选中项
-      searchSymptomsList_2: ['鼻塞'], // 现病史---列表下拉框选中数据
+      searchSymptomsList_2: ['腿疼'], // 现病史---列表下拉框选中数据
       inputOtherValue_2: "", // 现病史---搜索症状
       symptomSearch_name_2: [], // 现病史---搜索症状列表项
       is_symptomSearch_2: false, // 现病史---搜索结果弹窗状态
