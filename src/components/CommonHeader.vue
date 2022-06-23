@@ -36,6 +36,15 @@
         <div class="navitems" :class=" item.id === nav_id?'navitems-active':'' " v-for="(item,index) in contentItems" :key="index">
           <a href="javascript:0;" @click="clickItem_2(item.id,item.name,item.path,item.tag_pages)">{{item.name}}</a>
         </div>
+         <div class="navitems">
+          <a href="http://121.36.94.218:8000/zh" target="_blank">标注平台前端</a>
+        </div>
+         <div class="navitems">
+          <a href="http://121.36.94.218:8000/admin/login/?next=/admin/" target="_blank">标注平台后端</a>
+        </div>
+        <div class="navitems">
+          <a href="http://121.36.94.218:10090/disease/ner/predict?sentence=" target="_blank">病历结构化</a>
+        </div>
       </div>
     </div>
     <!-- 导航分类模块 -->
@@ -183,8 +192,9 @@ header{
   padding: 0 10px;
 }
 .navitems{
+  flex: 1;
   height: 100%;
-  padding: 0 26px;
+  /* padding: 0 26px; */
   position: relative;
 }
 .navitems::after{
@@ -279,7 +289,6 @@ export default {
         {id:6,name:'智能问答',path:'/QAhome',tag_pages:'znwd'},
         {id:7,name:'疾病图像库',path:'/ImagesList',tag_pages:'jbtxk'},
         {id:8,name:'疾病病例库',path:'/CaseLibrary',tag_pages:'jbblk'},
-        
       ];
       this.nav_id = Number(this.id);
       this.contentItems = headerNavItems;
