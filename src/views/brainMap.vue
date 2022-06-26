@@ -65,7 +65,7 @@
         main_bg:{},
         tag_pages:'',
         id: 0,
-        ////  以下文献指南数据
+        type:'',
         search:'',
         getListInfo:[],
         active: true,
@@ -88,6 +88,7 @@
       this.viewWidth = getViewportSize.width;
       this.tag_pages = this.$route.query.tag_pages;
       this.tag = this.$route.query.tag;
+      this.type = this.$route.query.type;
       this.title = this.$route.query.name;
       this.main_bg = this.$root.main_bg;  // 背景图
       this.id = Number(this.$route.query.id);
@@ -129,8 +130,10 @@
       getHomeRightList(){
         let that = this;
         let search = that.search;
+        let tpye = that.type;
         let pearms  = {
           search,
+          type:tpye == 'zh'?'1':'2'
         }
         that.getListInfo = [];
         getGuideMindMapZh(pearms).then( res =>{

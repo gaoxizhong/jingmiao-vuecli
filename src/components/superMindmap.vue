@@ -63,11 +63,21 @@
                 let mapWidth = this.nodeWidth * TreeDeep + mapPaddingLR * 2;
                 let mapHeight = (this.nodeHeight) * leafNum + mapPaddingTB * 2;
                 // 定义画布—— 外边距 10px
-                let svgMap = d3.select('#' + this.id).append('svg').attr("width", "100%").attr("height", mapHeight).style("margin", "0px")
+                let svgMap = d3.select('#' + this.id)
+                    .append('svg')
+                    .attr("width", "100%")
+                    .attr("height", mapHeight)
+                    .style("margin", "0px")
+                    // .style("overflow", "inherit")
+                // 给画布绑定zoom事件（缩放、平移）
+                    // .call(d3.zoom().on('zoom', event => {
+                    //     var scale = event.transform.k;
+                    //     var translate = [event.transform.x, event.transform.y]
+                    //     svgMap.attr('transform', 'translate(' + translate[0] + ', ' + translate[1] + ') scale(' + scale + ')');
+                    // }))
+                   
                 // 定义树状图画布
-                let treeMap = svgMap.append("g").attr("transform", "translate(" + mapPaddingLR + "," + (mapHeight / 2 - mapPaddingTB) + ")");
-
-
+                let treeMap = svgMap.append("g").attr("transform", "translate(" + mapPaddingLR + "," + (mapHeight / 2 - mapPaddingTB) + ")")
                 // 将源数据转换为可以生成树状图的数据(有节点 nodes 和连线 links )
                 let treeData = d3.tree()
                 // 设置每个节点的尺寸

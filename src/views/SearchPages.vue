@@ -204,18 +204,19 @@ export default {
       let tag_pages = this.tag_pages;
       let id = this.id; // 导航id
       console.log(tag)
-      if(tag == 'GuideMap' && type == 'zh'){  //指南结构脑图
+      if(tag == 'GuideMap'){  //指南结构脑图
         let newUrl = this.$router.resolve({
-          path: '/brainMap',
+          path:'/brainMap',
           query:{
             name,
             tag_pages,
             tag,
-            id
+            id,
+            type
           }
         });
         window.open(newUrl.href, "_blank");
-      }else if(tag == 'GuideStructure'){  // 指南结构化
+      }else if(tag == 'GuideStructure'){  //指南结构化
         // 新页面打开
         let newUrl = this.$router.resolve({
            path: '/structureCopy',

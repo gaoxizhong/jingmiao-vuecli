@@ -96,6 +96,7 @@ button{
 }
 .pagecontent-box{
   width: 1200px;
+  overflow: hidden;
 }
 .is_pom{
   position: fixed;
