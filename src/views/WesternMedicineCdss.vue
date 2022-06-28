@@ -437,8 +437,8 @@
                 <!-- 鉴别诊断列表 -->
                 <div>
                   <div class="cjyp-table-tr" style="padding:5px;" v-for="(item, index) in identity_list" :key="index">
-                    <div class="cjyp-table-tr-l" style="-webkit-line-clamp: 3;" :title="item.name">{{ item.name }}</div>
-                    <!-- <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('', item.name)">查看详情</a> -->
+                    <div class="cjyp-table-tr-l" style="-webkit-line-clamp: 3;" :title="item.name">{{ item.name.substring(0,25)+'...' }}</div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_identity(item.name)">查看详情</a>
                   </div>
                   <div style="padding: 6px 0 6px 15px" v-if="!identity_list || identity_list.length <= 0">暂无数据...</div>
                 </div>
@@ -627,7 +627,7 @@
     <!-- 点击左侧病例弹窗结束 -->
 
     <!-- 点击病例弹窗查看详情 -->
-    <DetailsMask :getinfo="getinfo" :name_1="name_1" @ypxqclick_close="ypxqclick_close" v-if="is_ypxq"/>
+    <DetailsMask :getinfo="getinfo" :name_1="name_1" :is_nofr="is_nofr" @ypxqclick_close="ypxqclick_close" v-if="is_ypxq" />
     <!-- 点击病例弹窗查看详情弹窗结束 -->
     
     <!-- 点击预览按钮弹窗 -->
@@ -959,7 +959,7 @@ li {
       seen_searchSymptomsList_index: -1,
       seen_symptomSearchName: false,
       seen_symptomSearchName_index: -1,
-
+      is_nofr: true,
     };
   },
   created() {
@@ -1863,6 +1863,22 @@ li {
     useradvisory_close() {
       this.is_useradvisory = false;
     },
+    // 点击鉴别诊断查看详情
+    click_identity(n){
+      let that = this;
+      let name = n;
+      let getinfo_arr = [];
+      getinfo_arr.push({
+        is_list:0,
+        name: '',
+        text: name,
+        tag: 'identity',
+      });
+      // that.name_1 = name.substring(0,15) + '...';
+      that.getinfo = getinfo_arr;
+      that.is_nofr = false;
+      this.is_ypxq = true;
+    },
     // 点击查看详情
     click_ypxq(t, n,k) {
       let that = this;
@@ -1879,9 +1895,7 @@ li {
       if( kgid && (tag == 'CnMedicinalCrop' || tag == 'zySickNess' || tag == 'ChannelCollateral') ){
         pearms.sickness = kgid
       }
-
-      getSickNess(pearms)
-        .then((res) => {
+      getSickNess(pearms).then((res) => {
           if (res.data.code == 0) {
             let getinfo = res.data.data;
             that.name_1 = getinfo.sickness_name.text;

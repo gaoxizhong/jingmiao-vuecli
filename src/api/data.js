@@ -234,6 +234,14 @@ export const getEmailCode = (params) =>{
     data: params
   })
 }
+// 点击发送短信验证码
+export const getTelCode = (params) =>{
+  return axios.request({
+    url:'/sms-send',
+    method: 'post',
+    data: params
+  })
+}
 // 点击修改按钮
 export const getRevise = (params) =>{
   return axios.request({

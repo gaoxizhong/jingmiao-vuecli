@@ -8,7 +8,7 @@
       <div class="close-box" @click="ypxqclick_close">
         <i class="el-icon-circle-close"></i>
       </div>
-      <div class="yp-position-nbox" id="scrollBox">
+      <div class="yp-position-nbox" :class="is_nofr ?'':'is-nofr'" id="scrollBox">
         <div class="yp-info-box applications-content">
           <div class="activi-1">
             <div v-for="(item, index) in getinfo" :key="index" class="do-jump">
@@ -23,7 +23,7 @@
           <div v-if="getinfo.length <= 0">暂无数据</div>
         </div>
       </div>
-      <div class="fr">
+      <div class="fr" v-if="is_nofr">
         <div class="src-components-PushItems-DetailsModal-N686B">
           <div class="src-components-PushItems-DetailsModal-24j2q">
             <div class="src-components-PushItems-DetailsModal-1SgDc">
@@ -129,6 +129,7 @@ export default {
   props:{
     name_1:String,
     getinfo: Array,
+    is_nofr: Boolean
   },
   data() {
     return {

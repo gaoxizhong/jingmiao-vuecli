@@ -6,13 +6,17 @@
         <!-- 注册 -->
         <div class="form-container sign-up-container">
           <form @submit.prevent="RegisterUserInfo" autocomplete="off">
-            <h1>创建一个新账号</h1>
-            <span>请使用您的手机号进行注册</span>
+            <h1>创建新账号</h1>
+            <span style="margin-top:4px;">请使用您的手机号进行注册</span>
             <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入单位名称"></el-input>
             <el-input type="text" v-model="newuser.department" name="department" placeholder="请输入部门"></el-input>
             <el-input type="text" v-model="newuser.username" name="username" placeholder="请输入用户名"></el-input>
             <el-input type="email" v-model="newuser.email" name="email" placeholder="请输入邮箱"></el-input>
             <el-input v-model="newuser.phone" name="phone" placeholder="请输入手机号"></el-input>
+            <div class="input-box">
+              <el-input class="input" maxlength="4" placeholder="验证码" v-model="newuser.code" name="code"/>
+              <div class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="click_code(1)">{{zc_statusMsg}}</div>
+            </div>
             <el-input type="password" v-model="newuser.password" name="password" placeholder="请输入密码"></el-input>
             <button type="submit">注册</button>
           </form>
@@ -21,16 +25,38 @@
         <!-- 登录 -->
         <div class="form-container sign-in-container">
           <form @submit.prevent="LoginUserInfo" autocomplete="off">
-            <h1>登录</h1>
-            <span>使用您的账号登录</span>
+            <h1 v-if="is_yzmSign">验证码登录</h1>
+            <h1 v-else>密码登录</h1>
+            <span style="margin-top:6px;">{{is_yzmSign?"使用您的手机号验证登录":"使用您的账号登录"}}</span>
             <el-input v-model="user.phone" type="tel" name="phone" placeholder="请输入手机号"></el-input>
-            <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"></el-input>
+            <div class="input-box" v-if="is_yzmSign">
+              <el-input class="input" maxlength="4" placeholder="验证码" v-model="user.code" name="code"/>
+              <div class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="click_code(2)">{{zc_statusMsg}}</div>
+            </div>
+            <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"  v-else></el-input>
             <div class="sign-a-div">
               <a href="javascript:0;">如没有账号，请先注册</a>
-              <a href="javascript:0;" class="sign-a-wjmm" @click.stop="goToForgetModule">忘记密码</a>
+              <a href="javascript:0;" class="sign-a-wjmm" @click.stop="goToForgetModule"  v-if="!is_yzmSign">忘记密码</a>
             </div>
             <button type="submit">登录</button>
+            <!-- 其他登录方式 -->
+            <section class="login-other">
+              <p class="login-other-title">其他登录方式</p>
+              <ul class="login-other-container">
+                <li class="login-other-item" @click.stop='clickTel' v-if="!is_yzmSign">
+                  <img src="https://9.idqqimg.com/edu/i-mobile@3_c1e38ac28f8a5e9d78cd284795567591.png" title="验证码登录" class="login-other-item--btn" />
+                  <p class="login-other-item--name">验证码</p>
+                </li>
+                <li class="login-other-item" @click.stop='clickSso' v-if="is_yzmSign">
+                  <img src="https://9.idqqimg.com/edu/i-mobile@3_c1e38ac28f8a5e9d78cd284795567591.png" title="密码登录" class="login-other-item--btn" />
+                  <p class="login-other-item--name">密码登录</p>
+                </li>
+              </ul>
+            </section>
           </form>
+
+
+
         </div>
         <!-- 登录 -->
 
@@ -84,7 +110,7 @@
 </template>
 
 <script>
-import {RegisterUserInfo,LoginUserInfo,getEmailCode,getRevise} from '@/api/data'
+import {RegisterUserInfo,LoginUserInfo,getEmailCode,getTelCode,getRevise} from '@/api/data'
 export default {
   data() {
     return {
@@ -97,10 +123,12 @@ export default {
         username: '',
         phone: '',
         password:'',
+        code:'',
       },
       user: {
         phone: '',
         password:'',
+        code:''
       },
       is_sign: false,
       stateurl:'',
@@ -110,7 +138,10 @@ export default {
       registerSmsCode:'', // 重置密码模块 验证码
       loginPassword:'', // 重置密码模块 密码
       isDisable: false,
-      statusMsg:'获取验证码'
+      statusMsg:'获取验证码',
+      zc_statusMsg:'获取验证码',
+      dl_statusMsg: '获取验证码',
+      is_yzmSign: false, // 验证码登录状态
     }
   },
   mounted(){ // 可以当做初始化后加载，只加载一次
@@ -131,6 +162,66 @@ export default {
     },
     signUp(){
       this.is_sign = true;
+    },
+    // 点击其他登录方式--- 验证码登录
+    clickTel(){
+      this.is_yzmSign = true;
+    },
+    // 点击其他登录方式--- 密码登录
+    clickSso(){
+      this.is_yzmSign = false;
+    },
+    // 点击注册获取验证码
+    click_code(ty){
+      let that = this;
+      let type = ty;
+      let phone = type == 1?that.newuser.phone: that.user.phone; // 注册填写的手机号
+      if(phone == ''){
+        this.$message.error({
+          message:'请输入手机号'
+        })
+        return
+      }
+      that.isDisable = true;
+      getTelCode({phone,type}).then(res =>{
+        if(res.data.code == 0){
+          that.$message({
+            showClose: true,
+            message: '发送成功，请注意短信查收！',
+            type: 'success'
+          })
+          let count = 60;
+          if(type == 1){
+            that.zc_statusMsg = `${count--}秒后重新发送`;
+          }else{
+            that.dl_statusMsg = `${count--}秒后重新发送`;
+          }
+          let timerid = window.setInterval(function() {
+            if(type == 1){
+              that.zc_statusMsg = `${count--}秒后重新发送`;
+            }else{
+              that.dl_statusMsg = `${count--}秒后重新发送`;
+            }
+            if (Number(count)<= 0) {
+              window.clearInterval(timerid);
+              that.isDisable = false;
+              if(type == 1){
+                that.zc_statusMsg = `${count--}秒后重新发送`;
+              }else{
+                that.dl_statusMsg = `${count--}秒后重新发送`;
+              }
+            }
+          }, 1000)
+        }else{
+        this.$message.error({
+          message:res.data.msg
+        })
+          that.isDisable = false;
+        }
+      }).catch(err => {
+          that.isDisable = false;
+          console.log(err.response.data.message)
+        })
     },
     // 点击获取验证码
     clickVcode(){
@@ -289,6 +380,12 @@ export default {
           })
           return
       }
+      if(newuser.code ==''){
+        this.$message.error({
+            message:'请输入验证码'
+          })
+          return
+      }
       if(newuser.password ==''){
         this.$message.error({
             message:'请输入密码'
@@ -318,6 +415,7 @@ export default {
     LoginUserInfo(e){
         console.log(e)
       let that = this;
+      let is_yzmSign = that.is_yzmSign;
       let user = that.user;
         if(user.phone ==''){
           that.$message.error({
@@ -325,13 +423,21 @@ export default {
             })
             return
         }
-      if(user.password ==''){
+      if(!is_yzmSign && user.password ==''){
         that.$message.error({
             message:'请输入密码'
           })
           return
       }
-      LoginUserInfo(user).then( res =>{
+      let parse = {
+        phone:user.phone 
+      }
+      if(is_yzmSign){
+        parse.code = user.code
+      }else{
+        parse.password = user.password
+      }
+      LoginUserInfo(parse).then( res =>{
         if(res.data.code == 0){
           let data = res.data.data;
           that.$message.success({
@@ -442,13 +548,16 @@ export default {
     margin: 20px 0 30px;
   }
   span {
-    font-size: 12px;
+    font-size: 13px;
   }
   a {
     color: #333;
     font-size: 14px;
     text-decoration: none;
     margin: 15px 0;
+  }
+  .page-box /deep/.el-input__inner:hover{
+    border-color: #409EFF;
   }
   .page-box{
     width: 100%;
@@ -507,7 +616,7 @@ export default {
     overflow: hidden;
     width: 768px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 528px;
   }
   .form-container {
     position: absolute;
@@ -677,6 +786,18 @@ export default {
   .input-group {
     margin-bottom: 10px;
   }
+  .form-container{
+    .input-box {
+      position: relative;
+      display: flex;
+      margin: 0;
+      width: 100%;
+    }
+    .input{
+      padding: 0;
+      border: none;
+    }
+  }
   .input-box {
     position: relative;
     margin-bottom: 10px;
@@ -709,14 +830,17 @@ export default {
     right: 0;
     height: 100%;
     color: #007fff;
-    line-height: 1;
+    display: flex;
+    align-items: center;
     background-color: transparent;
     border: none;
-    padding: 5px 10px;
+    padding: 0 10px;
     outline: none;
     cursor: pointer;
     transition: background-color .3s,color .3s;
     margin-top: 0;
+    font-size: 14px;
+    font-weight: bold;
   }
   .btn{
     width: 100%;
@@ -741,5 +865,51 @@ export default {
   .prompt-box .clickable {
     color: #007fff;
     cursor: pointer;
+  }
+  .login-other {
+    padding-top: 18px;
+    width: 100%;
+    font-size: 28px;
+    text-align: center;
+  }
+  .login-other-title {
+    position: relative;
+    margin: 0 auto 15px;
+    width: 100%;
+    font-size: 12px;
+    color: #a2aab2;
+  }
+  .login-other-container {
+    margin: 0 auto;
+  }
+  .login-other-item {
+    position: relative;
+    display: inline-block;
+    margin: 0 30px;
+    width: 60px;
+    height: auto;
+    vertical-align: text-bottom;
+  }
+  .login-other-item--btn {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 0;
+    display: inline-block;
+    background-color: #eaebed;
+  }
+  .login-other-item--btn:hover{
+    opacity: 0.8;
+  }
+  .login-other-item--name {
+    width: auto;
+    color: #a0a8b0;
+    font-size: 12px;
+    margin: 0;
+    padding-top:4px;
   }
 </style>

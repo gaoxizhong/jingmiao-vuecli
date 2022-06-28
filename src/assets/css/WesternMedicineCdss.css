@@ -792,6 +792,10 @@ table {
     padding: 0 220px 0 10px;
     overflow-y: auto;
   }
+  .yp-position-nbox.is-nofr{
+    padding: 0 10px 0 10px;
+
+  }
   .yp-info-box {
     width: 100%;
     height: auto;
