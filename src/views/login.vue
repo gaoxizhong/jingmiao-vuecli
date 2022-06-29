@@ -45,7 +45,7 @@
               <ul class="login-other-container">
                 <a  href="javascript:0;" class="login-other-item" @click.stop='clickTel' v-if="!is_yzmSign">
                   <img src="../assets/image/i-tel.png" title="验证码登录" class="login-other-item--btn" />
-                  <p class="login-other-item--name">验证码</p>
+                  <p class="login-other-item--name">验证码登录</p>
                 </a>
                 <a href="javascript:0;" class="login-other-item" @click.stop='clickSso' v-if="is_yzmSign">
                   <img src="../assets/image/i-sso.png" title="密码登录" class="login-other-item--btn" />
@@ -433,9 +433,11 @@ export default {
         phone:user.phone 
       }
       if(is_yzmSign){
-        parse.code = user.code
+        parse.code = user.code,
+        parse.type = 'code_login'
       }else{
-        parse.password = user.password
+        parse.password = user.password,
+        parse.type = 'pass_login'
       }
       LoginUserInfo(parse).then( res =>{
         if(res.data.code == 0){
@@ -495,12 +497,13 @@ export default {
       let headerNavItems = [
         {id:1,name:'西医知识库',path:'/RepositoryPage',tag_pages:'xyzsk'},
         {id:2,name:'中医知识库',path:'/RepositoryPage',tag_pages:'zyzsk'},
-        {id:3,name:'文献',path:'/DocumentGuidePages',tag_pages:'Document'},
-        {id:4,name:'指南',path:'/DocumentGuidePages',tag_pages:'Guide'},
+        {id:3,name:'科研探索',path:'/DocumentGuidePages',tag_pages:'Document'},
+        // {id:4,name:'指南',path:'/DocumentGuidePages',tag_pages:'Guide'},
         {id:5,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},
-        {id:6,name:'智能问答',path:'/QAhome',tag_pages:'znwd'},
         {id:7,name:'疾病图像库',path:'/ImagesList',tag_pages:'jbtxk'},
-        {id:8,name:'疾病病例库',path:'/CaseLibrary',tag_pages:'jbblk'},
+        // {id:8,name:'疾病病例库',path:'/CaseLibrary',tag_pages:'jbblk'},
+        {id:6,name:'智能问答',path:'/QAhome',tag_pages:'znwd'},
+
       ];
       this.$store.dispatch("headerNavItems",headerNavItems);
       sessionStorage.setItem('headerNavItems',JSON.stringify(this.$store.state.headerNavItems) );
@@ -842,7 +845,6 @@ export default {
     transition: background-color .3s,color .3s;
     margin-top: 0;
     font-size: 14px;
-    font-weight: bold;
   }
   .btn{
     width: 100%;
@@ -887,8 +889,8 @@ export default {
   .login-other-item {
     position: relative;
     display: inline-block;
-    margin: 0 30px;
-    width: 60px;
+    margin: 0 15px;
+    width: auto;
     height: auto;
     vertical-align: text-bottom;
   }
@@ -909,7 +911,7 @@ export default {
   }
   .login-other-item--name {
     width: auto;
-    color: #a0a8b0;
+    color: #333;
     font-size: 12px;
     margin: 0;
     padding-top:4px;
