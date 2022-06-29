@@ -31,7 +31,7 @@
             <el-input v-model="user.phone" type="tel" name="phone" placeholder="请输入手机号"></el-input>
             <div class="input-box" v-if="is_yzmSign">
               <el-input class="input" maxlength="4" placeholder="验证码" v-model="user.code" name="code"/>
-              <div class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="click_code(2)">{{zc_statusMsg}}</div>
+              <div class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="click_code(2)">{{dl_statusMsg}}</div>
             </div>
             <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"  v-else></el-input>
             <div class="sign-a-div">
@@ -43,14 +43,14 @@
             <section class="login-other">
               <p class="login-other-title">其他登录方式</p>
               <ul class="login-other-container">
-                <li class="login-other-item" @click.stop='clickTel' v-if="!is_yzmSign">
-                  <img src="https://9.idqqimg.com/edu/i-mobile@3_c1e38ac28f8a5e9d78cd284795567591.png" title="验证码登录" class="login-other-item--btn" />
+                <a  href="javascript:0;" class="login-other-item" @click.stop='clickTel' v-if="!is_yzmSign">
+                  <img src="../assets/image/i-tel.png" title="验证码登录" class="login-other-item--btn" />
                   <p class="login-other-item--name">验证码</p>
-                </li>
-                <li class="login-other-item" @click.stop='clickSso' v-if="is_yzmSign">
-                  <img src="https://9.idqqimg.com/edu/i-mobile@3_c1e38ac28f8a5e9d78cd284795567591.png" title="密码登录" class="login-other-item--btn" />
+                </a>
+                <a href="javascript:0;" class="login-other-item" @click.stop='clickSso' v-if="is_yzmSign">
+                  <img src="../assets/image/i-sso.png" title="密码登录" class="login-other-item--btn" />
                   <p class="login-other-item--name">密码登录</p>
-                </li>
+                </a>
               </ul>
             </section>
           </form>
@@ -206,9 +206,9 @@ export default {
               window.clearInterval(timerid);
               that.isDisable = false;
               if(type == 1){
-                that.zc_statusMsg = `${count--}秒后重新发送`;
+                that.zc_statusMsg = `获取验证码`;
               }else{
-                that.dl_statusMsg = `${count--}秒后重新发送`;
+                that.dl_statusMsg = `获取验证码`;
               }
             }
           }, 1000)
@@ -536,6 +536,7 @@ export default {
   h1 {
     font-weight: bold;
     margin: 0;
+    font-size: 28px;
   }
   h2 {
     text-align: center;
@@ -796,6 +797,7 @@ export default {
     .input{
       padding: 0;
       border: none;
+      font-size: 14px;
     }
   }
   .input-box {
