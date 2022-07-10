@@ -56,7 +56,7 @@ button{
 }
 .el-main{
   min-height: 580px;
-  padding: 30px 36px 80px 36px;
+  padding: 30px 36px;
   padding-top: 30px;
   display: flex;
   align-items: flex-start;

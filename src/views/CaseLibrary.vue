@@ -160,6 +160,8 @@
         window.scrollTo(0,0);
         console.log(that.current_page)
         that.getHomeRightList();
+        // 回到顶部的方法。
+        window.scrollTo(0,0);
       },
       // 回车键点击
       searchEnterFun(e){

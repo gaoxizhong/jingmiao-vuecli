@@ -174,6 +174,8 @@
         let that = this;
         that.current_page = val;
         that.getHomeRightList();
+        // 回到顶部的方法。
+        window.scrollTo(0,0);
       },
       // 回车键点击
       searchEnterFun(e){
@@ -314,7 +316,7 @@
   }
   /* ================================= 分页展示 部分  =================================== */
   .pagination-box{
-    padding: 30px 0;
+    padding: 20px 0;
   }
   .el-pagination>button{
     padding: 0 20px !important;

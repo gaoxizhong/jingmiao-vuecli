@@ -14,38 +14,38 @@
               <h2 class="text_title">{{infoDetail.title?infoDetail.title:'无'}}</h2>
             </div>
             <div class="guide_info_list">
-              <div class="one_info clearfix">
+              <div class="one_info clearfix" v-if="infoDetail.enTitle">
                 <label>英文标题：</label>
                 <p>{{infoDetail.enTitle?infoDetail.enTitle:'无'}}</p>
               </div>
-              <div class="one_info clearfix">
+              <div class="one_info clearfix" v-if="infoDetail.abstract_trans">
                 <label>中文摘要：</label>
                 <div id="all_content">
                   <p v-html="infoDetail.abstract_trans?infoDetail.abstract_trans:'无'"></p>
                 </div>
               </div>
-              <div class="one_info clearfix" style="margin-top:4px;">
+              <div class="one_info clearfix" style="margin-top:4px;"  v-if="infoDetail.abstract">
                 <label>英文摘要：</label>
                 <div id="all_content">
                   <p v-html="infoDetail.abstract?infoDetail.abstract:'无'"></p>
                 </div>
               </div>
-              <div class="one_info clearfix">
+              <div class="one_info clearfix" v-if="infoDetail.source">
                 <label>数据来源：</label>
                 <p>{{infoDetail.source?infoDetail.source:'无'}}</p>
               </div>
-              <div class="one_info clearfix">
+              <div class="one_info clearfix" v-if="infoDetail.constitutor">
                 <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者：</label>
                 <p>{{infoDetail.constitutor?infoDetail.constitutor:'无'}}</p>
               </div>
-              <div class="one_info clearfix">
+              <div class="one_info clearfix" v-if="infoDetail.year">
                 <label>发布日期：</label>
                 <p>{{infoDetail.year?infoDetail.year:'无'}}</p>
               </div>
-              <!-- <div class="asub-box">
-                <a :href="infoDetail.full_text_url?infoDetail.full_text_url:'javascript:0;'" :target="infoDetail.full_text_url?'_blank':''" :class="infoDetail.full_text_url?'asub-zaixian':'no-zaixian'"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
-                <a :href="infoDetail.onlineRead?infoDetail.onlineRead:'javascript:0;'" :class="infoDetail.onlineRead?'asub-zaixian':'no-zaixian'" :target="infoDetail.onlineRead?'_blank':''" @click.stop="goToyuedu($event,infoDetail.onlineRead)"><i class="el-icon-reading"></i>pdf在线阅读</a>
-              </div> -->
+              <div class="asub-box">
+                <a :href="infoDetail.full_text_url?infoDetail.full_text_url:'javascript:0;'" :target="infoDetail.full_text_url?'_blank':''" :class="infoDetail.full_text_url?'asub-zaixian':'no-zaixian'"  @click.stop="goTofullText($event,infoDetail.full_text_url)" v-if="infoDetail.full_text_url"><i class="el-icon-reading"></i>原文链接</a>
+                <a :href="infoDetail.onlineRead?infoDetail.onlineRead:'javascript:0;'" :class="infoDetail.onlineRead?'asub-zaixian':'no-zaixian'" :target="infoDetail.onlineRead?'_blank':''" @click.stop="goToyuedu($event,infoDetail.onlineRead)" v-if="infoDetail.onlineRead"><i class="el-icon-reading"></i>pdf在线阅读</a>
+              </div>
             </div>
           </div>
         </div>
@@ -114,7 +114,7 @@
     padding: 8px 0;
   }
   .one_info label {
-    width: auto;
+    width: 94px;
     font-size: 14px;
     font-weight: bold;
     text-align: right;

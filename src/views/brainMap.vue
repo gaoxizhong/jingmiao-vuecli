@@ -7,7 +7,7 @@
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
-    <el-main :style="main_bg">
+    <el-main :style="main_bg"  v-loading="loading">
       <div class="pagecontent-box">
         <div class="inside-content-box" id="inside-content-box">
         <!-- 搜索框模块开始 -->
@@ -76,7 +76,8 @@
         showFull: [],
         active: '',
         mapData: null,
-        showMindMap: false
+        showMindMap: false,
+        loading: true
       }
     },
     mounted(){
@@ -106,10 +107,10 @@
             },
             // 重载思维导图
             reloadMindMap() {
-                this.showMindMap = false
+                this.showMindMap = false;
                 this.$nextTick(
                     () => {
-                        this.showMindMap = true
+                        this.showMindMap = true;
                     }
                 )
             },
@@ -136,12 +137,15 @@
           type:tpye == 'zh'?'1':'2'
         }
         that.getListInfo = [];
+
         getGuideMindMapZh(pearms).then( res =>{
           if(res.data.code == 0){
             let getListInfo = res.data.data;
             that.getListInfo= getListInfo;
               // 获取到数据后，再加载思维导图
-            that.showMindMap = true
+            that.showMindMap = true;
+            that.loading = false;
+
           }
         }).catch(e =>{
             console.log(e)

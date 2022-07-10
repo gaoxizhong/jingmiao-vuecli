@@ -235,6 +235,8 @@ import {getHomeRightList,getzyHomeRightList,getSearch} from '@/api/data'
         that.current_page = val;
         console.log(that.current_page)
         that.getzyHomeRightList();
+        // 回到顶部的方法。
+        window.scrollTo(0,0);
       },
       // 回车键点击
       searchEnterFun(e){
