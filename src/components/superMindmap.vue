@@ -15,13 +15,18 @@
             nodeHeight:
                 {
                     type: Number,
-                    default: 56
+                    default: 44
                 },
             active:
                 {
                     type: String,
                     default: ''
-                }
+                },
+            type:
+                {
+                    type: String,
+                    default: 'zh'
+                },
         },
         data() {
             return {
@@ -29,6 +34,7 @@
                 deep: 0,
                 treeData: null,
                 show: true,
+                index: 1
             }
         },
         mounted() {
@@ -55,18 +61,19 @@
                 getTreeLeaf(data, leafList); 
                 let leafNum = leafList.length;
                 let TreeDeep = getDepth(data); // 多少层
-                console.log(TreeDeep)
+                console.log(TreeDeep+ '层级')
                 // 左右内边距
                 let mapPaddingLR = 10
                 // 上下内边距
                 let mapPaddingTB = 0
                 let mapWidth = this.nodeWidth * TreeDeep + mapPaddingLR * 2;
                 let mapHeight = (this.nodeHeight) * leafNum + mapPaddingTB * 2;
+                console.log(this.nodeHeight)
                 // 定义画布—— 外边距 10px
                 let svgMap = d3.select('#' + this.id)
                     .append('svg')
                     .attr("width", "100%")
-                    .attr("height", mapHeight)
+                    .attr("height", ( this.type == 'zh'?mapHeight:(mapHeight - mapHeight/3 + this.nodeHeight*2) ))
                     .style("margin", "0px")
                     // .style("overflow", "inherit")
                 // 给画布绑定zoom事件（缩放、平移）
@@ -77,7 +84,7 @@
                     // }))
                    
                 // 定义树状图画布
-                let treeMap = svgMap.append("g").attr("transform", "translate(" + mapPaddingLR + "," + (mapHeight / 2 - mapPaddingTB) + ")")
+                let treeMap = svgMap.append("g").attr("transform", "translate(" + mapPaddingLR + "," + ( this.type == 'zh'?(mapHeight/2):(this.index == 1?(mapHeight / 3 + this.nodeHeight ):(mapHeight / 3 ))) + ")")
                 // 将源数据转换为可以生成树状图的数据(有节点 nodes 和连线 links )
                 let treeData = d3.tree()
                 // 设置每个节点的尺寸

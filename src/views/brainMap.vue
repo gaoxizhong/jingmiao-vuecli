@@ -22,7 +22,7 @@
           <div class="content-box1">
             <div class="content-box1-left">
               <div href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
-                <superMindmap v-if="showMindMap" :active='active' :data="item" @activeChange="activeChange"/>
+                <superMindmap v-if="showMindMap" :active='active' :data="item" :type="type" @activeChange="activeChange"/>
               </div>
               <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
             </div>
