@@ -8,7 +8,6 @@ import Login from '../views/Login.vue'
 import QAhome from '../views/QAhome.vue'
 import VideoDetails from '../views/VideoDetails.vue'
 import inquiryResultPage from '../views/inquiryResultPage.vue'
-// =============================新版本 以下============================================
 import FrontPage from '../views/FrontPage.vue'  // 首页
 import RepositoryPage from '../views/RepositoryPage.vue'     // 知识库页
 import XyRepositoryPage from '../views/XyRepositoryPage.vue'     // 西医知识库页
@@ -27,7 +26,8 @@ import drugTarget from '../views/drugTarget.vue'  //  药物靶点页面
 import brainMap from '../views/brainMap.vue'  //  脑图页面
 import guideDetails from '../views/guideDetails.vue'  //  诊断指南
 
-// ================================新版本 以上=========================================
+// ================================ 科研灵感模块 =========================================
+import researchHome from '../views/researchPages/researchHome.vue'  //  科研灵感主页
 
 // ===============================  H5 页面 ============================================
 import intelGuide from '../views/h5pages/intelGuide.vue' // h5 智能导诊页面
@@ -149,7 +149,6 @@ const routes = [
       requireAuth:true
     }
   },
-  // ===================  新版本添加 以下 ==============================
   {
     path:'/FrontPage',
     name: 'FrontPage',
@@ -235,7 +234,22 @@ const routes = [
     name : 'guideDetails',
     component: guideDetails,
   },
-  // ===================  新版本添加 以上  ==============================
+  {  // 科研灵感界面
+    path: '/researchHome',
+    name : 'researchHome',
+    component: researchHome,
+    children:[
+      { path: '/homePages',
+          name: 'homePages',
+          component: () => import('@/views/researchPages/homePages'),
+            meta: {
+              keepAlive: true,
+              scollTopPosition: 0,
+              requireAuth:true
+            }
+        },
+    ]
+  },
 
 ]
 
