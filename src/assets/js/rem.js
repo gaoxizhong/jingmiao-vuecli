@@ -1,5 +1,5 @@
 // 设置基准
-const BASE = 100;
+const BASE = 20;
 
 (function (doc, win) {
   let docEl = doc.documentElement,

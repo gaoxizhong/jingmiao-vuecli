@@ -17,9 +17,15 @@
     <el-container>
       <!-- 左侧导航 开始 -->
       <el-aside width="auto">
-        <!-- <CommonAside @sickNess="setsickNess"></CommonAside> -->
-
-        <el-menu default-active="1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="!isColl">
+        <el-menu 
+          default-active="$route.path" 
+          class="el-menu-vertical-demo" 
+          @open="handleOpen" 
+          @close="handleClose" 
+          :collapse="!isColl" 
+          router 
+          unique-opened
+        >
           <a href="javascript:0;" class="isCollapse-box" @click="menu_btn">
             <img src="../../assets/image/researchPages/isCollapse.png" class="isCollapse-i" />
             <span class="isCollapse-s" v-if="isColl">折叠面板</span>
@@ -29,7 +35,7 @@
               <i class="el-icon-location"></i>
               <span slot="title">科研灵感探索</span>
             </template>
-            <el-menu-item index="1-1" style=" display: flex;justify-content: flex-start;align-items:center; padding-left:30px !important;color:#333;">
+            <el-menu-item index="/popularLiterature" style=" display: flex;justify-content: flex-start;align-items:center; padding-left:30px !important;color:#333;">
               <span slot="title">文献库</span>
             </el-menu-item>
             <el-submenu index="1-4">
@@ -43,7 +49,7 @@
       </el-aside>
       <!-- 左侧导航 结束 -->
 
-       <!-- 主题 开始 -->
+      <!-- 主题 开始 -->
       <el-main>
         <keep-alive v-if="is_view">
           <router-view v-if="$route.meta.keepAlive"></router-view>
@@ -57,7 +63,6 @@
   </el-container>
 </template>
 <script>
-  import '../../assets/js/rem';
   // import CommonAside from "../../components/CommonAside";
   export default {
     provide(){
@@ -117,13 +122,18 @@
   }
 </script>
 <style scoped>
-    header{
+  .el-main{
+    background: #FAFBFF;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+  header{
     width:100%;
-    height: 0.72rem;
+    height: 3.6rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 0.28rem;
+    padding: 0 1.4rem;
     box-sizing: border-box;
   }
   .l-content{
@@ -133,8 +143,8 @@
     align-items: center;
   }
   .l-content>img{
-    width: 1.33rem;
-    height: 0.31rem;
+    width: 6.65rem;
+    height: 1.55rem;
     display: inline-block;
   }
 
@@ -145,16 +155,16 @@
     align-items: center;
   }
   .r-content>img.user-img{
-    width: 0.46rem;
-    height: 0.46rem;
+    width: 2.3rem;
+    height: 2.3rem;
     cursor: pointer;
   }
   .r-toLogin{
-    font-size: 0.18rem;
+    font-size: 0.9rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #333333;
-    margin-left: 0.2rem;
+    margin-left: 1rem;
   }
   .r-toLogin:hover{
     color: #2B77BD;
@@ -162,27 +172,27 @@
   .el-aside{
     overflow-X: hidden;
   }
-  .el-menu{
-    width: 2.76rem;
+  .el-menu-vertical-demo:not(.el-menu--collapse){
+    width: 13.8rem;
   }
   .el-submenu .el-menu-item{
     width: 100%
   }
   .isCollapse-box{
-    width: 2.76rem;
+    width: 13.8rem;
     display: flex;
     align-items: center;
-    height: 0.78rem;
-    font-size: 0.18rem;
-    padding: 0 0.3rem;
+    height: 3.9rem;
+    font-size: 0.9rem;
+    padding: 0 1.5rem;
     box-sizing: border-box;
     border-bottom: 1px solid #E1E1E1;
   }
   .isCollapse-box .isCollapse-i{
-    width: 0.2rem;
-    height: 0.18rem;
+    width: 1rem;
+    height: 0.9rem;
   }
   .isCollapse-box .isCollapse-s{
-    padding-left: 0.2rem;
+    padding-left: 1rem;
   }
 </style>

@@ -4,6 +4,7 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import './assets/js/rem'
 
 import { Result,Footer,DatePicker,Radio,DropdownItem,RadioButton,RadioGroup,CheckboxGroup,Checkbox,Table,TableColumn,Breadcrumb,BreadcrumbItem,TabPane,Tabs,Switch,Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
 Vue.config.productionTip = false
