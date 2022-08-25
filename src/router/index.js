@@ -26,12 +26,17 @@ import drugTarget from '../views/drugTarget.vue'  //  药物靶点页面
 import brainMap from '../views/brainMap.vue'  //  脑图页面
 import guideDetails from '../views/guideDetails.vue'  //  诊断指南
 
-// ================================ 科研灵感模块 =========================================
-import researchHome from '../views/researchPages/researchHome.vue'  //  科研灵感主页
-
 // ===============================  H5 页面 ============================================
 import intelGuide from '../views/h5pages/intelGuide.vue' // h5 智能导诊页面
 import department from '../views/h5pages/department.vue' // h5 智能导诊页面
+
+// ================================ 科研灵感模块 =========================================
+import researchHome from '../views/researchPages/researchHome.vue'  //  科研灵感主页
+
+
+
+
+
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location, onResolve, onReject) {
@@ -239,9 +244,9 @@ const routes = [
     name : 'researchHome',
     component: researchHome,
     children:[
-      { path: '/homePages',
-          name: 'homePages',
-          component: () => import('@/views/researchPages/homePages'),
+      { path: '/popularLiterature', // 文献默认页面 --- 热门推荐
+          name: 'popularLiterature',
+          component: () => import('@/views/researchPages/popularLiterature'),
             meta: {
               keepAlive: true,
               scollTopPosition: 0,

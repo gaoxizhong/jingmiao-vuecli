@@ -1,17 +1,188 @@
 <template>
-  <div class="aaa">1</div>
+  <el-container :style="`height:${viewHeight}px;`">
+    <!-- 头部 开始  -->
+    <el-header>
+      <header>
+        <div class="l-content">
+          <img src="../../assets/image/researchPages/logo.png" alt="" />
+        </div>
+        <div class="r-content" v-if="phone">
+          <img src="../../assets/image/researchPages/img-user.png" :title="phone"  class="user-img"/>
+          <a href="javascript:0;" class="r-toLogin" @click="toLogin">退出</a>
+        </div>
+      </header>
+    </el-header>
+    <!-- 头部 结束  -->
+
+    <el-container>
+      <!-- 左侧导航 开始 -->
+      <el-aside width="auto">
+        <!-- <CommonAside @sickNess="setsickNess"></CommonAside> -->
+
+        <el-menu default-active="1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="!isColl">
+          <a href="javascript:0;" class="isCollapse-box" @click="menu_btn">
+            <img src="../../assets/image/researchPages/isCollapse.png" class="isCollapse-i" />
+            <span class="isCollapse-s" v-if="isColl">折叠面板</span>
+          </a>
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span slot="title">科研灵感探索</span>
+            </template>
+            <el-menu-item index="1-1" style=" display: flex;justify-content: flex-start;align-items:center; padding-left:30px !important;color:#333;">
+              <span slot="title">文献库</span>
+            </el-menu-item>
+            <el-submenu index="1-4">
+              <span slot="title">灵感发现</span>
+              <el-menu-item index="1-4-1">学科分析</el-menu-item>
+              <el-menu-item index="1-4-2">学者分析</el-menu-item>
+              <el-menu-item index="1-4-3">期刊分析</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <!-- 左侧导航 结束 -->
+
+       <!-- 主题 开始 -->
+      <el-main>
+        <keep-alive v-if="is_view">
+          <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"/>
+      </el-main>
+      <!-- 主题 结束 -->
+
+    </el-container>
+
+  </el-container>
 </template>
 <script>
-  import '../../assets/js/rem'
+  import '../../assets/js/rem';
+  // import CommonAside from "../../components/CommonAside";
   export default {
+    provide(){
+      return {
+        setsickNess: this.setsickNess
+      }
+    },
+    name: 'researchHome',
+    components: {
+      // CommonAside,
+    },
+    data(){
+      return {
+        isColl: true,
+        phone:'',
+        viewHeight:'',
+        viewWidth:'',
+        sickNess1:[],
+        is_view: true
+      }
+    },
+    mounted(){
+      let that = this;
+      let phone = window.localStorage.getItem('setUser');
+      that.phone = phone;
+    },
+    created(){
+      let getViewportSize = this.$getViewportSize();
+      this.viewHeight = getViewportSize.height;
+      this.viewWidth = getViewportSize.width;
+    },
+    methods:{
+      // 点击头部退出
+      toLogin(){
+        this.$router.push({name: 'Login'});
+      },
+      // 折叠面板
+      menu_btn(){
+        this.isColl = !this.isColl;
+      },
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
 
+    },
+
+
+    setsickNess(){
+      this.is_view = false;
+      this.$nextTick(() => {
+        this.is_view = true
+      })
+    },
   }
 </script>
 <style scoped>
-  .aaa{
-    width: 1rem;
-    height: 3rem;
-    background: rgb(41, 160, 4);
-    font-size: 0.4rem;
+    header{
+    width:100%;
+    height: 0.72rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.28rem;
+    box-sizing: border-box;
+  }
+  .l-content{
+    width: auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .l-content>img{
+    width: 1.33rem;
+    height: 0.31rem;
+    display: inline-block;
+  }
+
+  .r-content{
+    width: auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .r-content>img.user-img{
+    width: 0.46rem;
+    height: 0.46rem;
+    cursor: pointer;
+  }
+  .r-toLogin{
+    font-size: 0.18rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    margin-left: 0.2rem;
+  }
+  .r-toLogin:hover{
+    color: #2B77BD;
+  }
+  .el-aside{
+    overflow-X: hidden;
+  }
+  .el-menu{
+    width: 2.76rem;
+  }
+  .el-submenu .el-menu-item{
+    width: 100%
+  }
+  .isCollapse-box{
+    width: 2.76rem;
+    display: flex;
+    align-items: center;
+    height: 0.78rem;
+    font-size: 0.18rem;
+    padding: 0 0.3rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid #E1E1E1;
+  }
+  .isCollapse-box .isCollapse-i{
+    width: 0.2rem;
+    height: 0.18rem;
+  }
+  .isCollapse-box .isCollapse-s{
+    padding-left: 0.2rem;
   }
 </style>
