@@ -182,7 +182,7 @@
     width: 13.8rem;
     display: flex;
     align-items: center;
-    height: 3.9rem;
+    height: 3rem;
     font-size: 0.9rem;
     padding: 0 1.5rem;
     box-sizing: border-box;
