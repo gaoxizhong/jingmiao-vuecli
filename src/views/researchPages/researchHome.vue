@@ -18,7 +18,7 @@
       <!-- 左侧导航 开始 -->
       <el-aside width="auto">
         <el-menu 
-          default-active="$route.path" 
+          :default-active="activeIndex" 
           class="el-menu-vertical-demo" 
           @open="handleOpen" 
           @close="handleClose" 
@@ -52,9 +52,9 @@
       <!-- 主题 开始 -->
       <el-main>
         <keep-alive v-if="is_view">
-          <router-view v-if="$route.meta.keepAlive"></router-view>
+          <router-view v-if="$route.meta.keepAlive" @onEmitIndex="onEmitIndex" @setsickNess="setsickNess"></router-view>
         </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive"/>
+        <router-view v-if="!$route.meta.keepAlive" @onEmitIndex="onEmitIndex" @setsickNess="setsickNess"/>
       </el-main>
       <!-- 主题 结束 -->
 
@@ -81,7 +81,8 @@
         viewHeight:'',
         viewWidth:'',
         sickNess1:[],
-        is_view: true
+        is_view: true,
+        activeIndex:'/popularLiterature'
       }
     },
     mounted(){
@@ -95,6 +96,11 @@
       this.viewWidth = getViewportSize.width;
     },
     methods:{
+      // 接收子组件方法
+      onEmitIndex(idx) {
+        console.log(idx)
+        this.activeIndex = idx;
+      },
       // 点击头部退出
       toLogin(){
         this.$router.push({name: 'Login'});
@@ -108,23 +114,34 @@
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
-      }
-
+      },
+      setsickNess(){
+        this.is_view = false;
+        this.$nextTick(() => {
+          this.is_view = true
+        })
+      },
     },
-
-
-    setsickNess(){
-      this.is_view = false;
-      this.$nextTick(() => {
-        this.is_view = true
-      })
-    },
+    // setsickNess(){
+    //   this.is_view = false;
+    //   this.$nextTick(() => {
+    //     this.is_view = true
+    //   })
+    // },
   }
 </script>
 <style scoped>
+/* ==============  滚动条样式   ==================== */
+  .el-main::-webkit-scrollbar { 
+    display: none;
+  }
+/* ==============  滚动条样式   ==================== */
+  .el-container{
+    overflow: hidden;
+  }
   .el-main{
     background: #FAFBFF;
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 0.75rem 1.5rem;
     box-sizing: border-box;
   }
   header{

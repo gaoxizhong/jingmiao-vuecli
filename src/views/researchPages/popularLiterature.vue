@@ -42,7 +42,7 @@
 
         <div class="list-itembox">
 
-          <a href="javascript:0;" class="list-item">
+          <a href="javascript:0;" class="list-item" @click.stop="goToDetails('1')">
             <div class="list-item-title" title="1.聚乙烯微塑料对糖尿病小鼠肾脏的影响">1.聚乙烯微塑料对糖尿病小鼠肾脏的影响</div>
             <div class="list-item-subt">德利论文事校如奶生9号.”(中国环境科回CrcOCs[土大核心822年3明）</div>
             <div class="list-item-text" >出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加电0mESm PSP基置导致疆原病小温肾解出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加，电0mESm PSP…</div>
@@ -55,7 +55,7 @@
             </div>
             <div class="item-btn-box">
               <div class="asub-box">
-                <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i class="el-icon-reading"></i>原文链接</a>
+                <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
                 <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i class="el-icon-reading"></i>在线阅读</a>
               </div>
 
@@ -69,7 +69,23 @@
           </a> 
 
         </div>
-
+        <!-- 分页展示 -->
+        <div class="pagination-box">
+          <el-pagination
+          background
+          @current-change="handleCurrentChange"
+          layout=" prev, pager, next"
+          :total="count"
+          :page-size="pageSize"
+          :current-page='current_page'>
+          </el-pagination>
+          <!-- <div class="el-pagination is-background">
+            <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
+            <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
+            <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
+            <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
+          </div> -->
+        </div>
       </div>  
       <!-- 左侧推荐列表 结束-->
 
@@ -88,7 +104,29 @@
             </div>
           </div>
 
-          <div></div>
+          <div class="fastEntry-listbox">
+            <a href="javascript:0;">
+              <img src="../../assets/image/researchPages/icon-syjc.png" alt="" />
+              <span>使用教程</span>
+            </a>
+            <a href="javascript:0;" @click="goToMyFavorite">
+              <img src="../../assets/image/researchPages/icon-wdsc.png" alt="" />
+              <span>我收藏的</span>
+            </a>
+            <a href="javascript:0;">
+              <img src="../../assets/image/researchPages/icon-xzfx.png" alt="" />
+              <span>学者分析</span>
+            </a>
+            <a href="javascript:0;">
+              <img src="../../assets/image/researchPages/icon-xkfx.png" alt="" />
+              <span>学科分析</span>
+            </a>
+            <a href="javascript:0;">
+              <img src="../../assets/image/researchPages/icon-qkfx.png" alt="" />
+              <span>期刊分析</span>
+            </a>
+          </div>
+
         </div>
         <!-- 快速入口 结束 -->
 
@@ -105,6 +143,17 @@
             </a>
           </div>
 
+          <div class="popular-listbox">
+            <a href="javascript:0;">
+              <span style="color:#D93636;">01</span><span style="padding-left:0.5rem;">疫情冲击下的2020年中国经济形势与政策选择…</span>
+            </a>
+            <a href="javascript:0;">
+              <span style="color:#D93636;">02</span><span style="padding-left:0.5rem;">智慧教育背景下教研活动的有效组织</span>
+            </a>
+            <a href="javascript:0;">
+              <span style="color:#FA6400;">03</span><span style="padding-left:0.5rem;">智慧教育背景下教研活动的有效组织</span>
+            </a>
+          </div>
 
         </div>
       </div>
@@ -129,15 +178,61 @@
     },
     data(){
       return {
+        is_s:false,
         is_view: true,
         is_titleTab:'1',
         headerInput:'', // 普通搜索
+        count:0, // 总条数
+        pageSize: 10,
+        current_page: 1,
       }
     },
     created(){
-
+      this.$emit('onEmitIndex', '/popularLiterature') // 触发父组件的方法，并传递参数index
     },
     methods:{
+      // 点击我收藏的
+      goToMyFavorite(){
+        this.$emit('setsickNess', '');
+        // 新页面打开
+        this.$router.push({  //核心语句
+          path:'/myFavorite',   //跳转的路径
+          query:{},
+        })
+      },
+      // 点击作者
+      goToauthor(n){
+        let that = this;
+        let name = n;
+        // 新页面打开
+        this.$router.push({
+          path: '',
+          query:{
+            name,
+          }
+        });
+      },
+      // 点击列表
+      goToDetails(i){
+        let that = this;
+        let id = i;
+        this.$emit('setsickNess', '');
+        // 新页面打开
+        this.$router.push({  //核心语句
+          path:'/literatureDetails',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+            id,
+          }
+        })
+      },
+      // 点击分页功能
+      handleCurrentChange(val) {
+        let that = this;
+        that.current_page = Number(val);
+        that.getHomeRightList();
+        // 回到顶部的方法。
+         window.scrollTo(0,0);
+      },
       clicktitleTab(n){
         this.is_titleTab = n;
       },
@@ -159,25 +254,15 @@
         }
       },
     },
-    // 点击作者
-      goToauthor(n){
-        let that = this;
-        let name = n;
-        // 新页面打开
-        this.$router.resolve({
-          path: '',
-          query:{
-            name,
-          }
-        });
-      },
 
-    setsickNess(){
-      this.is_view = false;
-      this.$nextTick(() => {
-        this.is_view = true
-      })
-    },
+
+    // setsickNess(){
+    //   this.is_view = false;
+    //   this.$nextTick(() => {
+    //     this.is_view = true
+    //   })
+    // },
+
   }
 </script>
 <style scoped>
@@ -393,15 +478,21 @@
     align-items: center;
   }
   .asub-zaixian {
+    border-radius: 20px;
     color: #2B77BD;
     align-items: center;
-    padding: 0.1rem 0;
-    font-size: 0.65rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
     margin-right: 0.6rem;
-    width: auto;
+    display: flex;
+    align-items: center;
   }
-  .asub-zaixian .el-icon-reading {
-    margin-right: 0.2rem;
+  .asub-zaixian:nth-of-type(1){
+    padding-left:0;
+  }
+  .asub-zaixian .el-icon-reading,.el-icon-star-on,.el-icon-star-off {
+    font-size: 1.2rem;
+    margin-right: 0.25rem;
   }
   .asub-zaixian:hover{
     color: #fa6400;
@@ -423,7 +514,7 @@
 
   .listbox-right>div{
     width: 21rem;
-    height: 11.2rem;
+    height: auto;
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
     border-radius: 8px;
@@ -450,7 +541,7 @@
   .l-titlebox-1>span{
     font-size: 0.8rem;
     font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
+    font-weight: 600;
     color: #2B77BD;
     padding-left: 0.5rem;
   }
@@ -465,17 +556,79 @@
     color: #666666;
     padding-left: 0.5rem;
   }
-
-
-
-
-
-
+  .fastEntry-listbox{
+    width: 100%;
+    height: auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .fastEntry-listbox>a{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.7rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    padding: 0.65rem 0;
+  }
+  .fastEntry-listbox>a:hover{
+    color: #2B77BD;
+  }
+  .fastEntry-listbox>a .img1{
+    width: 0.95rem;
+    height: 0.8rem;
+  }
+  .fastEntry-listbox>a .img2{
+    width: 0.95rem;
+    height: 0.9rem;
+  }
+  .fastEntry-listbox>a .img3{
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+  .fastEntry-listbox>a .img4{
+    width: 1.15rem;
+    height: 0.85rem;
+  }
+  .fastEntry-listbox>a .img5{
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+  .fastEntry-listbox>a span{
+    padding-left: 0.5rem;
+  }
 
 
   .listbox-right>div.popularList-box{
     margin-top: 0.9rem;
   }
-  
-
+  .popular-listbox{
+    width: 100%;
+    padding: 0.45rem 1rem;
+  }
+  .popular-listbox>a{
+    padding: 0.45rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-size: 0.8rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #62657C;
+    text-align: left;
+  }
+  .popular-listbox>a:hover{
+    color: #2B77BD;
+  }
+  .pagination-box{
+    padding: 1.5rem 0;
+  }
+  .el-pagination>button{
+    padding: 0 1rem !important;
+  }
 </style>

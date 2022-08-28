@@ -1,19 +1,9 @@
-// 设置基准
-const BASE = 20;
-
 (function (doc, win) {
-  let docEl = doc.documentElement,
- // orientationchange->手机屏幕转屏事件
-     // resize->页面大小改变事件
-      resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',//去windows遍历属性，如果有orientationchange这个属性就用他，没有就用resize
-      recall = function () {
-          let clientWidth = docEl.clientWidth;//获取到屏幕的宽度
-          console.log(clientWidth)
-          if (!clientWidth) return;
-          docEl.style.fontSize = BASE * (clientWidth / 1920) + 'px';
-      };
-  if (!doc.addEventListener) return;
-  win.addEventListener(resizeEvt, recall, false);
-// DOMContentLoaded->dom加载完就执行,onload要dom/css/js都加载完才执行
-  doc.addEventListener('DOMContentLoaded', recall, false);
+  var wW = window.innerWidth; // 当前窗口的宽度
+
+  var whdef = 20 / 1920; // 表示1920的设计图,1rem == 20px 其他值都可以
+  // var wH = window.innerHeight;// 当前窗口的高度
+  var rem = wW * whdef; // 以默认比例值乘以当前窗口宽度,得到该宽度下的相应FONT-SIZE值
+  document.getElementsByTagName("html")[0].style.fontSize = rem + 'px';
+  console.log(wW)
 })(document, window);

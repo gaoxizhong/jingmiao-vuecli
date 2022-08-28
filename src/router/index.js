@@ -244,15 +244,36 @@ const routes = [
     name : 'researchHome',
     component: researchHome,
     children:[
-      { path: '/popularLiterature', // 文献默认页面 --- 热门推荐
-          name: 'popularLiterature',
-          component: () => import('@/views/researchPages/popularLiterature'),
-            meta: {
-              keepAlive: true,
-              scollTopPosition: 0,
-              requireAuth:true
-            }
-        },
+      { 
+        path: '/popularLiterature', // 文献默认页面 --- 热门推荐
+        name: 'popularLiterature',
+        component: () => import('@/views/researchPages/popularLiterature'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      { 
+        path: '/literatureDetails', // 文献默认页面 --- 文献详情页
+        name: 'literatureDetails',
+        component: () => import('@/views/researchPages/literatureDetails'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      { 
+        path: '/myFavorite', //  --- 我收藏的
+        name: 'myFavorite',
+        component: () => import('@/views/researchPages/myFavorite'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
     ]
   },
 
