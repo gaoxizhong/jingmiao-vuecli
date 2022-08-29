@@ -395,9 +395,21 @@ export const getGuideDetail = (params) =>{
 // =================  h5页面方法 ==================
 
 
+// =================  科研探索api  ↓ ==================
+
+// 文献默认首页
+export const getEsIndex = (params) =>{
+  return axios.request({
+    url:'/es-index',
+    method: 'post',
+    data: params
+  })
+}
+
+// =================  科研探索api  ↑ ==================
 
 
-// ======================== 新版接口 以上 ===========================================
+
 // ======================== webServicesAxios 第三方接口 以下 ===========================================
 // cdss(icss)webServicesAxios 
 // export const DrumpServices_ZK = (params) =>{

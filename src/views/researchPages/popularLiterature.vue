@@ -42,10 +42,10 @@
 
         <div class="list-itembox">
 
-          <a href="javascript:0;" class="list-item" @click.stop="goToDetails('1')">
-            <div class="list-item-title" title="1.聚乙烯微塑料对糖尿病小鼠肾脏的影响">1.聚乙烯微塑料对糖尿病小鼠肾脏的影响</div>
-            <div class="list-item-subt">德利论文事校如奶生9号.”(中国环境科回CrcOCs[土大核心822年3明）</div>
-            <div class="list-item-text" >出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加电0mESm PSP基置导致疆原病小温肾解出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加，电0mESm PSP…</div>
+          <a href="javascript:0;" class="list-item" v-for="(item,index) in listData" :key="index" @click.stop="goToDetails(item.id)">
+            <div class="list-item-title" :title="(index+1) + '.' + item.title">{{index +1}}.{{item.title}}</div>
+            <div class="list-item-subt">{{item.subject}}</div>
+            <div class="list-item-text" >{{item.abstract}}</div>
             <div class="list-item-z">
               <label class="zuozhe-box">相关作者：</label>
               <div class="tap-top-span">
@@ -166,6 +166,7 @@
 </template>
 <script>
   // import CommonAside from "../../components/CommonAside";
+  import { getEsIndex } from "../../api/data";
   export default {
     provide(){
       return {
@@ -185,10 +186,12 @@
         count:0, // 总条数
         pageSize: 10,
         current_page: 1,
+        listData:[], // 推荐列表
       }
     },
     created(){
-      this.$emit('onEmitIndex', '/popularLiterature') // 触发父组件的方法，并传递参数index
+      this.$emit('onEmitIndex', '/popularLiterature'); // 触发父组件的方法，并传递参数index
+      this.getEsIndex();
     },
     methods:{
       // 点击我收藏的
@@ -253,7 +256,50 @@
           this.headerInputClick();
         }
       },
+
+      // 获取页面数据
+      getEsIndex(){
+        let that = this;
+        let pearms = {
+
+        };
+        const loading = this.$loading({
+          lock: true,
+          text: "Loading",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.1)",
+          target: document.querySelector("body")
+        });
+        that.infoDetail = {};
+        getEsIndex(pearms).then(res => {
+          loading.close();
+          if (res.data.code == 0) {
+            let count = res.data.data.total;
+            let listData = res.data.data.data;
+            that.count = count;
+            that.listData = listData;
+          } else {
+            this.$message.error({
+              message: res.data.msg
+            });
+          }
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+        });
+      },
+
+
+
+
+
+
+
+
+
     },
+
 
 
     // setsickNess(){
