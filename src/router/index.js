@@ -274,6 +274,16 @@ const routes = [
           requireAuth:true
         }
       },
+      { 
+        path: '/literatureAuthor', //  --- 文献作者详情页
+        name: 'literatureAuthor',
+        component: () => import('@/views/researchPages/literatureAuthor'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
     ]
   },
 

@@ -69,7 +69,7 @@
             </div>
             <div class="asub-box">
               <a href="javascript:0;" class="asub-zaixian"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-              <a :href="infoDetail.onlineRead?infoDetail.onlineRead:'javascript:0;'" :class="infoDetail.onlineRead?'asub-zaixian':'no-zaixian'" :target="infoDetail.onlineRead?'_blank':''" @click.stop="goToyuedu($event,infoDetail.onlineRead)" v-if="infoDetail.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
+              <a :href="infoDetail.onlineRead?infoDetail.onlineRead:'javascript:0;'" class="asub-zaixian" :target="infoDetail.onlineRead?'_blank':''" @click.stop="goToyuedu($event,infoDetail.onlineRead)" v-if="infoDetail.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
             </div>
           </div>
         </div>
@@ -91,8 +91,8 @@
               <div class="list-item-z">
                 <label class="zuozhe-box">相关作者：</label>
                 <div class="tap-top-span">
-                  <a href="javascript:0;" @click.stop="goToauthor('王桂琴')">王桂琴</a>
-                  <a href="javascript:0;" @click.stop="goToauthor('王桂琴')">王桂琴</a>
+                  <a href="javascript:0;" @click.stop="clickAuthor('王桂琴')">王桂琴</a>
+                  <a href="javascript:0;" @click.stop="clickAuthor('王桂琴')">王桂琴</a>
                 </div>
               </div>
               <div class="item-btn-box">
@@ -151,16 +151,16 @@
             </div>
           </div>
           <div class="xgxz-listbox">
-            <a href="javascript:0;">刘晓东</a>
-            <a href="javascript:0;">沈思琪</a>
-            <a href="javascript:0;">王向</a>
-            <a href="javascript:0;">程栋</a>
-            <a href="javascript:0;">刘晓东</a>
-            <a href="javascript:0;">沈思琪</a>
-            <a href="javascript:0;">王向</a>
-            <a href="javascript:0;">沈思琪</a>
-            <a href="javascript:0;">王向</a>
-            <a href="javascript:0;">程栋</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">刘晓东</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">沈思琪</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">王向</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">程栋</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">刘晓东</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">沈思琪</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">王向</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">沈思琪</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">王向</a>
+            <a href="javascript:0;" @click="clickAuthor('刘晓东')">程栋</a>
           </div>
 
         </div>
@@ -279,25 +279,11 @@
         console.log(tab)
         this.activeName = tab.name;
       },
-
-      // 点击作者
-      goToauthor(n){
-        let that = this;
-        let name = n;
-        // 新页面打开
-        this.$router.push({
-          path: '',
-          query:{
-            name,
-          }
-        });
-      },
-          // 点击列表
+      // 点击列表
       goToDetails(i){
         let that = this;
         let id = i;
         this.$emit('setsickNess','');
-        // 新页面打开
         this.$router.push({  //核心语句
           path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
@@ -306,6 +292,17 @@
         })
       },
 
+      // 点击学者名称
+      clickAuthor(n){
+        let name = n;
+        this.$emit('setsickNess','');
+        this.$router.push({
+          path:'/literatureAuthor',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+            name,
+          }
+        })
+      }
 
 
     }

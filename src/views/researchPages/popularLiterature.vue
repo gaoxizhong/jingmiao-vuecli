@@ -7,28 +7,28 @@
         <div class="titlebox-tab-m"></div>
         <div class="titlebox-tab-item" :class="is_titleTab == '2'?'hover':'' " @click="clicktitleTab('2')">高级搜索</div>
       </div>
+      <div v-if="is_titleTab == '1'">
+        <div class="header-input-box">
+          <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+            <el-button slot="append" @click="headerInputClick" >搜索</el-button>
+          </el-input>
+        </div>
 
-      <div class="header-input-box">
-        <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-          <el-button slot="append" @click="headerInputClick" >搜索</el-button>
-        </el-input>
-      </div>
-
-      <div class="historysearch-box">
-        <div class="historysearch-title">历史搜索：</div>
-        <div class="history-items-box">
-          <div class="history-items">置换</div>
-          <div class="history-items">关节置换</div>
-          <div class="history-items">关节置换</div>
-          <div class="history-items">置换</div>
-          <div class="history-items">关节置换</div>
-          <div class="history-items">关节置换</div>
-          <div class="history-items">置换</div>
-          <div class="history-items">关节置换</div>
-          <div class="history-items">关节置换</div>
+        <div class="historysearch-box">
+          <div class="historysearch-title">历史搜索：</div>
+          <div class="history-items-box">
+            <div class="history-items">置换</div>
+            <div class="history-items">关节置换</div>
+            <div class="history-items">关节置换</div>
+            <div class="history-items">置换</div>
+            <div class="history-items">关节置换</div>
+            <div class="history-items">关节置换</div>
+            <div class="history-items">置换</div>
+            <div class="history-items">关节置换</div>
+            <div class="history-items">关节置换</div>
+          </div>
         </div>
       </div>
-
     </div>
     <!-- 头部搜索模块 结束 -->
     
