@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import CommonAside from "../components/CommonAside";
+// import CommonAside from "../components/CommonAside";
 import CommonHeader1 from "../components/CommonHeader1";
 // import Home from "../components/Home";
 

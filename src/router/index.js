@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import store from '../store/index'
 
 
-import Main from '../views/Main.vue'
+// import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
 import QAhome from '../views/QAhome.vue'
 import VideoDetails from '../views/VideoDetails.vue'
@@ -57,75 +57,73 @@ const routes = [
     component: QAhome,
     meta:{requireAuth:true}
   },
-  {
-    path:'/Main',
-    name:'Main',
-    component: Main,
-    children: [
-        { path: '/Home',
-          name: 'home',
-          component: () => import('@/views/Home'),
-            meta: {
-              keepAlive: true,
-              scollTopPosition: 0,
-              requireAuth:true
-            }
-        },
-        { path: '/zyHome',
-          name: 'zyHome',
-          component: () => import('@/views/zyHome'),
-          meta: {
-            keepAlive: true,
-            scollTopPosition: 0,
-            requireAuth:true
-          }
-        },
-        { path: '/litgHome',
-          name: 'litgHome',
-          component: () => import('@/views/litgHome'),
-          meta: {
-            keepAlive: true,
-            scollTopPosition: 0,
-            requireAuth:true
-          }
-        },
-        { path: '/Details',
-          name: 'Details',
-          component: () => import('@/views/Details'),
-          meta: {
-            keepAlive: true,
-            scollTopPosition: 0,
-            requireAuth:true
-          }
-        },
-        { path: '/LcsyHome',
-          name: 'LcsyHome',
-          component: () => import('@/views/LcsyHome'),
-          meta: {
-            keepAlive: true,
-            scollTopPosition: 0,
-            requireAuth:true
-          }
-        },
-        { path: '/LcsyDetails',
-          name: 'LcsyDetails',
-          component: () => import('@/views/LcsyDetails'),
-          meta:{requireAuth:true}
+  // {
+  //   path:'/Main',
+  //   name:'Main',
+  //   component: Main,
+  //   children: [
+  //       { path: '/Home',
+  //         name: 'home',
+  //         component: () => import('@/views/Home'),
+  //           meta: {
+  //             keepAlive: true,
+  //             scollTopPosition: 0,
+  //             requireAuth:true
+  //           }
+  //       },
+  //       { path: '/zyHome',
+  //         name: 'zyHome',
+  //         component: () => import('@/views/zyHome'),
+  //         meta: {
+  //           keepAlive: true,
+  //           scollTopPosition: 0,
+  //           requireAuth:true
+  //         }
+  //       },
+  //       { path: '/litgHome',
+  //         name: 'litgHome',
+  //         component: () => import('@/views/litgHome'),
+  //         meta: {
+  //           keepAlive: true,
+  //           scollTopPosition: 0,
+  //           requireAuth:true
+  //         }
+  //       },
+  //       { path: '/Details',
+  //         name: 'Details',
+  //         component: () => import('@/views/Details'),
+  //         meta: {
+  //           keepAlive: true,
+  //           scollTopPosition: 0,
+  //           requireAuth:true
+  //         }
+  //       },
+  //       { path: '/LcsyHome',
+  //         name: 'LcsyHome',
+  //         component: () => import('@/views/LcsyHome'),
+  //         meta: {
+  //           keepAlive: true,
+  //           scollTopPosition: 0,
+  //           requireAuth:true
+  //         }
+  //       },
+  //       { path: '/LcsyDetails',
+  //         name: 'LcsyDetails',
+  //         component: () => import('@/views/LcsyDetails'),
+  //         meta:{requireAuth:true}
 
-        },
-        { path: '/VideoHome',
-          name: 'VideoHome',
-          component: () => import('@/views/VideoHome'),
-          meta: {
-            keepAlive: true,
-            scollTopPosition: 0,
-            requireAuth:true
-          }
-        },
-        // { path: '/litgDetails', name: 'litgDetails', component: () => import('@/views/litgDetails'),meta:{requireAuth:true} },
-        // { path: '/authorDetails', name: 'authorDetails', component: () => import('@/views/authorDetails'),meta:{requireAuth:true} },
-    ]
-  },
+  //       },
+  //       { path: '/VideoHome',
+  //         name: 'VideoHome',
+  //         component: () => import('@/views/VideoHome'),
+  //         meta: {
+  //           keepAlive: true,
+  //           scollTopPosition: 0,
+  //           requireAuth:true
+  //         }
+  //       },
+  //   ]
+  // },
   {
     path: '/VideoDetails',
     name: 'VideoDetails',
@@ -275,7 +273,7 @@ const routes = [
         }
       },
       { 
-        path: '/literatureAuthor', //  --- 文献作者详情页
+        path: '/literatureAuthor', //  --- 作者详情页
         name: 'literatureAuthor',
         component: () => import('@/views/researchPages/literatureAuthor'),
         meta: {
@@ -284,6 +282,47 @@ const routes = [
           requireAuth:true,
         }
       },
+      { 
+        path: '/scholarAnalysis', //  --- 学者分析首页
+        name: 'scholarAnalysis',
+        component: () => import('@/views/researchPages/scholarAnalysis'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/subjectAnalysis', //  --- 学科分析首页
+        name: 'subjectAnalysis',
+        component: () => import('@/views/researchPages/subjectAnalysis'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/journalAnalysis', //  --- 期刊分析首页
+        name: 'journalAnalysis',
+        component: () => import('@/views/researchPages/journalAnalysis'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/useTutorial', //  --- 使用教程
+        name: 'useTutorial',
+        component: () => import('@/views/researchPages/useTutorial'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      
     ]
   },
 

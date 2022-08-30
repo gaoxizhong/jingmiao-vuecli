@@ -29,6 +29,7 @@
           </div>
         </div>
       </div>
+
     </div>
     <!-- 头部搜索模块 结束 -->
     
@@ -49,8 +50,7 @@
             <div class="list-item-z">
               <label class="zuozhe-box">相关作者：</label>
               <div class="tap-top-span">
-                <a href="javascript:0;" @click.stop="goToauthor('王桂琴')">王桂琴</a>
-                <a href="javascript:0;" @click.stop="goToauthor('王桂琴')">王桂琴</a>
+                <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
               </div>
             </div>
             <div class="item-btn-box">
@@ -71,20 +71,12 @@
         </div>
         <!-- 分页展示 -->
         <div class="pagination-box">
-          <el-pagination
-          background
-          @current-change="handleCurrentChange"
-          layout=" prev, pager, next"
-          :total="count"
-          :page-size="pageSize"
-          :current-page='current_page'>
-          </el-pagination>
-          <!-- <div class="el-pagination is-background">
+          <div class="el-pagination is-background">
             <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
             <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
             <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
             <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
-          </div> -->
+          </div>
         </div>
       </div>  
       <!-- 左侧推荐列表 结束-->
@@ -105,23 +97,23 @@
           </div>
 
           <div class="fastEntry-listbox">
-            <a href="javascript:0;">
+            <a href="javascript:0;" @click="goToMyFavorite('/useTutorial')">
               <img src="../../assets/image/researchPages/icon-syjc.png" alt="" />
               <span>使用教程</span>
             </a>
-            <a href="javascript:0;" @click="goToMyFavorite">
+            <a href="javascript:0;" @click="goToMyFavorite('/myFavorite')">
               <img src="../../assets/image/researchPages/icon-wdsc.png" alt="" />
               <span>我收藏的</span>
             </a>
-            <a href="javascript:0;">
+            <a href="javascript:0;" @click="goToMyFavorite('/scholarAnalysis')">
               <img src="../../assets/image/researchPages/icon-xzfx.png" alt="" />
               <span>学者分析</span>
             </a>
-            <a href="javascript:0;">
+            <a href="javascript:0;" @click="goToMyFavorite('/subjectAnalysis')">
               <img src="../../assets/image/researchPages/icon-xkfx.png" alt="" />
               <span>学科分析</span>
             </a>
-            <a href="javascript:0;">
+            <a href="javascript:0;" @click="goToMyFavorite('/journalAnalysis')">
               <img src="../../assets/image/researchPages/icon-qkfx.png" alt="" />
               <span>期刊分析</span>
             </a>
@@ -165,14 +157,8 @@
 
 </template>
 <script>
-  // import CommonAside from "../../components/CommonAside";
   import { getEsIndex } from "../../api/data";
   export default {
-    provide(){
-      return {
-        setsickNess: this.setsickNess
-      }
-    },
     name: 'popularLiterature',
     components: {
 
@@ -186,6 +172,7 @@
         count:0, // 总条数
         pageSize: 10,
         current_page: 1,
+        total_page:0, // 总页数
         listData:[], // 推荐列表
       }
     },
@@ -194,12 +181,12 @@
       this.getEsIndex();
     },
     methods:{
-      // 点击我收藏的
-      goToMyFavorite(){
+      // 点击快速入口类
+      goToMyFavorite(u){
+        let path = u;
         this.$emit('setsickNess', '');
-        // 新页面打开
-        this.$router.push({  //核心语句
-          path:'/myFavorite',   //跳转的路径
+        this.$router.push({
+          path,
           query:{},
         })
       },
@@ -232,7 +219,7 @@
       handleCurrentChange(val) {
         let that = this;
         that.current_page = Number(val);
-        that.getHomeRightList();
+        that.getEsIndex();
         // 回到顶部的方法。
          window.scrollTo(0,0);
       },
@@ -242,8 +229,8 @@
       // 普通搜索
       headerInputClick(){
         let input_name = this.headerInput;
-        this.$router.replace({  //核心语句
-          path:'/Home',   //跳转的路径
+        this.$router.push({  //核心语句
+          path:'',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             input_name,
           }
@@ -261,7 +248,7 @@
       getEsIndex(){
         let that = this;
         let pearms = {
-
+          page: that.current_page,
         };
         const loading = this.$loading({
           lock: true,
@@ -274,9 +261,9 @@
         getEsIndex(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            let count = res.data.data.total;
+            let total_page = res.data.data.total;
             let listData = res.data.data.data;
-            that.count = count;
+            that.total_page = total_page;
             that.listData = listData;
           } else {
             this.$message.error({
@@ -289,12 +276,6 @@
           console.log(e);
         });
       },
-
-
-
-
-
-
 
 
 
@@ -503,7 +484,7 @@
   }
   .list-item .list-item-z .tap-top-span>a{
     font-size: 0.7rem;
-    margin-right: 0.2rem;
+    margin-right: 0.3rem;
     color: #333;
     display: flex;
     flex-wrap: nowrap;
@@ -614,7 +595,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #333333;

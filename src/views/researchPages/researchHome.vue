@@ -35,14 +35,14 @@
               <i class="el-icon-location"></i>
               <span slot="title">科研灵感探索</span>
             </template>
-            <el-menu-item index="/popularLiterature" style=" display: flex;justify-content: flex-start;align-items:center; padding-left:30px !important;color:#333;">
+            <el-menu-item index="/popularLiterature">
               <span slot="title">文献库</span>
             </el-menu-item>
-            <el-submenu index="1-4">
+            <el-submenu index="1">
               <span slot="title">灵感发现</span>
-              <el-menu-item index="1-4-1">学科分析</el-menu-item>
-              <el-menu-item index="1-4-2">学者分析</el-menu-item>
-              <el-menu-item index="1-4-3">期刊分析</el-menu-item>
+              <el-menu-item index="/subjectAnalysis">学科分析</el-menu-item>
+              <el-menu-item index="/scholarAnalysis">学者分析</el-menu-item>
+              <el-menu-item index="/journalAnalysis">期刊分析</el-menu-item>
             </el-submenu>
           </el-submenu>
         </el-menu>
@@ -82,6 +82,8 @@
         viewWidth:'',
         sickNess1:[],
         is_view: true,
+        menuBackgroundColor:'#fff',
+        menuTextColor:'#000',
         activeIndex:'/popularLiterature'
       }
     },
@@ -189,18 +191,57 @@
   .el-aside{
     overflow-X: hidden;
   }
+  .el-menu{
+    text-align: left;
+    height: 100%;
+  }
   .el-menu-vertical-demo:not(.el-menu--collapse){
     width: 13.8rem;
   }
+  .el-submenu__title{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding:0;
+    border-bottom: 1px solid #E5E5E5;
+    
+  }
+  .el-submenu .el-menu-item {
+    width: 13.8rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    justify-content: flex-start;
+    text-align: left;
+    display: flex;
+    font-size: 0.75rem !important;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    background: rgba(49, 130, 211, 0.048);
+  }
+  .el-submenu .el-menu-item:hover {
+    background-color: #ecf5ff;
+    color: #1674CF !important;
+    font-weight: bold;
+}
   .el-submenu .el-menu-item{
     width: 100%
+  }
+  .el-menu-item.is-active{
+    opacity: 1;
+    color: #1674CF !important;
+    font-weight: bold;
+  }
+  .el-icon-arrow-down:before{
+    color: #000;
   }
   .isCollapse-box{
     width: 13.8rem;
     display: flex;
     align-items: center;
     height: 3rem;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     padding: 0 1.5rem;
     box-sizing: border-box;
     border-bottom: 1px solid #E1E1E1;

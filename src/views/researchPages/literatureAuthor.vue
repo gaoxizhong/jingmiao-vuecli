@@ -207,7 +207,7 @@
               },
             },
             hoverAnimation: false,
-            center: [index * 25 + 15 + "%", "50%"],
+            center: [index * 25 + 15.5 + "%", "50%"],
             data: [
               {
                 value: item.value,
