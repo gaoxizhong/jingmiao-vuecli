@@ -38,7 +38,7 @@
             <el-menu-item index="/popularLiterature">
               <span slot="title">文献库</span>
             </el-menu-item>
-            <el-submenu index="1">
+            <el-submenu index="2">
               <span slot="title">灵感发现</span>
               <el-menu-item index="/subjectAnalysis">学科分析</el-menu-item>
               <el-menu-item index="/scholarAnalysis">学者分析</el-menu-item>
@@ -198,14 +198,16 @@
   .el-menu-vertical-demo:not(.el-menu--collapse){
     width: 13.8rem;
   }
-  .el-submenu__title{
+  .el-aside >>> .el-submenu .el-submenu__title{
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding:0;
-    border-bottom: 1px solid #E5E5E5;
-    
+    height:2.8rem;
+    line-height:2.8rem;
+    font-size: 0.8rem !important;
+    border-bottom: 1px solid #e9e9e94f;
   }
+  
   .el-submenu .el-menu-item {
     width: 13.8rem;
     height: 2.5rem;
@@ -213,7 +215,7 @@
     justify-content: flex-start;
     text-align: left;
     display: flex;
-    font-size: 0.75rem !important;
+    font-size: 0.8rem !important;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;

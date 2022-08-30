@@ -60,9 +60,9 @@
               </div>
 
               <div class="item-r">
-                <span>点击：333</span>
-                <span>被引：66</span>
-                <span>下载：154</span>
+                <!-- <span>点击：333</span> -->
+                <span>被引：{{item.total_citations_number}}</span>
+                <span>下载：{{item.total_download_times}}</span>
               </div>
 
             </div>
@@ -530,9 +530,10 @@
   }
   .item-btn-box .item-r>span{
     font-size: 0.65rem;
-    padding-right: 0.2rem;
+    padding-right: 0.1rem;
     color: #333;
     display: flex;
+    margin-right: 0.5rem;
   }
 
 

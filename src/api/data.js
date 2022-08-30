@@ -405,7 +405,14 @@ export const getEsIndex = (params) =>{
     data: params
   })
 }
-
+// 文献详情页
+export const literatureDetails = (params) =>{
+  return axios.request({
+    url:'/es-detail',
+    method: 'post',
+    data: params
+  })
+}
 // =================  科研探索api  ↑ ==================
 
 

@@ -17,50 +17,41 @@
             <h2 class="text-title">{{infoDetail.title?infoDetail.title:'无'}}</h2>
           </div>
           <div class="text-subtitle" v-if="infoDetail.enTitle">{{infoDetail.enTitle}}</div>
-          <div class="text-suju"><span>点击量：333</span><span>被引：66</span><span>下载：154</span></div>
+          <div class="text-suju">
+            <!-- <span>点击量：333</span> -->
+            <span>被引：{{infoDetail.total_citations_number}}</span>
+            <span>下载：{{infoDetail.total_download_times}}</span>
+          </div>
           <div class="guide-info-list">
-
-            <div class="one-info clearfix" v-if="infoDetail.abstract_trans">
-              <label for="">中文摘要：</label>
-              <div id="all-content">
-                <p style="color:#333;" v-html="infoDetail.abstract_trans"></p>
+            
+            <div class="one_info clearfix" v-if="infoDetail.abstract">
+              <label>中文摘要：</label>
+              <div id="all_content">
+                <p v-html="infoDetail.abstract?infoDetail.abstract:'无'"></p>
               </div>
             </div>
-            <div class="one_info clearfix" style="margin-top:0.2rem;"  v-if="infoDetail.abstract">
+            <div class="one_info clearfix" style="margin-top:4px;"  v-if="infoDetail.abstract_trans">
               <label>英文摘要：</label>
               <div id="all_content">
-                <p style="color:#333;" v-html="infoDetail.abstract"></p>
+                <p v-html="infoDetail.abstract_trans?infoDetail.abstract_trans:'无'"></p>
               </div>
             </div>
 
-            <div class="one_info clearfix" v-if="infoDetail.year">
+            <div class="one_info clearfix" v-if="infoDetail.doi">
               <label>dol:</label>
-              <p>{{infoDetail.year}}</p>
+              <p>{{infoDetail.doi}}</p>
             </div>
 
-            <div class="one_info clearfix" v-if="infoDetail.constitutor">
+            <div class="one_info clearfix" v-if="infoDetail.keyword.length>0">
               <label>关键词：</label>
               <p>
-                <span>{{infoDetail.constitutor}}</span>
-                <span></span>
+                <span v-for="(items,idx) in infoDetail.keyword" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
               </p>
             </div>
 
-            <div class="one_info clearfix" v-if="infoDetail.constitutor">
-              <label>作者：</label>
-              <p>
-                <span>{{infoDetail.constitutor}}</span>
-                <span></span>
-              </p>
-            </div>
-            <div class="one_info clearfix" v-if="infoDetail.year">
-              <label>作者单位:</label>
-              <p>{{infoDetail.year}}</p>
-            </div>
-
-            <div class="one_info clearfix" v-if="infoDetail.year">
+            <div class="one_info clearfix" v-if="infoDetail.cn_name">
               <label>所属期刊:</label>
-              <p>{{infoDetail.year}}</p>
+              <p>{{infoDetail.cn_name}}</p>
             </div>
 
             <div class="one_info clearfix" v-if="infoDetail.year">
@@ -69,7 +60,7 @@
             </div>
             <div class="asub-box">
               <a href="javascript:0;" class="asub-zaixian"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-              <a :href="infoDetail.onlineRead?infoDetail.onlineRead:'javascript:0;'" class="asub-zaixian" :target="infoDetail.onlineRead?'_blank':''" @click.stop="goToyuedu($event,infoDetail.onlineRead)" v-if="infoDetail.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
+              <a :href="infoDetail.pdf_file?infoDetail.pdf_file:'javascript:0;'" class="asub-zaixian" :target="infoDetail.pdf_file?'_blank':''" @click.stop="goToyuedu($event,infoDetail.pdf_file)" v-if="infoDetail.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
             </div>
           </div>
         </div>
@@ -84,7 +75,7 @@
            <!-- 论文列表 -->
           <div class="list-itembox">
 
-            <a href="javascript:0;" class="list-item" @click.stop="goToDetails('2')">
+            <a href="javascript:0;" class="list-item" @click.stop="goToDetails()">
               <div class="list-item-title" title="1.聚乙烯微塑料对糖尿病小鼠肾脏的影响">1.聚乙烯微塑料对糖尿病小鼠肾脏的影响</div>
               <div class="list-item-subt">德利论文事校如奶生9号.”(中国环境科回CrcOCs[土大核心822年3明）</div>
               <div class="list-item-text" >出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加电0mESm PSP基置导致疆原病小温肾解出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加，电0mESm PSP…</div>
@@ -102,7 +93,7 @@
                 </div>
 
                 <div class="item-r">
-                  <span>点击：333</span>
+                  <!-- <span>点击：333</span> -->
                   <span>被引：66</span>
                   <span>下载：154</span>
                 </div>
@@ -133,7 +124,7 @@
           <div>
             <div class="ly-box">
               <img src="https://lh3.googleusercontent.com/ogw/AOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" />
-              <a href="javascript:0;">贵阳中医学院</a>
+              <a href="javascript:0;">{{infoDetail.host_unit}}</a>
             </div>
           </div>
           
@@ -151,16 +142,7 @@
             </div>
           </div>
           <div class="xgxz-listbox">
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">刘晓东</a>
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">沈思琪</a>
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">王向</a>
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">程栋</a>
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">刘晓东</a>
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">沈思琪</a>
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">王向</a>
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">沈思琪</a>
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">王向</a>
-            <a href="javascript:0;" @click="clickAuthor('刘晓东')">程栋</a>
+            <a href="javascript:0;" v-for="(item,index) in infoDetail.author" :key="index" @click="clickAuthor(item)">{{item}}</a>
           </div>
 
         </div>
@@ -198,7 +180,7 @@
 </template>
 
 <script>
-  import { getGuideDetail } from "@/api/data";
+  import { literatureDetails } from "@/api/data";
   export default {
     inject: ['setsickNess'],
     name: 'literatureDetails',
@@ -216,8 +198,7 @@
       let getViewportSize = this.$getViewportSize();
       this.viewHeight = getViewportSize.height;
       this.viewWidth = getViewportSize.width;
-      this.id = Number(this.$route.query.id);
-      console.log(this.id)
+      this.id = this.$route.query.id;
       this.getDetail(this.id);
     },
     methods: {
@@ -258,7 +239,7 @@
           target: document.querySelector("body")
         });
         that.infoDetail = {};
-        getGuideDetail(pearms).then(res => {
+        literatureDetails(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
             document.title = res.data.data.title;
@@ -450,21 +431,23 @@
   }
   .clearfix {
     display: flex;
+    margin-top: 0.5rem;
   }
   .one-info {
     margin-bottom: 0.1rem;
     overflow: hidden;
-    line-height: 1rem;
+    line-height: 1.2rem;
   }
   .one_info label {
     width: 4.7rem;
     font-size: 0.75rem;
     font-weight: bold;
-    text-align: right;
+    text-align: left;
     float: left;
     padding-right: 0.5rem;
+    line-height: 1.5rem;
   }
-  .one_info #all-content {
+  .one_info #all_content {
     flex: 1;
   }
   .one_info p {
@@ -475,10 +458,13 @@
     color: #666666;
     display: flex;
     justify-content: flex-start;
+    line-height: 1.5rem;
   }
   .one_info p span{
     display: inline-block;
     margin-right: 0.1rem;
+    cursor: pointer;
+    margin-right: 1rem;
   }
   .one_info p span:hover{
     color: #2B77BD;

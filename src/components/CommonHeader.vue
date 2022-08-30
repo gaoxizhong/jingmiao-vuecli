@@ -283,7 +283,8 @@ export default {
       let headerNavItems = [
         {id:1,name:'西医知识库',path:'/RepositoryPage',tag_pages:'xyzsk'},
         {id:2,name:'中医知识库',path:'/RepositoryPage',tag_pages:'zyzsk'},
-        {id:3,name:'科研探索',path:'/DocumentGuidePages',tag_pages:'Document'},
+        // {id:3,name:'科研探索',path:'/DocumentGuidePages',tag_pages:'Document'},
+        {id:3,name:'科研探索',path:'/popularLiterature',tag_pages:'Document'},
         // {id:4,name:'指南',path:'/DocumentGuidePages',tag_pages:'Guide'},
         {id:5,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},
         {id:7,name:'疾病图像库',path:'/ImagesList',tag_pages:'jbtxk'},
@@ -345,6 +346,10 @@ export default {
           path,
         });
         window.open(newUrl.href, "_blank");
+      }else if(path == '/popularLiterature'){
+        this.$router.push({
+          path,
+        });
       }else{
         this.nav_id = id;
         this.tag_name = name;

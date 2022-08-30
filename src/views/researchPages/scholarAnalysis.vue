@@ -8,7 +8,57 @@
       </div>
     </div>
     <!-- 头部搜索模块 结束 -->
-    
+
+    <div class="icon-classbox">
+      <div class="classbox-l">
+        <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+        <span style="margin-left: 0.5rem;">热门学者</span>
+      </div>
+      <a href="javascript:0;" class="classbox-r">
+        <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
+        <span>换一批</span>
+      </a>
+    </div>
+
+    <!-- 学者列表模块 开始 -->
+    <div class="scholarList-box">
+
+      <div class="scholarList-items">
+        <img src="../../assets/image/researchPages/img-scholar.png" alt="" class="items-userimg" />
+        <p class="items-name">张天永</p>
+        <div class="infodata-box">
+          <div>
+            <span class="infodata-name">机构名称</span>
+            <span class="infodata-text">中国科学院长春应用化学应用化学</span>
+          </div>
+          <div>
+            <span class="infodata-name">研究领域</span>
+            <span class="infodata-text">中国科学院长春应用化学应用化学</span>
+          </div>
+        </div>
+        <div class="infodata-box" style="border:0;">
+          <div>
+            <span class="infodata-name">成果数</span>
+            <span class="infodata-text">301</span>
+          </div>
+          <div>
+            <span class="infodata-name">被引频次</span>
+            <span class="infodata-text">3367</span>
+          </div>
+          <div>
+            <span class="infodata-name">H指数</span>
+            <span class="infodata-text">28</span>
+          </div>
+          <div>
+            <span class="infodata-name">G指数</span>
+            <span class="infodata-text">65</span>
+          </div>
+        </div>
+        <div class="items-btn">立即查看</div>
+      </div>
+      
+    </div>
+    <!-- 学者列表模块 结束 -->
 
   </div>
 
@@ -38,6 +88,7 @@
     },
     created(){
       this.$emit('onEmitIndex', '/scholarAnalysis'); // 触发父组件的方法，并传递参数index
+      document.title = '学者分析';
       this.getEsIndex();
     },
     methods:{
@@ -146,7 +197,7 @@
     cursor: pointer;
   }
   .header-input-box .el-input{
-    width: 39.65rem;
+    width: 30rem;
   }
   .header-input-box >>> .el-input__inner{
     height: 2rem;
@@ -160,5 +211,121 @@
     border-radius: 20px;
     width: 5.8rem;
     height: 2rem;
+    padding: 0;
+    font-size: 0.8rem;
   }
+  .icon-classbox{
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .classbox-l{
+    height: auto;
+    font-size: 0.8rem;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #2B77BD;
+    display: flex;
+    align-items: center;
+  }
+  .classbox-l>img{
+    width: 0.3rem;
+    height: 1.05rem;
+  }
+  .classbox-l>span{
+    font-weight: 600;
+    padding-left: 0.5rem;
+  }
+  .classbox-r>img{
+    width: 0.75rem;
+    height: 0.8rem;
+  }
+  .classbox-r>span{
+    font-size: 0.65rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #666666;
+    padding-left: 0.5rem;
+  }
+  .scholarList-box{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+  }
+  .scholarList-items{
+    width: 14.55rem;
+    height: auto;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1.1rem;
+    margin-right: 1.61rem;
+  }
+  .scholarList-items:nth-of-type(5n){
+    margin-right: 0;
+  }
+  .items-userimg{
+    width: 5.05rem;
+    height: 5.05rem;
+  }
+  .items-name{
+    font-size: 0.8rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 600;
+    color: #333333;
+    line-height: 1.1rem;
+  }
+  .infodata-box{
+    width: 100%;
+    margin-top: 1rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid #E7E7E7;
+  }
+  .infodata-box>div{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.75rem;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    color: #333333;
+    line-height: 1.35rem;
+  }
+  .infodata-box>div .infodata-name{
+    font-size: 0.65rem;
+    width: 3.2rem;
+    color: #666666;
+    text-align: left;
+  }
+  .infodata-box>div .infodata-text{
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    padding-left: 0.6rem;
+    font-weight: bold;
+  }
+  .items-btn{
+    width: 6.05rem;
+    height: 2.1rem;
+    line-height: 2.1rem;
+    background: #1674CF;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    text-align: center;
+    margin: 0 auto;
+  }
+
 </style>
