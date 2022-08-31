@@ -292,9 +292,10 @@
     background: #fff;
     box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
     padding: 1rem 1.2rem 1.2rem 1.2rem;
+    cursor: pointer;
   }
-  .content-left-1>div.active{
-    background: #ECF5FF;
+  .content-left-1>div:hover,.content-left-1>div.active{
+    background: #ecf5ff79;
   }
   .left-items-t{
     text-align: left;

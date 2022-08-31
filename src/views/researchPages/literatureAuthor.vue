@@ -71,9 +71,16 @@
           </div>
 
         </div>
-
+        <!-- 合作学者列表 -->
         <div class="cooperation-box">
+          <div class="cooperation-title">合作学者</div>
+          <div class="cooperation-list">
 
+            <div class="coolist-items">
+              <div></div>
+            </div>
+
+          </div>
         </div>
 
       </div>
@@ -306,7 +313,49 @@
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
     border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
   }
+  .cooperation-title{
+    font-size: 0.9rem;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #333333;
+    line-height: 1.25rem;
+    text-align: left;
+    height: auto;
+  }
+  .cooperation-list{
+    flex: 1;
+    width: 100%;
+  }
+  .coolist-items{
+    width: 100%;
+    height: auto;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   .author-infobox-t{
     width: 100%;
     border-bottom: 1px solid #E5E5E5;

@@ -199,6 +199,7 @@
       this.viewHeight = getViewportSize.height;
       this.viewWidth = getViewportSize.width;
       this.id = this.$route.query.id;
+      console.log(this.id)
       this.getDetail(this.id);
     },
     methods: {

@@ -68,13 +68,40 @@
       <!-- 右侧列表模块 开始-->
       <div class="filter-rightbox">
         <div class="listitems-box">
+
           <div v-for="(item,index) in journalList" :key="index" class="list-items">
             <img src="https://lh3.googleusercontent.com/ogw/AOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" class="items-img"/>
             <div class="list-itemsinfo">
               <div class="list-itemsinfo-title">高血压</div>
               <div class="eh--title">HYPERTNSION</div>
+              <div class="dataIndicator-box">
+                <span>年文章数：320</span>
+                <span>总被引量：320</span>
+                <span>发文机构数：320</span>
+                <span>发文数者数：320</span>
+                <span>审稿周期：平均1.25月</span>
+                <span>投稿命中率：320</span>
+                <span>H指数：320</span>
+                <span>影响指数：5.997</span>
+                <span>篇均已量：5.997</span>
+              </div>
+              <div class="rightbox-listitems-btnbox">
+                <div>高血压</div>
+                <div>心血管</div>
+              </div>
             </div>
           </div>
+          <!-- 分页展示 开始 -->
+          <div class="pagination-box">
+            <div class="el-pagination is-background">
+              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
+              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
+              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
+              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
+            </div>
+          </div>
+          <!-- 分页展示 结束 -->
+
         </div>
       </div>
       <!-- 右侧列表模块 结束-->
@@ -99,6 +126,7 @@
         is_view: true,
         headerInput:'高血压', // 普通搜索
         count:0, // 总条数
+        total_page:0, // 总页数
         pageSize: 10,
         current_page: 1,
         options_1:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], //期刊领域 大类
@@ -309,7 +337,7 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #E5E5E5;
-    padding: 0 0.3rem 0 1rem;
+    padding: 0 0.3rem 0 0.5rem;
   }
   .filter-l-titlebox>div{
     width: auto;
@@ -394,10 +422,17 @@
     border-bottom: 1px solid rgba(139,148,157,0.3);
     height: 1.75rem !important;
     line-height: 1.75rem !important;
+    font-size: 0.7rem;
+  }
+  .el-select-dropdown__item{
+    font-size: 0.7rem;
+    height: 1.7rem !important;
+    line-height: 1.7rem !important;
+    padding: 0 1rem;
   }
   .filter-btnbox{
     width: 100%;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -432,6 +467,10 @@
     align-items: flex-start;
     justify-content: flex-start;
     margin-top: 1rem;
+    cursor: pointer;
+  }
+  .listitems-box .list-items:hover{
+    background: #ecf5ff79;
   }
   .listitems-box .list-items:nth-of-type(1){
     margin-top: 0;
@@ -439,10 +478,12 @@
   .listitems-box .items-img{
     width: 9.25rem;
     height: 10.9rem;
+    border-radius: 6px;
   }
   .list-itemsinfo{
     flex: 1;
     padding-left: 1.6rem;
+    padding-right: 5rem;
     text-align: left;
   }
   .list-itemsinfo .list-itemsinfo-title{
@@ -459,5 +500,54 @@
     font-weight: 500;
     color: #999999;
     line-height: 1rem;
+  }
+  .dataIndicator-box{
+    margin-top: 0.1rem;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .dataIndicator-box>span{
+    width: 20%;
+    text-align: left;
+    font-size: 0.7rem;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #333333;
+    line-height: 1.35rem;
+    margin: 0.4rem  0;
+  }
+  .rightbox-listitems-btnbox{
+    width: 100%;
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .rightbox-listitems-btnbox>div{
+    cursor: pointer;
+    width: 4.85rem;
+    height: 1.85rem;
+    border-radius: 3px;
+    border: 1px solid #1674CF;
+    margin-right: 0.75rem;
+    font-size: 0.7rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #1674CF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pagination-box{
+    padding: 1.5rem 0;
+  }
+  .el-pagination>button{
+    padding: 0 1rem !important;
+  }
+  .el-pagination>button:hover{
+    background: #ecf5ff79;
   }
 </style>

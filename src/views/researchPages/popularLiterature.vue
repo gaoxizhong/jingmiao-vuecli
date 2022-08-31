@@ -277,7 +277,28 @@
         });
       },
 
-
+      // 点击原文链接
+      goTofullText(event,u){
+        let url = u;
+        event.stopPropagation();
+        if(!url || url == ''){
+          // this.$message.error({
+          //   message: '暂无数据'
+          // });
+          return
+        }
+      },
+      // 点击在线阅读
+      goToyuedu(event,u){
+        let url = u;
+        event.stopPropagation();
+        if(!url || url == ''){
+          // this.$message.error({
+          //   message: '暂无数据'
+          // });
+          return
+        }
+      },
 
     },
 
