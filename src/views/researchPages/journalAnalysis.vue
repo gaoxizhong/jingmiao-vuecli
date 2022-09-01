@@ -424,6 +424,9 @@
     line-height: 1.75rem !important;
     font-size: 0.7rem;
   }
+  .validate >>> .el-input__icon{
+    line-height: 1.75rem !important;
+  }
   .el-select-dropdown__item{
     font-size: 0.7rem;
     height: 1.7rem !important;

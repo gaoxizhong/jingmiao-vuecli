@@ -2,8 +2,47 @@
   <div class="pages-b">
     <!-- 头部搜索模块 开始 -->
     <div class="literature-titlebox">
-      学科分析首页
-
+      <div class="option-box">
+        <div class="option-itemsbox option-itemsbox-1">
+          <el-select class="validate" v-model="select_1" slot="prepend" @change="selectnChange_1">
+            <el-option
+              v-for="item in options_1"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"></el-option>
+          </el-select>
+        </div>
+        <div class="option-itemsbox option-itemsbox-2">
+          <el-select class="validate" v-model="select_2" slot="prepend" @change="selectnChange_2">
+            <el-option
+              v-for="item in options_2"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"></el-option>
+          </el-select>
+        </div>
+        <div class="option-itemsbox option-itemsbox-3">
+          <el-select class="validate" v-model="select_3" slot="prepend" @change="selectnChange_3">
+            <el-option
+              v-for="item in options_3"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"></el-option>
+          </el-select>
+        </div>
+        <el-button slot="append" @click="headerInputClick">开始分析</el-button>
+      </div>
+      <div class="rmxk-box">
+        <div class="rmxk-title">热门学科：</div>
+        <div class="rmxk-itemsbox">
+          <span>内科</span>
+          <span>外科</span>
+          <span>神经科</span>
+          <span>内科</span>
+          <span>外科</span>
+          <span>神经科</span>
+        </div>
+      </div>
     </div>
     <!-- 头部搜索模块 结束 -->
   
@@ -32,6 +71,15 @@
         count:0, // 总条数
         pageSize: 10,
         current_page: 1,
+        select_1:'请选择',
+        select_2:'请选择',
+        select_3:'请选择',
+        selectnChange_1:'',
+        selectnChange_2:'',
+        selectnChange_3:'',
+        options_1:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}],  // 一级目录
+        options_2:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], // 二级分类
+        options_3:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], // 三级分类
       }
     },
     created(){
@@ -39,6 +87,21 @@
       this.getEsIndex();
     },
     methods:{
+      //大类
+      selectnChange_1(e){
+        console.log(e)
+        this.selectnChange_1 = e;
+      },
+      // 二级类
+      selectnChange_2(e){
+        console.log(e)
+        this.selectnChange_2 = e;
+      },
+      // 三级类
+      selectnChange_2(e){
+        console.log(e)
+        this.selectnChange_3 = e;
+      },
       // 点击列表
       goToDetails(i){
         let that = this;
@@ -134,10 +197,99 @@
   }
   .literature-titlebox{
     width: 100%;
-    min-height: 8.6rem;
+    height: 6.8rem;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
     border-radius: 8px;
-    padding: 0.8rem 0;
+    padding: 1.5rem 0 1.3rem 6.2rem;
+  }
+  .option-box{
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .option-itemsbox{
+    width: 18.85rem;
+    height: 2rem;
+    margin-right: 1.75rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .option-itemsbox .validate {
+    width: 100%;
+    font-size: 0.7rem;
+    background: transparent!important;
+  }
+  .option-itemsbox .validate >>> .el-input__inner{
+    height: 2rem !important;
+    line-height: 2rem !important;
+    font-size: 0.7rem;
+  }
+  .option-itemsbox .validate >>> .el-input__icon{
+    line-height: 2rem !important;
+  }
+  .el-select-dropdown__item{
+    font-size: 0.7rem;
+    height: 2rem !important;
+    line-height: 2rem !important;
+    padding: 0 1rem;
+  }
+
+
+
+
+  .option-box >>> .el-button{ 
+    background: #2B77BD;
+    color: #fff;
+    border-radius: 20px;
+    width: 5.8rem;
+    height: 2rem;
+    padding: 0;
+    font-size: 0.8rem;
+  }
+
+  .rmxk-box{
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    font-size: 0.7rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    line-height: 1rem;
+  }
+  .rmxk-title{
+    color: #333333;
+  }
+  .rmxk-itemsbox{
+    flex: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .rmxk-itemsbox>span{
+    cursor: pointer;
+    padding: 0 0.4rem;
+    color: #999999;
+  }
+  .rmxk-itemsbox>span:hover{
+    color: #2B77BD;
   }
 </style>
