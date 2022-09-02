@@ -44,7 +44,7 @@
         <div class="list-itembox">
 
           <a href="javascript:0;" class="list-item" v-for="(item,index) in listData" :key="index" @click.stop="goToDetails(item.id)">
-            <div class="list-item-title" :title="(index+1) + '.' + item.title">{{index +1}}.{{item.title}}</div>
+            <div class="list-item-title" :title="(index+1) + '、' + item.title">{{index +1}}、{{item.title}}</div>
             <div class="list-item-subt">{{item.subject}}</div>
             <div class="list-item-text" >{{item.abstract}}</div>
             <div class="list-item-z">

@@ -45,8 +45,21 @@
       </div>
     </div>
     <!-- 头部搜索模块 结束 -->
-  
-
+    <div class="icon-classbox">
+      <div class="classbox-l">
+        <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+        <span>统计总览</span>
+      </div>
+      <span class="classbox-r">心脏、血管（循环系）疾病</span>
+    </div>
+    <!-- 统计总览 开始 -->
+    <div class="statisticalOverview-box">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+    </div>
+    <!-- 统计总览 结束 -->
   </div>
 
 </template>
@@ -74,9 +87,9 @@
         select_1:'请选择',
         select_2:'请选择',
         select_3:'请选择',
-        selectnChange_1:'',
-        selectnChange_2:'',
-        selectnChange_3:'',
+        change_1:'',
+        change_2:'',
+        change_3:'',
         options_1:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}],  // 一级目录
         options_2:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], // 二级分类
         options_3:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], // 三级分类
@@ -90,17 +103,17 @@
       //大类
       selectnChange_1(e){
         console.log(e)
-        this.selectnChange_1 = e;
+        this.change_1 = e;
       },
       // 二级类
       selectnChange_2(e){
         console.log(e)
-        this.selectnChange_2 = e;
+        this.change_2 = e;
       },
       // 三级类
-      selectnChange_2(e){
+      selectnChange_3(e){
         console.log(e)
-        this.selectnChange_3 = e;
+        this.change_3 = e;
       },
       // 点击列表
       goToDetails(i){
@@ -182,12 +195,12 @@
 
 
 
-    // setsickNess(){
-    //   this.is_view = false;
-    //   this.$nextTick(() => {
-    //     this.is_view = true
-    //   })
-    // },
+    setsickNess(){
+      this.is_view = false;
+      this.$nextTick(() => {
+        this.is_view = true
+      })
+    },
 
   }
 </script>
@@ -291,5 +304,50 @@
   }
   .rmxk-itemsbox>span:hover{
     color: #2B77BD;
+  }
+  .icon-classbox{
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+  .classbox-l{
+    height: auto;
+    font-size: 0.8rem;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #333333;
+    display: flex;
+    align-items: center;
+  }
+  .classbox-l>img{
+    width: 0.3rem;
+    height: 1.05rem;
+  }
+  .classbox-l>span{
+    font-weight: 600;
+    padding-left: 0.5rem;
+  }
+  .classbox-r{
+    font-size: 0.7rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #666666;
+    padding-left: 0.5rem;
+  }
+  .statisticalOverview-box{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  .statisticalOverview-box>div{
+    width: 18.5rem;
+    padding: 1.2rem 1rem;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
   }
 </style>

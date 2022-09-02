@@ -12,7 +12,7 @@
     <div class="icon-classbox">
       <div class="classbox-l">
         <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-        <span style="margin-left: 0.5rem;">热门学者</span>
+        <span>热门学者</span>
       </div>
       <a href="javascript:0;" class="classbox-r">
         <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
