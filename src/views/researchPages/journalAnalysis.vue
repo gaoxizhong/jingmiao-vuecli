@@ -69,21 +69,23 @@
       <div class="filter-rightbox">
         <div class="listitems-box">
 
-          <div v-for="(item,index) in journalList" :key="index" class="list-items">
+          <div v-for="(item,index) in journalList" :key="index" class="list-items" @click="goToDetails(item.id)">
             <img src="https://lh3.googleusercontent.com/ogw/AOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" class="items-img"/>
             <div class="list-itemsinfo">
               <div class="list-itemsinfo-title">高血压</div>
-              <div class="eh--title">HYPERTNSION</div>
+              <div class="eh-title">HYPERTNSION</div>
               <div class="dataIndicator-box">
-                <span>年文章数：320</span>
-                <span>总被引量：320</span>
-                <span>发文机构数：320</span>
-                <span>发文数者数：320</span>
-                <span>审稿周期：平均1.25月</span>
-                <span>投稿命中率：320</span>
-                <span>H指数：320</span>
-                <span>影响指数：5.997</span>
-                <span>篇均已量：5.997</span>
+                <div>年文章数：320</div>
+                <div>总被引量：320</div>
+                <div>发文机构数：320</div>
+                <div>发文数者数：320</div>
+              </div>
+              <div class="dataIndicator-box">
+                <div>审稿周期：平均1.25月</div>
+                <div>投稿命中率：320</div>
+                <div>H指数：320</div>
+                <div>影响指数：5.997</div>
+                <div>篇均已量：5.997</div>
               </div>
               <div class="rightbox-listitems-btnbox">
                 <div>高血压</div>
@@ -163,7 +165,7 @@
         this.$emit('setsickNess', '');
         // 新页面打开
         this.$router.push({  //核心语句
-          path:'/',  
+          path:'/journalDetails',  
           query:{       
             id,
           }
@@ -496,7 +498,7 @@
     color: #333333;
     line-height: 1.1rem;
   }
-  .list-itemsinfo .eh--title{
+  .list-itemsinfo .eh-title{
     margin-top: 0.8rem;
     font-size: 0.7rem;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -512,8 +514,8 @@
     justify-content: flex-start;
     flex-wrap: wrap;
   }
-  .dataIndicator-box>span{
-    width: 20%;
+  .dataIndicator-box>div{
+    width: 9rem;
     text-align: left;
     font-size: 0.7rem;
     font-family: PingFang-SC-Bold, PingFang-SC;

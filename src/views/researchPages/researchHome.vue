@@ -137,6 +137,9 @@
   .el-main::-webkit-scrollbar { 
     display: none;
   }
+  .el-main::scrollbar { 
+    display: none;
+  }
 /* ==============  滚动条样式   ==================== */
   .el-container{
     overflow: hidden;

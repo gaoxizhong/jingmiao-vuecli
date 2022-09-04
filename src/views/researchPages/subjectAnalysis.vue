@@ -54,10 +54,73 @@
     </div>
     <!-- 统计总览 开始 -->
     <div class="statisticalOverview-box">
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
+
+      <div class="overview-items">
+        <div class="o-items-title">
+          <img src="../../assets/image/researchPages/icon-xsccl.png" alt="" />
+          <span>学术产出力</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">期刊发文量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">会议发文量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">学位发文量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">核心发文量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+
+      </div>
+
+      <div class="overview-items">
+        <div class="o-items-title">
+          <img src="../../assets/image/researchPages/icon-xsyxl.png" alt="" />
+          <span>学术影响力</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">期刊发文量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">期刊发文量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+      </div>
+      <div class="overview-items">
+        <div class="o-items-title">
+          <img src="../../assets/image/researchPages/icon-hzgcl.png" alt="" />
+          <span>合作共创力</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">期刊发文量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+      </div>
+      <div class="overview-items">
+        <div class="o-items-title">
+          <img src="../../assets/image/researchPages/icon-kyxzl.png" alt="" />
+          <span>科研学者力</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">期刊发文量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+      </div>
     </div>
     <!-- 统计总览 结束 -->
   </div>
@@ -349,5 +412,54 @@
     background: #fff;
     border-radius: 6px;
     box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
+  }
+  .o-items-title{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+  }
+  .o-items-title>img{
+    width: 1.15rem;
+    height: 1.15rem;    
+  }
+  .o-items-title>span{
+    font-size: 0.8rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 1.1rem;
+    padding-left:1.1rem;
+  }
+  .o-items-x{
+    width: 100%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: 1px solid #DCDCDC;
+  }
+  .o-items-icon{
+    width: 0.5rem;
+    height: 0.5rem;
+    background: #D0D0D0;
+    transform: rotate(45deg);
+  }
+  .o-items-text{
+    width: 6rem;
+    font-size: 0.75rem;
+    color: #666666;
+    line-height: 1rem;
+    margin-left: 0.6rem;
+    text-align: left;
+  }
+  .o-items-num{
+    padding-left: 0.8rem;
+    font-size: 0.9rem;
+    color: #333333;
+    font-weight: bold;
+    line-height: 1.25rem;
   }
 </style>

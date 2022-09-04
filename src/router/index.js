@@ -313,6 +313,16 @@ const routes = [
         }
       },
       { 
+        path: '/journalDetails', //  --- 期刊分析详情页
+        name: 'journalDetails',
+        component: () => import('@/views/researchPages/journalDetails'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
         path: '/useTutorial', //  --- 使用教程
         name: 'useTutorial',
         component: () => import('@/views/researchPages/useTutorial'),

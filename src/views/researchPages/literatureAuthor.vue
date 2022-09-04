@@ -59,16 +59,14 @@
           </div>
           <!-- 发文篇数数据 结束 -->
 
-          <div class="effectmap_line_wr" style="overflow: visible;">
-            <!-- 成果数量分布图 -->
+          <!-- <div class="effectmap_line_wr" style="overflow: visible;">
             <div id="ach_map_wrapper" class="line_map_wrapper">
               <div class="line_map_container" id="ach_map_container"></div>
             </div>
-            <!-- 成果被引分布图 -->
             <div id="cited_map_wrapper" class="line_map_wrapper">
               <div class="line_map_container" id="cited_map_container"></div>
             </div>
-          </div>
+          </div> -->
 
         </div>
         <!-- 合作学者列表 -->
@@ -77,7 +75,13 @@
           <div class="cooperation-list">
 
             <div class="coolist-items">
-              <div></div>
+              <div class="items-i" v-for="(item,index) in authorList" :key="index">
+                <img src="/static/img/img-user.1662264577738.png" alt="" />
+                <div class="items-rbox">
+                  <div class="items-rname">陈春城</div>
+                  <div class="items-rjg">中国科学院化学研究所</div>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -85,10 +89,55 @@
 
       </div>
       <!-- 作者信息模块 结束 -->
+      <div class="icon-classbox">
+        <div class="classbox-l">
+          <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+          <span>研究主题</span>
+        </div>
+        <!-- <a href="javascript:0;" class="classbox-r">
+          <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
+          <span>查看更多</span>
+        </a> -->
+      </div>
+      <div class="topics-chartbox">
+        <div id="topics-chart"></div>
+      </div>
+      <!-- 相关推荐 开始-->
+      <div class="icon-classbox">
+        <div class="classbox-l">
+          <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+          <span>相关推荐</span>
+        </div>
+        <a href="javascript:0;" class="classbox-r">
+          <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
+          <span>查看更多</span>
+        </a>
+      </div>
+      <div class="suggestion-box">
+
+        <div class="suggestion-titlebox">
+          <div class="active">最高被引用</div>
+          <div>最新发布</div>
+        </div>
+        <div class="suggestion-tabbox">
+            <el-table :data="tableData" stripe style="width: 100%">
+              <el-table-column prop="title" label="标题"></el-table-column>
+              <el-table-column prop="author" label="作者" width="160"></el-table-column>
+              <el-table-column prop="source" label="来源" width="160"></el-table-column>
+              <el-table-column prop="years" label="年份" width="160"></el-table-column>
+              <el-table-column prop="citations" label="被引量" width="160"></el-table-column>
+            </el-table>
+        </div>
+      </div>
+      <!-- 相关推荐 结束-->
+
+
+
+
+
 
     </div>
     <!-- 内容 结束 -->
-
   </div>
 
 </template>
@@ -103,11 +152,55 @@
         id:'',
         viewHeight: "",
         infoDetail: {},
+        authorList:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],  // 合作学者
+        tableData: [
+          {
+            title: '国产二氧化钛在光催化降解染料废水中的应用',
+            author: '王小虎',
+            source: '《经济视野》',
+            years: '2022',
+            citations: 2222
+          },
+          {
+            title: '国产二氧化钛在光催化降解染料废水中的应用',
+            author: '王小虎',
+            source: '《经济视野》',
+            years: '2022',
+            citations: 2222
+          },
+          {
+            title: '国产二氧化钛在光催化降解染料废水中的应用',
+            author: '王小虎',
+            source: '《经济视野》',
+            years: '2022',
+            citations: 2222
+          },
+          {
+            title: '国产二氧化钛在光催化降解染料废水中的应用',
+            author: '王小虎',
+            source: '《经济视野》',
+            years: '2022',
+            citations: 2222
+          },
+          {
+            title: '国产二氧化钛在光催化降解染料废水中的应用',
+            author: '王小虎',
+            source: '《经济视野》',
+            years: '2022',
+            citations: 2222
+          },
+          {
+            title: '国产二氧化钛在光催化降解染料废水中的应用',
+            author: '王小虎',
+            source: '《经济视野》',
+            years: '2022',
+            citations: 2222
+          },
+        ]
       };
     },
     mounted(){
-      // 饼状数据
-      this.drawLine();
+
     },
     created() {
       //生命周期里接收参数
@@ -150,6 +243,10 @@
               message: res.data.msg
             });
           }
+          // 饼状数据
+          that.drawLine();
+          // 研究主题数据
+          that.getTopics();
         })
         .catch(e => {
           loading.close();
@@ -256,6 +353,94 @@
         };
 
         option && class_eacharts.setOption(option);
+      },
+      // 研究主题
+      getTopics(){
+        let topics_eacharts = this.$echarts.init(document.getElementById('topics-chart'), null, {
+          height: '360'
+        });
+
+        let option = {
+          backgroundColor: "#011c3a",
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              type: "shadow",
+            },
+          },
+          xAxis: [
+            {
+              type: "category",
+              data: ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"],
+              axisLine: {
+                lineStyle: {
+                  color: "#3d5269",
+                },
+              },
+              axisLabel: {
+                color: "#fff",
+                textStyle: {
+                  fontSize: 14,
+                },
+              },
+            },
+          ],
+          yAxis: [
+            {
+              name: "单位:K",
+              nameTextStyle: {
+                color: "#fff",
+                fontSize: 14,
+              },
+              axisLine: {
+                show: true,
+                lineStyle: {
+                  color: "#3d5269",
+                },
+              },
+              axisLabel: {
+                color: "#fff",
+                fontSize: 14,
+              },
+              splitLine: {
+                show: true,
+                lineStyle: {
+                  color: "#2d3d53",
+                },
+              },
+              splitNumber: 10,
+            }
+          ],
+          series: [
+            {
+              type: "bar",
+              data: [300, 450, 770, 203, 255, 188, 156,300, 450, 770, 203, 255, 188, 156],
+              barWidth: "20px",
+              itemStyle: {
+                normal: {
+                  color: this.$echarts.graphic.LinearGradient(
+                    0,
+                    0,
+                    0,
+                    1,
+                    [
+                      {
+                        offset: 0,
+                        color: "#5ef3ff",
+                      },
+                      {
+                        offset: 1,
+                        color: "#06a4f4",
+                      },
+                    ],
+                    false
+                  ),
+                },
+              },
+            },
+          ],
+        };
+        option && topics_eacharts.setOption(option);
       }
     },
 
@@ -309,14 +494,14 @@
   }
   .cooperation-box{
     width: 24.4rem;
-    height: 35rem;
+    height: 26rem;
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
     border-radius: 6px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 1.5rem;
+    padding: 1.5rem 0 1.5rem 1.5rem;
   }
   .cooperation-title{
     font-size: 0.9rem;
@@ -326,10 +511,18 @@
     line-height: 1.25rem;
     text-align: left;
     height: auto;
+    padding-bottom: 0.5rem;
   }
   .cooperation-list{
     flex: 1;
     width: 100%;
+    overflow: auto;
+  }
+  .cooperation-list::-webkit-scrollbar { 
+    display: none;
+  }
+  .cooperation-list::scrollbar { 
+    display: none;
   }
   .coolist-items{
     width: 100%;
@@ -452,9 +645,10 @@
     margin-top: 1rem;
   }
   .classNumber-box{
+    margin-top: 3rem;
     width: 100%;
     height: 8.35rem;
-    border-bottom: 1px solid #E5E5E5;
+    /* border-bottom: 1px solid #E5E5E5; */
     display: flex;
     align-items: center;
   }
@@ -502,5 +696,133 @@
     width: 24rem;
     height: 8rem;
   }
+  .items-i{
+    margin-bottom: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    cursor: pointer;
+  }
+  .items-i>img{
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .items-i .items-rbox{
+    text-align: left;
+    flex: 1;
+    padding-left: 0.8rem;
+  }
+  .items-i .items-rbox .items-rname{
+    font-size: 0.8rem;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #1674CF;
+    line-height: 1.1rem;
+  }
+  .items-i .items-rbox .items-rjg{
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #666666;
+    line-height: 1rem;
+  }
+  .icon-classbox{
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .classbox-l{
+    height: auto;
+    font-size: 0.8rem;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #2B77BD;
+    display: flex;
+    align-items: center;
+  }
+  .classbox-l>img{
+    width: 0.3rem;
+    height: 1.05rem;
+  }
+  .classbox-l>span{
+    font-weight: 600;
+    padding-left: 0.5rem;
+  }
+  .classbox-r>img{
+    width: 0.75rem;
+    height: 0.8rem;
+  }
+  .classbox-r>span{
+    font-size: 0.65rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #666666;
+    padding-left: 0.5rem;
+  }
+  .topics-chartbox{
+    margin-top: 1.4rem;
+    width: 100%;
+    height: 320px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  #topics-chart{
+    width: 100%;
+    height: 100%;
+  }
+  /*================= 相关推荐样式  ↓ ==================*/
+  .suggestion-box{
+    margin-top: 1rem;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow: hidden;
+  }
+  .suggestion-titlebox{
+    width: 100%;
+    padding: 0 0.75rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .suggestion-titlebox>div{
+    margin: 0 0.75rem;
+    font-size: 0.8rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 600;
+    color: #333333;
+    line-height: 1.25rem;
+    padding-bottom: 0.2rem;
+    cursor: pointer;
+  }
+  .suggestion-titlebox>div.active{
+    color: #2B77BD;
+    border-bottom: 4px solid #2B77BD;
+  }
+  .suggestion-tabbox{
+    margin-top: 1rem;
+    font-size: 0.8rem;
+  }
+  .suggestion-tabbox >>> .el-table td.el-table__cell,.suggestion-tabbox >>> .el-table th.el-table__cell.is-leaf {
+    border-bottom: none;
+    font-size: 0.8rem;
+  }
+  .suggestion-tabbox >>> .el-table th.el-table__cell{
+      background: #ECF0FB;
+      color: #333;
+  }
+  .suggestion-tabbox >>> table::before{
+    border: none !important;
+  }
+  .suggestion-tabbox >>> table tbody tr th::before,.suggestion-tabbox >>>  table tbody tr td::before{
+    border: none !important;
+  }
+  /*================= 相关推荐样式  ↑ ==================*/
 
 </style>

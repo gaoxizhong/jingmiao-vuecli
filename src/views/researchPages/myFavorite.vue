@@ -337,6 +337,9 @@
   .content-right::-webkit-scrollbar { 
     display: none;
   }
+  .content-right::scrollbar { 
+    display: none;
+  }
   .content-info-box{
     width: 100%;
     height: auto;
