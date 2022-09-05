@@ -332,7 +332,16 @@ const routes = [
           requireAuth:true,
         }
       },
-      
+      { 
+        path: '/searchResults', //  --- 搜索结果页
+        name: 'searchResults',
+        component: () => import('@/views/researchPages/searchResults'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
     ]
   },
 

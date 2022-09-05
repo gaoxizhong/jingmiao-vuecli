@@ -228,11 +228,12 @@
       },
       // 普通搜索
       headerInputClick(){
-        let input_name = this.headerInput;
+        let headerInput = this.headerInput;
         this.$router.push({  //核心语句
-          path:'',   //跳转的路径
+          path:'/searchResults',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            input_name,
+            headerInput,
+            is_titleTab: this.is_titleTab
           }
         })
       },
@@ -562,7 +563,7 @@
 
 
   .listbox-right>div{
-    width: 21rem;
+    width: 22rem;
     height: auto;
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);

@@ -23,7 +23,7 @@
     <!-- 学者列表模块 开始 -->
     <div class="scholarList-box">
 
-      <div class="scholarList-items">
+      <div class="scholarList-items" v-for="(item,index) in scholarList" :key="index">
         <img src="../../assets/image/researchPages/img-scholar.png" alt="" class="items-userimg" />
         <p class="items-name">张天永</p>
         <div class="infodata-box">
@@ -54,7 +54,7 @@
             <span class="infodata-text">65</span>
           </div>
         </div>
-        <div class="items-btn">立即查看</div>
+        <div class="items-btn" @click="clickItemsbtn(item.name)">立即查看</div>
       </div>
       
     </div>
@@ -84,6 +84,7 @@
         count:0, // 总条数
         pageSize: 10,
         current_page: 1,
+        scholarList:[{},{},{},{},{}], // 列表数据
       }
     },
     created(){
@@ -92,19 +93,6 @@
       this.getEsIndex();
     },
     methods:{
-      // 点击列表
-      goToDetails(i){
-        let that = this;
-        let id = i;
-        this.$emit('setsickNess', '');
-        // 新页面打开
-        this.$router.push({  //核心语句
-          path:'/literatureDetails',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            id,
-          }
-        })
-      },
       // 点击分页功能
       handleCurrentChange(val) {
         let that = this;
@@ -158,6 +146,17 @@
           console.log(e);
         });
       },
+      // 点击立即查看
+      clickItemsbtn(n){
+        let name = n;
+        this.$emit('setsickNess', '');
+        this.$router.push({
+          path:'/literatureDetails',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+            id,
+          }
+        })
+      }
 
 
     },
@@ -326,6 +325,7 @@
     font-weight: 400;
     text-align: center;
     margin: 0 auto;
+    cursor: pointer;
   }
 
 </style>

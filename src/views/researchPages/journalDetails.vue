@@ -31,15 +31,22 @@
       <!-- 返回按钮 -->
     </div>
 
-
+    <!-- 期刊tab展示 开始 -->
     <div class="accordion-box">
       <div class="acc-leftbox">
-
+        <div class="acc-l-items" :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
+        <div class="acc-l-items" :class="acc_tab == '2'?'active':''" @click="clickTab('2')">被引趋势</div>
+        <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">学科渗透</div>
+        <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">研究主题</div>
+        <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">代表机构</div>
+        <div class="acc-l-items" :class="acc_tab == '6'?'active':''" @click="clickTab('6')">代表学者</div>
       </div>
       <div class="acc-rightbox">
         <div class="acc-pagebox"></div>
       </div>
     </div>
+    <!-- 期刊tab展示 结束 -->
+
   </div>
 
 </template>
@@ -57,9 +64,11 @@
     data(){
       return {
         is_view: true,
+        acc_tab:'1', 
       }
     },
     created(){
+      this.$emit('onEmitIndex', '/journalAnalysis'); // 触发父组件的方法，并传递参数index
 
     },
     methods:{
@@ -102,6 +111,10 @@
           console.log(e);
         });
       },
+      // 点击期刊分析类项 tab
+      clickTab(i){
+        this.acc_tab = i;
+      }
 
 
     },
@@ -259,6 +272,32 @@
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
+  }
+  .acc-l-items{
+    width: 100%;
+    height: 2.7rem;
+    line-height: 2.7rem;
+    padding-left: 3.4rem;
+    font-size: 0.8rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+  }
+  .acc-l-items:hover,.acc-l-items.active{
+    background: #1673cf44;
+    color: #1674CF;
+  }
+  .acc-l-items.active::after{
+    content: '';
+    width: 2px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #1674CF;
   }
 
 
