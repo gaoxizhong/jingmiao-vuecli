@@ -123,6 +123,61 @@
       </div>
     </div>
     <!-- 统计总览 结束 -->
+    <div class="icon-classbox">
+      <div class="classbox-l">
+        <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+        <span>详细分析</span>
+      </div>
+    </div>
+    <!-- tab展示 开始 -->
+    <div class="accordion-box">
+      <div class="acc-leftbox">
+        <div class="acc-l-items" :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
+        <div class="acc-l-items" :class="acc_tab == '2'?'active':''" @click="clickTab('2')">被引趋势</div>
+        <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">学科渗透</div>
+        <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">研究主题</div>
+        <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">代表机构</div>
+        <div class="acc-l-items" :class="acc_tab == '6'?'active':''" @click="clickTab('6')">代表学者</div>
+        <div class="acc-l-items" :class="acc_tab == '7'?'active':''" @click="clickTab('7')">代表期刊</div>
+      </div>
+      <div class="acc-rightbox">
+        
+        <div class="acc-pagebox" v-show="acc_tab == '1'">
+          <!-- <div class="acc-page-title">
+            <div></div>
+            <div></div>
+          </div> -->
+          <!-- 发文趋势 -->
+          <div class="eacharts-box" id="eachartsTrends"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '2'">
+          <!-- 被引趋势 -->
+          <div class="eacharts-box" id="eachartsCited"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '3'">
+          <!-- 学科渗透 -->
+          <div class="eacharts-box" id="eachartsDisciplinaryPenetration"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '4'">
+          <!-- 研究主题 -->
+          <div class="eacharts-box" id="eachartsTheme"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '5'">
+          <!-- 代表机构 -->
+          <div class="eacharts-box" id="RepresentativeBody"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '6'">
+          <!-- 代表学者 -->
+          <div class="eacharts-box" id="RepresentativeScholar"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '7'">
+          <!-- 代表期刊 -->
+          <div class="eacharts-box" id="RepresentativePeriodicals"></div>
+        </div>
+
+      </div>
+    </div>
+    <!-- tab展示 结束 -->
   </div>
 
 </template>
@@ -156,6 +211,8 @@
         options_1:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}],  // 一级目录
         options_2:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], // 二级分类
         options_3:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], // 三级分类
+        acc_tab:'1', 
+
       }
     },
     created(){
@@ -252,7 +309,273 @@
           console.log(e);
         });
       },
+      // 点击分析类项 tab
+      clickTab(i){
+        let that = this;
+        that.acc_tab = i;
+        if(i == '1'){
+          // 发文趋势
+          that.getLineChart('eachartsTrends','1');
+        }
+        if(i == '2'){
+          // 被引趋势
+          that.getLineChart('eachartsCited','2');
+        }
+        if(i == '3'){
+          // 学科渗透
 
+        }
+        if(i == '4'){
+          // 研究主题
+          that.getTopics('eachartsTheme','4');
+        }
+        if(i == '5'){
+          // 代表机构
+          that.getTopics('RepresentativeBody','5');
+        }
+        if(i == '6'){
+          // 代表学者
+          that.getTopics('RepresentativeScholar','6');
+        }
+        if(i == '7'){
+          // 代表期刊
+          that.getTopics('RepresentativePeriodicals','7');
+        }
+      },
+      // 柱状图
+      getTopics(i,data){
+        let id = i;
+        let infoData = data;
+        let data_val = [300, 450, 770, 203, 255, 188, 156,300, 450, 770, 203, 255, 188, 156],
+          xAxis_val = ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"];
+        let topics_eacharts = this.$echarts.init(document.getElementById(id));
+        let option = {
+          backgroundColor: "#fff",
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              type: "shadow",
+            },
+          },
+          xAxis: [
+            {
+              type: "category",
+              data: xAxis_val,
+              axisLine: {
+                lineStyle: {
+                  color: "#D2D2D2",
+                },
+              },
+              axisLabel: {
+                color: "#999",
+                textStyle: {
+                  fontSize: 14,
+                },
+              },
+            },
+          ],
+          yAxis: [
+            {
+              name: "单位:K",
+              nameTextStyle: {
+                color: "#999",
+                fontSize: 14,
+              },
+              axisLine: {
+                show: true,
+                lineStyle: {
+                  color: "#D2D2D2",
+                },
+              },
+              axisLabel: { // y轴数字字体
+                show: true,
+                color: "#D2D2D2",
+                fontSize: 14,
+              },
+              splitLine: { // y轴每级横线样式
+                show: true,
+                lineStyle: {
+                  color: "#EFEFEF",
+                },
+              },
+              splitNumber: 10,
+            }
+          ],
+          series: [
+            {
+              type: "bar",
+              data: data_val,
+              barWidth: "20px",
+              itemStyle: {
+                normal: {
+                  color: this.$echarts.graphic.LinearGradient(
+                    0,
+                    0,
+                    0,
+                    1,
+                    [
+                      {
+                        offset: 0,
+                        color: "#3664D9",
+                      },
+                      {
+                        offset: 1,
+                        color: "#3664D9",
+                      },
+                    ],
+                    false
+                  ),
+                },
+              },
+            },
+          ],
+        };
+        option && topics_eacharts.setOption(option);
+      },
+      // 折线图
+      getLineChart(i,data){
+        let id = i;
+        let infoData = data;
+        let myChart = this.$echarts.init(document.getElementById(id));
+        let data_val = [2220, 1682, 2791, 3000, 4090, 3230, 2910, 2791, 3000, 4090, 2220, 1682, 2910],
+          xAxis_val = ["2010", "2011", "2012", "2013", "2014", "2015", "2016","2017","2018","2019","2020","2021","2022"];
+        // let data_val1 = [0, 0, 0, 0, 0, 0, 0];
+        let option = {
+          backgroundColor: "#fff",
+          // grid: {
+          //   left: 100,
+          //   top: "12%",
+          //   bottom: 30,
+          //   right: 40,
+          //   containLabel: true,
+          // },
+          tooltip: { // 鼠标浮动展示框样式
+            show: true,
+            backgroundColor: "#3664D9",
+            borderColor: "#3664D9",
+            textStyle: {
+              color: "#fff",
+            },
+            borderWidth: 1,
+            formatter: "{b}:{c}",
+            extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
+          },
+          // legend: {
+          //   right: 0,
+          //   top: 0,
+          //   data: ["距离"],
+          //   textStyle: {
+          //     color: "#5c6076",
+          //   },
+          // },
+          // title: {
+          //   text: "单位K",
+          //   x: "4.5%",
+          //   top: "1%",
+          //   textStyle: {
+          //     color: "#5c6076",
+          //   },
+          // },
+          xAxis: {  // X轴
+            data: xAxis_val,
+            boundaryGap: false,
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#999",
+              },
+            },
+            axisTick: {
+              show: false,
+            },
+          },
+          yAxis: {
+            name: "单位:K",
+            nameTextStyle: {
+              color: "#999",
+              fontSize: 14,
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#999",
+              },
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+          },
+
+          series: [
+              // 柱状
+            // {
+            //   type: "bar",
+            //   name: "linedemo",
+            //   tooltip: {
+            //     show: false,
+            //   },
+            //   animation: false,
+            //   barWidth: 1.4,
+            //   hoverAnimation: false,
+            //   data: data_val,
+            //   itemStyle: {
+            //     normal: {
+            //       color: "#3664D9",
+            //       opacity: 0.6,
+            //       label: {
+            //         show: false,
+            //       },
+            //     },
+            //   },
+            // },
+             // 折线
+            { 
+              type: "line", 
+              name: "linedemo",
+              smooth: true,
+              symbolSize: 10,
+              animation: false,
+              lineWidth: 1.2,
+              hoverAnimation: false,
+              data: data_val,
+              symbol: "circle",
+              itemStyle: { // 圆球及连线样式样式
+                normal: {
+                  color: "#3664D9",
+                  shadowBlur: 44,
+                  label: {
+                    show: true,
+                    position: "top",
+                    textStyle: {
+                      color: "#000",
+                    },
+                  },
+                },
+              },
+              areaStyle: { // 面积图
+                normal: {
+                  color: "#3664D9",
+                  opacity: 0.08,
+                },
+              },
+            },
+          ],
+        };
+        myChart.setOption(option);
+      }
 
     },
 
@@ -279,6 +602,9 @@
     border-radius: 8px;
     padding: 1.5rem 0 1.3rem 6.2rem;
   }
+
+  @import "../../assets/css/accordion.css";
+
   .option-box{
     width: 100%;
     display: -webkit-box;

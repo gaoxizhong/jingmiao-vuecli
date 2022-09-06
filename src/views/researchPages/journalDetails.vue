@@ -42,7 +42,20 @@
         <div class="acc-l-items" :class="acc_tab == '6'?'active':''" @click="clickTab('6')">代表学者</div>
       </div>
       <div class="acc-rightbox">
-        <div class="acc-pagebox"></div>
+        <div class="acc-pagebox" v-show="acc_tab == '1'">
+          <!-- <div class="acc-page-title">
+            <div></div>
+            <div></div>
+          </div> -->
+          <div class="eacharts-box" id="eachartsTrends"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '2'">被引趋势</div>
+        <div class="acc-pagebox" v-show="acc_tab == '3'">学科渗透</div>
+        <div class="acc-pagebox" v-show="acc_tab == '4'">
+          <div class="eacharts-box" id="eachartsTheme"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '5'">代表机构</div>
+        <div class="acc-pagebox" v-show="acc_tab == '6'">代表学者</div>
       </div>
     </div>
     <!-- 期刊tab展示 结束 -->
@@ -113,9 +126,120 @@
       },
       // 点击期刊分析类项 tab
       clickTab(i){
-        this.acc_tab = i;
-      }
+        let that = this;
+        that.acc_tab = i;
+        if(i == '1'){
+          // 发文趋势
 
+        }
+        if(i == '2'){
+          // 被引趋势
+
+        }
+        if(i == '3'){
+          // 学科渗透
+
+        }
+        if(i == '4'){
+          // 研究主题
+          that.getTopics('eachartsTheme','4');
+        }
+        if(i == '5'){
+          // 代表机构
+
+        }
+        if(i == '6'){
+          // 代表学者
+
+        }
+      },
+      // 柱状图
+      getTopics(i,data){
+        let id = i;
+        let infoData = data;
+        let topics_eacharts = this.$echarts.init(document.getElementById(id));
+        let option = {
+          backgroundColor: "#011c3a",
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              type: "shadow",
+            },
+          },
+          xAxis: [
+            {
+              type: "category",
+              data: ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"],
+              axisLine: {
+                lineStyle: {
+                  color: "#3d5269",
+                },
+              },
+              axisLabel: {
+                color: "#fff",
+                textStyle: {
+                  fontSize: 14,
+                },
+              },
+            },
+          ],
+          yAxis: [
+            {
+              name: "单位:K",
+              nameTextStyle: {
+                color: "#fff",
+                fontSize: 14,
+              },
+              axisLine: {
+                show: true,
+                lineStyle: {
+                  color: "#3d5269",
+                },
+              },
+              axisLabel: {
+                color: "#fff",
+                fontSize: 14,
+              },
+              splitLine: {
+                show: true,
+                lineStyle: {
+                  color: "#2d3d53",
+                },
+              },
+              splitNumber: 10,
+            }
+          ],
+          series: [
+            {
+              type: "bar",
+              data: [300, 450, 770, 203, 255, 188, 156,300, 450, 770, 203, 255, 188, 156],
+              barWidth: "20px",
+              itemStyle: {
+                normal: {
+                  color: this.$echarts.graphic.LinearGradient(
+                    0,
+                    0,
+                    0,
+                    1,
+                    [
+                      {
+                        offset: 0,
+                        color: "#5ef3ff",
+                      },
+                      {
+                        offset: 1,
+                        color: "#06a4f4",
+                      },
+                    ],
+                    false
+                  ),
+                },
+              },
+            },
+          ],
+        };
+        option && topics_eacharts.setOption(option);
+      }
 
     },
 
@@ -134,6 +258,7 @@
   .pages-b{
     width: 100%
   }
+  @import "../../assets/css/accordion.css";
   .flex {
     display: -webkit-box!important;
     display: -webkit-flex!important;
@@ -246,59 +371,7 @@
     align-items: center;
     justify-content: center;
   }
-  .accordion-box{
-    width: 100%;
-    margin-top: 1rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-  .acc-leftbox{
-    width: 13.8rem;
-    background: #FFFFFF;
-    box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 6px;
-  }
-  .acc-rightbox{
-    flex: 1;
-    padding-left: 1rem;
-  }
-  .acc-rightbox .acc-pagebox{
-    width: 100%;
-    background: #FFFFFF;
-    box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
-    border-radius: 6px;
-    padding: 1rem 1rem 1.2rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-  .acc-l-items{
-    width: 100%;
-    height: 2.7rem;
-    line-height: 2.7rem;
-    padding-left: 3.4rem;
-    font-size: 0.8rem;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #333333;
-    text-align: left;
-    cursor: pointer;
-    position: relative;
-  }
-  .acc-l-items:hover,.acc-l-items.active{
-    background: #1673cf44;
-    color: #1674CF;
-  }
-  .acc-l-items.active::after{
-    content: '';
-    width: 2px;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    background: #1674CF;
-  }
+
 
 
 </style>
