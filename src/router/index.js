@@ -293,6 +293,16 @@ const routes = [
         }
       },
       { 
+        path: '/scholarAnalysisDetails', //  --- 学者分析详情页
+        name: 'scholarAnalysisDetails',
+        component: () => import('@/views/researchPages/scholarAnalysisDetails'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
         path: '/subjectAnalysis', //  --- 学科分析首页
         name: 'subjectAnalysis',
         component: () => import('@/views/researchPages/subjectAnalysis'),
@@ -336,6 +346,16 @@ const routes = [
         path: '/searchResults', //  --- 搜索结果页
         name: 'searchResults',
         component: () => import('@/views/researchPages/searchResults'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/institutionalAnalysis', //  --- 机构分析首页
+        name: 'institutionalAnalysis',
+        component: () => import('@/views/researchPages/institutionalAnalysis'),
         meta: {
           keepAlive: true,
           scollTopPosition: 0,

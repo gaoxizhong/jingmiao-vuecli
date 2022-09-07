@@ -72,25 +72,26 @@
           <div v-for="(item,index) in journalList" :key="index" class="list-items" @click="goToDetails(item.id)">
             <img src="https://lh3.googleusercontent.com/ogw/AOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" class="items-img"/>
             <div class="list-itemsinfo">
-              <div class="list-itemsinfo-title">高血压</div>
-              <div class="eh-title">HYPERTNSION</div>
+              <div class="list-itemsinfo-title">{{item.special_name}}</div>
+              <div class="eh-title">{{item.cn_name}}</div>
               <div class="dataIndicator-box">
-                <div>年文章数：320</div>
-                <div>总被引量：320</div>
+                <div>发文总数：{{item.published_literature_volume}}</div>
+                <div>总被引量：{{item.total_citations_number}}</div>
+                <div>总下载量：{{item.total_download_times}}</div>
                 <div>发文机构数：320</div>
-                <div>发文数者数：320</div>
+                <div>发文作者数：320</div>
               </div>
               <div class="dataIndicator-box">
                 <div>审稿周期：平均1.25月</div>
                 <div>投稿命中率：320</div>
                 <div>H指数：320</div>
                 <div>影响指数：5.997</div>
-                <div>篇均已量：5.997</div>
+                <div>篇均被引量：5.997</div>
               </div>
-              <div class="rightbox-listitems-btnbox">
+              <!-- <div class="rightbox-listitems-btnbox">
                 <div>高血压</div>
                 <div>心血管</div>
-              </div>
+              </div> -->
             </div>
           </div>
           <!-- 分页展示 开始 -->
@@ -126,7 +127,7 @@
     data(){
       return {
         is_view: true,
-        headerInput:'高血压', // 普通搜索
+        headerInput:'', // 普通搜索
         count:0, // 总条数
         total_page:0, // 总页数
         pageSize: 10,
@@ -139,12 +140,11 @@
         select_2: '请选择二级分类',
         minInput:'',
         maxInput:'',
-        journalList:[{},{},{}], // 列表数据
+        journalList:[], // 列表数据
       }
     },
     created(){
       this.$emit('onEmitIndex', '/journalAnalysis'); // 触发父组件的方法，并传递参数index
-      this.getEsIndex();
       this.headerInputClick();
     },
     methods:{
@@ -175,7 +175,7 @@
       handleCurrentChange(val) {
         let that = this;
         that.current_page = Number(val);
-        that.getHomeRightList();
+        that.headerInputClick();
         // 回到顶部的方法。
          window.scrollTo(0,0);
       },
@@ -200,7 +200,7 @@
         let that = this;
         let pearms = {
           name: n,
-          page: that.data.current_page
+          page: that.current_page
         };
         const loading = this.$loading({
           lock: true,
@@ -210,12 +210,12 @@
           target: document.querySelector("body")
         });
         that.infoDetail = {};
-        getEsIndex(pearms).then(res => {
+        journalAnalysisIndex(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            let count = res.data.data.total;
+            let total_page = res.data.data.total_page;
             let journalList = res.data.data.data;
-            that.count = count;
+            that.total_page = total_page;
             that.journalList = journalList;
           } else {
             this.$message.error({

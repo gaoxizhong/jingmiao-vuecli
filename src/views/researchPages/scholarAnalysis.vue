@@ -104,7 +104,7 @@
       // 普通搜索
       headerInputClick(){
         let input_name = this.headerInput;
-
+        this.clickItemsbtn(input_name);
       },
       // 普通搜索 回车键点击
       searchEnterFun(e){
@@ -151,9 +151,9 @@
         let name = n;
         this.$emit('setsickNess', '');
         this.$router.push({
-          path:'/literatureDetails',   //跳转的路径
+          path:'/literatureAuthor',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            id,
+            name
           }
         })
       }
