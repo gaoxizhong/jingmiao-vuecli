@@ -71,11 +71,72 @@
       </div>
       <!-- 左侧筛选模块 结束 -->
       <!-- 中间文献列表模块 开始 -->
-      <div class="c-list-box"></div>
+      <div class="c-list-box">
+        <div class="list-title">
+          <span class="list-title-l">找到约1,030,000条相关结果</span>
+          <div class="list-title-r">
+            <span v-for="(item,index) in sortData" :key="index">{{item.name}}<i :class="item.status == 1?'el-icon-sort-down':'el-icon-sort-up'"></i></span>
+          </div>
+        </div>
+
+      </div>
       <!-- 中间文献列表模块 结束 -->
 
       <!-- 右侧文献可视化分析模块 开始 -->
-      <div class="c-eacharts-box"></div>
+      <div class="c-eacharts-box">
+        <!-- 介绍 开始-->
+        <div class="eacharts-info-nambox">
+          <div class="icon-classbox">
+            <div class="classbox-l">
+              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+              <span>国防科技工业</span>
+            </div>
+          </div>
+          <div class="info-box">
+            正常人的血压随内外环境变化在一定范围内波动。 在整体人群，血压水平随年龄逐渐升高，以收缩压更为明显，但50岁后舒张压呈现下降趋势，脉压也随之加大。近年来，人们对心血管病多重危险因素作用以及心、脑、肾靶器官保护的认识不断深入，高 血压的诊断标准也在不断调整，目前认为…
+          </div>
+        </div>
+        <!-- 介绍 结束-->
+        <!-- 研究趋势 开始 -->
+        <div class="eacharts-itemsbox">
+          <div class="icon-classbox">
+            <div class="classbox-l">
+              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+              <span>研究趋势</span>
+            </div>
+          </div>
+          <div class="eacharts-ch-box">
+            <div id="ResearchTrends"></div>
+          </div>
+        </div>
+        <!-- 研究趋势 结束 -->
+        <!-- 关联研究 开始 -->
+        <div class="eacharts-itemsbox">
+          <div class="icon-classbox">
+            <div class="classbox-l">
+              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+              <span>关联研究</span>
+            </div>
+          </div>
+          <div class="eacharts-ch-box">
+            <div id="AssociationStudy"></div>
+          </div>
+        </div>
+        <!-- 关联研究 结束 -->
+        <!-- 相关学者 开始 -->
+        <div class="eacharts-itemsbox">
+          <div class="icon-classbox">
+            <div class="classbox-l">
+              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+              <span>相关学者</span>
+            </div>
+          </div>
+          <div class="eacharts-ch-box">
+            <div id="RelatedScholars"></div>
+          </div>
+        </div>
+        <!-- 相关学者 结束 -->
+      </div>
       <!-- 右侧文献可视化分析模块 结束 -->
     </div>
 
@@ -106,7 +167,13 @@
           filter_litJournal:'', // 所属期刊
           minInput:'', // 影响指数
           maxInput:'', // 影响指数
-        }
+        },
+        sortData:[
+          {name:'时间',status:'1'},
+          {name:'被引量',status:'1'},
+          {name:'点击量',status:'1'},
+          {name:'下载量',status:'1'},
+        ]
       }
     },
     created(){
@@ -476,7 +543,6 @@
   }
   .c-list-box{
     flex: 1;
-    padding: 10rem;
     margin: 0 1rem;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgb(227 227 227 / 50%);
@@ -485,4 +551,101 @@
   .c-eacharts-box{
     width: 29rem;
   }
+  /* =========  中间列表部分  ↓ ================ */
+  .c-list-box .list-title{
+    width: 100%;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #E5E5E5;
+    padding: 0 0.5rem 0 1.2rem;
+  }
+  .list-title-l{
+    font-size: 0.8rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #999999;
+    line-height: 1.1rem;
+  }
+  .list-title-r{
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .list-title-r>span{
+    font-size: 0.7rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    line-height: 1rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  .list-title-r>span i{
+    font-size: 0.8rem;
+    color: #dfdfdf;
+    line-height: 1rem;
+  }
+  .list-title-r>span:hover{
+    color: #2B77BD;
+  }
+  /* ================= 中间文献列表模块 ↑ ======================= */
+
+  /* ================= 右侧文献可视化分析模块 ↓ ======================= */
+  .eacharts-info-nambox{
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+  }
+  .icon-classbox{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .classbox-l{
+    height: auto;
+    font-size: 0.8rem;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    color: #333333;
+    display: flex;
+    align-items: center;
+  }
+  .classbox-l>img{
+    width: 0.3rem;
+    height: 1.05rem;
+  }
+  .classbox-l>span{
+    padding-left: 0.5rem;
+  }
+  .info-box{
+    width: 100%;
+    margin-top: 1.1rem;
+    font-size: 0.8rem;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 1.25rem;
+    text-align: left;
+  }
+  .eacharts-itemsbox{
+    margin-top: 1rem;
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+  }
+  .eacharts-ch-box{
+    width: 100%;
+    height: 12rem;
+  }
+  /* ================= 右侧文献可视化分析模块 ↑ ======================= */
+
 </style>

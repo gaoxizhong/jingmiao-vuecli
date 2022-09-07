@@ -112,7 +112,7 @@
 
 </template>
 <script>
-  import { getEsIndex } from "../../api/data";
+  import { journalAnalysisIndex } from "../../api/data";
   export default {
     provide(){
       return {

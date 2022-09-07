@@ -65,11 +65,11 @@
 <script>
   // import CommonAside from "../../components/CommonAside";
   export default {
-    provide(){
-      return {
-        setsickNess: this.setsickNess
-      }
-    },
+    // provide(){
+    //   return {
+    //     setsickNess: this.setsickNess
+    //   }
+    // },
     name: 'researchHome',
     components: {
       // CommonAside,
@@ -146,7 +146,7 @@
   }
   .el-main{
     background: #FAFBFF;
-    padding: 1.5rem 1.5rem 0.75rem 1rem;
+    padding: 1.5rem 1.5rem 0.75rem 1.2rem;
     box-sizing: border-box;
   }
   header{

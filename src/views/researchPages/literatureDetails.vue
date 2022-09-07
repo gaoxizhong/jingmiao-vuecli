@@ -48,12 +48,14 @@
                 <span v-for="(items,idx) in infoDetail.keyword" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
               </p>
             </div>
-
             <div class="one_info clearfix" v-if="infoDetail.cn_name">
               <label>所属期刊:</label>
               <p>{{infoDetail.cn_name}}</p>
             </div>
-
+            <div class="one_info clearfix" v-if="infoDetail.number">
+              <label>期刊号:</label>
+              <p>{{infoDetail.number}}</p>
+            </div>
             <div class="one_info clearfix" v-if="infoDetail.year">
               <label>年、卷(期):</label>
               <p>{{infoDetail.year}}</p>
@@ -75,7 +77,7 @@
            <!-- 论文列表 -->
           <div class="list-itembox">
 
-            <a href="javascript:0;" class="list-item" @click.stop="goToDetails()">
+            <a href="javascript:0;" class="list-item" @click.stop="goToDetails(item.url_md5)">
               <div class="list-item-title" title="1.聚乙烯微塑料对糖尿病小鼠肾脏的影响">1.聚乙烯微塑料对糖尿病小鼠肾脏的影响</div>
               <div class="list-item-subt">德利论文事校如奶生9号.”(中国环境科回CrcOCs[土大核心822年3明）</div>
               <div class="list-item-text" >出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加电0mESm PSP基置导致疆原病小温肾解出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加，电0mESm PSP…</div>
@@ -186,7 +188,7 @@
     name: 'literatureDetails',
     data() {
       return {
-        id:'',
+        url_md5:'',
         viewHeight: "",
         infoDetail: {},
         title: "",
@@ -198,9 +200,9 @@
       let getViewportSize = this.$getViewportSize();
       this.viewHeight = getViewportSize.height;
       this.viewWidth = getViewportSize.width;
-      this.id = this.$route.query.id;
-      console.log(this.id)
-      this.getDetail(this.id);
+      this.url_md5 = this.$route.query.url_md5;
+      console.log(this.url_md5)
+      this.getDetail(this.url_md5);
     },
     methods: {
       // 返回上一步
@@ -228,9 +230,9 @@
       // 获取详情
       getDetail(i) {
         let that = this;
-        let id = i;
+        let url_md5 = i;
         let pearms = {
-          id
+          url_md5
         };
         const loading = this.$loading({
           lock: true,
@@ -264,12 +266,12 @@
       // 点击列表
       goToDetails(i){
         let that = this;
-        let id = i;
+        let url_md5 = i;
         this.$emit('setsickNess','');
         this.$router.push({  //核心语句
           path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            id,
+            url_md5,
           }
         })
       },

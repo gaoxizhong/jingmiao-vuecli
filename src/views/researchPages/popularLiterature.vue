@@ -43,7 +43,7 @@
 
         <div class="list-itembox">
 
-          <a href="javascript:0;" class="list-item" v-for="(item,index) in listData" :key="index" @click.stop="goToDetails(item.id)">
+          <a href="javascript:0;" class="list-item" v-for="(item,index) in listData" :key="index" @click.stop="goToDetails(item.url_md5)">
             <div class="list-item-title" :title="(index+1) + '、' + item.title">{{index +1}}、{{item.title}}</div>
             <div class="list-item-subt">{{item.subject}}</div>
             <div class="list-item-text" >{{item.abstract}}</div>
@@ -205,13 +205,13 @@
       // 点击列表
       goToDetails(i){
         let that = this;
-        let id = i;
+        let url_md5 = i;
         this.$emit('setsickNess', '');
         // 新页面打开
         this.$router.push({  //核心语句
           path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            id,
+            url_md5:'2b26d8a2017c51444a552298986bff36',
           }
         })
       },

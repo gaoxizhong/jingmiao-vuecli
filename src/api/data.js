@@ -413,6 +413,14 @@ export const literatureDetails = (params) =>{
     data: params
   })
 }
+// 期刊分析首页
+export const journalAnalysisIndex = (params) =>{
+  return axios.request({
+    url:'/es-album',
+    method: 'post',
+    data: params
+  })
+}
 // =================  科研探索api  ↑ ==================
 
 
