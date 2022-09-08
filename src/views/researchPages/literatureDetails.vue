@@ -42,7 +42,7 @@
               <p>{{infoDetail.doi}}</p>
             </div>
 
-            <div class="one_info clearfix" v-if="infoDetail.keyword.length>0">
+            <div class="one_info clearfix" v-if="infoDetail.keyword">
               <label>关键词：</label>
               <p>
                 <span v-for="(items,idx) in infoDetail.keyword" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
@@ -61,7 +61,7 @@
               <p>{{infoDetail.year}}</p>
             </div>
             <div class="asub-box">
-              <a href="javascript:0;" class="asub-zaixian"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
+              <a href="javascript:0;" class="asub-zaixian"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="infoDetail.is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
               <a :href="infoDetail.pdf_file?infoDetail.pdf_file:'javascript:0;'" class="asub-zaixian" :target="infoDetail.pdf_file?'_blank':''" @click.stop="goToyuedu($event,infoDetail.pdf_file)" v-if="infoDetail.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
             </div>
           </div>
@@ -77,7 +77,7 @@
            <!-- 论文列表 -->
           <div class="list-itembox">
 
-            <a href="javascript:0;" class="list-item" @click.stop="goToDetails(item.url_md5)">
+            <a href="javascript:0;" class="list-item" @click.stop="goToDetails(item.url_md5)" v-for="(item,index) in lwList" :key="index">
               <div class="list-item-title" title="1.聚乙烯微塑料对糖尿病小鼠肾脏的影响">1.聚乙烯微塑料对糖尿病小鼠肾脏的影响</div>
               <div class="list-item-subt">德利论文事校如奶生9号.”(中国环境科回CrcOCs[土大核心822年3明）</div>
               <div class="list-item-text" >出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加电0mESm PSP基置导致疆原病小温肾解出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加，电0mESm PSP…</div>
@@ -90,7 +90,7 @@
               </div>
               <div class="item-btn-box">
                 <div class="asub-box" style="margin-top:0;">
-                  <a href="javascript:0;" class="asub-zaixian" style="padding-left:0;"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
+                  <a href="javascript:0;" class="asub-zaixian" style="padding-left:0;"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="item.is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
                   <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i class="el-icon-reading"></i>在线阅读</a>
                 </div>
 
@@ -192,7 +192,8 @@
         viewHeight: "",
         infoDetail: {},
         title: "",
-        activeName:'xglw'
+        activeName:'xglw',
+        lwList:[{},{}]
       };
     },
     created() {

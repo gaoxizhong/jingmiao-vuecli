@@ -105,8 +105,8 @@
               <span>研究趋势</span>
             </div>
           </div>
-          <div class="eacharts-ch-box">
-            <div id="ResearchTrends"></div>
+          <div class="eacharts-ch-box ResearchTrends">
+            <div id="ResearchTrends" style="width: 100%;height:100%;"></div>
           </div>
         </div>
         <!-- 研究趋势 结束 -->
@@ -118,8 +118,8 @@
               <span>关联研究</span>
             </div>
           </div>
-          <div class="eacharts-ch-box">
-            <div id="AssociationStudy"></div>
+          <div class="eacharts-ch-box AssociationStudy">
+            <div id="AssociationStudy" style="width: 100%;height:100%;"></div>
           </div>
         </div>
         <!-- 关联研究 结束 -->
@@ -131,8 +131,8 @@
               <span>相关学者</span>
             </div>
           </div>
-          <div class="eacharts-ch-box">
-            <div id="RelatedScholars"></div>
+          <div class="eacharts-ch-box RelatedScholars">
+            <div id="RelatedScholars" style="width: 100%;height:100%;"></div>
           </div>
         </div>
         <!-- 相关学者 结束 -->
@@ -262,6 +262,10 @@
         });
         that.infoDetail = {};
         getEsIndex(pearms).then(res => {
+
+          that.getResearchTrends_eacharts();
+          // 关联研究
+          that.getAssociationStudy_eacharts();
           loading.close();
           if (res.data.code == 0) {
             let total_page = res.data.data.total;
@@ -302,6 +306,254 @@
           return
         }
       },
+      // 研究趋势
+      getResearchTrends_eacharts(){
+        let taht = this;
+        let myChart = this.$echarts.init(document.getElementById("ResearchTrends"));
+        let data_val = [2220, 1682, 2791, 3000, 4090, 3230, 2910, 2791, 3000, 4090, 2220, 1682, 2910],
+          xAxis_val = ["2010", "2011", "2012", "2013", "2014", "2015", "2016","2017","2018","2019","2020","2021","2022"];
+        let option = {
+          backgroundColor: "#fff",
+          grid: {  // 控制图标在模块内距离边框的距离，不设置会自动居中
+            left: 0,
+            top: 14,
+            bottom: 0,
+            right: 14,
+            containLabel: true,
+          },
+          tooltip: { // 鼠标浮动展示框样式
+            show: true,
+            backgroundColor: "#3664D9",
+            borderColor: "#3664D9",
+            textStyle: {
+              color: "#fff",
+            },
+            borderWidth: 0.5,
+            formatter: "{b}:{c}",
+            extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
+          },
+          xAxis: {  // X轴
+            data: xAxis_val,
+            boundaryGap: false,
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#999",
+              },
+            },
+            axisTick: {
+              show: false,
+            },
+          },
+          yAxis: {
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#999",
+              },
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+          },
+
+          series: [
+              // 柱状
+            // {
+            //   type: "bar",
+            //   name: "linedemo",
+            //   tooltip: {
+            //     show: false,
+            //   },
+            //   animation: false,
+            //   barWidth: 1.4,
+            //   hoverAnimation: false,
+            //   data: data_val,
+            //   itemStyle: {
+            //     normal: {
+            //       color: "#3664D9",
+            //       opacity: 0.6,
+            //       label: {
+            //         show: false,
+            //       },
+            //     },
+            //   },
+            // },
+             // 折线
+            { 
+              type: "line", 
+              name: "linedemo",
+              smooth: true,
+              symbolSize: 8, // 节点圆球的直径大小
+              animation: true,// 初始加载时动画
+              lineWidth: 1,
+              hoverAnimation: false,
+              data: data_val,
+              symbol: "circle",
+              itemStyle: { // 圆球及连线样式样式
+                normal: {
+                  color: "#3664D9",
+                  shadowBlur: 40,
+                  label: { // 节点上的字体展示
+                    show: false,
+                    position: "top",
+                    textStyle: {
+                      color: "#000",
+                    },
+                  },
+                },
+              },
+              areaStyle: { // 面积图
+                normal: {
+                  color: "#3664D9",
+                  opacity: 0.07,
+                },
+              },
+            },
+          ],
+        };
+        myChart.setOption(option);
+      },
+      // 关联研究
+      getAssociationStudy_eacharts(){
+        let that = this;
+        let myChart = this.$echarts.init(document.getElementById("AssociationStudy"));
+
+        var baseName = "项目";
+        var chartData = {
+          人员: ["人员1", "人员2", "人员3"],
+          机构: ["机构1", "机构2", "机构3"],
+          文献: ["文献1", "文献2", "文献3"],
+        };
+        var datas = [
+          {
+            name: baseName || "",
+            draggable: true,
+          },
+        ];
+        var lines = [];
+        var categoryIdx = 0;
+        var keyIndex = 0;
+        var dataIndex = 0;
+        $.each(chartData, function (key, values) {
+          keyIndex = dataIndex;
+          datas.push({ name: key, category: categoryIdx, draggable: true });
+          keyIndex++;
+          dataIndex++;
+          lines.push({
+            source: 0,
+            target: keyIndex,
+            value: "",
+          });
+          $(values).each(function (idx, val) {
+            datas.push({ name: val, category: categoryIdx, draggable: true });
+            dataIndex++;
+            lines.push({
+              source: keyIndex,
+              target: dataIndex,
+              value: "",
+            });
+          });
+          categoryIdx++;
+        });
+        var option = {
+          title: {
+            text: "",
+          },
+          tooltip: {},
+          animationDurationUpdate: 1500,
+          label: {
+            normal: {
+              show: true,
+              textStyle: {
+                fontSize: 12,
+              },
+            },
+          },
+          series: [
+            {
+              type: "graph",
+              layout: "force", //采用力引导布局
+              symbolSize: 45,
+              legendHoverLink: true, //启用图例 hover 时的联动高亮。
+              focusNodeAdjacency: true, //在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点。
+              roam: true,
+              label: {
+                normal: {
+                  show: true,
+                  position: "inside",
+                  textStyle: {
+                    fontSize: 12,
+                  },
+                },
+              },
+              force: {
+                repulsion: 1000,
+              },
+              edgeSymbolSize: [4, 50],
+              edgeLabel: {
+                normal: {
+                  show: true,
+                  textStyle: {
+                    fontSize: 10,
+                  },
+                  formatter: "{c}",
+                },
+              },
+              categories: [
+                {
+                  itemStyle: {
+                    normal: {
+                      color: "#BB8FCE",
+                    },
+                  },
+                },
+                {
+                  itemStyle: {
+                    normal: {
+                      color: "#0099FF",
+                    },
+                  },
+                },
+                {
+                  itemStyle: {
+                    normal: {
+                      color: "#5DADE2",
+                    },
+                  },
+                },
+              ],
+              data: datas,
+              links: lines,
+              lineStyle: {
+                normal: {
+                  opacity: 0.9,
+                  width: 1,
+                  curveness: 0,
+                },
+              },
+            },
+          ],
+        };
+
+
+        myChart.setOption(option);
+
+      }
+
 
     },
 
@@ -644,7 +896,12 @@
   }
   .eacharts-ch-box{
     width: 100%;
+  }
+  .eacharts-ch-box.ResearchTrends{
     height: 12rem;
+  }
+  .eacharts-ch-box.AssociationStudy,.eacharts-ch-box.RelatedScholars{
+    height: 18rem;
   }
   /* ================= 右侧文献可视化分析模块 ↑ ======================= */
 

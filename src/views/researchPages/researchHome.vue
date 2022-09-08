@@ -65,11 +65,11 @@
 <script>
   // import CommonAside from "../../components/CommonAside";
   export default {
-    // provide(){
-    //   return {
-    //     setsickNess: this.setsickNess
-    //   }
-    // },
+    provide(){
+      return {
+        setsickNess: this.setsickNess
+      }
+    },
     name: 'researchHome',
     components: {
       // CommonAside,
