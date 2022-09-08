@@ -3,13 +3,13 @@
     <!-- 头部搜索模块 开始 -->
     <div class="literature-titlebox">
       <div class="header-input-box">
-        <el-input placeholder="输入姓名..." v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)"></el-input>
+        <el-input placeholder="输入期刊名称..." v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)"></el-input>
         <el-button slot="append" @click="headerInputClick">开始分析</el-button>
       </div>
     </div>
     <!-- 头部搜索模块 结束 -->
     <div class="sortbtn-box">
-      <a href="javascript:0;"><span>年文章数</span><i class="el-icon-caret-bottom"></i></a>
+      <a href="javascript:0;"><span>发文量</span><i class="el-icon-caret-bottom"></i></a>
       <a href="javascript:0;"><span>H指数</span><i class="el-icon-caret-bottom"></i></a>
       <a href="javascript:0;"><span>审稿周期</span><i class="el-icon-caret-bottom"></i></a>
     </div>
@@ -70,16 +70,17 @@
         <div class="listitems-box">
 
           <div v-for="(item,index) in journalList" :key="index" class="list-items" @click="goToDetails(item.id)">
-            <img src="https://lh3.googleusercontent.com/ogw/AOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" class="items-img"/>
+            <img src="" alt="" class="items-img" v-if="item.coverImg"/>
+            <el-empty description="暂无封面" class="items-img" v-else></el-empty>
             <div class="list-itemsinfo">
               <div class="list-itemsinfo-title">{{item.special_name}}</div>
               <div class="eh-title">{{item.cn_name}}</div>
               <div class="dataIndicator-box">
-                <div>发文总数：{{item.published_literature_volume}}</div>
-                <div>总被引量：{{item.total_citations_number}}</div>
-                <div>总下载量：{{item.total_download_times}}</div>
-                <div>发文机构数：320</div>
-                <div>发文作者数：320</div>
+                <div>发文量：{{item.published_literature_volume}}</div>
+                <div>被引量：{{item.total_citations_number}}</div>
+                <div>下载量：{{item.total_download_times}}</div>
+                <div>机构数：320</div>
+                <div>作者数：320</div>
               </div>
               <div class="dataIndicator-box">
                 <div>审稿周期：平均1.25月</div>

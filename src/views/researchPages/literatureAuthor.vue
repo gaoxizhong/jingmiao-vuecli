@@ -76,7 +76,7 @@
 
             <div class="coolist-items">
               <div class="items-i" v-for="(item,index) in authorList" :key="index">
-                <img src="/static/img/img-user.1662264577738.png" alt="" />
+                <img src="../../assets/image/researchPages/img-user.png" alt="" />
                 <div class="items-rbox">
                   <div class="items-rname">陈春城</div>
                   <div class="items-rjg">中国科学院化学研究所</div>
@@ -107,11 +107,6 @@
       <div class="acc-leftbox">
         <div class="acc-l-items" :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
         <div class="acc-l-items" :class="acc_tab == '2'?'active':''" @click="clickTab('2')">被引趋势</div>
-        <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">学科渗透</div>
-        <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">研究主题</div>
-        <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">代表机构</div>
-        <div class="acc-l-items" :class="acc_tab == '6'?'active':''" @click="clickTab('6')">代表学者</div>
-        <div class="acc-l-items" :class="acc_tab == '7'?'active':''" @click="clickTab('7')">代表期刊</div>
       </div>
       <div class="acc-rightbox">
         
@@ -315,116 +310,6 @@
           // 被引趋势
           that.getLineChart('eachartsCited','2');
         }
-        if(i == '3'){
-          // 学科渗透
-
-        }
-        if(i == '4'){
-          // 研究主题
-          that.getTopics('eachartsTheme','4');
-        }
-        if(i == '5'){
-          // 代表机构
-          that.getTopics('RepresentativeBody','5');
-        }
-        if(i == '6'){
-          // 代表学者
-          that.getTopics('RepresentativeScholar','6');
-        }
-        if(i == '7'){
-          // 代表期刊
-          that.getTopics('RepresentativePeriodicals','7');
-        }
-      },
-      // 柱状图
-      getTopics(i,data){
-        let id = i;
-        let infoData = data;
-        let data_val = [300, 450, 770, 203, 255, 188, 156,300, 450, 770, 203, 255, 188, 156],
-          xAxis_val = ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"];
-        let topics_eacharts = this.$echarts.init(document.getElementById(id));
-        let option = {
-          backgroundColor: "#fff",
-          tooltip: {
-            trigger: "axis",
-            axisPointer: {
-              type: "shadow",
-            },
-          },
-          xAxis: [
-            {
-              type: "category",
-              data: xAxis_val,
-              axisLine: {
-                lineStyle: {
-                  color: "#D2D2D2",
-                },
-              },
-              axisLabel: {
-                color: "#999",
-                textStyle: {
-                  fontSize: 14,
-                },
-              },
-            },
-          ],
-          yAxis: [
-            {
-              name: "单位:K",
-              nameTextStyle: {
-                color: "#999",
-                fontSize: 14,
-              },
-              axisLine: {
-                show: true,
-                lineStyle: {
-                  color: "#D2D2D2",
-                },
-              },
-              axisLabel: { // y轴数字字体
-                show: true,
-                color: "#D2D2D2",
-                fontSize: 14,
-              },
-              splitLine: { // y轴每级横线样式
-                show: true,
-                lineStyle: {
-                  color: "#EFEFEF",
-                },
-              },
-              splitNumber: 10,
-            }
-          ],
-          series: [
-            {
-              type: "bar",
-              data: data_val,
-              barWidth: "20px",
-              itemStyle: {
-                normal: {
-                  color: this.$echarts.graphic.LinearGradient(
-                    0,
-                    0,
-                    0,
-                    1,
-                    [
-                      {
-                        offset: 0,
-                        color: "#3664D9",
-                      },
-                      {
-                        offset: 1,
-                        color: "#3664D9",
-                      },
-                    ],
-                    false
-                  ),
-                },
-              },
-            },
-          ],
-        };
-        option && topics_eacharts.setOption(option);
       },
       // 折线图
       getLineChart(i,data){
