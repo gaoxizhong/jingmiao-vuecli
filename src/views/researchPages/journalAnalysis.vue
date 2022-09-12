@@ -69,12 +69,11 @@
       <div class="filter-rightbox">
         <div class="listitems-box">
 
-          <div v-for="(item,index) in journalList" :key="index" class="list-items" @click="goToDetails(item.id)">
-            <img src="" alt="" class="items-img" v-if="item.coverImg"/>
-            <el-empty description="暂无封面" class="items-img" v-else></el-empty>
+          <div v-for="(item,index) in journalList" :key="index" class="list-items" @click="goToDetails(item.md5)">
+            <!-- <img src="" alt="" class="items-img"/> -->
             <div class="list-itemsinfo">
               <div class="list-itemsinfo-title">{{item.special_name}}</div>
-              <div class="eh-title">{{item.cn_name}}</div>
+              <div class="eh-title">{{` 《 ${item.cn_name} 》`}} <span>识别代码：{{item.ISSN}}</span></div>
               <div class="dataIndicator-box">
                 <div>发文量：{{item.published_literature_volume}}</div>
                 <div>被引量：{{item.total_citations_number}}</div>
@@ -146,6 +145,7 @@
     },
     created(){
       this.$emit('onEmitIndex', '/journalAnalysis'); // 触发父组件的方法，并传递参数index
+      document.title = '期刊分析';
       this.headerInputClick();
     },
     methods:{
@@ -162,13 +162,13 @@
       // 点击列表
       goToDetails(i){
         let that = this;
-        let id = i;
+        let md5 = i;
         this.$emit('setsickNess', '');
         // 新页面打开
         this.$router.push({  //核心语句
           path:'/journalDetails',  
           query:{       
-            id,
+            md5,
           }
         })
       },

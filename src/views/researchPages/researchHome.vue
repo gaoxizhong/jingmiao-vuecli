@@ -122,6 +122,7 @@
         this.$nextTick(() => {
           this.is_view = true
         })
+        console.log(this.is_view)
       },
     },
     // setsickNess(){

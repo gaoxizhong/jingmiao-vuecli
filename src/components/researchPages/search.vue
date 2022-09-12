@@ -1,37 +1,4 @@
 <template>
-  <div class="pages-b">
-    <!-- 头部搜索模块 开始 -->
-    <div class="literature-titlebox">
-      <div class="titlebox-tab">
-        <div class="titlebox-tab-item" :class="is_titleTab == '1'?'hover':'' " @click="clicktitleTab('1')">普通搜索</div>
-        <div class="titlebox-tab-m"></div>
-        <div class="titlebox-tab-item" :class="is_titleTab == '2'?'hover':'' " @click="clicktitleTab('2')">高级搜索</div>
-      </div>
-      <div v-if="is_titleTab == '1'">
-        <div class="header-input-box">
-          <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-            <el-button slot="append" @click="headerInputClick" >搜索</el-button>
-          </el-input>
-        </div>
-
-        <div class="historysearch-box">
-          <div class="historysearch-title">历史搜索：</div>
-          <div class="history-items-box">
-            <div class="history-items">置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">关节置换</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <!-- 头部搜索模块 结束 -->
     <div class="c-box">
       <!-- 左侧筛选模块 开始 -->
       <div class="c-filter-box">
@@ -176,16 +143,10 @@
       <!-- 右侧文献可视化分析模块 结束 -->
     </div>
 
-  </div>
-
 </template>
 <script>
   import { getEsIndex } from "../../api/data";
   export default {
-    name: 'searchResults',
-    components: {
-
-    },
     data(){
       return {
         is_s:false,
@@ -213,22 +174,9 @@
       }
     },
     created(){
-      if(this.$route.query.is_titleTab){
-        this.is_titleTab = this.$route.query.is_titleTab;
-        this.headerInput = this.$route.query.headerInput;
-        this.getEsIndex(this.headerInput);
-      }
+       this.getEsIndex(this.headerInput);
     },
     methods:{
-      // 点击快速入口类
-      goToMyFavorite(u){
-        let path = u;
-        this.$emit('setsickNess', '');
-        this.$router.push({
-          path,
-          query:{},
-        })
-      },
       // 点击作者
       goToauthor(n){
         let that = this;
@@ -245,7 +193,8 @@
       goToDetails(i){
         let that = this;
         let id = i;
-        this.$emit('setsickNess', '');
+        // this.$emit('setsickNess', '');
+        this.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
         // 新页面打开
         this.$router.push({  //核心语句
           path:'/literatureDetails',   //跳转的路径
@@ -264,23 +213,6 @@
       },
       clicktitleTab(n){
         this.is_titleTab = n;
-      },
-      // 普通搜索
-      headerInputClick(){
-        let input_name = this.headerInput;
-        this.$router.push({  //核心语句
-          path:'',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            input_name,
-          }
-        })
-      },
-      // 普通搜索 回车键点击
-      searchEnterFun(e){
-        var keyCode = window.event?e.keyCode:e.which;
-        if(keyCode == 13){
-          this.headerInputClick();
-        }
       },
 
       // 获取页面数据
@@ -359,14 +291,15 @@
           },
           tooltip: { // 鼠标浮动展示框样式
             show: true,
-            backgroundColor: "#3664D9",
-            borderColor: "#3664D9",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
             textStyle: {
               color: "#fff",
             },
-            borderWidth: 0.5,
             formatter: "{b}:{c}",
-            extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
+            borderWidth:0
+            // borderColor: "rgba(0, 0, 0, 1)",
+            // borderWidth: 0.5,
+            // extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
           },
           xAxis: {  // X轴
             data: xAxis_val,
@@ -605,92 +538,6 @@
   }
 </script>
 <style scoped>
-  .pages-b{
-    width: 100%
-  }
-  .literature-titlebox{
-    width: 100%;
-    min-height: 8.6rem;
-    background: #fff;
-    box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
-    padding: 0.8rem 0;
-  }
-  .titlebox-tab{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .titlebox-tab .titlebox-tab-item{
-    font-size: 0.8rem;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #333333;
-    padding: 0 0.75rem;
-    cursor: pointer;
-  }
-  .titlebox-tab .titlebox-tab-item.hover{
-    color: #2B77BD;
-  }
-
-  .titlebox-tab .titlebox-tab-m{
-    margin: 0 0.75rem;
-    width: 1px;
-    height: 1.05rem;
-    border: 1px solid #D7D7D7;
-  }
-
-  .header-input-box{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30.5rem;
-    border-radius: 6px;
-    margin: 1rem auto 0;
-    cursor: pointer;
-  }
-  .header-input-box >>> .el-input__inner{
-    border: 1px solid #E3E3E3;
-  }
-  .header-input-box >>> .el-button{ 
-    background: #2B77BD;
-    color: #fff;
-    border: 1px solid #2B77BD;
-    border-radius: 0 6px 6px 0;
-    width: 5.4rem;
-  }
-  .historysearch-box{
-    display: flex;
-    width: 30.5rem;
-    margin: 0 auto;
-  }
-  .historysearch-title{
-    width: auto;
-    margin-top: 1rem;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #999999;
-  }
-  .history-items-box{
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    padding-top: 0.5rem;
-  }
-  .history-items-box .history-items{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #333333;
-    line-height: 1rem;
-    padding: 0.15rem 0.6rem;
-    background: #EAF0F6;
-    border-radius: 6px;
-    margin: 0.4rem;
-    cursor: pointer;
-  }
   .listbox{
     width: 100%;
     height: auto;

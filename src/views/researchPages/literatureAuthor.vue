@@ -107,6 +107,8 @@
       <div class="acc-leftbox">
         <div class="acc-l-items" :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
         <div class="acc-l-items" :class="acc_tab == '2'?'active':''" @click="clickTab('2')">被引趋势</div>
+        <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">研究主题</div>
+
       </div>
       <div class="acc-rightbox">
         
@@ -298,7 +300,7 @@
           console.log(e);
         });
       },
-            // 点击分析类项 tab
+      // 点击分析类项 tab
       clickTab(i){
         let that = this;
         that.acc_tab = i;

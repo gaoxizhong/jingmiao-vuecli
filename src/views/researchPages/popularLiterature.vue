@@ -7,6 +7,7 @@
         <div class="titlebox-tab-m"></div>
         <div class="titlebox-tab-item" :class="is_titleTab == '2'?'hover':'' " @click="clicktitleTab('2')">高级搜索</div>
       </div>
+      <!-- 普通搜索头部 开始 -->
       <div v-if="is_titleTab == '1'">
         <div class="header-input-box">
           <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
@@ -29,127 +30,81 @@
           </div>
         </div>
       </div>
-
+      <!-- 普通搜索头部 结束 -->
+      <!-- 高级搜索头部 开始-->
+      <div class="advancedSearch-titlebox" v-if="is_titleTab == '2'">
+        <div class="advancedSearch-titlebox-l">
+          <div class="duoxiang-tbox">
+            <div class="duoxiang-itemsbox" v-for="(item,index) in advancedOptions" :key="index">
+              <div class="advancedOptions-l">
+                <el-select class="validate" v-model="item.select_0" slot="prepend" @change="selectnChange">
+                  <el-option
+                    v-for="items in item.options_0"
+                    :key="items.value"
+                    :label="items.label"
+                    :value="items.value">
+                  </el-option>
+                </el-select>
+              </div>
+              <el-select class="validate" v-model="item.select_1" slot="prepend" @change="selectnChange">
+                <el-option
+                  v-for="items in item.options_1"
+                  :key="items.value"
+                  :label="items.label"
+                  :value="items.value">
+                </el-option>
+              </el-select>
+              <el-input placeholder="输入关键词..." v-model="item.headerInput_1" class="input-with-select"></el-input>
+              <el-select class="validate" v-model="item.select_2" slot="prepend" @change="selectnChange">
+                <el-option
+                  v-for="items in item.options_2" 
+                  :key="items.value"
+                  :label="items.label"
+                  :value="items.value">
+                </el-option>
+              </el-select>
+              <div class="jiaorjian-box">
+                <span v-if="index != 0" @click="clickJian(index)"> - </span>
+                <span @click="clickAdd(index)"> + </span>
+              </div>
+            </div>
+          </div>
+          <div class="shijian-tbox">
+            <div class="shijian-l">时间范围:</div>
+            <div class="shijian-selbox">
+              <el-date-picker
+                v-model="value2"
+                type="datetimerange"
+                :picker-options="pickerOptions"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                align="right">
+              </el-date-picker>
+            </div>
+          </div>
+          <div class="gaojibtn-box">
+            <span>重置条件</span>
+            <span style="background: #2B77BD;color: #fff;">检索</span>
+          </div>
+        </div>
+        <div class="advancedSearch-titlebox-r">
+          <div class="ad-titlebox-r-t">历史搜索：</div>
+          <div class="ad-titlebox-r-tList">
+            <div class="r-tList-item" v-for="(item,index) in historySenior" :key="index">{{item}}</div>
+          </div>
+        </div>
+      </div>
+      <!-- 高级搜索头部 结束-->
     </div>
     <!-- 头部搜索模块 结束 -->
     
     <!-- 列表推荐 开始 -->
-    <div class="listbox">
-      <!-- 左侧推荐列表 开始-->
-      <div class="listbox-left">
-        <div class="listbox-l-titlebox">
-          <span>推荐</span>
-        </div>
-
-        <div class="list-itembox">
-
-          <a href="javascript:0;" class="list-item" v-for="(item,index) in listData" :key="index" @click.stop="goToDetails(item.url_md5)">
-            <div class="list-item-title" :title="(index+1) + '、' + item.title">{{index +1}}、{{item.title}}</div>
-            <div class="list-item-subt">{{item.subject}}</div>
-            <div class="list-item-text" >{{item.abstract}}</div>
-            <div class="list-item-z">
-              <label class="zuozhe-box">相关作者：</label>
-              <div class="tap-top-span">
-                <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
-              </div>
-            </div>
-            <div class="item-btn-box">
-              <div class="asub-box">
-                <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-                <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i class="el-icon-reading"></i>在线阅读</a>
-              </div>
-
-              <div class="item-r">
-                <!-- <span>点击：333</span> -->
-                <span>被引：{{item.total_citations_number}}</span>
-                <span>下载：{{item.total_download_times}}</span>
-              </div>
-
-            </div>
-          </a> 
-
-        </div>
-        <!-- 分页展示 -->
-        <div class="pagination-box">
-          <div class="el-pagination is-background">
-            <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
-            <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
-            <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
-            <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
-          </div>
-        </div>
-      </div>  
-      <!-- 左侧推荐列表 结束-->
-
-
-
-
-      <!-- 右侧 开始-->
-      <div class="listbox-right">
-        <!-- 快速入口 开始 -->
-        <div class="fastEntry-box">
-
-          <div class="fastEntry-l-titlebox">
-            <div class="l-titlebox-1">
-              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-              <span>快速入口</span>
-            </div>
-          </div>
-
-          <div class="fastEntry-listbox">
-            <a href="javascript:0;" @click="goToMyFavorite('/useTutorial')">
-              <img src="../../assets/image/researchPages/icon-syjc.png" alt="" />
-              <span>使用教程</span>
-            </a>
-            <a href="javascript:0;" @click="goToMyFavorite('/myFavorite')">
-              <img src="../../assets/image/researchPages/icon-wdsc.png" alt="" />
-              <span>我收藏的</span>
-            </a>
-            <a href="javascript:0;" @click="goToMyFavorite('/scholarAnalysis')">
-              <img src="../../assets/image/researchPages/icon-xzfx.png" alt="" />
-              <span>学者分析</span>
-            </a>
-            <a href="javascript:0;" @click="goToMyFavorite('/subjectAnalysis')">
-              <img src="../../assets/image/researchPages/icon-xkfx.png" alt="" />
-              <span>学科分析</span>
-            </a>
-            <a href="javascript:0;" @click="goToMyFavorite('/journalAnalysis')">
-              <img src="../../assets/image/researchPages/icon-qkfx.png" alt="" />
-              <span>期刊分析</span>
-            </a>
-          </div>
-
-        </div>
-        <!-- 快速入口 结束 -->
-
-        <div class="popularList-box">
-
-          <div class="fastEntry-l-titlebox">
-            <div class="l-titlebox-1">
-              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-              <span>热门论文</span>
-            </div>
-            <a href="javascript:0;" class="l-titlebox-2">
-              <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
-              <span>换一批</span>
-            </a>
-          </div>
-
-          <div class="popular-listbox">
-            <a href="javascript:0;">
-              <span style="color:#D93636;">01</span><span style="padding-left:0.5rem;">疫情冲击下的2020年中国经济形势与政策选择…</span>
-            </a>
-            <a href="javascript:0;">
-              <span style="color:#D93636;">02</span><span style="padding-left:0.5rem;">智慧教育背景下教研活动的有效组织</span>
-            </a>
-            <a href="javascript:0;">
-              <span style="color:#FA6400;">03</span><span style="padding-left:0.5rem;">智慧教育背景下教研活动的有效组织</span>
-            </a>
-          </div>
-
-        </div>
-      </div>
-      <!-- 右侧 结束-->
+    <div v-if="is_titleTab == 1">
+      <Popular v-on='$listeners' />
+    </div>
+    <div v-if="is_titleTab == 2">
+      <Search v-on='$listeners' />
     </div>
     <!-- 列表推荐 结束 -->
 
@@ -157,11 +112,13 @@
 
 </template>
 <script>
-  import { getEsIndex } from "../../api/data";
+  import Popular from '../../components/researchPages/popular.vue';
+  import Search from '../../components/researchPages/search.vue';
   export default {
     name: 'popularLiterature',
     components: {
-
+      Popular,
+      Search
     },
     data(){
       return {
@@ -174,13 +131,74 @@
         current_page: 1,
         total_page:0, // 总页数
         listData:[], // 推荐列表
+        advancedOptions:[  // 高级搜索选项
+          {
+            options_0:[{label:'11',value:'aa'},{label:'22',value:'bb'}],
+            options_1:[{label:'11',value:'aa'},{label:'22',value:'bb'}],
+            options_2:[{label:'33',value:'cc'},{label:'44',value:'dd'}],
+            headerInput_1:'',
+            select_0:'',
+            select_1:'',
+            select_2:'',
+
+          }
+        ],
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近半年',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一年',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        value2: '',
+        historySenior:[
+          '我发的,检索,作者','我发的,检索,作者'
+        ]
       }
     },
     created(){
       this.$emit('onEmitIndex', '/popularLiterature'); // 触发父组件的方法，并传递参数index
-      this.getEsIndex();
     },
     methods:{
+      selectnChange(e){
+        console.log(e)
+      },
       // 点击快速入口类
       goToMyFavorite(u){
         let path = u;
@@ -190,52 +208,19 @@
           query:{},
         })
       },
-      // 点击作者
-      goToauthor(n){
-        let that = this;
-        let name = n;
-        // 新页面打开
-        this.$router.push({
-          path: '',
-          query:{
-            name,
-          }
-        });
-      },
-      // 点击列表
-      goToDetails(i){
-        let that = this;
-        let url_md5 = i;
-        this.$emit('setsickNess', '');
-        // 新页面打开
-        this.$router.push({  //核心语句
-          path:'/literatureDetails',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            url_md5:'2b26d8a2017c51444a552298986bff36',
-          }
-        })
-      },
-      // 点击分页功能
-      handleCurrentChange(val) {
-        let that = this;
-        that.current_page = Number(val);
-        that.getEsIndex();
-        // 回到顶部的方法。
-         window.scrollTo(0,0);
-      },
       clicktitleTab(n){
         this.is_titleTab = n;
       },
       // 普通搜索
       headerInputClick(){
         let headerInput = this.headerInput;
-        this.$router.push({  //核心语句
-          path:'/searchResults',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            headerInput,
-            is_titleTab: this.is_titleTab
-          }
-        })
+        // this.$router.push({  
+        //   path:'/searchResults',
+        //   query:{    
+        //     headerInput,
+        //     is_titleTab: this.is_titleTab
+        //   }
+        // })
       },
       // 普通搜索 回车键点击
       searchEnterFun(e){
@@ -244,64 +229,25 @@
           this.headerInputClick();
         }
       },
-
-      // 获取页面数据
-      getEsIndex(){
+      // 点击加号
+      clickAdd(){
         let that = this;
-        let pearms = {
-          page: that.current_page,
-        };
-        const loading = this.$loading({
-          lock: true,
-          text: "Loading",
-          spinner: "el-icon-loading",
-          background: "rgba(0, 0, 0, 0.1)",
-          target: document.querySelector("body")
-        });
-        that.infoDetail = {};
-        getEsIndex(pearms).then(res => {
-          loading.close();
-          if (res.data.code == 0) {
-            let total_page = res.data.data.total;
-            let listData = res.data.data.data;
-            that.total_page = total_page;
-            that.listData = listData;
-          } else {
-            this.$message.error({
-              message: res.data.msg
-            });
-          }
+        let advancedOptions = that.advancedOptions;
+        advancedOptions.push({
+          options_0:[{label:'11',value:'aa'},{label:'22',value:'bb'}],
+          options_1:[{label:'11',value:'aa'},{label:'22',value:'bb'}],
+          options_2:[{label:'33',value:'cc'},{label:'44',value:'dd'}],
+          headerInput_1:'',
+          select_0:'',
+          select_1:'',
+          select_2:'',
         })
-        .catch(e => {
-          loading.close();
-          console.log(e);
-        });
+        that.advancedOptions= advancedOptions;
       },
 
-      // 点击原文链接
-      goTofullText(event,u){
-        let url = u;
-        event.stopPropagation();
-        if(!url || url == ''){
-          // this.$message.error({
-          //   message: '暂无数据'
-          // });
-          return
-        }
-      },
-      // 点击在线阅读
-      goToyuedu(event,u){
-        let url = u;
-        event.stopPropagation();
-        if(!url || url == ''){
-          // this.$message.error({
-          //   message: '暂无数据'
-          // });
-          return
-        }
-      },
 
     },
+
 
 
 
@@ -401,284 +347,181 @@
     margin: 0.4rem;
     cursor: pointer;
   }
-  .listbox{
+  /* ===============  高级搜索头部 ↓ ======================= */
+  .advancedSearch-titlebox{
     width: 100%;
-    height: auto;
-    margin-top: 1.5rem;
+    padding: 0.9rem 2.5rem 1rem 9.5rem;
     display: flex;
-    justify-content: space-between;
+    align-items: flex-start;
+    justify-content: flex-start;
   }
-  .listbox-left{
-    width: 56.5rem;
-    height: auto;
-    background: #FFFFFF;
-    box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
-  }
-  .listbox-l-titlebox{
-    width: 100%;
-    height: 2.5rem;
-    line-height: 2.5rem;
-    border-bottom: 1px solid #E5E5E5;
-    text-align: left;
-  }
-  .listbox-l-titlebox>span{
-    margin-left: 2.2rem;
-    font-size: 0.8rem;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
-    color: #2B77BD;
-    display: inline-block;
-    width: auto;
-    padding: 0 0.5rem;
-    height: 100%;
-    line-height: 2.5rem;
-    border-bottom: 3px solid #2B77BD; 
-   }
-
-  .list-itembox{
-    width: 100%;
-    height: auto;
-    padding: 0.5rem 1.25rem;
-  }
-  .list-itembox .list-item{
-    display: inline-block;
-    width: 100%;
-    height: auto;
-    padding: 1rem;
-    border-bottom: 1px solid #E6E6E6;
-    text-align: left;
-  }
-  .list-itembox .list-item:hover{
-    background: #2B77BD0a;
-  }
-  .list-itembox .list-item .list-item-title{
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
-    font-weight: bold;
-    color: #333333;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-  }
-  .list-itembox .list-item .list-item-subt{
-    font-size: 0.7rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
-    color: #333333;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    margin-top: 0.4rem;
-  }
-  .list-itembox .list-item .list-item-text{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #333333;
-    line-height: 1.3rem;
-    margin-top: 0.5rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
-  .list-itembox .list-item .list-item-z{
-    margin-top: 0.5rem;
-    display: flex;
-  }
-  .list-item .list-item-z .zuozhe-box{
-    width: auto;
-    padding-right: 0.5rem;
-    font-size: 0.7rem;
-    color: #333;
-    text-align:left;
-    min-inline-size: fit-content;
-  }
-
-  .list-item .list-item-z .tap-top-span{
+  /* .advancedSearch-titlebox-l{
+    flex: 1;
+  } */
+  .duoxiang-itemsbox{
     display: flex;
     align-items: center;
-  }
-  .list-item .list-item-z .tap-top-span>a{
-    font-size: 0.7rem;
-    margin-right: 0.3rem;
-    color: #333;
-    display: flex;
-    flex-wrap: nowrap;
-  }
-  .list-item .list-item-z .tap-top-span>a:hover{
-    color: #D54B4B;
-  }
-  .item-btn-box{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 0.5rem;
-  }
-  .item-btn-box>div{
-    width: auto;
-    display: flex;
-    align-items: center;
-  }
-  .asub-zaixian {
-    border-radius: 20px;
-    color: #2B77BD;
-    align-items: center;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.75rem;
-    margin-right: 0.6rem;
-    display: flex;
-    align-items: center;
-  }
-  .asub-zaixian:nth-of-type(1){
-    padding-left:0;
-  }
-  .asub-zaixian .el-icon-reading,.el-icon-star-on,.el-icon-star-off {
-    font-size: 1.2rem;
-    margin-right: 0.25rem;
-  }
-  .asub-zaixian:hover{
-    color: #fa6400;
-  }
-  .item-btn-box .item-r{
-    display: flex;
-    align-items: center;
-  }
-  .item-btn-box .item-r>span{
-    font-size: 0.65rem;
-    padding-right: 0.1rem;
-    color: #333;
-    display: flex;
+    justify-content: flex-end;
     margin-right: 0.5rem;
   }
 
-
-
-
-
-  .listbox-right>div{
-    width: 22rem;
-    height: auto;
-    background: #FFFFFF;
-    box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
+  .duoxiang-itemsbox .validate {
+    width: 5rem;
+    font-size: 0.7rem;
+    background: transparent!important;
   }
-  .fastEntry-l-titlebox{
-    width: 100%;
-    height: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #E5E5E5;
-    padding: 0 1rem;
-    
-  }
-  .fastEntry-l-titlebox>div{
-    width: auto;
-    display: flex;
-    align-items: center;
-   }
-  .l-titlebox-1>img{
-    width: 0.3rem;
-    height: 0.9rem;
-  }
-  .l-titlebox-1>span{
-    font-size: 0.8rem;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 600;
-    color: #2B77BD;
+  .duoxiang-itemsbox .validate >>> .el-input__inner{
+    height: 1.75rem !important;
+    line-height: 1.75rem !important;
+    font-size: 0.7rem;
+    padding: 0;
     padding-left: 0.5rem;
+    border-radius: 0;
   }
-  .l-titlebox-2>img{
-    width: 0.75rem;
-    height: 0.8rem;
+  .duoxiang-itemsbox .validate >>> .el-input__icon{
+    line-height: 1.75rem !important;
   }
-  .l-titlebox-2>span{
-    font-size: 0.65rem;
+  .duoxiang-itemsbox .validate >>> .el-input__suffix{
+    right: 0;
+  }
+  .duoxiang-itemsbox .input-with-select{
+    width: 14rem;
+    height: 1.75rem !important;
+    line-height: 1.75rem !important;
+  }
+  .duoxiang-itemsbox .input-with-select >>> .el-input__inner{
+    height: 1.75rem !important;
+    line-height: 1.75rem !important;
+    font-size: 0.7rem;
+    border-radius: 0;
+    border: 1px solid #E3E3E3;
+    border-left: none;
+    border-right: none;
+  }
+  .jiaorjian-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+  }
+  .jiaorjian-box>span{
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+    padding: 0 0.5rem;
+    cursor: pointer;
+  }
+  .advancedOptions-l{
+    width: 3.5rem;
+    margin-right: 1.1rem;
+  }
+  .shijian-tbox{
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  .shijian-l{
+    width: 3.5rem;
+    margin-right: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 0.7rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #666666;
-    padding-left: 0.5rem;
+    line-height: 0.85rem;
   }
-  .fastEntry-listbox{
-    width: 100%;
-    height: auto;
-    padding: 1rem 1.5rem;
+  .shijian-selbox{
+    height: 1.75rem;
+    line-height: 1.75rem;
+  }
+  .shijian-selbox >>> .el-date-editor--datetimerange.el-input__inner{
+    flex: 1;
+    height: 1.75rem;
+    line-height: 1.75rem !important;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
   }
-  .fastEntry-listbox>a{
-    width: 50%;
+  .shijian-selbox >>> .el-date-editor .el-range__icon{
+    line-height: 1.75rem !important;
+    margin-bottom: 0.3rem;
+  }
+  .shijian-selbox >>> .el-date-editor .el-range__close-icon{
+    line-height: 0;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+  }
+  .shijian-selbox >>> .el-date-editor .el-range-separator{
+    line-height: 0;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+  }
+  .gaojibtn-box{
+    width: 100%;
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gaojibtn-box>span{
+    margin: 0 0.7rem;
+    font-size: 0.7rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #2B77BD;
+    line-height: 0.85rem;
+    width: 4.4rem;
+    height: 1.5rem;
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #2B77BD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .advancedSearch-titlebox-r{
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-left: 3.5rem;
+  }
+  .ad-titlebox-r-t{
+    width: auto;
+    font-size: 0.7rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #c4c9db;
+    line-height: 0.85rem;
+  }
+  .ad-titlebox-r-tList{
+    flex: 1;
+    padding-left: 1.5rem;
+  }
+  .ad-titlebox-r-tList .r-tList-item{
+    height: 1.75rem;
+    background: #FAFBFF;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #333333;
-    padding: 0.65rem 0;
-  }
-  .fastEntry-listbox>a:hover{
-    color: #2B77BD;
-  }
-  .fastEntry-listbox>a .img1{
-    width: 0.95rem;
-    height: 0.8rem;
-  }
-  .fastEntry-listbox>a .img2{
-    width: 0.95rem;
-    height: 0.9rem;
-  }
-  .fastEntry-listbox>a .img3{
-    width: 0.9rem;
-    height: 0.9rem;
-  }
-  .fastEntry-listbox>a .img4{
-    width: 1.15rem;
-    height: 0.85rem;
-  }
-  .fastEntry-listbox>a .img5{
-    width: 0.95rem;
-    height: 0.95rem;
-  }
-  .fastEntry-listbox>a span{
+    color: #c4c9db;
+    line-height: 0.85rem;
     padding-left: 0.5rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
   }
+  .ad-titlebox-r-tList .r-tList-item:nth-of-type(1){
+    margin-top: 0;
+  }
+  
+  /* ===============  高级搜索头部 ↑ ======================= */
 
-
-  .listbox-right>div.popularList-box{
-    margin-top: 0.9rem;
-  }
-  .popular-listbox{
-    width: 100%;
-    padding: 0.45rem 1rem;
-  }
-  .popular-listbox>a{
-    padding: 0.45rem 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    font-size: 0.8rem;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
-    color: #62657C;
-    text-align: left;
-  }
-  .popular-listbox>a:hover{
-    color: #2B77BD;
-  }
-  .pagination-box{
-    padding: 1.5rem 0;
-  }
-  .el-pagination>button{
-    padding: 0 1rem !important;
-  }
 </style>

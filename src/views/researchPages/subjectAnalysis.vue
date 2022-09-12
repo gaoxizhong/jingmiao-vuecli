@@ -182,7 +182,7 @@
 
 </template>
 <script>
-  import { getEsIndex } from "../../api/data";
+  import { WesternMedicine } from "../../api/data";
   export default {
     provide(){
       return {
@@ -195,13 +195,8 @@
     },
     data(){
       return {
-        is_s:false,
         is_view: true,
-        is_titleTab:'1',
         headerInput:'', // 普通搜索
-        count:0, // 总条数
-        pageSize: 10,
-        current_page: 1,
         select_1:'请选择',
         select_2:'请选择',
         select_3:'请选择',
@@ -291,12 +286,10 @@
           target: document.querySelector("body")
         });
         that.infoDetail = {};
-        getEsIndex(pearms).then(res => {
+        WesternMedicine(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            let count = res.data.data.total;
             let listData = res.data.data.data;
-            that.count = count;
             that.listData = listData;
           } else {
             this.$message.error({

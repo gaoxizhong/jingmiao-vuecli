@@ -1,21 +1,21 @@
 <template>
   <div class="pages-b">
     <div class="list-items">
-      <img src="https://lh3.googleusercontent.com/ogw/AOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" class="items-img"/>
+      <!-- <img src="https://lh3.googleusercontent.com/ogw/AOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" class="items-img"/> -->
       <div class="list-itemsinfo">
-        <div class="list-itemsinfo-title">高血压</div>
-        <div class="eh-title">HYPERTNSION</div>
+        <div class="list-itemsinfo-title">{{infoDetail.special_name}}</div>
+        <div class="eh-title">{{` 《 ${infoDetail.cn_name} 》`}} <span>识别代码：{{infoDetail.ISSN}}</span></div>
         <div class="dataIndicator-box">
-          <div>年文章数：320</div>
-          <div>总被引量：320</div>
-          <div>发文机构数：320</div>
+          <div>发文量：{{infoDetail.published_literature_volume}}</div>
+          <div>被引量：{{infoDetail.total_citations_number}}</div>
+          <div>下载量：{{infoDetail.total_download_times}}</div>
           <div>发文数者数：320</div>
         </div>
         <div class="dataIndicator-box">
           <div>审稿周期：平均1.25月</div>
           <div>投稿命中率：320</div>
           <div>H指数：320</div>
-          <div>影响指数：5.997</div>
+          <div>综合影响指数：{{infoDetail.composite_impact_factor}}</div>
           <div>篇均已量：5.997</div>
         </div>
         <div class="rightbox-listitems-btnbox">
@@ -30,40 +30,46 @@
       </div>
       <!-- 返回按钮 -->
     </div>
-
-    <!-- 期刊tab展示 开始 -->
+    <!-- tab展示 开始 -->
     <div class="accordion-box">
       <div class="acc-leftbox">
         <div class="acc-l-items" :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
         <div class="acc-l-items" :class="acc_tab == '2'?'active':''" @click="clickTab('2')">被引趋势</div>
-        <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">学科渗透</div>
-        <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">研究主题</div>
-        <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">代表机构</div>
-        <div class="acc-l-items" :class="acc_tab == '6'?'active':''" @click="clickTab('6')">代表学者</div>
+        <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">研究主题</div>
+        <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">代表机构</div>
+        <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">代表学者</div>
       </div>
       <div class="acc-rightbox">
+        
         <div class="acc-pagebox" v-show="acc_tab == '1'">
-          <!-- <div class="acc-page-title">
-            <div></div>
-            <div></div>
-          </div> -->
+          <!-- 发文趋势 -->
           <div class="eacharts-box" id="eachartsTrends"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '2'">被引趋势</div>
-        <div class="acc-pagebox" v-show="acc_tab == '3'">学科渗透</div>
-        <div class="acc-pagebox" v-show="acc_tab == '4'">
+        <div class="acc-pagebox" v-show="acc_tab == '2'">
+          <!-- 被引趋势 -->
+          <div class="eacharts-box" id="eachartsCited"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '3'">
+          <!-- 研究主题 -->
           <div class="eacharts-box" id="eachartsTheme"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '5'">代表机构</div>
-        <div class="acc-pagebox" v-show="acc_tab == '6'">代表学者</div>
+        <div class="acc-pagebox" v-show="acc_tab == '4'">
+          <!-- 代表机构 -->
+          <div class="eacharts-box" id="RepresentativeBody"></div>
+        </div>
+        <div class="acc-pagebox" v-show="acc_tab == '5'">
+          <!-- 代表学者 -->
+          <div class="eacharts-box" id="RepresentativeScholar"></div>
+        </div>
       </div>
-    </div>
-    <!-- 期刊tab展示 结束 -->
 
+    </div>
+    <!-- tab展示 结束 -->
   </div>
 
 </template>
 <script>
+  import { journalAnalysisDetail } from "../../api/data";
   export default {
     provide(){
       return {
@@ -78,11 +84,14 @@
       return {
         is_view: true,
         acc_tab:'1', 
+        md5:'',
+        infoDetail:{}
       }
     },
     created(){
       this.$emit('onEmitIndex', '/journalAnalysis'); // 触发父组件的方法，并传递参数index
-
+      this.md5 = this.$route.query.md5;
+      this.getDetail(this.md5);
     },
     methods:{
       // 返回上一步
@@ -91,75 +100,44 @@
         // that.$router.go(-1);  // ios 不支持
         location.href = "javascript:history.go(-1);"
       },
-      // 获取页面列表数据
-      getEsIndex(n){
-        let that = this;
-        let pearms = {
-          name: n,
-          page: that.data.current_page
-        };
-        const loading = this.$loading({
-          lock: true,
-          text: "Loading",
-          spinner: "el-icon-loading",
-          background: "rgba(0, 0, 0, 0.1)",
-          target: document.querySelector("body")
-        });
-        that.infoDetail = {};
-        getEsIndex(pearms).then(res => {
-          loading.close();
-          if (res.data.code == 0) {
-            let count = res.data.data.total;
-            let journalList = res.data.data.data;
-            that.count = count;
-            that.journalList = journalList;
-          } else {
-            this.$message.error({
-              message: res.data.msg
-            });
-          }
-        })
-        .catch(e => {
-          loading.close();
-          console.log(e);
-        });
-      },
-      // 点击期刊分析类项 tab
+      // 点击分析类项 tab
       clickTab(i){
         let that = this;
         that.acc_tab = i;
         if(i == '1'){
           // 发文趋势
-
+          that.getLineChart('eachartsTrends','1');
         }
         if(i == '2'){
           // 被引趋势
-
+          that.getLineChart('eachartsCited','2');
         }
         if(i == '3'){
-          // 学科渗透
-
+          // 研究主题
+          that.getTopics('eachartsTheme','3');
         }
         if(i == '4'){
-          // 研究主题
-          that.getTopics('eachartsTheme','4');
+          // 代表机构
+          that.getTopics('RepresentativeBody','4');
         }
         if(i == '5'){
-          // 代表机构
-
-        }
-        if(i == '6'){
           // 代表学者
-
+          that.getTopics('RepresentativeScholar','5');
+        }
+        if(i == '7'){
+          // 代表期刊
+          that.getTopics('RepresentativePeriodicals','7');
         }
       },
       // 柱状图
       getTopics(i,data){
         let id = i;
         let infoData = data;
+        let data_val = [300, 450, 770, 203, 255, 188, 156,300, 450, 770, 203, 255, 188, 156],
+          xAxis_val = ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"];
         let topics_eacharts = this.$echarts.init(document.getElementById(id));
         let option = {
-          backgroundColor: "#011c3a",
+          backgroundColor: "#fff",
           tooltip: {
             trigger: "axis",
             axisPointer: {
@@ -169,14 +147,14 @@
           xAxis: [
             {
               type: "category",
-              data: ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"],
+              data: xAxis_val,
               axisLine: {
                 lineStyle: {
-                  color: "#3d5269",
+                  color: "#D2D2D2",
                 },
               },
               axisLabel: {
-                color: "#fff",
+                color: "#999",
                 textStyle: {
                   fontSize: 14,
                 },
@@ -187,23 +165,24 @@
             {
               name: "单位:K",
               nameTextStyle: {
-                color: "#fff",
+                color: "#999",
                 fontSize: 14,
               },
               axisLine: {
                 show: true,
                 lineStyle: {
-                  color: "#3d5269",
+                  color: "#D2D2D2",
                 },
               },
-              axisLabel: {
-                color: "#fff",
+              axisLabel: { // y轴数字字体
+                show: true,
+                color: "#D2D2D2",
                 fontSize: 14,
               },
-              splitLine: {
+              splitLine: { // y轴每级横线样式
                 show: true,
                 lineStyle: {
-                  color: "#2d3d53",
+                  color: "#EFEFEF",
                 },
               },
               splitNumber: 10,
@@ -212,7 +191,7 @@
           series: [
             {
               type: "bar",
-              data: [300, 450, 770, 203, 255, 188, 156,300, 450, 770, 203, 255, 188, 156],
+              data: data_val,
               barWidth: "20px",
               itemStyle: {
                 normal: {
@@ -224,11 +203,11 @@
                     [
                       {
                         offset: 0,
-                        color: "#5ef3ff",
+                        color: "#3664D9",
                       },
                       {
                         offset: 1,
-                        color: "#06a4f4",
+                        color: "#3664D9",
                       },
                     ],
                     false
@@ -239,7 +218,186 @@
           ],
         };
         option && topics_eacharts.setOption(option);
-      }
+      },
+      // 折线图
+      getLineChart(i,data){
+        let id = i;
+        let infoData = data;
+        let myChart = this.$echarts.init(document.getElementById(id));
+        let data_val = [2220, 1682, 2791, 3000, 4090, 3230, 2910, 2791, 3000, 4090, 2220, 1682, 2910],
+          xAxis_val = ["2010", "2011", "2012", "2013", "2014", "2015", "2016","2017","2018","2019","2020","2021","2022"];
+        // let data_val1 = [0, 0, 0, 0, 0, 0, 0];
+        let option = {
+          backgroundColor: "#fff",
+          // grid: {
+          //   left: 100,
+          //   top: "12%",
+          //   bottom: 30,
+          //   right: 40,
+          //   containLabel: true,
+          // },
+          tooltip: { // 鼠标浮动展示框样式
+            show: true,
+            backgroundColor: "#3664D9",
+            borderColor: "#3664D9",
+            textStyle: {
+              color: "#fff",
+            },
+            borderWidth: 1,
+            formatter: "{b}:{c}",
+            extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
+          },
+          // legend: {
+          //   right: 0,
+          //   top: 0,
+          //   data: ["距离"],
+          //   textStyle: {
+          //     color: "#5c6076",
+          //   },
+          // },
+          // title: {
+          //   text: "单位K",
+          //   x: "4.5%",
+          //   top: "1%",
+          //   textStyle: {
+          //     color: "#5c6076",
+          //   },
+          // },
+          xAxis: {  // X轴
+            data: xAxis_val,
+            boundaryGap: false,
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#999",
+              },
+            },
+            axisTick: {
+              show: false,
+            },
+          },
+          yAxis: {
+            name: "单位:K",
+            nameTextStyle: {
+              color: "#999",
+              fontSize: 14,
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#999",
+              },
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+          },
+
+          series: [
+              // 柱状
+            // {
+            //   type: "bar",
+            //   name: "linedemo",
+            //   tooltip: {
+            //     show: false,
+            //   },
+            //   animation: false,
+            //   barWidth: 1.4,
+            //   hoverAnimation: false,
+            //   data: data_val,
+            //   itemStyle: {
+            //     normal: {
+            //       color: "#3664D9",
+            //       opacity: 0.6,
+            //       label: {
+            //         show: false,
+            //       },
+            //     },
+            //   },
+            // },
+             // 折线
+            { 
+              type: "line", 
+              name: "linedemo",
+              smooth: true,
+              symbolSize: 10,
+              animation: true,
+              lineWidth: 1.2,
+              hoverAnimation: false,
+              data: data_val,
+              symbol: "circle",
+              itemStyle: { // 圆球及连线样式样式
+                normal: {
+                  color: "#3664D9",
+                  shadowBlur: 44,
+                  label: {
+                    show: true,
+                    position: "top",
+                    textStyle: {
+                      color: "#000",
+                    },
+                  },
+                },
+              },
+              areaStyle: { // 面积图
+                normal: {
+                  color: "#3664D9",
+                  opacity: 0.08,
+                },
+              },
+            },
+          ],
+        };
+        myChart.setOption(option);
+      },
+
+
+      // 获取详情
+      getDetail(i) {
+        let that = this;
+        let md5 = i;
+        let pearms = {
+          md5
+        };
+        const loading = this.$loading({
+          lock: true,
+          text: "Loading",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.1)",
+          target: document.querySelector("body")
+        });
+        that.infoDetail = {};
+        journalAnalysisDetail(pearms).then(res => {
+          loading.close();
+          if (res.data.code == 0) {
+            document.title = res.data.data.special_name;
+            that.infoDetail = res.data.data;
+            // 发文趋势
+            that.getLineChart('eachartsTrends','1');
+          } else {
+            this.$message.error({
+              message: res.data.msg
+            });
+          }
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+        });
+      },
 
     },
 

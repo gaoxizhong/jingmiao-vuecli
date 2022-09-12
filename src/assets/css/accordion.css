@@ -46,6 +46,7 @@
   text-align: left;
   cursor: pointer;
   position: relative;
+  border-bottom: 1px solid #f4f4f4;
 }
 .acc-l-items:hover,.acc-l-items.active{
   background: #1673cf44;
