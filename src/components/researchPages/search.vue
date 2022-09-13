@@ -234,6 +234,8 @@
           that.getResearchTrends_eacharts();
           // 关联研究
           that.getAssociationStudy_eacharts();
+          // 相关学者
+          that.getRelatedScholars_eacharts();
           loading.close();
           if (res.data.code == 0) {
             let total_page = res.data.data.total;
@@ -521,7 +523,99 @@
 
         myChart.setOption(option);
 
-      }
+      },
+
+      // 相关学者
+      getRelatedScholars_eacharts(){
+        let that = this;
+        let myChart = this.$echarts.init(document.getElementById("RelatedScholars"));
+
+        var data = [
+          {
+            name: "张三",
+            value: 2373,
+            symbolSize: 48,
+            draggable: true,
+            itemStyle: {
+              normal: {
+                color: '#5DADE2',
+              },
+            },
+          },
+          {
+            name: "李四",
+            value: 5449,
+            symbolSize: 73,
+            draggable: true,
+            itemStyle: {
+              normal: {
+                color: '#5DADE2',
+              },
+            },
+          },
+        ];
+        let option = {
+            // 图表标题
+            title: {
+              show: false, //显示策略，默认值true,可选为：true（显示） | false（隐藏）
+              text: '"新时代"主题图谱', //主标题文本，'\n'指定换行
+              x: "center", // 水平安放位置，默认为左对齐，可选为：
+              // 'center' ¦ 'left' ¦ 'right'
+              // ¦ {number}（x坐标，单位px）
+              y: "bottom", // 垂直安放位置，默认为全图顶端，可选为：
+              // 'top' ¦ 'bottom' ¦ 'center'
+              // ¦ {number}（y坐标，单位px）
+              //textAlign: null          // 水平对齐方式，默认根据x设置自动调整
+              backgroundColor: "rgba(0,0,0,0)",
+              borderColor: "#ccc", // 标题边框颜色
+              borderWidth: 0, // 标题边框线宽，单位px，默认为0（无边框）
+              padding: 5, // 标题内边距，单位px，默认各方向内边距为5，
+              // 接受数组分别设定上右下左边距，同css
+              itemGap: 10, // 主副标题纵向间隔，单位px，默认为10，
+              textStyle: {
+                fontSize: 16,
+                fontWeight: "bolder",
+                color: "#333", // 主标题文字颜色
+              },
+              subtextStyle: {
+                color: "#aaa", // 副标题文字颜色
+              },
+            },
+            backgroundColor: "#fff",
+            tooltip: {},
+            animationDurationUpdate: function (idx) {
+              // 越往后的数据延迟越大
+              return idx * 100;
+            },
+            animationEasingUpdate: "bounceIn",
+            series: [
+              {
+                type: "graph",
+                layout: "force",
+                force: {
+                  repulsion: 300,
+                  edgeLength: 10,
+                },
+                roam: true,
+                label: {
+                  normal: {
+                    show: true,
+                    textStyle: {
+                      color: '#333',
+                    },
+                  },
+                },
+                data,
+              },
+            ],
+        };
+        myChart.setOption(option);
+        //跳转代码
+        myChart.on("click", function (params) {
+          console.log(params)
+          console.log(params.name);
+        });
+      },
 
 
     },

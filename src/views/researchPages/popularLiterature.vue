@@ -37,33 +37,34 @@
           <div class="duoxiang-tbox">
             <div class="duoxiang-itemsbox" v-for="(item,index) in advancedOptions" :key="index">
               <div class="advancedOptions-l">
-                <el-select class="validate" v-model="item.select_0" slot="prepend" @change="selectnChange">
+                <el-select class="validate" v-model="item.select_0" slot="prepend" @change="selectnChange" v-if="index != 0" >
                   <el-option
-                    v-for="items in item.options_0"
-                    :key="items.value"
-                    :label="items.label"
-                    :value="items.value">
+                    v-for="(items,idx) in item.options_0"
+                    :key="idx"
+                    :label="items"
+                    :value="items">
                   </el-option>
                 </el-select>
               </div>
               <el-select class="validate" v-model="item.select_1" slot="prepend" @change="selectnChange">
                 <el-option
-                  v-for="items in item.options_1"
-                  :key="items.value"
-                  :label="items.label"
-                  :value="items.value">
+                  v-for="(items,idx) in item.options_1"
+                  :key="idx"
+                  :label="items"
+                  :value="items">
                 </el-option>
               </el-select>
               <el-input placeholder="输入关键词..." v-model="item.headerInput_1" class="input-with-select"></el-input>
               <el-select class="validate" v-model="item.select_2" slot="prepend" @change="selectnChange">
                 <el-option
-                  v-for="items in item.options_2" 
-                  :key="items.value"
-                  :label="items.label"
-                  :value="items.value">
+                  v-for="(items,idx) in item.options_2" 
+                  :key="idx"
+                  :label="items"
+                  :value="items">
                 </el-option>
               </el-select>
               <div class="jiaorjian-box">
+                <span v-if="index == 0"></span>
                 <span v-if="index != 0" @click="clickJian(index)"> - </span>
                 <span @click="clickAdd(index)"> + </span>
               </div>
@@ -84,7 +85,7 @@
             </div>
           </div>
           <div class="gaojibtn-box">
-            <span>重置条件</span>
+            <span @click="clickReset">重置条件</span>
             <span style="background: #2B77BD;color: #fff;">检索</span>
           </div>
         </div>
@@ -133,9 +134,9 @@
         listData:[], // 推荐列表
         advancedOptions:[  // 高级搜索选项
           {
-            options_0:[{label:'11',value:'aa'},{label:'22',value:'bb'}],
-            options_1:[{label:'11',value:'aa'},{label:'22',value:'bb'}],
-            options_2:[{label:'33',value:'cc'},{label:'44',value:'dd'}],
+            options_0:['AND','OR'],
+            options_1:['标题','摘要','作者','机构','关键词'],
+            options_2:['精准','模糊'],
             headerInput_1:'',
             select_0:'',
             select_1:'',
@@ -234,15 +235,27 @@
         let that = this;
         let advancedOptions = that.advancedOptions;
         advancedOptions.push({
-          options_0:[{label:'11',value:'aa'},{label:'22',value:'bb'}],
-          options_1:[{label:'11',value:'aa'},{label:'22',value:'bb'}],
-          options_2:[{label:'33',value:'cc'},{label:'44',value:'dd'}],
+          options_0:['AND','OR'],
+          options_1:['标题','摘要','作者','机构','关键词'],
+          options_2:['精准','模糊'],
           headerInput_1:'',
           select_0:'',
           select_1:'',
           select_2:'',
         })
         that.advancedOptions= advancedOptions;
+      },
+      // 点击减号
+      clickJian(i){
+        let index = i;
+        let advancedOptions = this.advancedOptions;
+        advancedOptions.splice(index);
+        this.advancedOptions = advancedOptions;
+      },
+      // 点击重置条件
+      clickReset(){
+        let that = this;
+
       },
 
 
@@ -308,13 +321,22 @@
   }
   .header-input-box >>> .el-input__inner{
     border: 1px solid #E3E3E3;
+    height: 2rem;
+    line-height: 2rem;
   }
   .header-input-box >>> .el-button{ 
     background: #2B77BD;
     color: #fff;
-    border: 1px solid #2B77BD;
+    border: none;
     border-radius: 0 6px 6px 0;
     width: 5.4rem;
+    height: 2.05rem;
+    line-height: 2.05rem;
+    padding: 0;
+  }
+  .header-input-box >>> .el-input-group__append{
+    background-color: #fff !important;
+    border: none !important;
   }
   .historysearch-box{
     display: flex;
@@ -363,6 +385,10 @@
     align-items: center;
     justify-content: flex-end;
     margin-right: 0.5rem;
+    margin-top: 1rem;
+  }
+  .duoxiang-itemsbox:nth-of-type(1){
+    margin-top: 0;
   }
 
   .duoxiang-itemsbox .validate {
@@ -408,11 +434,15 @@
     font-size: 1rem;
     font-weight: bold;
     color: #000;
-    padding: 0 0.5rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
   }
   .advancedOptions-l{
-    width: 3.5rem;
+    width: 5rem;
     margin-right: 1.1rem;
   }
   .shijian-tbox{
@@ -422,7 +452,7 @@
     align-items: center;
   }
   .shijian-l{
-    width: 3.5rem;
+    width: 5rem;
     margin-right: 1.1rem;
     display: flex;
     align-items: center;
@@ -521,7 +551,12 @@
   .ad-titlebox-r-tList .r-tList-item:nth-of-type(1){
     margin-top: 0;
   }
-  
+  .el-select-dropdown__item{
+    font-size: 0.7rem;
+    padding: 0 1rem;
+    height: 1.7rem;
+    line-height: 1.7rem;
+  }
   /* ===============  高级搜索头部 ↑ ======================= */
 
 </style>
