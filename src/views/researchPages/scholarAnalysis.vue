@@ -298,7 +298,7 @@
   }
   .infodata-box>div .infodata-name{
     font-size: 0.65rem;
-    width: 3.2rem;
+    width: auto;
     color: #666666;
     text-align: left;
   }

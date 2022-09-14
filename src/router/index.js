@@ -343,16 +343,6 @@ const routes = [
         }
       },
       { 
-        path: '/searchResults', //  --- 搜索结果页
-        name: 'searchResults',
-        component: () => import('@/views/researchPages/searchResults'),
-        meta: {
-          keepAlive: true,
-          scollTopPosition: 0,
-          requireAuth:true,
-        }
-      },
-      { 
         path: '/institutionalAnalysis', //  --- 机构分析首页
         name: 'institutionalAnalysis',
         component: () => import('@/views/researchPages/institutionalAnalysis'),

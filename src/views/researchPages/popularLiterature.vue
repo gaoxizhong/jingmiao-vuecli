@@ -3,12 +3,12 @@
     <!-- 头部搜索模块 开始 -->
     <div class="literature-titlebox">
       <div class="titlebox-tab">
-        <div class="titlebox-tab-item" :class="search_type == '1'?'hover':'' " @click="clicktitleTab('1')">普通搜索</div>
+        <div class="titlebox-tab-item" :class="search_type == 'single'?'hover':'' " @click="clicktitleTab('single')">普通搜索</div>
         <div class="titlebox-tab-m"></div>
-        <div class="titlebox-tab-item" :class="search_type == '2'?'hover':'' " @click="clicktitleTab('2')">高级搜索</div>
+        <div class="titlebox-tab-item" :class="search_type == 'many'?'hover':'' " @click="clicktitleTab('many')">高级搜索</div>
       </div>
       <!-- 普通搜索头部 开始 -->
-      <div v-if="search_type == '1'">
+      <div v-if="search_type == 'single'">
         <div class="header-input-box">
           <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
             <el-button slot="append" @click="headerInputClick" >搜索</el-button>
@@ -32,35 +32,36 @@
       </div>
       <!-- 普通搜索头部 结束 -->
       <!-- 高级搜索头部 开始-->
-      <div class="advancedSearch-titlebox" v-if="search_type == '2'">
+      <div class="advancedSearch-titlebox" v-if="search_type == 'many'">
         <div class="advancedSearch-titlebox-l">
           <div class="duoxiang-tbox">
             <div class="duoxiang-itemsbox" v-for="(item,index) in advancedOptions" :key="index">
               <div class="advancedOptions-l">
+
                 <el-select class="validate" v-model="item.select_condition" slot="prepend" @change="selectnChange" v-if="index != 0" >
                   <el-option
-                    v-for="(items,idx) in item.options_0"
-                    :key="idx"
-                    :label="items"
-                    :value="items">
+                    v-for="items in item.options_0"
+                    :key="items.value"
+                    :label="items.label"
+                    :value="items.value">
                   </el-option>
                 </el-select>
               </div>
               <el-select class="validate" v-model="item.select_field" slot="prepend" @change="selectnChange">
                 <el-option
-                  v-for="(items,idx) in item.options_1"
-                  :key="idx"
-                  :label="items"
-                  :value="items">
+                  v-for="items in item.options_1"
+                  :key="items.value"
+                  :label="items.label"
+                  :value="items.value">
                 </el-option>
               </el-select>
               <el-input placeholder="输入关键词..." v-model="item.field_value" class="input-with-select"></el-input>
               <el-select class="validate" v-model="item.select_type" slot="prepend" @change="selectnChange">
                 <el-option
-                  v-for="(items,idx) in item.options_2" 
-                  :key="idx"
-                  :label="items"
-                  :value="items">
+                  v-for="items in item.options_2" 
+                  :key="items.value"
+                  :label="items.label"
+                  :value="items.value">
                 </el-option>
               </el-select>
               <div class="jiaorjian-box">
@@ -105,7 +106,7 @@
       <Popular v-on='$listeners' />
     </div>
     <div v-if="is_pop == 2">
-      <Search v-on='$listeners' :search_type="search_type" :headerInput="headerInput"  :selecttime="selecttime" :advancedCondition="advancedCondition"  v-if="is_view" />
+      <Search v-on='$listeners' :search_type="search_type" :headerInput="headerInput"  :date="date" :advancedCondition="advancedCondition"  v-if="is_view" />
     </div>
     <!-- 列表推荐 结束 -->
 
@@ -116,7 +117,6 @@
 
   import Popular from '../../components/researchPages/popular.vue';
   import Search from '../../components/researchPages/search.vue';
-  import { literatureDocSearch } from "../../api/data";  // 搜索接口
   import time from "../../assets/js/time";
   export default {
     name: 'popularLiterature',
@@ -129,14 +129,14 @@
         is_pop: '1',  // 1、默认页面； 2、搜索结果页面
         is_s:false,
         is_view: true,
-        search_type:'1',
+        search_type:'single',
         headerInput:'', // 普通搜索
         listData:[], // 推荐列表
         advancedOptions:[  // 高级搜索选项
           {
-            options_0:['AND','OR'],
-            options_1:['标题','摘要','作者','机构','关键词'],
-            options_2:['精准','模糊'],
+            options_0:[{label:'AND',value:'and'},{label:'OR',value:'or'}],
+            options_1:[{label:'标题',value:'title'},{label:'作者',value:'author'},{label:'摘要',value:'abstract'},{label:'关键词',value:'keyword'}],
+            options_2:[{label:'精准',value:'term'},{label:'模糊',value:'match'}],
             field_value:'',
             select_condition:'',
             select_field:'',
@@ -190,7 +190,7 @@
         historySenior:[
           '我发的,检索,作者','我发的,检索,作者'
         ],
-        selecttime: '', // 选中的时间
+        date: '', // 选中的时间
         advancedCondition:[], // 选中的搜索选项
       }
     },
@@ -230,9 +230,9 @@
         let that = this;
         let advancedOptions = that.advancedOptions;
         advancedOptions.push({
-          options_0:['AND','OR'],
-          options_1:['标题','摘要','作者','机构','关键词'],
-          options_2:['精准','模糊'],
+          options_0:[{label:'AND',value:'and'},{label:'OR',value:'or'}],
+          options_1:[{label:'标题',value:'title'},{label:'作者',value:'author'},{label:'摘要',value:'abstract'},{label:'关键词',value:'keyword'}],
+          options_2:[{label:'精准',value:'term'},{label:'模糊',value:'match'}],
           field_value:'',
           select_condition:'',
           select_field:'',
@@ -250,6 +250,16 @@
       // 点击重置条件
       clickReset(){
         let that = this;
+        this.advancedOptions = {
+          options_0:[{label:'AND',value:'and'},{label:'OR',value:'or'}],
+          options_1:[{label:'标题',value:'title'},{label:'作者',value:'author'},{label:'摘要',value:'abstract'},{label:'关键词',value:'keyword'}],
+          options_2:[{label:'精准',value:'term'},{label:'模糊',value:'match'}],
+          field_value:'',
+          select_condition:'',
+          select_field:'',
+          select_type:'',
+        }
+        
 
       },
       // 点击高级搜索-- 检索按钮
@@ -257,9 +267,12 @@
         let that= this;
         let advancedOptions = this.advancedOptions;
         let value2 = this.value2;
-        let v1 = time.formatTime(value2[0]);
-        let v2 = time.formatTime(value2[1]);
-        let selecttime = v1 + ',' + v2;
+        if(!value2){
+          return
+        }
+        let v1 = time.formatTime1(value2[0]);
+        let v2 = time.formatTime1(value2[1]);
+        let date = v1 + ',' + v2;
         let advancedCondition = [];
         advancedOptions.forEach( (ele,index) =>{
           advancedCondition.push({
@@ -270,7 +283,7 @@
           })
         })
         that.advancedCondition = advancedCondition;
-        that.selecttime = selecttime;
+        that.date = date;
         that.is_pop = '2';
         that.setsickNess();
       },

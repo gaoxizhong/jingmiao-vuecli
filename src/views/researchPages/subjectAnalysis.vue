@@ -4,7 +4,7 @@
     <div class="literature-titlebox">
       <div class="option-box">
         <div class="option-itemsbox option-itemsbox-1">
-          <el-select class="validate" v-model="select_1" slot="prepend" @change="selectnChange_1">
+          <el-select class="validate" disabled v-model="select_1" slot="prepend" @change="selectnChange_1">
             <el-option
               v-for="item in options_1"
               :key="item.value"
@@ -16,9 +16,9 @@
           <el-select class="validate" v-model="select_2" slot="prepend" @change="selectnChange_2">
             <el-option
               v-for="item in options_2"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"></el-option>
+              :key="item.department"
+              :label="item.department"
+              :value="item.department"></el-option>
           </el-select>
         </div>
         <div class="option-itemsbox option-itemsbox-3">
@@ -182,7 +182,7 @@
 
 </template>
 <script>
-  import { WesternMedicine } from "../../api/data";
+  import { getClassBrowseList } from "../../api/data";
   export default {
     provide(){
       return {
@@ -197,21 +197,22 @@
       return {
         is_view: true,
         headerInput:'', // 普通搜索
-        select_1:'请选择',
+        select_1:'西医疾病',
         select_2:'请选择',
         select_3:'请选择',
         change_1:'',
         change_2:'',
         change_3:'',
-        options_1:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}],  // 一级目录
-        options_2:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], // 二级分类
-        options_3:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], // 三级分类
+        options_1:[{label:'西医疾病',value:'ClinicalTrial'}],  // 一级目录
+        options_2:[], // 二级分类
+        options_3:[], // 三级分类
         acc_tab:'1', 
-
+        listData:[],
       }
     },
     created(){
       this.$emit('onEmitIndex', '/subjectAnalysis'); // 触发父组件的方法，并传递参数index
+      document.title = '学科分析';
       this.getEsIndex();
     },
     methods:{
@@ -286,7 +287,7 @@
           target: document.querySelector("body")
         });
         that.infoDetail = {};
-        WesternMedicine(pearms).then(res => {
+        getClassBrowseList(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
             let listData = res.data.data.data;

@@ -40,7 +40,7 @@
       <!-- 中间文献列表模块 开始 -->
       <div class="c-list-box">
         <div class="list-title">
-          <span class="list-title-l">找到约1,030,000条相关结果</span>
+          <span class="list-title-l">找到约{{total}}条相关结果</span>
           <div class="list-title-r">
             <span v-for="(item,index) in sortData" :key="index">{{item.name}}<i :class="item.status == 1?'el-icon-sort-down':'el-icon-sort-up'"></i></span>
           </div>
@@ -71,7 +71,7 @@
 
             </div>
           </a> 
-
+          <el-empty description="暂无数据..." v-if="listData.length <= 0"></el-empty>
         </div>
         <!-- 分页展示 -->
         <div class="pagination-box">
@@ -146,21 +146,21 @@
 </template>
 <script>
   import { literatureDocSearch } from "../../api/data";
-  import { getLine_eacharts } from "../../assets/js/getEcharts";
+  import { getLine_eacharts,getForceRelation_eacharts,getForceFloating_eacharts } from "../../assets/js/getEcharts";
   export default {
     props:{
-      search_type: String, // 1、普通 2、高级
+      search_type: String, // single、普通 many、高级
       headerInput:String, // 普通搜索内容
-      selecttime:String, // 高级时间范围
+      date:String, // 高级时间范围
       advancedCondition:Array, // 高级 选择数据
     },
     data(){
       return {
         is_s:false,
-        count:0, // 总条数
         pageSize: 10,
         current_page: 1,
         total_page:0, // 总页数
+        total: 0, // 总条数
         listData:[], // 文献列表
         filterData:{  // 筛选模块数据
           filter_litTitle:'', // 文献标题
@@ -197,14 +197,14 @@
       // 点击列表
       goToDetails(i){
         let that = this;
-        let id = i;
+        let url_md5 = i;
         // this.$emit('setsickNess', '');
         this.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
         // 新页面打开
         this.$router.push({  //核心语句
           path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            id,
+            url_md5,
           }
         })
       },
@@ -223,18 +223,24 @@
       // 获取页面数据
       literatureDocSearch(){
         let that = this;
-        let search_type = that.search_type; // 1、普通 2、高级
+        let search_type = that.search_type; // single、普通 many、高级
         let headerInput= that.headerInput; // 普通搜索内容
-        let selecttime= that.selecttime; // 高级时间范围
+        let date= that.date; // 高级时间范围
         let advancedCondition= that.advancedCondition; // 高级 选择数据
-
         let params = {
-          search_type,                    
-          headerInput,                   
-          condition:advancedCondition,   
-          selecttime,                  
           page: that.current_page,
-        };
+        }
+        if(search_type == 'single'){
+          params.search_type = search_type;
+          params.field_value = headerInput
+        }
+       if(search_type == 'many'){
+          params.search_type = search_type;
+          params.condition = advancedCondition;
+          params.date = date;
+        }
+        // let params1 = JSON.stringify(params);
+        // let p = JSON.parse(params1);
         const loading = this.$loading({
           lock: true,
           text: "Loading",
@@ -245,22 +251,25 @@
         that.infoDetail = {};
         literatureDocSearch(params).then(res => {
 
-          that.getResearchTrends_eacharts();
-          // 关联研究
-          that.getAssociationStudy_eacharts();
-          // 相关学者
-          that.getRelatedScholars_eacharts();
           loading.close();
           if (res.data.code == 0) {
-            let total_page = res.data.data.total;
+            let total_page = res.data.data.total_page; // 总页数
+            let total = res.data.data.total;// 总条数
             let listData = res.data.data.data;
             that.total_page = total_page;
+            that.total = total;
             that.listData = listData;
           } else {
             this.$message.error({
               message: res.data.msg
             });
           }
+          
+          that.getResearchTrends_eacharts();
+          // 关联研究
+          that.getAssociationStudy_eacharts();
+          // 相关学者
+          that.getRelatedScholars_eacharts();
         })
         .catch(e => {
           loading.close();
@@ -297,219 +306,12 @@
        // 关联研究
       getAssociationStudy_eacharts(){
         let that = this;
-        let myChart = this.$echarts.init(document.getElementById("AssociationStudy"));
-
-        var baseName = "项目";
-        var chartData = {
-          人员: ["人员1", "人员2", "人员3"],
-          机构: ["机构1", "机构2", "机构3"],
-          文献: ["文献1", "文献2", "文献3"],
-        };
-        var datas = [
-          {
-            name: baseName || "",
-            draggable: true,
-          },
-        ];
-        var lines = [];
-        var categoryIdx = 0;
-        var keyIndex = 0;
-        var dataIndex = 0;
-        $.each(chartData, function (key, values) {
-          keyIndex = dataIndex;
-          datas.push({ name: key, category: categoryIdx, draggable: true });
-          keyIndex++;
-          dataIndex++;
-          lines.push({
-            source: 0,
-            target: keyIndex,
-            value: "",
-          });
-          $(values).each(function (idx, val) {
-            datas.push({ name: val, category: categoryIdx, draggable: true });
-            dataIndex++;
-            lines.push({
-              source: keyIndex,
-              target: dataIndex,
-              value: "",
-            });
-          });
-          categoryIdx++;
-        });
-        var option = {
-          title: {
-            text: "",
-          },
-          tooltip: {},
-          animationDurationUpdate: 1500,
-          label: {
-            normal: {
-              show: true,
-              textStyle: {
-                fontSize: 12,
-              },
-            },
-          },
-          series: [
-            {
-              type: "graph",
-              layout: "force", //采用力引导布局
-              symbolSize: 45,  // 球大小
-              legendHoverLink: true, //启用图例 hover 时的联动高亮。
-              focusNodeAdjacency: true, //在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点。
-              roam: true,
-              label: {
-                normal: {
-                  show: true,
-                  position: "inside",
-                  textStyle: {
-                    fontSize: 12,
-                  },
-                },
-              },
-              force: {
-                repulsion: 400,
-              },
-              edgeSymbolSize: [4, 50],
-              edgeLabel: {
-                normal: {
-                  show: true,
-                  textStyle: {
-                    fontSize: 10,
-                  },
-                  formatter: "{c}",
-                },
-              },
-              categories: [
-                {
-                  itemStyle: {
-                    normal: {
-                      color: "#BB8FCE",
-                    },
-                  },
-                },
-                {
-                  itemStyle: {
-                    normal: {
-                      color: "#0099FF",
-                    },
-                  },
-                },
-                {
-                  itemStyle: {
-                    normal: {
-                      color: "#5DADE2",
-                    },
-                  },
-                },
-              ],
-              data: datas,
-              links: lines,
-              lineStyle: {
-                normal: {
-                  opacity: 0.9,
-                  width: 1,
-                  curveness: 0,
-                },
-              },
-            },
-          ],
-        };
-
-
-        myChart.setOption(option);
-
+        getForceRelation_eacharts('2','AssociationStudy',that);
       },
       // 相关学者
       getRelatedScholars_eacharts(){
         let that = this;
-        let myChart = this.$echarts.init(document.getElementById("RelatedScholars"));
-
-        var data = [
-          {
-            name: "张三",
-            value: 2373,
-            symbolSize: 48,
-            draggable: true,
-            itemStyle: {
-              normal: {
-                color: '#5DADE2',
-              },
-            },
-          },
-          {
-            name: "李四",
-            value: 5449,
-            symbolSize: 73,
-            draggable: true,
-            itemStyle: {
-              normal: {
-                color: '#5DADE2',
-              },
-            },
-          },
-        ];
-        let option = {
-            // 图表标题
-            title: {
-              show: false, //显示策略，默认值true,可选为：true（显示） | false（隐藏）
-              text: '"新时代"主题图谱', //主标题文本，'\n'指定换行
-              x: "center", // 水平安放位置，默认为左对齐，可选为：
-              // 'center' ¦ 'left' ¦ 'right'
-              // ¦ {number}（x坐标，单位px）
-              y: "bottom", // 垂直安放位置，默认为全图顶端，可选为：
-              // 'top' ¦ 'bottom' ¦ 'center'
-              // ¦ {number}（y坐标，单位px）
-              //textAlign: null          // 水平对齐方式，默认根据x设置自动调整
-              backgroundColor: "rgba(0,0,0,0)",
-              borderColor: "#ccc", // 标题边框颜色
-              borderWidth: 0, // 标题边框线宽，单位px，默认为0（无边框）
-              padding: 5, // 标题内边距，单位px，默认各方向内边距为5，
-              // 接受数组分别设定上右下左边距，同css
-              itemGap: 10, // 主副标题纵向间隔，单位px，默认为10，
-              textStyle: {
-                fontSize: 16,
-                fontWeight: "bolder",
-                color: "#333", // 主标题文字颜色
-              },
-              subtextStyle: {
-                color: "#aaa", // 副标题文字颜色
-              },
-            },
-            backgroundColor: "#fff",
-            tooltip: {},
-            animationDurationUpdate: function (idx) {
-              // 越往后的数据延迟越大
-              return idx * 100;
-            },
-            animationEasingUpdate: "bounceIn",
-            series: [
-              {
-                type: "graph",
-                layout: "force",
-                force: {
-                  repulsion: 300,
-                  edgeLength: 10,
-                },
-                roam: true,
-                label: {
-                  normal: {
-                    show: true,
-                    textStyle: {
-                      color: '#333',
-                    },
-                  },
-                },
-                data,
-              },
-            ],
-        };
-        myChart.setOption(option);
-        //跳转代码
-        myChart.on("click", function (params) {
-          console.log(params)
-          console.log(params.name);
-        });
+        getForceFloating_eacharts('3','RelatedScholars',that);
       },
 
 
