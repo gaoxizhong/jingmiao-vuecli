@@ -413,6 +413,14 @@ export const literatureDetails = (params) =>{
     data: params
   })
 }
+// 文献首页搜索
+export const literatureDocSearch = (params) =>{
+  return axios.request({
+    url:'/doc-search',
+    method: 'post',
+    data: params
+  })
+}
 // 期刊分析首页
 export const journalAnalysisIndex = (params) =>{
   return axios.request({

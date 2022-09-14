@@ -121,7 +121,7 @@
 
 </template>
 <script>
-  import { getEsIndex } from "../../api/data";
+  import { getEsIndex } from "../../api/data";  
   export default {
     data(){
       return {

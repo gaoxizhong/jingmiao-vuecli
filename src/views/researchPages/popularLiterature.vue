@@ -3,12 +3,12 @@
     <!-- 头部搜索模块 开始 -->
     <div class="literature-titlebox">
       <div class="titlebox-tab">
-        <div class="titlebox-tab-item" :class="is_titleTab == '1'?'hover':'' " @click="clicktitleTab('1')">普通搜索</div>
+        <div class="titlebox-tab-item" :class="search_type == '1'?'hover':'' " @click="clicktitleTab('1')">普通搜索</div>
         <div class="titlebox-tab-m"></div>
-        <div class="titlebox-tab-item" :class="is_titleTab == '2'?'hover':'' " @click="clicktitleTab('2')">高级搜索</div>
+        <div class="titlebox-tab-item" :class="search_type == '2'?'hover':'' " @click="clicktitleTab('2')">高级搜索</div>
       </div>
       <!-- 普通搜索头部 开始 -->
-      <div v-if="is_titleTab == '1'">
+      <div v-if="search_type == '1'">
         <div class="header-input-box">
           <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
             <el-button slot="append" @click="headerInputClick" >搜索</el-button>
@@ -32,12 +32,12 @@
       </div>
       <!-- 普通搜索头部 结束 -->
       <!-- 高级搜索头部 开始-->
-      <div class="advancedSearch-titlebox" v-if="is_titleTab == '2'">
+      <div class="advancedSearch-titlebox" v-if="search_type == '2'">
         <div class="advancedSearch-titlebox-l">
           <div class="duoxiang-tbox">
             <div class="duoxiang-itemsbox" v-for="(item,index) in advancedOptions" :key="index">
               <div class="advancedOptions-l">
-                <el-select class="validate" v-model="item.select_0" slot="prepend" @change="selectnChange" v-if="index != 0" >
+                <el-select class="validate" v-model="item.select_condition" slot="prepend" @change="selectnChange" v-if="index != 0" >
                   <el-option
                     v-for="(items,idx) in item.options_0"
                     :key="idx"
@@ -46,7 +46,7 @@
                   </el-option>
                 </el-select>
               </div>
-              <el-select class="validate" v-model="item.select_1" slot="prepend" @change="selectnChange">
+              <el-select class="validate" v-model="item.select_field" slot="prepend" @change="selectnChange">
                 <el-option
                   v-for="(items,idx) in item.options_1"
                   :key="idx"
@@ -54,8 +54,8 @@
                   :value="items">
                 </el-option>
               </el-select>
-              <el-input placeholder="输入关键词..." v-model="item.headerInput_1" class="input-with-select"></el-input>
-              <el-select class="validate" v-model="item.select_2" slot="prepend" @change="selectnChange">
+              <el-input placeholder="输入关键词..." v-model="item.field_value" class="input-with-select"></el-input>
+              <el-select class="validate" v-model="item.select_type" slot="prepend" @change="selectnChange">
                 <el-option
                   v-for="(items,idx) in item.options_2" 
                   :key="idx"
@@ -86,7 +86,7 @@
           </div>
           <div class="gaojibtn-box">
             <span @click="clickReset">重置条件</span>
-            <span style="background: #2B77BD;color: #fff;">检索</span>
+            <span style="background: #2B77BD;color: #fff;" @click="clickAdvancedSearch">检索</span>
           </div>
         </div>
         <div class="advancedSearch-titlebox-r">
@@ -101,11 +101,11 @@
     <!-- 头部搜索模块 结束 -->
     
     <!-- 列表推荐 开始 -->
-    <div v-if="is_titleTab == 1">
+    <div v-if="is_pop == 1">
       <Popular v-on='$listeners' />
     </div>
-    <div v-if="is_titleTab == 2">
-      <Search v-on='$listeners' />
+    <div v-if="is_pop == 2">
+      <Search v-on='$listeners' :search_type="search_type" :headerInput="headerInput"  :selecttime="selecttime" :advancedCondition="advancedCondition"  v-if="is_view" />
     </div>
     <!-- 列表推荐 结束 -->
 
@@ -113,8 +113,11 @@
 
 </template>
 <script>
+
   import Popular from '../../components/researchPages/popular.vue';
   import Search from '../../components/researchPages/search.vue';
+  import { literatureDocSearch } from "../../api/data";  // 搜索接口
+  import time from "../../assets/js/time";
   export default {
     name: 'popularLiterature',
     components: {
@@ -123,25 +126,21 @@
     },
     data(){
       return {
+        is_pop: '1',  // 1、默认页面； 2、搜索结果页面
         is_s:false,
         is_view: true,
-        is_titleTab:'1',
+        search_type:'1',
         headerInput:'', // 普通搜索
-        count:0, // 总条数
-        pageSize: 10,
-        current_page: 1,
-        total_page:0, // 总页数
         listData:[], // 推荐列表
         advancedOptions:[  // 高级搜索选项
           {
             options_0:['AND','OR'],
             options_1:['标题','摘要','作者','机构','关键词'],
             options_2:['精准','模糊'],
-            headerInput_1:'',
-            select_0:'',
-            select_1:'',
-            select_2:'',
-
+            field_value:'',
+            select_condition:'',
+            select_field:'',
+            select_type:'',
           }
         ],
         pickerOptions: {
@@ -190,7 +189,9 @@
         value2: '',
         historySenior:[
           '我发的,检索,作者','我发的,检索,作者'
-        ]
+        ],
+        selecttime: '', // 选中的时间
+        advancedCondition:[], // 选中的搜索选项
       }
     },
     created(){
@@ -210,18 +211,12 @@
         })
       },
       clicktitleTab(n){
-        this.is_titleTab = n;
+        this.search_type = n;
       },
-      // 普通搜索
+      // 搜索
       headerInputClick(){
-        let headerInput = this.headerInput;
-        // this.$router.push({  
-        //   path:'/searchResults',
-        //   query:{    
-        //     headerInput,
-        //     is_titleTab: this.is_titleTab
-        //   }
-        // })
+        this.is_pop = '2';
+        this.setsickNess();
       },
       // 普通搜索 回车键点击
       searchEnterFun(e){
@@ -238,10 +233,10 @@
           options_0:['AND','OR'],
           options_1:['标题','摘要','作者','机构','关键词'],
           options_2:['精准','模糊'],
-          headerInput_1:'',
-          select_0:'',
-          select_1:'',
-          select_2:'',
+          field_value:'',
+          select_condition:'',
+          select_field:'',
+          select_type:'',
         })
         that.advancedOptions= advancedOptions;
       },
@@ -257,8 +252,35 @@
         let that = this;
 
       },
+      // 点击高级搜索-- 检索按钮
+      clickAdvancedSearch(){
+        let that= this;
+        let advancedOptions = this.advancedOptions;
+        let value2 = this.value2;
+        let v1 = time.formatTime(value2[0]);
+        let v2 = time.formatTime(value2[1]);
+        let selecttime = v1 + ',' + v2;
+        let advancedCondition = [];
+        advancedOptions.forEach( (ele,index) =>{
+          advancedCondition.push({
+            select_field: ele.select_field,
+            field_value: ele.field_value,
+            select_type: ele.select_type,
+            select_condition: ele.select_condition,
+          })
+        })
+        that.advancedCondition = advancedCondition;
+        that.selecttime = selecttime;
+        that.is_pop = '2';
+        that.setsickNess();
+      },
 
-
+      setsickNess(){
+        this.is_view = false;
+        this.$nextTick(() => {
+          this.is_view = true
+        })
+      },
     },
 
 

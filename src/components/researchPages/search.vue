@@ -8,7 +8,7 @@
             <span>筛选条件</span>
           </div>
           <div class="l-titlebox-2">
-            <span>共查询到22条结果</span>
+            <!-- <span>共查询到22条结果</span> -->
           </div>
         </div>
         <div class="filter-inputbox">
@@ -145,14 +145,18 @@
 
 </template>
 <script>
-  import { getEsIndex } from "../../api/data";
+  import { literatureDocSearch } from "../../api/data";
+  import { getLine_eacharts } from "../../assets/js/getEcharts";
   export default {
+    props:{
+      search_type: String, // 1、普通 2、高级
+      headerInput:String, // 普通搜索内容
+      selecttime:String, // 高级时间范围
+      advancedCondition:Array, // 高级 选择数据
+    },
     data(){
       return {
         is_s:false,
-        is_view: true,
-        is_titleTab:'1',
-        headerInput:'', // 普通搜索
         count:0, // 总条数
         pageSize: 10,
         current_page: 1,
@@ -174,7 +178,8 @@
       }
     },
     created(){
-       this.getEsIndex(this.headerInput);
+
+       this.literatureDocSearch();
     },
     methods:{
       // 点击作者
@@ -207,7 +212,7 @@
       handleCurrentChange(val) {
         let that = this;
         that.current_page = Number(val);
-        that.getEsIndex();
+        that.literatureDocSearch();
         // 回到顶部的方法。
          window.scrollTo(0,0);
       },
@@ -216,9 +221,18 @@
       },
 
       // 获取页面数据
-      getEsIndex(){
+      literatureDocSearch(){
         let that = this;
-        let pearms = {
+        let search_type = that.search_type; // 1、普通 2、高级
+        let headerInput= that.headerInput; // 普通搜索内容
+        let selecttime= that.selecttime; // 高级时间范围
+        let advancedCondition= that.advancedCondition; // 高级 选择数据
+
+        let params = {
+          search_type,                    
+          headerInput,                   
+          condition:advancedCondition,   
+          selecttime,                  
           page: that.current_page,
         };
         const loading = this.$loading({
@@ -229,7 +243,7 @@
           target: document.querySelector("body")
         });
         that.infoDetail = {};
-        getEsIndex(pearms).then(res => {
+        literatureDocSearch(params).then(res => {
 
           that.getResearchTrends_eacharts();
           // 关联研究
@@ -278,127 +292,9 @@
       },
       // 研究趋势
       getResearchTrends_eacharts(){
-        let taht = this;
-        let myChart = this.$echarts.init(document.getElementById("ResearchTrends"));
-        let data_val = [2220, 1682, 2791, 3000, 4090, 3230, 2910, 2791, 3000, 4090, 2220, 1682, 2910],
-          xAxis_val = ["2010", "2011", "2012", "2013", "2014", "2015", "2016","2017","2018","2019","2020","2021","2022"];
-        let option = {
-          backgroundColor: "#fff",
-          grid: {  // 控制图标在模块内距离边框的距离，不设置会自动居中
-            left: 0,
-            top: 14,
-            bottom: 0,
-            right: 14,
-            containLabel: true,
-          },
-          tooltip: { // 鼠标浮动展示框样式
-            show: true,
-            backgroundColor: "rgba(0, 0, 0, 0.7)",
-            textStyle: {
-              color: "#fff",
-            },
-            formatter: "{b}:{c}",
-            borderWidth:0
-            // borderColor: "rgba(0, 0, 0, 1)",
-            // borderWidth: 0.5,
-            // extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
-          },
-          xAxis: {  // X轴
-            data: xAxis_val,
-            boundaryGap: false,
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: "#EFEFEF",
-              },
-            },
-            axisLabel: {
-              textStyle: {
-                color: "#999",
-              },
-            },
-            axisTick: {
-              show: false,
-            },
-          },
-          yAxis: {
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: "#EFEFEF",
-              },
-            },
-            axisLabel: {
-              textStyle: {
-                color: "#999",
-              },
-            },
-            splitLine: {
-              show: true,
-              lineStyle: {
-                color: "#EFEFEF",
-              },
-            },
-          },
-
-          series: [
-              // 柱状
-            // {
-            //   type: "bar",
-            //   name: "linedemo",
-            //   tooltip: {
-            //     show: false,
-            //   },
-            //   animation: false,
-            //   barWidth: 1.4,
-            //   hoverAnimation: false,
-            //   data: data_val,
-            //   itemStyle: {
-            //     normal: {
-            //       color: "#3664D9",
-            //       opacity: 0.6,
-            //       label: {
-            //         show: false,
-            //       },
-            //     },
-            //   },
-            // },
-             // 折线
-            { 
-              type: "line", 
-              name: "linedemo",
-              smooth: true,
-              symbolSize: 8, // 节点圆球的直径大小
-              animation: true,// 初始加载时动画
-              lineWidth: 1,
-              hoverAnimation: false,
-              data: data_val,
-              symbol: "circle",
-              itemStyle: { // 圆球及连线样式样式
-                normal: {
-                  color: "#3664D9",
-                  shadowBlur: 40,
-                  label: { // 节点上的字体展示
-                    show: false,
-                    position: "top",
-                    textStyle: {
-                      color: "#000",
-                    },
-                  },
-                },
-              },
-              areaStyle: { // 面积图
-                normal: {
-                  color: "#3664D9",
-                  opacity: 0.07,
-                },
-              },
-            },
-          ],
-        };
-        myChart.setOption(option);
+          getLine_eacharts('1','ResearchTrends',this);
       },
-      // 关联研究
+       // 关联研究
       getAssociationStudy_eacharts(){
         let that = this;
         let myChart = this.$echarts.init(document.getElementById("AssociationStudy"));
@@ -524,7 +420,6 @@
         myChart.setOption(option);
 
       },
-
       // 相关学者
       getRelatedScholars_eacharts(){
         let that = this;
