@@ -50,7 +50,7 @@
         <img src="../../assets/image/researchPages/icon-title.png" alt="" />
         <span>统计总览</span>
       </div>
-      <span class="classbox-r">心脏、血管（循环系）疾病</span>
+      <span class="classbox-r">{{ title }}</span>
     </div>
     <!-- 统计总览 开始 -->
     <div class="statisticalOverview-box">
@@ -80,7 +80,6 @@
           <span class="o-items-text">核心发文量</span>
           <span class="o-items-num">5293630</span>
         </div>
-
       </div>
 
       <div class="overview-items">
@@ -90,12 +89,27 @@
         </div>
         <div class="o-items-x">
           <span class="o-items-icon"></span>
-          <span class="o-items-text">期刊发文量</span>
+          <span class="o-items-text">被引量</span>
           <span class="o-items-num">5293630</span>
         </div>
         <div class="o-items-x">
           <span class="o-items-icon"></span>
-          <span class="o-items-text">期刊发文量</span>
+          <span class="o-items-text">最高单篇被引量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">篇均被引量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">H指数</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">被引率</span>
           <span class="o-items-num">5293630</span>
         </div>
       </div>
@@ -106,7 +120,17 @@
         </div>
         <div class="o-items-x">
           <span class="o-items-icon"></span>
-          <span class="o-items-text">期刊发文量</span>
+          <span class="o-items-text">合作成功数</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">合作机构数</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">合作学者数</span>
           <span class="o-items-num">5293630</span>
         </div>
       </div>
@@ -117,7 +141,17 @@
         </div>
         <div class="o-items-x">
           <span class="o-items-icon"></span>
-          <span class="o-items-text">期刊发文量</span>
+          <span class="o-items-text">发文作者数</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">作者人均发文量</span>
+          <span class="o-items-num">5293630</span>
+        </div>
+        <div class="o-items-x">
+          <span class="o-items-icon"></span>
+          <span class="o-items-text">作者人均被引量</span>
           <span class="o-items-num">5293630</span>
         </div>
       </div>
@@ -178,11 +212,59 @@
       </div>
     </div>
     <!-- tab展示 结束 -->
+          <!-- 相关推荐 开始-->
+      <div class="icon-classbox">
+        <div class="classbox-l">
+          <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+          <span>相关推荐</span>
+        </div>
+        <!-- <a href="javascript:0;" class="classbox-r">
+          <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
+          <span>查看更多</span>
+        </a> -->
+      </div>
+
+      <div class="suggestion-box">
+        <div class="suggestion-titlebox">
+          <div :class="album_tag == 'highest'?'active':''"  @click="clicksuggestion('highest')">最高被引用</div>
+          <div :class="album_tag == 'recently'?'active':''" @click="clicksuggestion('recently')">最新发布</div>
+        </div>
+        <div class="suggestion-tabbox">
+          <el-table :data="tableData" stripe style="width: 100%">
+            <el-table-column prop="special_name" label="标题">
+              <template slot-scope="scope">
+                <p @click="detailData(scope.row)">{{scope.row.special_name}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="author" label="作者" width="160">
+              <template slot-scope="scope">
+                <p>{{scope.row.author?scope.row.author:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="cn_name" label="来源" width="320">
+              <template slot-scope="scope">
+                <p>{{scope.row.cn_name?scope.row.cn_name:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="first_time" label="年份" width="160">
+              <template slot-scope="scope">
+                <p>{{scope.row.first_time?scope.row.first_time:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="total_citations_number" label="被引量" width="160">
+              <template slot-scope="scope">
+                <p>{{scope.row.total_citations_number?scope.row.total_citations_number:'暂无'}}</p>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+      <!-- 相关推荐 结束-->
   </div>
 
 </template>
 <script>
-  import { getClassBrowseList } from "../../api/data";
+  import { getClassBrowseList,getSubjectAnalysis,getalbumRecommend } from "../../api/data";
   export default {
     provide(){
       return {
@@ -200,20 +282,22 @@
         select_1:'西医疾病',
         select_2:'请选择',
         select_3:'请选择',
-        change_1:'',
-        change_2:'',
-        change_3:'',
         options_1:[{label:'西医疾病',value:'ClinicalTrial'}],  // 一级目录
         listData:[],// 二级分类
         // options_2:[],
         options_3:[], // 三级分类
         acc_tab:'1', 
+        title:'',
+        tableData: [],
+        album_tag:'highest', // recently: 最新文献；highest ： 最高文献
       }
     },
     created(){
       this.$emit('onEmitIndex', '/subjectAnalysis'); // 触发父组件的方法，并传递参数index
       document.title = '学科分析';
       this.getEsIndex();
+      // 相关文献
+      this.getalbumRecommend();
     },
     methods:{
       //大类
@@ -260,23 +344,50 @@
       },
       // 普通搜索
       headerInputClick(){
-        let input_name = this.headerInput;
-        this.$router.replace({  //核心语句
-          path:'/Home',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            input_name,
-          }
-        })
-      },
-      // 普通搜索 回车键点击
-      searchEnterFun(e){
-        var keyCode = window.event?e.keyCode:e.which;
-        if(keyCode == 13){
-          this.headerInputClick();
-        }
-      },
+        let that = this;
+        let listData = that.listData;
+        let select_2 = that.select_2;
+        let select_3 = that.select_3;
 
-      // 获取页面数据
+        if( select_2 == '请选择' || select_3 == '请选择' ){
+          this.$message.error({
+            message:'请先选择要分析的选项！'
+          })
+          return
+        }
+        let title = listData[select_2].diseases[select_3].name;
+        that.title = title;
+        that.getSubjectAnalysis();
+      },
+      // 点击分析按钮获取数据
+      getSubjectAnalysis(){
+        let that = this;
+        let p = {
+          title: that.title,
+        }
+        const loading = this.$loading({
+          lock: true,
+          text: "Loading",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.1)",
+          target: document.querySelector("body")
+        });
+        getSubjectAnalysis(p).then(res => {
+          loading.close();
+          if (res.data.code == 0) {
+            let listData = res.data.data;
+            that.listData = listData;
+          } else {
+            this.$message.error({
+              message: res.data.msg
+            });
+          }
+        }).catch(e => {
+          loading.close();
+          console.log(e);
+        });
+      },
+      // 获取页面分类数据
       getEsIndex(){
         let that = this;
         let pearms = {
@@ -579,6 +690,32 @@
           ],
         };
         myChart.setOption(option);
+      },
+      // 获取相关文献
+      getalbumRecommend(){
+        let that = this;
+        let p = {
+          page:'1',
+          tag: that.album_tag
+        }
+        getalbumRecommend(p).then(res => {
+          if (res.data.code == 0) {
+            that.tableData = res.data.data.data;
+          }
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+        });
+      },
+      // 点击相关文献tab
+      clicksuggestion(n){
+        this.album_tag = n;
+        this.getalbumRecommend();
+      },
+      // 相关推荐点击列表
+      detailData(n){
+        console.log(n)
       }
 
     },
@@ -738,6 +875,7 @@
   }
   .statisticalOverview-box>div{
     width: 18.5rem;
+    height: 17rem;
     padding: 1.2rem 1rem;
     background: #fff;
     border-radius: 6px;
@@ -792,4 +930,62 @@
     font-weight: bold;
     line-height: 1.25rem;
   }
+  /*================= 相关推荐样式  ↓ ==================*/
+  .suggestion-box{
+    margin-top: 1rem;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow: hidden;
+  }
+  .suggestion-titlebox{
+    width: 100%;
+    padding: 0 0.75rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .suggestion-titlebox>div{
+    margin: 0 0.75rem;
+    font-size: 0.8rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 600;
+    color: #333333;
+    line-height: 1.25rem;
+    padding-bottom: 0.2rem;
+    cursor: pointer;
+  }
+  .suggestion-titlebox>div.active{
+    color: #2B77BD;
+    border-bottom: 4px solid #2B77BD;
+  }
+ .suggestion-tabbox{
+    margin-top: 1rem;
+    font-size: 0.8rem;
+  }
+  .suggestion-tabbox >>> .el-table td.el-table__cell,.suggestion-tabbox >>> .el-table th.el-table__cell.is-leaf {
+    border-bottom: none;
+    font-size: 0.8rem;
+    padding: 0;
+  }
+  .suggestion-tabbox >>> .el-table td.el-table__cell .cell p{
+    padding: 0.6rem 0;
+    cursor: pointer;
+  }
+  .suggestion-tabbox >>> .el-table th.el-table__cell.is-leaf .cell{
+    padding: 0.6rem;
+  }
+  
+  .suggestion-tabbox >>> .el-table th.el-table__cell{
+      background: #ECF0FB;
+      color: #333;
+  }
+  .suggestion-tabbox >>> table::before{
+    border: none !important;
+  }
+  .suggestion-tabbox >>> table tbody tr th::before,.suggestion-tabbox >>>  table tbody tr td::before{
+    border: none !important;
+    display: none;
+  }
+  /*================= 相关推荐样式  ↑ ==================*/
 </style>

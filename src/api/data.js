@@ -461,6 +461,14 @@ export const getdocRecommend = (params) =>{
     data: params
   })
 }
+// 学科分析--- 获取分析数据
+export const getSubjectAnalysis = (params) =>{
+  return axios.request({
+    url:'',
+    method: 'post',
+    data: params
+  })
+}
 // =================  科研探索api  ↑ ==================
 
 

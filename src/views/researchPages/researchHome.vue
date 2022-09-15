@@ -1,5 +1,6 @@
 <template>
-  <el-container :style="`height:${viewHeight}px;`">
+  <!-- <el-container :style="`height:${viewHeight}px;`"> -->
+  <el-container>
     <!-- 头部 开始  -->
     <el-header>
       <header>
@@ -13,42 +14,40 @@
       </header>
     </el-header>
     <!-- 头部 结束  -->
-
-    <el-container>
-      <!-- 左侧导航 开始 -->
-      <el-aside width="auto">
-        <el-menu 
-          :default-active="activeIndex" 
-          class="el-menu-vertical-demo" 
-          @open="handleOpen" 
-          @close="handleClose" 
-          :collapse="!isColl" 
-          router 
-          unique-opened
-        >
-          <a href="javascript:0;" class="isCollapse-box" @click="menu_btn">
-            <img src="../../assets/image/researchPages/isCollapse.png" class="isCollapse-i" />
-            <span class="isCollapse-s" v-if="isColl">折叠面板</span>
-          </a>
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">科研灵感探索</span>
-            </template>
-            <el-menu-item index="/popularLiterature">
-              <span slot="title">文献库</span>
-            </el-menu-item>
-            <el-submenu index="2">
-              <span slot="title">灵感发现</span>
-              <el-menu-item index="/subjectAnalysis">学科分析</el-menu-item>
-              <el-menu-item index="/scholarAnalysis">学者分析</el-menu-item>
-              <el-menu-item index="/journalAnalysis">期刊分析</el-menu-item>
-            </el-submenu>
+    <!-- 左侧导航 开始 -->
+    <el-aside width="auto">
+      <el-menu 
+        :default-active="activeIndex" 
+        class="el-menu-vertical-demo" 
+        @open="handleOpen" 
+        @close="handleClose" 
+        :collapse="!isColl" 
+        router 
+        unique-opened
+      >
+        <a href="javascript:0;" class="isCollapse-box" @click="menu_btn">
+          <img src="../../assets/image/researchPages/isCollapse.png" class="isCollapse-i" />
+          <span class="isCollapse-s" v-if="isColl">折叠面板</span>
+        </a>
+        <el-submenu index="1">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span slot="title">科研灵感探索</span>
+          </template>
+          <el-menu-item index="/popularLiterature">
+            <span slot="title">文献库</span>
+          </el-menu-item>
+          <el-submenu index="2">
+            <span slot="title">灵感发现</span>
+            <el-menu-item index="/subjectAnalysis">学科分析</el-menu-item>
+            <el-menu-item index="/scholarAnalysis">学者分析</el-menu-item>
+            <el-menu-item index="/journalAnalysis">期刊分析</el-menu-item>
           </el-submenu>
-        </el-menu>
-      </el-aside>
-      <!-- 左侧导航 结束 -->
-
+        </el-submenu>
+      </el-menu>
+    </el-aside>
+    <!-- 左侧导航 结束 -->
+    <el-container>
       <!-- 主题 开始 -->
       <el-main>
         <keep-alive>
@@ -135,21 +134,19 @@
 </script>
 <style scoped>
 /* ==============  滚动条样式   ==================== */
-  .el-main::-webkit-scrollbar { 
-    display: none;
-  }
-  .el-main::scrollbar { 
-    display: none;
-  }
+
 /* ==============  滚动条样式   ==================== */
   .el-container{
     overflow: hidden;
   }
-  .el-main{
-    background: #FAFBFF;
-    padding: 1.5rem 1.5rem 0.75rem 1.2rem;
-    box-sizing: border-box;
+  .el-header{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1999;
   }
+
   header{
     width:100%;
     height: 3.6rem;
@@ -157,6 +154,28 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1.4rem;
+    box-sizing: border-box;
+  }
+  .el-aside{
+    height: 100%;
+    overflow-X: hidden;
+    position: fixed;
+    top: 3.65rem;
+    left: 0;
+    z-index: 1999;
+  }
+  .el-aside >>> .el-submenu .el-submenu__title{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height:2.8rem;
+    line-height:2.8rem;
+    font-size: 0.8rem !important;
+    border-bottom: 1px solid #e9e9e94f;
+  }
+  .el-main{
+    background: #FAFBFF;
+    padding: 5.1rem 1.5rem 0.75rem 15rem;
     box-sizing: border-box;
   }
   .l-content{
@@ -192,9 +211,7 @@
   .r-toLogin:hover{
     color: #2B77BD;
   }
-  .el-aside{
-    overflow-X: hidden;
-  }
+
   .el-menu{
     text-align: left;
     height: 100%;
@@ -202,15 +219,7 @@
   .el-menu-vertical-demo:not(.el-menu--collapse){
     width: 13.8rem;
   }
-  .el-aside >>> .el-submenu .el-submenu__title{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    height:2.8rem;
-    line-height:2.8rem;
-    font-size: 0.8rem !important;
-    border-bottom: 1px solid #e9e9e94f;
-  }
+
   
   .el-submenu .el-menu-item {
     width: 13.8rem;

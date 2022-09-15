@@ -157,12 +157,12 @@
         let that = this;
         let name = n;
         // 新页面打开
-        this.$router.push({
-          path: '',
-          query:{
+        that.$router.push({
+          path:'/literatureAuthor',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             name,
           }
-        });
+        })
       },
       // 点击列表
       goToDetails(i){

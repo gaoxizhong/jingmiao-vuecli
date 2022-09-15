@@ -32,15 +32,15 @@
                   <div class="sjitems-num">12230</div>
                 </div>
                 <div class="r-info-sjitems">
-                  <div class="sjitems-name">被引频次</div>
+                  <div class="sjitems-name">成果数</div>
                   <div class="sjitems-num">12230</div>
                 </div>
                 <div class="r-info-sjitems">
-                  <div class="sjitems-name">被引频次</div>
+                  <div class="sjitems-name">H指数</div>
                   <div class="sjitems-num">12230</div>
                 </div>
                 <div class="r-info-sjitems">
-                  <div class="sjitems-name">被引频次</div>
+                  <div class="sjitems-name">G指数</div>
                   <div class="sjitems-num">12230</div>
                 </div>
               </div>
@@ -154,24 +154,44 @@
           <img src="../../assets/image/researchPages/icon-title.png" alt="" />
           <span>相关推荐</span>
         </div>
-        <a href="javascript:0;" class="classbox-r">
+        <!-- <a href="javascript:0;" class="classbox-r">
           <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
           <span>查看更多</span>
-        </a>
+        </a> -->
       </div>
-      <div class="suggestion-box">
 
+      <div class="suggestion-box">
         <div class="suggestion-titlebox">
-          <div class="active">最高被引用</div>
-          <div>最新发布</div>
+          <div :class="album_tag == 'highest'?'active':''"  @click="clicksuggestion('highest')">最高被引用</div>
+          <div :class="album_tag == 'recently'?'active':''" @click="clicksuggestion('recently')">最新发布</div>
         </div>
         <div class="suggestion-tabbox">
           <el-table :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="title" label="标题"></el-table-column>
-            <el-table-column prop="author" label="作者" width="160"></el-table-column>
-            <el-table-column prop="source" label="来源" width="160"></el-table-column>
-            <el-table-column prop="years" label="年份" width="160"></el-table-column>
-            <el-table-column prop="citations" label="被引量" width="160"></el-table-column>
+            <el-table-column prop="special_name" label="标题">
+              <template slot-scope="scope">
+                <p @click="detailData(scope.row)">{{scope.row.special_name}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="author" label="作者" width="160">
+              <template slot-scope="scope">
+                <p>{{scope.row.author?scope.row.author:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="cn_name" label="来源" width="320">
+              <template slot-scope="scope">
+                <p>{{scope.row.cn_name?scope.row.cn_name:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="first_time" label="年份" width="160">
+              <template slot-scope="scope">
+                <p>{{scope.row.first_time?scope.row.first_time:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="total_citations_number" label="被引量" width="160">
+              <template slot-scope="scope">
+                <p>{{scope.row.total_citations_number?scope.row.total_citations_number:'暂无'}}</p>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
       </div>
@@ -189,7 +209,7 @@
 </template>
 
 <script>
-  import { getGuideDetail } from "@/api/data";
+  import { getGuideDetail,getalbumRecommend } from "@/api/data";
   export default {
     inject: ['setsickNess'],
     name: 'literatureAuthor',
@@ -199,50 +219,8 @@
         viewHeight: "",
         infoDetail: {},
         authorList:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],  // 合作学者
-        tableData: [
-          {
-            title: '国产二氧化钛在光催化降解染料废水中的应用',
-            author: '王小虎',
-            source: '《经济视野》',
-            years: '2022',
-            citations: 2222
-          },
-          {
-            title: '国产二氧化钛在光催化降解染料废水中的应用',
-            author: '王小虎',
-            source: '《经济视野》',
-            years: '2022',
-            citations: 2222
-          },
-          {
-            title: '国产二氧化钛在光催化降解染料废水中的应用',
-            author: '王小虎',
-            source: '《经济视野》',
-            years: '2022',
-            citations: 2222
-          },
-          {
-            title: '国产二氧化钛在光催化降解染料废水中的应用',
-            author: '王小虎',
-            source: '《经济视野》',
-            years: '2022',
-            citations: 2222
-          },
-          {
-            title: '国产二氧化钛在光催化降解染料废水中的应用',
-            author: '王小虎',
-            source: '《经济视野》',
-            years: '2022',
-            citations: 2222
-          },
-          {
-            title: '国产二氧化钛在光催化降解染料废水中的应用',
-            author: '王小虎',
-            source: '《经济视野》',
-            years: '2022',
-            citations: 2222
-          },
-        ],
+        tableData: [],
+        album_tag:'highest', // recently: 最新文献；highest ： 最高文献
         acc_tab:'1'
       };
     },
@@ -257,6 +235,8 @@
       this.id = Number(this.$route.query.id);
       console.log(this.id)
       this.getDetail(this.id);
+      // 相关文献
+      this.getalbumRecommend();
     },
     methods: {
       // 返回上一步
@@ -557,6 +537,32 @@
 
         option && class_eacharts.setOption(option);
       },
+      // 获取相关文献
+      getalbumRecommend(){
+        let that = this;
+        let p = {
+          page:'1',
+          tag: that.album_tag
+        }
+        getalbumRecommend(p).then(res => {
+          if (res.data.code == 0) {
+            that.tableData = res.data.data.data;
+          }
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+        });
+      },
+      // 点击相关文献tab
+      clicksuggestion(n){
+        this.album_tag = n;
+        this.getalbumRecommend();
+      },
+      // 相关推荐点击列表
+      detailData(n){
+        console.log(n)
+      }
 
     },
 
@@ -922,14 +928,23 @@
     color: #2B77BD;
     border-bottom: 4px solid #2B77BD;
   }
-  .suggestion-tabbox{
+ .suggestion-tabbox{
     margin-top: 1rem;
     font-size: 0.8rem;
   }
   .suggestion-tabbox >>> .el-table td.el-table__cell,.suggestion-tabbox >>> .el-table th.el-table__cell.is-leaf {
     border-bottom: none;
     font-size: 0.8rem;
+    padding: 0;
   }
+  .suggestion-tabbox >>> .el-table td.el-table__cell .cell p{
+    padding: 0.6rem 0;
+    cursor: pointer;
+  }
+  .suggestion-tabbox >>> .el-table th.el-table__cell.is-leaf .cell{
+    padding: 0.6rem;
+  }
+  
   .suggestion-tabbox >>> .el-table th.el-table__cell{
       background: #ECF0FB;
       color: #333;
@@ -939,6 +954,7 @@
   }
   .suggestion-tabbox >>> table tbody tr th::before,.suggestion-tabbox >>>  table tbody tr td::before{
     border: none !important;
+    display: none;
   }
   /*================= 相关推荐样式  ↑ ==================*/
 

@@ -42,7 +42,7 @@
         <div class="list-title">
           <span class="list-title-l">找到约{{total}}条相关结果</span>
           <div class="list-title-r">
-            <span v-for="(item,index) in sortData" :key="index">{{item.name}}<i :class="item.status == 1?'el-icon-sort-down':'el-icon-sort-up'"></i></span>
+            <span v-for="(item,index) in sortData" :key="index" @click="clickSorting(index)">{{item.name}}<i :class="item.status == 1?'el-icon-caret-bottom':'el-icon-caret-top'"></i></span>
           </div>
         </div>
         <!-- 列表 -->
@@ -171,10 +171,10 @@
           maxInput:'', // 影响指数
         },
         sortData:[
-          {name:'时间',status:'1'},
-          {name:'被引量',status:'1'},
-          {name:'点击量',status:'1'},
-          {name:'下载量',status:'1'},
+          {name:'时间',status:'2'},
+          {name:'被引量',status:'2'},
+          {name:'点击量',status:'2'},
+          {name:'下载量',status:'2'},
         ]
       }
     },
@@ -183,17 +183,25 @@
        this.literatureDocSearch();
     },
     methods:{
+      // 点击排序
+      clickSorting(i){
+        let that = this;
+        let index = i;
+        let sortData = that.sortData;
+        sortData[index].status = 1;
+        that.sortData = sortData;
+      },
       // 点击作者
       goToauthor(n){
         let that = this;
         let name = n;
         // 新页面打开
-        this.$router.push({
-          path: '',
-          query:{
+        that.$router.push({
+          path:'/literatureAuthor',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             name,
           }
-        });
+        })
       },
       // 点击列表
       goToDetails(i){
@@ -513,7 +521,8 @@
   }
   .list-title-r>span i{
     font-size: 0.8rem;
-    color: #dfdfdf;
+    color: #666;
+    margin-left: 0.2rem;
     line-height: 1rem;
   }
   .list-title-r>span:hover{

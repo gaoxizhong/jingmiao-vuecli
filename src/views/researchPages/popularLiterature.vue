@@ -260,15 +260,20 @@
       // 点击重置条件
       clickReset(){
         let that = this;
-        this.advancedOptions = {
-          options_0:[{label:'AND',value:'and'},{label:'OR',value:'or'}],
-          options_1:[{label:'标题',value:'title'},{label:'作者',value:'author'},{label:'摘要',value:'abstract'},{label:'关键词',value:'keyword'}],
-          options_2:[{label:'精准',value:'term'},{label:'模糊',value:'match'}],
-          field_value:'',
-          select_condition:'',
-          select_field:'',
-          select_type:'',
-        }
+        that.advancedOptions = [
+          {
+            options_0:[{label:'AND',value:'and'},{label:'OR',value:'or'}],
+            options_1:[{label:'标题',value:'title'},{label:'作者',value:'author'},{label:'摘要',value:'abstract'},{label:'关键词',value:'keyword'}],
+            options_2:[{label:'精准',value:'term'},{label:'模糊',value:'match'}],
+            field_value:'',
+            select_condition:'',
+            select_field:'',
+            select_type:'',
+          }
+        ];
+        that.value2 = '';
+        that.date= '', // 选中的时间
+        that.advancedCondition= []; // 选中的搜索选项
       },
 
       // 点击高级搜索-- 检索按钮

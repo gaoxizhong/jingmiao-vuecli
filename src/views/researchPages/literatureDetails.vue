@@ -124,7 +124,7 @@
           </div>
           <div>
             <div class="ly-box">
-              <img src="https://lh3.googleusercontent.com/ogw/AOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" />
+              <img src="../../assets/image/researchPages/journal_test.png" alt="" />
               <a href="javascript:0;">{{infoDetail.host_unit}}</a>
             </div>
           </div>
@@ -133,7 +133,7 @@
         </div>
         <!-- 来源 结束 -->
 
-        <!-- 快速入口 开始 -->
+        <!-- 相关学者 开始 -->
         <div class="fastEntry-box">
 
           <div class="right-l-titlebox">
@@ -143,11 +143,11 @@
             </div>
           </div>
           <div class="xgxz-listbox">
-            <a href="javascript:0;" v-for="(item,index) in infoDetail.author" :key="index" @click="clickAuthor(item)">{{item}}</a>
+            <a href="javascript:0;" v-for="(item,index) in infoDetail.author" :key="index" @click="goToauthor(item)">{{item}}</a>
           </div>
 
         </div>
-        <!-- 快速入口 结束 -->
+        <!-- 相关学者 结束 -->
 
         <!-- <div class="popularList-box">
 
@@ -300,7 +300,7 @@
       },
 
       // 点击学者名称
-      clickAuthor(n){
+      goToauthor(n){
         let name = n;
         this.$emit('setsickNess','');
         this.$router.push({
@@ -465,7 +465,7 @@
     line-height: 1.2rem;
   }
   .one_info label {
-    width: 4.7rem;
+    width: 5rem;
     font-size: 0.75rem;
     font-weight: bold;
     text-align: left;
@@ -584,6 +584,7 @@
     font-weight: 500;
     color: #333333;
     line-height: 1.1rem;
+    text-align: left;
   }
   .tab-title >>> .el-tabs__item{
     height: 3.4rem;
