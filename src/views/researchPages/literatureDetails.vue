@@ -71,33 +71,32 @@
           <div class="tab-title">
             <el-tabs v-model="activeName" @tab-click="handleClick">
               <el-tab-pane label="相关论文" name="xglw"></el-tab-pane>
-              <el-tab-pane label="相关主体论文" name="xgztlw"></el-tab-pane>
+              <!-- <el-tab-pane label="相关主体论文" name="xgztlw"></el-tab-pane> -->
             </el-tabs>
           </div>  
            <!-- 论文列表 -->
           <div class="list-itembox">
 
-            <a href="javascript:0;" class="list-item" @click.stop="goToDetails(item.url_md5)" v-for="(item,index) in lwList" :key="index">
-              <div class="list-item-title" title="1.聚乙烯微塑料对糖尿病小鼠肾脏的影响">1.聚乙烯微塑料对糖尿病小鼠肾脏的影响</div>
-              <div class="list-item-subt">德利论文事校如奶生9号.”(中国环境科回CrcOCs[土大核心822年3明）</div>
-              <div class="list-item-text" >出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加电0mESm PSP基置导致疆原病小温肾解出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加，电0mESm PSP…</div>
+            <a href="javascript:0;" class="list-item" @click.stop="goToDetails(item.url_md5)" v-for="(item,index) in docRecommendList" :key="index">
+              <div class="list-item-title">{{index +1}}、{{item.title}}</div>
+              <div class="list-item-subt">{{item.subject}}</div>
+              <div class="list-item-text">{{item.abstract}}</div>
               <div class="list-item-z">
                 <label class="zuozhe-box">相关作者：</label>
                 <div class="tap-top-span">
-                  <a href="javascript:0;" @click.stop="clickAuthor('王桂琴')">王桂琴</a>
-                  <a href="javascript:0;" @click.stop="clickAuthor('王桂琴')">王桂琴</a>
+                  <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
                 </div>
               </div>
               <div class="item-btn-box">
-                <div class="asub-box" style="margin-top:0;">
+                <!-- <div class="asub-box" style="margin-top:0;">
                   <a href="javascript:0;" class="asub-zaixian" style="padding-left:0;"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="item.is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
                   <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i class="el-icon-reading"></i>在线阅读</a>
-                </div>
+                </div> -->
 
                 <div class="item-r">
                   <!-- <span>点击：333</span> -->
-                  <span>被引：66</span>
-                  <span>下载：154</span>
+                  <span>被引：{{item.total_citations_number?item.total_citations_number:0}}</span>
+                  <span>下载：{{item.total_download_times?item.total_download_times:0}}</span>
                 </div>
 
               </div>
@@ -150,7 +149,7 @@
         </div>
         <!-- 快速入口 结束 -->
 
-        <div class="popularList-box">
+        <!-- <div class="popularList-box">
 
           <div class="right-l-titlebox">
             <div class="l-titlebox-1">
@@ -171,7 +170,7 @@
             </a>
           </div>
 
-        </div>
+        </div> -->
       </div>
       <!-- 右侧 结束-->
     </div>
@@ -182,7 +181,7 @@
 </template>
 
 <script>
-  import { literatureDetails } from "@/api/data";
+  import { literatureDetails,getdocRecommend } from "@/api/data";
   export default {
     inject: ['setsickNess'],
     name: 'literatureDetails',
@@ -193,7 +192,7 @@
         infoDetail: {},
         title: "",
         activeName:'xglw',
-        lwList:[{},{}]
+        docRecommendList:[]
       };
     },
     created() {
@@ -248,6 +247,29 @@
           if (res.data.code == 0) {
             document.title = res.data.data.title;
             that.infoDetail = res.data.data;
+            that.getdocRecommend();
+          } else {
+            this.$message.error({
+              message: res.data.msg
+            });
+          }
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+        });
+      },
+      // 相关论文
+      getdocRecommend(){
+        let that = this;
+        let title = that.infoDetail.title;
+        let p = {
+           page: 1,
+           title
+        }
+        getdocRecommend(p).then(res => {
+          if (res.data.code == 0) {
+            that.docRecommendList = res.data.data.data;
           } else {
             this.$message.error({
               message: res.data.msg

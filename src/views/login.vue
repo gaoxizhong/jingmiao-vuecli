@@ -454,7 +454,8 @@ export default {
               // .dispatch 执行异步操作,数据提交至 actions
               if (that.$store.state.token) {
                 window.localStorage.setItem('setUser',data.phone);
-                that.$store.dispatch("setUser",data.phone)
+                window.localStorage.setItem('uid',data.uid);
+                that.$store.dispatch("setUser",data.phone);
                 that.$store.dispatch("setIsAuthenticated",true)
                 let stateurl = that.stateurl;
                 if(stateurl){

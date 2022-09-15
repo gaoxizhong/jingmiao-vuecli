@@ -18,15 +18,7 @@
         <div class="historysearch-box">
           <div class="historysearch-title">历史搜索：</div>
           <div class="history-items-box">
-            <div class="history-items">置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">置换</div>
-            <div class="history-items">关节置换</div>
-            <div class="history-items">关节置换</div>
+            <div class="history-items" v-for="(item,index) in historyList" :key="index" @click="clickhistoryList(item.id,item.content)">{{item.content}}</div>
           </div>
         </div>
       </div>
@@ -93,7 +85,7 @@
         <div class="advancedSearch-titlebox-r">
           <div class="ad-titlebox-r-t">历史搜索：</div>
           <div class="ad-titlebox-r-tList">
-            <div class="r-tList-item" v-for="(item,index) in historySenior" :key="index">{{item}}</div>
+            <div class="r-tList-item" v-for="(item,index) in historyList" :key="index" @click="clickhistoryList(item.id,item.content)">{{item.content}}</div>
           </div>
         </div>
       </div>
@@ -106,7 +98,7 @@
       <Popular v-on='$listeners' />
     </div>
     <div v-if="is_pop == 2">
-      <Search v-on='$listeners' :search_type="search_type" :headerInput="headerInput"  :date="date" :advancedCondition="advancedCondition"  v-if="is_view" />
+      <Search v-on='$listeners' :search_type="search_type" :headerInput="headerInput"  :date="date" :advancedCondition="advancedCondition" v-if="is_view"/>
     </div>
     <!-- 列表推荐 结束 -->
 
@@ -118,6 +110,7 @@
   import Popular from '../../components/researchPages/popular.vue';
   import Search from '../../components/researchPages/search.vue';
   import time from "../../assets/js/time";
+  import { getliteratureHistory } from "../../api/data";
   export default {
     name: 'popularLiterature',
     components: {
@@ -126,6 +119,7 @@
     },
     data(){
       return {
+        uid: window.localStorage.getItem('uid'),
         is_pop: '1',  // 1、默认页面； 2、搜索结果页面
         is_s:false,
         is_view: true,
@@ -187,20 +181,35 @@
           }]
         },
         value2: '',
-        historySenior:[
-          '我发的,检索,作者','我发的,检索,作者'
-        ],
+        historyList:[],
         date: '', // 选中的时间
         advancedCondition:[], // 选中的搜索选项
       }
     },
     created(){
       this.$emit('onEmitIndex', '/popularLiterature'); // 触发父组件的方法，并传递参数index
+      // 获取历史记录
+      this.getliteratureHistory();
     },
     methods:{
       selectnChange(e){
         console.log(e)
       },
+      // 获取历史记录
+      getliteratureHistory(){
+        let that = this;
+        let p = {
+          uid: that.uid,
+        }
+        getliteratureHistory(p).then(res =>{
+          if(res.data.code == 0){
+            that.historyList = res.data.data;
+          }
+        }).catch(e =>{
+          console.log(e)
+        })
+      },
+
       // 点击快速入口类
       goToMyFavorite(u){
         let path = u;
@@ -218,6 +227,7 @@
         this.is_pop = '2';
         this.setsickNess();
       },
+
       // 普通搜索 回车键点击
       searchEnterFun(e){
         var keyCode = window.event?e.keyCode:e.which;
@@ -259,21 +269,20 @@
           select_field:'',
           select_type:'',
         }
-        
-
       },
+
       // 点击高级搜索-- 检索按钮
       clickAdvancedSearch(){
         let that= this;
         let advancedOptions = this.advancedOptions;
         let value2 = this.value2;
-        if(!value2){
-          return
-        }
-        let v1 = time.formatTime1(value2[0]);
-        let v2 = time.formatTime1(value2[1]);
-        let date = v1 + ',' + v2;
         let advancedCondition = [];
+        let date = '';
+        if(value2){
+          let v1 = time.formatTime1(value2[0]);
+          let v2 = time.formatTime1(value2[1]);
+          date = v1 + ',' + v2;
+        }
         advancedOptions.forEach( (ele,index) =>{
           advancedCondition.push({
             select_field: ele.select_field,
@@ -287,7 +296,30 @@
         that.is_pop = '2';
         that.setsickNess();
       },
+      // 点击历史记录
+      clickhistoryList(i,n){
+        let that = this;
+        let id = i;
+        let name = n;
+        let search_type = this.search_type;
+        if( search_type == 'single'){
+          that.headerInput = name;
+          that.headerInputClick();
+        }else{
+          let advancedCondition = [];
+          advancedCondition.push({
+            select_field: '',
+            field_value: name,
+            select_type: '',
+            select_condition: '',
+          })
+          that.advancedCondition = advancedCondition;
+          that.date = '';
+          that.is_pop = '2';
+          that.setsickNess();
+        }
 
+      },
       setsickNess(){
         this.is_view = false;
         this.$nextTick(() => {
@@ -563,29 +595,30 @@
     font-weight: 400;
     color: #c4c9db;
     line-height: 0.85rem;
+    margin-top: 0.4rem;
   }
   .ad-titlebox-r-tList{
     flex: 1;
     padding-left: 1.5rem;
-  }
-  .ad-titlebox-r-tList .r-tList-item{
-    height: 1.75rem;
-    background: #FAFBFF;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .ad-titlebox-r-tList .r-tList-item{
+    display: flex;
+    align-items: center;
     font-size: 0.7rem;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #c4c9db;
-    line-height: 0.85rem;
-    padding-left: 0.5rem;
-    margin-top: 0.5rem;
+    color: #333333;
+    line-height: 1rem;
+    padding: 0.15rem 0.6rem;
+    background: #EAF0F6;
+    border-radius: 6px;
+    margin: 0.4rem;
     cursor: pointer;
   }
-  .ad-titlebox-r-tList .r-tList-item:nth-of-type(1){
-    margin-top: 0;
-  }
+
   .el-select-dropdown__item{
     font-size: 0.7rem;
     padding: 0 1rem;

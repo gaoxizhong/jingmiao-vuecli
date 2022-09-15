@@ -125,6 +125,7 @@
   export default {
     data(){
       return {
+        uid:'',
         is_s:false,
         is_view: true,
         is_titleTab:'1',
@@ -136,6 +137,8 @@
       }
     },
     created(){
+      this.uid = window.localStorage.getItem('uid');
+      console.log(this.uid)
       this.getEsIndex();
     },
     methods:{
@@ -189,6 +192,7 @@
       getEsIndex(){
         let that = this;
         let pearms = {
+          uid: that.uid,
           page: that.current_page,
         };
         const loading = this.$loading({

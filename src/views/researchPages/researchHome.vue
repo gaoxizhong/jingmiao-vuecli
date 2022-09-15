@@ -51,7 +51,7 @@
 
       <!-- 主题 开始 -->
       <el-main>
-        <keep-alive v-if="is_view">
+        <keep-alive>
           <router-view v-if="$route.meta.keepAlive" @onEmitIndex="onEmitIndex" @setsickNess="setsickNess"></router-view>
         </keep-alive>
         <router-view v-if="!$route.meta.keepAlive" @onEmitIndex="onEmitIndex" @setsickNess="setsickNess"/>

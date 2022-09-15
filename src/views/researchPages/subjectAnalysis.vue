@@ -15,19 +15,19 @@
         <div class="option-itemsbox option-itemsbox-2">
           <el-select class="validate" v-model="select_2" slot="prepend" @change="selectnChange_2">
             <el-option
-              v-for="item in options_2"
-              :key="item.department"
+              v-for="(item,index) in listData"
+              :key="index"
               :label="item.department"
-              :value="item.department"></el-option>
+              :value="index"></el-option>
           </el-select>
         </div>
         <div class="option-itemsbox option-itemsbox-3">
           <el-select class="validate" v-model="select_3" slot="prepend" @change="selectnChange_3">
             <el-option
-              v-for="item in options_3"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"></el-option>
+              v-for="(item,index) in options_3"
+              :key="index"
+              :label="item.name"
+              :value="index"></el-option>
           </el-select>
         </div>
         <el-button slot="append" @click="headerInputClick">开始分析</el-button>
@@ -204,10 +204,10 @@
         change_2:'',
         change_3:'',
         options_1:[{label:'西医疾病',value:'ClinicalTrial'}],  // 一级目录
-        options_2:[], // 二级分类
+        listData:[],// 二级分类
+        // options_2:[],
         options_3:[], // 三级分类
         acc_tab:'1', 
-        listData:[],
       }
     },
     created(){
@@ -223,13 +223,16 @@
       },
       // 二级类
       selectnChange_2(e){
-        console.log(e)
-        this.change_2 = e;
+        let index = e;
+        console.log(this.select_2)
+        let listData = this.listData;
+        this.options_3 = [];
+        this.select_3= '请选择';
+        this.options_3 = listData[index].diseases;
       },
       // 三级类
       selectnChange_3(e){
         console.log(e)
-        this.change_3 = e;
       },
       // 点击列表
       goToDetails(i){
@@ -290,7 +293,7 @@
         getClassBrowseList(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            let listData = res.data.data.data;
+            let listData = res.data.data;
             that.listData = listData;
           } else {
             this.$message.error({
@@ -344,6 +347,13 @@
           xAxis_val = ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"];
         let topics_eacharts = this.$echarts.init(document.getElementById(id));
         let option = {
+          grid: {
+            left: 20,
+            top: 60,
+            bottom: 30,
+            right: 40,
+            containLabel: true,
+          },
           backgroundColor: "#fff",
           tooltip: {
             trigger: "axis",
@@ -436,13 +446,13 @@
         // let data_val1 = [0, 0, 0, 0, 0, 0, 0];
         let option = {
           backgroundColor: "#fff",
-          // grid: {
-          //   left: 100,
-          //   top: "12%",
-          //   bottom: 30,
-          //   right: 40,
-          //   containLabel: true,
-          // },
+          grid: {
+              left: 20,
+              top: 60,
+              bottom: 30,
+              right: 40,
+              containLabel: true,
+            },
           tooltip: { // 鼠标浮动展示框样式
             show: true,
             backgroundColor: "#3664D9",

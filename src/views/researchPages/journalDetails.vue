@@ -18,10 +18,10 @@
           <div>综合影响指数：{{infoDetail.composite_impact_factor}}</div>
           <div>篇均已量：5.997</div>
         </div>
-        <div class="rightbox-listitems-btnbox">
+        <!-- <div class="rightbox-listitems-btnbox">
           <div>高血压</div>
           <div>心血管</div>
-        </div>
+        </div> -->
       </div>
       <!-- 返回按钮 -->
       <div class="fh-box"  @click="fanhui_btn()">
@@ -65,11 +65,60 @@
 
     </div>
     <!-- tab展示 结束 -->
+    <!-- 相关推荐 开始-->
+    <div class="icon-classbox">
+      <div class="classbox-l">
+        <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+        <span>相关推荐</span>
+      </div>
+      <a href="javascript:0;" class="classbox-r">
+        <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
+        <!-- <span @click="clickviewMore">查看更多</span> -->
+      </a>
+    </div>
+    <div class="suggestion-box">
+
+      <div class="suggestion-titlebox">
+        <div :class="album_tag == 'highest'?'active':''"  @click="clicksuggestion('highest')">最高被引用</div>
+        <div :class="album_tag == 'recently'?'active':''" @click="clicksuggestion('recently')">最新发布</div>
+      </div>
+      <div class="suggestion-tabbox">
+        <el-table :data="tableData" stripe style="width: 100%">
+          <el-table-column prop="special_name" label="标题">
+            <template slot-scope="scope">
+              <p @click="detailData(scope.row)">{{scope.row.special_name}}</p>
+            </template>
+          </el-table-column>
+          <el-table-column prop="author" label="作者" width="160">
+            <template slot-scope="scope">
+              <p>{{scope.row.author?scope.row.author:'暂无'}}</p>
+            </template>
+          </el-table-column>
+          <el-table-column prop="cn_name" label="来源" width="320">
+            <template slot-scope="scope">
+              <p>{{scope.row.cn_name?scope.row.cn_name:'暂无'}}</p>
+            </template>
+          </el-table-column>
+          <el-table-column prop="first_time" label="年份" width="160">
+            <template slot-scope="scope">
+              <p>{{scope.row.first_time?scope.row.first_time:'暂无'}}</p>
+            </template>
+          </el-table-column>
+          <el-table-column prop="total_citations_number" label="被引量" width="160">
+            <template slot-scope="scope">
+              <p>{{scope.row.total_citations_number?scope.row.total_citations_number:'暂无'}}</p>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+    <!-- 相关推荐 结束-->
+    
   </div>
 
 </template>
 <script>
-  import { journalAnalysisDetail } from "../../api/data";
+  import { journalAnalysisDetail,getalbumRecommend } from "../../api/data";
   export default {
     provide(){
       return {
@@ -85,13 +134,17 @@
         is_view: true,
         acc_tab:'1', 
         md5:'',
-        infoDetail:{}
+        infoDetail:{},
+        album_tag:'highest', // recently: 最新文献；highest ： 最高文献
+        tableData: [],
       }
     },
     created(){
       this.$emit('onEmitIndex', '/journalAnalysis'); // 触发父组件的方法，并传递参数index
       this.md5 = this.$route.query.md5;
       this.getDetail(this.md5);
+      this.getalbumRecommend();
+
     },
     methods:{
       // 返回上一步
@@ -137,6 +190,13 @@
           xAxis_val = ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"];
         let topics_eacharts = this.$echarts.init(document.getElementById(id));
         let option = {
+            grid: {
+              left: 20,
+              top: 60,
+              bottom: 30,
+              right: 40,
+              containLabel: true,
+            },
           backgroundColor: "#fff",
           tooltip: {
             trigger: "axis",
@@ -229,13 +289,13 @@
         // let data_val1 = [0, 0, 0, 0, 0, 0, 0];
         let option = {
           backgroundColor: "#fff",
-          // grid: {
-          //   left: 100,
-          //   top: "12%",
-          //   bottom: 30,
-          //   right: 40,
-          //   containLabel: true,
-          // },
+          grid: {
+            left: 20,
+            top: 60,
+            bottom: 30,
+            right: 40,
+            containLabel: true,
+          },
           tooltip: { // 鼠标浮动展示框样式
             show: true,
             backgroundColor: "#3664D9",
@@ -398,6 +458,30 @@
           console.log(e);
         });
       },
+      // 获取相关文献
+      getalbumRecommend(){
+        let that = this;
+        let p = {
+          page:'1',
+          tag: that.album_tag
+        }
+        getalbumRecommend(p).then(res => {
+          if (res.data.code == 0) {
+            that.tableData = res.data.data.data;
+          }
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+        });
+      },
+      clicksuggestion(n){
+        this.album_tag = n;
+        this.getalbumRecommend();
+      },
+      detailData(n){
+        console.log(n)
+      }
 
     },
 
@@ -529,6 +613,101 @@
     align-items: center;
     justify-content: center;
   }
+
+  .icon-classbox{
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+    .classbox-l{
+    height: auto;
+    font-size: 0.8rem;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #2B77BD;
+    display: flex;
+    align-items: center;
+  }
+  .classbox-l>img{
+    width: 0.3rem;
+    height: 1.05rem;
+  }
+  .classbox-l>span{
+    font-weight: 600;
+    padding-left: 0.5rem;
+  }
+  .classbox-r>img{
+    width: 0.75rem;
+    height: 0.8rem;
+  }
+  .classbox-r>span{
+    font-size: 0.65rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #666666;
+    padding-left: 0.5rem;
+  }
+  /*================= 相关推荐样式  ↓ ==================*/
+  .suggestion-box{
+    margin-top: 1rem;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow: hidden;
+  }
+  .suggestion-titlebox{
+    width: 100%;
+    padding: 0 0.75rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .suggestion-titlebox>div{
+    margin: 0 0.75rem;
+    font-size: 0.8rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 600;
+    color: #333333;
+    line-height: 1.25rem;
+    padding-bottom: 0.2rem;
+    cursor: pointer;
+  }
+  .suggestion-titlebox>div.active{
+    color: #2B77BD;
+    border-bottom: 4px solid #2B77BD;
+  }
+  .suggestion-tabbox{
+    margin-top: 1rem;
+    font-size: 0.8rem;
+  }
+  .suggestion-tabbox >>> .el-table td.el-table__cell,.suggestion-tabbox >>> .el-table th.el-table__cell.is-leaf {
+    border-bottom: none;
+    font-size: 0.8rem;
+    padding: 0;
+  }
+  .suggestion-tabbox >>> .el-table td.el-table__cell .cell p{
+    padding: 0.6rem 0;
+    cursor: pointer;
+  }
+  .suggestion-tabbox >>> .el-table th.el-table__cell.is-leaf .cell{
+    padding: 0.6rem;
+  }
+  
+  .suggestion-tabbox >>> .el-table th.el-table__cell{
+      background: #ECF0FB;
+      color: #333;
+  }
+  .suggestion-tabbox >>> table::before{
+    border: none !important;
+  }
+  .suggestion-tabbox >>> table tbody tr th::before,.suggestion-tabbox >>>  table tbody tr td::before{
+    border: none !important;
+    display: none;
+  }
+  /* ========  相关推荐  ↑==============   */
+
 
 
 

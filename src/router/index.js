@@ -257,7 +257,7 @@ const routes = [
         name: 'literatureDetails',
         component: () => import('@/views/researchPages/literatureDetails'),
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           scollTopPosition: 0,
           requireAuth:true
         }
@@ -267,7 +267,7 @@ const routes = [
         name: 'myFavorite',
         component: () => import('@/views/researchPages/myFavorite'),
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           scollTopPosition: 0,
           requireAuth:true
         }
@@ -277,7 +277,7 @@ const routes = [
         name: 'literatureAuthor',
         component: () => import('@/views/researchPages/literatureAuthor'),
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           scollTopPosition: 0,
           requireAuth:true,
         }
@@ -297,7 +297,7 @@ const routes = [
         name: 'scholarAnalysisDetails',
         component: () => import('@/views/researchPages/scholarAnalysisDetails'),
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           scollTopPosition: 0,
           requireAuth:true,
         }
@@ -327,7 +327,7 @@ const routes = [
         name: 'journalDetails',
         component: () => import('@/views/researchPages/journalDetails'),
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           scollTopPosition: 0,
           requireAuth:true,
         }
@@ -367,9 +367,7 @@ const router = new VueRouter({
   // base: process.env.BASE_URL,
   routes
 })
-
-
-console.log(process.env.BASE_URL)
+// console.log(process.env.BASE_URL)
 router.afterEach((to) => {
   if(to.meta.title){
     document.title = to.meta.title
@@ -377,6 +375,19 @@ router.afterEach((to) => {
   window.scrollTo(0,0);
 
 })
+// router.beforeEach(async(to, from, next) => {
+//   // to要进入的目标路由,到哪去from离开的路由,哪来的savePosition内容
+//   //判断是否需要缓存
+//   if(to.path == 'text' && from.path =='/orderInfo'){
+//     // 让 列表页 缓存，即不刷新
+//     to.meta.keepAlive = true;  
+//   }else {
+//      // 让 列表页 即不缓存，刷新
+//     to.meta.keepAlive = false; 
+//   }
+//   next()
+// })
+
 // router.beforeEach((to, from, next) => {
 //   //这里的requireAuth为路由中定义的 meta:{requireAuth:true}，意思为：该路由添加该字段，表示进入该路由需要登陆的
 //   if (to.matched.some(r => r.meta.requireAuth)) {

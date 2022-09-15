@@ -437,6 +437,30 @@ export const journalAnalysisDetail = (params) =>{
     data: params
   })
 }
+// 文献搜索历史记录
+export const getliteratureHistory = (params) =>{
+  return axios.request({
+    url:'/es-history',
+    method: 'post',
+    data: params
+  })
+}
+// 期刊详情相关文献
+export const getalbumRecommend = (params) =>{
+  return axios.request({
+    url:'/album-recommend',
+    method: 'post',
+    data: params
+  })
+}
+// 文献详情页相关文献
+export const getdocRecommend = (params) =>{
+  return axios.request({
+    url:'/doc-recommend',
+    method: 'post',
+    data: params
+  })
+}
 // =================  科研探索api  ↑ ==================
 
 

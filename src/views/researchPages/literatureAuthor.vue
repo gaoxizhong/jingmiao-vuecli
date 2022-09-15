@@ -166,13 +166,13 @@
           <div>最新发布</div>
         </div>
         <div class="suggestion-tabbox">
-            <el-table :data="tableData" stripe style="width: 100%">
-              <el-table-column prop="title" label="标题"></el-table-column>
-              <el-table-column prop="author" label="作者" width="160"></el-table-column>
-              <el-table-column prop="source" label="来源" width="160"></el-table-column>
-              <el-table-column prop="years" label="年份" width="160"></el-table-column>
-              <el-table-column prop="citations" label="被引量" width="160"></el-table-column>
-            </el-table>
+          <el-table :data="tableData" stripe style="width: 100%">
+            <el-table-column prop="title" label="标题"></el-table-column>
+            <el-table-column prop="author" label="作者" width="160"></el-table-column>
+            <el-table-column prop="source" label="来源" width="160"></el-table-column>
+            <el-table-column prop="years" label="年份" width="160"></el-table-column>
+            <el-table-column prop="citations" label="被引量" width="160"></el-table-column>
+          </el-table>
         </div>
       </div>
       <!-- 相关推荐 结束-->

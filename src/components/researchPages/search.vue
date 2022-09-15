@@ -156,6 +156,7 @@
     },
     data(){
       return {
+        uid: window.localStorage.getItem('uid'),
         is_s:false,
         pageSize: 10,
         current_page: 1,
@@ -229,6 +230,7 @@
         let advancedCondition= that.advancedCondition; // 高级 选择数据
         let params = {
           page: that.current_page,
+          uid: that.uid
         }
         if(search_type == 'single'){
           params.search_type = search_type;
@@ -305,13 +307,11 @@
       },
        // 关联研究
       getAssociationStudy_eacharts(){
-        let that = this;
-        getForceRelation_eacharts('2','AssociationStudy',that);
+        getForceRelation_eacharts('2','AssociationStudy',this);
       },
       // 相关学者
       getRelatedScholars_eacharts(){
-        let that = this;
-        getForceFloating_eacharts('3','RelatedScholars',that);
+        getForceFloating_eacharts('3','RelatedScholars',this);
       },
 
 
