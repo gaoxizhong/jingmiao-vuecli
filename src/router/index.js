@@ -257,7 +257,7 @@ const routes = [
         name: 'literatureDetails',
         component: () => import('@/views/researchPages/literatureDetails'),
         meta: {
-          keepAlive: false,
+          keepAlive: false, // 刷新不缓存
           scollTopPosition: 0,
           requireAuth:true
         }

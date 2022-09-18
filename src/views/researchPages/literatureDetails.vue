@@ -18,7 +18,7 @@
           </div>
           <div class="text-subtitle" v-if="infoDetail.enTitle">{{infoDetail.enTitle}}</div>
           <div class="text-suju">
-            <!-- <span>点击量：333</span> -->
+            <span>点击：{{infoDetail.click_count}}</span>
             <span>被引：{{infoDetail.total_citations_number}}</span>
             <span>下载：{{infoDetail.total_download_times}}</span>
           </div>
@@ -52,9 +52,29 @@
               <label>所属期刊:</label>
               <p>{{infoDetail.cn_name}}</p>
             </div>
+            <div class="one_info clearfix" v-if="infoDetail.type">
+              <label>专辑名称:</label>
+              <p>{{infoDetail.type}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.CN">
+              <label>CN:</label>
+              <p>{{infoDetail.CN}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.publication_place">
+              <label>出版地:</label>
+              <p>{{infoDetail.publication_place}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.publication_cycle">
+              <label>出版周期:</label>
+              <p>{{infoDetail.publication_cycle}}</p>
+            </div>
             <div class="one_info clearfix" v-if="infoDetail.number">
               <label>期刊号:</label>
               <p>{{infoDetail.number}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.first_time">
+              <label>创刊时间:</label>
+              <p>{{infoDetail.first_time}}</p>
             </div>
             <div class="one_info clearfix" v-if="infoDetail.year">
               <label>年、卷(期):</label>
@@ -62,7 +82,7 @@
             </div>
             <div class="asub-box">
               <a href="javascript:0;" class="asub-zaixian"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="infoDetail.is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-              <a :href="infoDetail.pdf_file?infoDetail.pdf_file:'javascript:0;'" class="asub-zaixian" :target="infoDetail.pdf_file?'_blank':''" @click.stop="goToyuedu($event,infoDetail.pdf_file)" v-if="infoDetail.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
+              <a :href="infoDetail.periodical_url?infoDetail.periodical_url:'javascript:0;'" class="asub-zaixian" :target="infoDetail.periodical_url?'_blank':''" @click.stop="goToyuedu($event,infoDetail.periodical_url)" v-if="infoDetail.periodical_url"><i class="el-icon-reading"></i>在线阅读</a>
             </div>
           </div>
         </div>
@@ -76,31 +96,43 @@
           </div>  
            <!-- 论文列表 -->
           <div class="list-itembox">
-
-            <a href="javascript:0;" class="list-item" @click.stop="goToDetails(item.url_md5)" v-for="(item,index) in docRecommendList" :key="index">
-              <div class="list-item-title">{{index +1}}、{{item.title}}</div>
-              <div class="list-item-subt">{{item.subject}}</div>
-              <div class="list-item-text">{{item.abstract}}</div>
-              <div class="list-item-z">
-                <label class="zuozhe-box">相关作者：</label>
-                <div class="tap-top-span">
-                  <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
+            <!-- ===  单条列表 开始 ===  -->
+            <div class="list-item" v-for="(item,index) in docRecommendList" :key="index">
+              <a href="javascript:0;"   @click.stop="goToDetails(item.url_md5)">
+                <div class="listitems-b">
+                  <div class="list-item-title" :title="(index+1) + '、' + item.title">{{index +1}}、{{item.title}}</div>
+                  <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
                 </div>
-              </div>
+                <div class="list-item-subt">{{item.subject}}</div>
+                <div class="list-item-text" >{{item.abstract}}</div>
+                <div class="list-item-z" v-if="item.cn_name">
+                  <label class="zuozhe-box">期刊：</label>
+                  <div class="tap-top-span">
+                    <a href="javascript:0;" @click.stop="">《{{item.cn_name}}》</a>
+                    <span style="font-size: 0.7rem;color: #333;">{{item.first_time}}年</span>
+                  </div>
+                </div>
+                <div class="list-item-z">
+                  <label class="zuozhe-box">相关作者：</label>
+                  <div class="tap-top-span">
+                    <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
+                  </div>
+                </div>
+              </a>
               <div class="item-btn-box">
-                <!-- <div class="asub-box" style="margin-top:0;">
-                  <a href="javascript:0;" class="asub-zaixian" style="padding-left:0;"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="item.is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-                  <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i class="el-icon-reading"></i>在线阅读</a>
-                </div> -->
+                <div class="asub-box">
+                  <!-- <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a> -->
+                  <!-- <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>在线阅读</a> -->
+                </div>
 
                 <div class="item-r">
-                  <!-- <span>点击：333</span> -->
-                  <span>被引：{{item.total_citations_number?item.total_citations_number:0}}</span>
-                  <span>下载：{{item.total_download_times?item.total_download_times:0}}</span>
+                  <span>点击：{{item.click_count}}</span>
+                  <span>被引：{{item.total_citations_number}}</span>
+                  <span>下载：{{item.total_download_times}}</span>
                 </div>
-
               </div>
-            </a> 
+            </div> 
+            <!-- ===  单条列表 结束 ===  -->
 
           </div>
           <!-- 论文列表模块结束 -->
@@ -627,7 +659,14 @@
   .list-itembox .list-item:hover{
     background: #2B77BD0a;
   }
-  .list-itembox .list-item .list-item-title{
+  .list-itembox .list-item .listitems-b{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .list-itembox .list-item .listitems-b .list-item-title{
+    flex: 1;
     font-size: 0.8rem;
     font-family: PingFang-SC-Bold, PingFang-SC;
     font-weight: bold;
@@ -637,6 +676,11 @@
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+  }
+  .listitems-b span{
+    color: #999;
+    width: auto;
+    font-size: 0.7rem;
   }
   .list-itembox .list-item .list-item-subt{
     font-size: 0.7rem;
@@ -711,7 +755,10 @@
   .item-btn-box .item-r>span{
     font-size: 0.65rem;
     padding-right: 0.2rem;
-    color: #333;
+    color: #999;
     display: flex;
+  }
+  .item-btn-box .item-r>span:last-child {
+    margin-right: 0;
   }
 </style>

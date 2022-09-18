@@ -47,30 +47,43 @@
         </div>
         <!-- 列表 -->
         <div class="list-itembox">
-          <a href="javascript:0;" class="list-item" v-for="(item,index) in listData" :key="index" @click.stop="goToDetails(item.url_md5)">
-            <div class="list-item-title" :title="(index+1) + '、' + item.title">{{index +1}}、{{item.title}}</div>
-            <div class="list-item-subt">{{item.subject}}</div>
-            <div class="list-item-text" >{{item.abstract}}</div>
-            <div class="list-item-z">
-              <label class="zuozhe-box">相关作者：</label>
-              <div class="tap-top-span">
-                <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
+          <!-- ===  单条列表 开始 ===  -->
+          <div class="list-item" v-for="(item,index) in listData" :key="index">
+            <a href="javascript:0;"   @click.stop="goToDetails(item.url_md5)">
+              <div class="listitems-b">
+                <div class="list-item-title" :title="(index+1) + '、' + item.title">{{index +1}}、{{item.title}}</div>
+                <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
               </div>
-            </div>
+              <div class="list-item-subt">{{item.subject}}</div>
+              <div class="list-item-text" >{{item.abstract}}</div>
+              <div class="list-item-z" v-if="item.cn_name">
+                <label class="zuozhe-box">期刊：</label>
+                <div class="tap-top-span">
+                  <a href="javascript:0;" @click.stop="">《{{item.cn_name}}》</a>
+                  <span style="font-size: 0.7rem;color: #333;">{{item.first_time}}年</span>
+                </div>
+              </div>
+              <div class="list-item-z">
+                <label class="zuozhe-box">相关作者：</label>
+                <div class="tap-top-span">
+                  <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
+                </div>
+              </div>
+            </a>
             <div class="item-btn-box">
               <div class="asub-box">
                 <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-                <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i class="el-icon-reading"></i>在线阅读</a>
+                <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>在线阅读</a>
               </div>
 
               <div class="item-r">
-                <!-- <span>点击：333</span> -->
+                <span>点击：{{item.click_count}}</span>
                 <span>被引：{{item.total_citations_number}}</span>
                 <span>下载：{{item.total_download_times}}</span>
               </div>
-
             </div>
-          </a> 
+          </div> 
+          <!-- ===  单条列表 结束 ===  -->
           <el-empty description="暂无数据..." v-if="listData.length <= 0"></el-empty>
         </div>
         <!-- 分页展示 -->
@@ -544,7 +557,14 @@
   .list-itembox .list-item:hover{
     background: #2B77BD0a;
   }
-  .list-itembox .list-item .list-item-title{
+  .list-itembox .list-item .listitems-b{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .list-itembox .list-item .listitems-b .list-item-title{
+    flex: 1;
     font-size: 0.8rem;
     font-family: PingFang-SC-Bold, PingFang-SC;
     font-weight: bold;
@@ -565,6 +585,11 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     margin-top: 0.4rem;
+  }
+  .listitems-b span{
+    color: #999;
+    width: auto;
+    font-size: 0.7rem;
   }
   .list-itembox .list-item .list-item-text{
     font-size: 0.7rem;
@@ -619,17 +644,15 @@
     align-items: center;
   }
   .asub-zaixian {
-    border-radius: 20px;
+    border-radius: 4px;
     color: #2B77BD;
     align-items: center;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.7rem;
     margin-right: 0.6rem;
     display: flex;
     align-items: center;
-  }
-  .asub-zaixian:nth-of-type(1){
-    padding-left:0;
+    border: 1px solid #2B77BD; 
   }
   .asub-zaixian .el-icon-reading,.el-icon-star-on,.el-icon-star-off {
     font-size: 1.2rem;
@@ -637,6 +660,7 @@
   }
   .asub-zaixian:hover{
     color: #fa6400;
+    border: 1px solid #fa6400;
   }
   .item-btn-box .item-r{
     display: flex;
@@ -645,11 +669,13 @@
   .item-btn-box .item-r>span{
     font-size: 0.65rem;
     padding-right: 0.1rem;
-    color: #333;
+    color: #999;
     display: flex;
     margin-right: 0.5rem;
   }
-
+  .item-btn-box .item-r>span:last-child {
+    margin-right: 0;
+  }
   .pagination-box{
     padding: 1.5rem 0;
   }
