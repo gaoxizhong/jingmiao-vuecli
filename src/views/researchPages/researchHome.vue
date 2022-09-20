@@ -64,7 +64,7 @@
 <script>
   // import CommonAside from "../../components/CommonAside";
   export default {
-    provide(){
+    provide(){ 
       return {
         setsickNess: this.setsickNess
       }

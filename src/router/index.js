@@ -375,6 +375,17 @@ router.afterEach((to) => {
   window.scrollTo(0,0);
 
 })
+
+router.beforeEach(async(to, from, next) => {
+  // to要进入的目标路由,到哪去from离开的路由,哪来的savePosition内容
+  //判断是否需要缓存
+  if(to.path == from.path ){
+    // 让 列表页 即不缓存，刷新
+    to.meta.keepAlive = false; 
+  }
+  next()
+})
+
 // router.beforeEach(async(to, from, next) => {
 //   // to要进入的目标路由,到哪去from离开的路由,哪来的savePosition内容
 //   //判断是否需要缓存

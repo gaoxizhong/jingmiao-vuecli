@@ -150,25 +150,26 @@ button{
 <script>
 export default {
   name:'app',
-  provide(){
-    return {
-      reload: this.reload
+  provide(){ // 1、在App.vue,声明reload方法，控制router-view的显示或隐藏，从而控制页面的再次加载。(provide /inject )
+    return {  
+      reload: this.reload   // 2、通过provide向子组件注入依赖
     }
   }, 
   data() {
     return {
       isCollapse: false,
       is_view: true,
-      isRouterAlive: true,
+      isRouterAlive: true,  //  3、声明变量
       viewHeight:0,
     };
   },
   methods: {
-    reload(){
+    reload(){   // 控制变量的方法
       this.isRouterAlive = false;
       this.$nextTick( function(){
         this.isRouterAlive = true;
       })
+      console.log(this.isRouterAlive)
     },
 
   },

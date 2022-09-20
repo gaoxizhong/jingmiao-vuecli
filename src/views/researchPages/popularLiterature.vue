@@ -29,7 +29,6 @@
           <div class="duoxiang-tbox">
             <div class="duoxiang-itemsbox" v-for="(item,index) in advancedOptions" :key="index">
               <div class="advancedOptions-l">
-
                 <el-select class="validate" v-model="item.select_condition" slot="prepend" @change="selectnChange" v-if="index != 0" >
                   <el-option
                     v-for="items in item.options_0"
@@ -224,8 +223,16 @@
       },
       // 搜索
       headerInputClick(){
+        let headerInput = this.headerInput;
+        if(!headerInput){
+          this.$message.error({
+            message: '搜索不能为空！'
+          });
+          return
+        }
         this.is_pop = '2';
         this.setsickNess();
+        this.getliteratureHistory();
       },
 
       // 普通搜索 回车键点击
@@ -300,6 +307,7 @@
         that.date = date;
         that.is_pop = '2';
         that.setsickNess();
+        that.getliteratureHistory();
       },
       // 点击历史记录
       clickhistoryList(i,n){
