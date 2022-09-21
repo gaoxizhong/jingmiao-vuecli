@@ -49,7 +49,7 @@
         <div class="list-itembox">
           <!-- ===  单条列表 开始 ===  -->
           <div class="list-item" v-for="(item,index) in listData" :key="index">
-            <a href="javascript:0;"   @click.stop="goToDetails(item.url_md5)">
+            <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5)">
               <div class="listitems-b">
                 <div class="list-item-title" :title="(index+1) + '、' + item.title">{{index +1}}、{{item.title}}</div>
                 <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
@@ -72,8 +72,8 @@
             </a>
             <div class="item-btn-box">
               <div class="asub-box">
-                <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-                <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>在线阅读</a>
+                <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection(index,item.periodical_md5,item.is_collection)"><i :class="item.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>收藏</a>
+                <!-- <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>在线阅读</a> -->
               </div>
 
               <div class="item-r">
@@ -158,7 +158,7 @@
 
 </template>
 <script>
-  import { literatureDocSearch } from "../../api/data";
+  import { literatureDocSearch,clickCollection } from "../../api/data";
   import { getLine_eacharts,getForceRelation_eacharts,getForceFloating_eacharts } from "../../assets/js/getEcharts";
   export default {
     props:{
@@ -188,7 +188,9 @@
           {name:'被引量',status:'2'},
           {name:'点击量',status:'2'},
           {name:'下载量',status:'2'},
-        ]
+        ],
+        is_return: true,
+
       }
     },
     created(){
@@ -196,6 +198,71 @@
        this.literatureDocSearch();
     },
     methods:{
+      //点击收藏
+      clickCollection(i,md,c){
+        let that = this;
+        let index = i;
+        let uid = that.uid;
+        let md5 = md;
+        let col = c;
+        let tag = '';
+        if(col == 1){
+          // 1、已收藏  2、未收藏
+          tag = 'cancelCollection';
+        }
+        if(col == 2){
+          // 1、已收藏  2、未收藏
+          tag = 'collection';
+        }
+        let is_return = that.is_return;
+        if( !is_return ){
+          return
+        }
+        that.is_return = false;
+        let p = {
+          uid,
+          md5,
+          tag
+        }
+
+        console.log(p)
+        clickCollection(p).then(res =>{
+          if(res.data.code == 0){
+            let listData = that.listData;
+
+
+            if(listData[index].is_collection == 2){
+              listData[index].is_collection = 1;
+              that.listData = listData;
+              that.$message.success({
+                message: '收藏成功！'
+              });
+              that.is_return = true;
+              return
+            }
+            if(listData[index].is_collection == 1){
+              listData[index].is_collection = 2;
+              that.listData = listData;
+              that.$message.success({
+                message: '取消成功！'
+              });
+              that.is_return = true;
+              return
+            }
+
+          }else{
+            that.$message.error({
+              message: res.data.msg
+            });
+            that.is_return = true;
+
+          }
+        }).catch(e =>{
+          console.log(e)
+          that.is_return = true;
+        })
+
+      },
       // 点击排序
       clickSorting(i){
         let that = this;
@@ -219,14 +286,14 @@
       // 点击列表
       goToDetails(i){
         let that = this;
-        let url_md5 = i;
+        let periodical_md5 = i;
         // this.$emit('setsickNess', '');
         this.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
         // 新页面打开
         this.$router.push({  //核心语句
           path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            url_md5,
+            periodical_md5,
           }
         })
       },
@@ -654,8 +721,9 @@
     align-items: center;
     border: 1px solid #2B77BD; 
   }
+
   .asub-zaixian .el-icon-reading,.el-icon-star-on,.el-icon-star-off {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-right: 0.25rem;
   }
   .asub-zaixian:hover{

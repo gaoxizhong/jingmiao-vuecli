@@ -9,10 +9,10 @@
       <!-- 左侧模块 开始-->
       <div class="content-left">
         <div class="content-left-1">
-          <div :class="sel_tab == index ?'active':'' " v-for="(item,index) in tabList" :key='index' @click="getDetail(index,id)">
-            <p class="left-items-t">《中国高血压防治指南》在西藏贫困农村推广的现状及现状…</p>
-            <p class="left-items-m">任彩萍-卫生职业教育</p>
-            <p class="left-items-b">点击量：3</p>
+          <div :class="0 == index ?'active':'' " v-for="(item,index) in myCollectionList" :key='index' @click="getDetail(index,item.periodical_md5)">
+            <p class="left-items-t">{{item.title}}</p>
+            <p class="left-items-m">{{item.subject}}</p>
+            <p class="left-items-b">点击量：{{item.click_count}}</p>
           </div>
         </div>
       </div>
@@ -41,55 +41,63 @@
               </div>
             </div>
 
-            <div class="one_info clearfix" v-if="infoDetail.year">
+            <div class="one_info clearfix" v-if="infoDetail.doi">
               <label>dol:</label>
-              <p>{{infoDetail.year}}</p>
+              <p>{{infoDetail.doi}}</p>
             </div>
 
-            <div class="one_info clearfix" v-if="infoDetail.constitutor">
+            <div class="one_info clearfix" v-if="infoDetail.keyword">
               <label>关键词：</label>
               <p>
-                <span>{{infoDetail.constitutor}}</span>
-                <span></span>
+                <span v-for="(items,idx) in infoDetail.keyword" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
               </p>
             </div>
-
-            <div class="one_info clearfix" v-if="infoDetail.constitutor">
-              <label>作者：</label>
-              <p>
-                <span>{{infoDetail.constitutor}}</span>
-                <span></span>
-              </p>
-            </div>
-            <div class="one_info clearfix" v-if="infoDetail.year">
-              <label>作者单位:</label>
-              <p>{{infoDetail.year}}</p>
-            </div>
-
-            <div class="one_info clearfix" v-if="infoDetail.year">
+            <div class="one_info clearfix" v-if="infoDetail.cn_name">
               <label>所属期刊:</label>
-              <p>{{infoDetail.year}}</p>
+              <p>{{infoDetail.cn_name}}</p>
             </div>
-
+            <div class="one_info clearfix" v-if="infoDetail.type">
+              <label>专辑名称:</label>
+              <p>{{infoDetail.type}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.CN">
+              <label>CN:</label>
+              <p>{{infoDetail.CN}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.publication_place">
+              <label>出版地:</label>
+              <p>{{infoDetail.publication_place}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.publication_cycle">
+              <label>出版周期:</label>
+              <p>{{infoDetail.publication_cycle}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.number">
+              <label>期刊号:</label>
+              <p>{{infoDetail.number}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.first_time">
+              <label>创刊时间:</label>
+              <p>{{infoDetail.first_time}}</p>
+            </div>
             <div class="one_info clearfix" v-if="infoDetail.year">
               <label>年、卷(期):</label>
               <p>{{infoDetail.year}}</p>
             </div>
             <div class="asub-box">
-              <a href="javascript:0;" class="asub-zaixian"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-              <a :href="infoDetail.onlineRead?infoDetail.onlineRead:'javascript:0;'" class="asub-zaixian" :target="infoDetail.onlineRead?'_blank':''" @click.stop="goToyuedu($event,infoDetail.onlineRead)" ><i class="el-icon-reading"></i>在线阅读</a>
+              <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection()"><i :class="infoDetail.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>收藏</a>
+              <!-- <a :href="infoDetail.periodical_url?infoDetail.periodical_url:'javascript:0;'" class="asub-zaixian" :target="infoDetail.periodical_url?'_blank':''" @click.stop="goToyuedu($event,infoDetail.periodical_url)" v-if="infoDetail.periodical_url"><i class="el-icon-reading"></i>在线阅读</a> -->
             </div>
           </div>
         </div>
         
-        <div class="tab-box">
+        <!-- <div class="tab-box">
           <div class="tab-title">
             <el-tabs v-model="activeName" @tab-click="handleClick">
               <el-tab-pane label="相关论文" name="xglw"></el-tab-pane>
               <el-tab-pane label="相关主体论文" name="xgztlw"></el-tab-pane>
             </el-tabs>
           </div>  
-           <!-- 论文列表 -->
           <div class="list-itembox">
 
             <a href="javascript:0;" class="list-item" v-for="(item,index) in literatureList" :key="index"  @click.stop="goToDetails('2')">
@@ -117,10 +125,7 @@
             </a> 
 
           </div>
-          <!-- 论文列表模块结束 -->
-
-
-        </div> 
+        </div>  -->
 
 
       </div>
@@ -133,27 +138,21 @@
 </template>
 
 <script>
-  import { getGuideDetail } from "@/api/data";
+  import { literatureDetails,getMyCollection,clickCollection } from "@/api/data";
   export default {
     inject: ['setsickNess'],
     name: 'myFavorite',
     data() {
       return {
-        is_s:false,
+        uid:'',
+        myCollectionList:[], // 我的收藏列表
         id:'',
         viewHeight: "",
         infoDetail: {},
         title: "",
-        tabList:[
-          {id:'1',title:'《中国高血压防治指南》在西藏贫困农村推广的现状及现状…',name:'任彩萍-卫生职业教育',djl:'3'},
-          {id:'2',title:'《中国高血压防治指南》在西藏贫困农村推广的现状及现状…',name:'任彩萍-卫生职业教育',djl:'3'},
-          {id:'3',title:'《中国高血压防治指南》在西藏贫困农村推广的现状及现状…',name:'任彩萍-卫生职业教育',djl:'3'},
-          {id:'4',title:'《中国高血压防治指南》在西藏贫困农村推广的现状及现状…',name:'任彩萍-卫生职业教育',djl:'3'},
-          {id:'5',title:'《中国高血压防治指南》在西藏贫困农村推广的现状及现状…',name:'任彩萍-卫生职业教育',djl:'3'},
-          {id:'6',title:'《中国高血压防治指南》在西藏贫困农村推广的现状及现状…',name:'任彩萍-卫生职业教育',djl:'3'},
-          {id:'7',title:'《中国高血压防治指南》在西藏贫困农村推广的现状及现状…',name:'任彩萍-卫生职业教育',djl:'3'},
-        ],
-        sel_tab:'1',
+        page: 1,
+        total_page:0, // 总页数
+        sel_tab: 0,
         activeName:'xglw',
         literatureList:[
           {},
@@ -164,7 +163,8 @@
           {},
           {},
           {},
-        ]
+        ],
+
       };
     },
     created() {
@@ -173,10 +173,110 @@
       let getViewportSize = this.$getViewportSize();
       this.viewHeight = getViewportSize.height;
       this.viewWidth = getViewportSize.width;
-
+      this.uid = window.localStorage.getItem('uid');
+      console.log(this.sel_tab)
+      // 获取我的收藏列表
+      this.getMyCollection();
     },
     methods: {
+      //点击收藏
+      clickCollection(){
+        let that = this;
+        let uid = that.uid;
+        let md5 = that.infoDetail.periodical_md5;
+        let col = that.infoDetail.is_collection;
+        let tag = '';
+        if(col == 1){
+          // 1、已收藏  2、未收藏
+          tag = 'cancelCollection';
+        }
+        if(col == 2){
+          // 1、已收藏  2、未收藏
+          tag = 'collection';
+        }
+        let is_return = that.is_return;
+        if( !is_return ){
+          return
+        }
+        that.is_return = false;
+        let p = {
+          uid,
+          md5,
+          tag
+        }
+        clickCollection(p).then(res =>{
+          if(res.data.code == 0){
+            let infoDetail = that.infoDetail;
 
+            if(infoDetail.is_collection == 2){
+              infoDetail.is_collection = 1;
+              that.infoDetail = infoDetail;
+              that.$message.success({
+                message: '收藏成功！'
+              });
+              that.is_return = true;
+              return
+            }
+
+            if(infoDetail.is_collection == 1){
+              infoDetail.is_collection = 2;
+              that.infoDetail = infoDetail;
+              that.$message.success({
+                message: '取消成功！'
+              });
+              that.is_return = true;
+              return
+            }
+
+          }else{
+            that.$message.error({
+              message: res.data.msg
+            });
+            that.is_return = true;
+
+          }
+        }).catch(e =>{
+          console.log(e)
+          that.is_return = true;
+        })
+
+      },
+      // 获取我的收藏列表
+      getMyCollection(){
+        let that = this;
+        let uid = that.uid;
+        let page = that.page;
+        let pearms = {
+          uid,
+          page
+        };
+        const loading = this.$loading({
+          lock: true,
+          text: "Loading",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.1)",
+          target: document.querySelector("body")
+        });
+        getMyCollection(pearms).then(res => {
+          loading.close();
+          if (res.data.code == 0) {
+            that.myCollectionList = res.data.data.data;
+            that.total_page = res.data.data.total_page;
+            let sel_tab = that.sel_tab;
+            // 点击收藏列表获取详情
+            that.getDetail(sel_tab,res.data.data.data[sel_tab].periodical_md5);
+          } else {
+            this.$message.error({
+              message: res.data.msg
+            });
+          }
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+        });
+
+      },
       // 点击在线阅读
       goToyuedu(event,u){
         let url = u;
@@ -188,11 +288,12 @@
       // 点击收藏列表获取详情
       getDetail(i,d) {
         let that = this;
-        let id = d;
+        console.log(i)
+        let uid = that.uid;
         that.sel_tab = i;
-
         let pearms = {
-          id
+          periodical_md5:d,
+          uid
         };
         const loading = this.$loading({
           lock: true,
@@ -202,7 +303,7 @@
           target: document.querySelector("body")
         });
         that.infoDetail = {};
-        getGuideDetail(pearms).then(res => {
+        literatureDetails(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
             document.title = res.data.data.title;
@@ -396,15 +497,16 @@
     overflow: hidden;
     line-height: 1rem;
   }
-  .one_info label {
-    width: 4.7rem;
+   .one_info label {
+    width: 5rem;
     font-size: 0.75rem;
     font-weight: bold;
-    text-align: right;
+    text-align: left;
     float: left;
     padding-right: 0.5rem;
+    line-height: 1.5rem;
   }
-  .one_info #all-content {
+  .one_info #all_content {
     flex: 1;
   }
   .one_info p {
@@ -415,10 +517,13 @@
     color: #666666;
     display: flex;
     justify-content: flex-start;
+    line-height: 1.5rem;
   }
   .one_info p span{
     display: inline-block;
     margin-right: 0.1rem;
+    cursor: pointer;
+    margin-right: 1rem;
   }
   .one_info p span:hover{
     color: #2B77BD;
@@ -430,7 +535,7 @@
   }
 
   .asub-zaixian {
-    border-radius: 20px;
+    border-radius: 4px;
     color: #2B77BD;
     align-items: center;
     padding: 0.3rem 0.6rem;

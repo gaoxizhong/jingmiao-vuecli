@@ -469,6 +469,22 @@ export const getSubjectAnalysis = (params) =>{
     data: params
   })
 }
+//点击收藏
+export const clickCollection = (params) =>{
+  return axios.request({
+    url:'/es-collection',
+    method: 'post',
+    data: params
+  })
+}
+// 查看我的收藏
+export const getMyCollection = (params) =>{
+  return axios.request({
+    url:'/es-my-collection',
+    method: 'post',
+    data: params
+  })
+}
 // =================  科研探索api  ↑ ==================
 
 

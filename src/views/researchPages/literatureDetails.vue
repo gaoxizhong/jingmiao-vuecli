@@ -81,8 +81,8 @@
               <p>{{infoDetail.year}}</p>
             </div>
             <div class="asub-box">
-              <a href="javascript:0;" class="asub-zaixian"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="infoDetail.is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-              <a :href="infoDetail.periodical_url?infoDetail.periodical_url:'javascript:0;'" class="asub-zaixian" :target="infoDetail.periodical_url?'_blank':''" @click.stop="goToyuedu($event,infoDetail.periodical_url)" v-if="infoDetail.periodical_url"><i class="el-icon-reading"></i>在线阅读</a>
+              <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection()"><i :class="infoDetail.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>收藏</a>
+              <!-- <a :href="infoDetail.periodical_url?infoDetail.periodical_url:'javascript:0;'" class="asub-zaixian" :target="infoDetail.periodical_url?'_blank':''" @click.stop="goToyuedu($event,infoDetail.periodical_url)" v-if="infoDetail.periodical_url"><i class="el-icon-reading"></i>在线阅读</a> -->
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@
           <div class="list-itembox">
             <!-- ===  单条列表 开始 ===  -->
             <div class="list-item" v-for="(item,index) in docRecommendList" :key="index">
-              <a href="javascript:0;"   @click.stop="goToDetails(item.url_md5)">
+              <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5)">
                 <div class="listitems-b">
                   <div class="list-item-title" :title="(index+1) + '、' + item.title">{{index +1}}、{{item.title}}</div>
                   <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
@@ -213,18 +213,20 @@
 </template>
 
 <script>
-  import { literatureDetails,getdocRecommend } from "@/api/data";
+  import { literatureDetails,getdocRecommend,clickCollection } from "@/api/data";
   export default {
     inject: ['setsickNess'],
     name: 'literatureDetails',
     data() {
       return {
-        url_md5:'',
+        uid:'',
+        periodical_md5:'',
         viewHeight: "",
         infoDetail: {},
         title: "",
         activeName:'xglw',
-        docRecommendList:[]
+        docRecommendList:[],
+        is_return:true
       };
     },
     created() {
@@ -232,11 +234,75 @@
       let getViewportSize = this.$getViewportSize();
       this.viewHeight = getViewportSize.height;
       this.viewWidth = getViewportSize.width;
-      this.url_md5 = this.$route.query.url_md5;
-      console.log(this.url_md5)
-      this.getDetail(this.url_md5);
+      this.periodical_md5 = this.$route.query.periodical_md5;
+      this.uid = window.localStorage.getItem('uid');
+
+      console.log(this.periodical_md5)
+      this.getDetail(this.periodical_md5);
     },
     methods: {
+      //点击收藏
+      clickCollection(){
+        let that = this;
+        let uid = that.uid;
+        let md5 = that.infoDetail.periodical_md5;
+        let col = that.infoDetail.is_collection;
+        let tag = '';
+        if(col == 1){
+          // 1、已收藏  2、未收藏
+          tag = 'cancelCollection';
+        }
+        if(col == 2){
+          // 1、已收藏  2、未收藏
+          tag = 'collection';
+        }
+        let is_return = that.is_return;
+        if( !is_return ){
+          return
+        }
+        that.is_return = false;
+        let p = {
+          uid,
+          md5,
+          tag
+        }
+        clickCollection(p).then(res =>{
+          if(res.data.code == 0){
+            let infoDetail = that.infoDetail;
+
+            if(infoDetail.is_collection == 2){
+              infoDetail.is_collection = 1;
+              that.infoDetail = infoDetail;
+              that.$message.success({
+                message: '收藏成功！'
+              });
+              that.is_return = true;
+              return
+            }
+
+            if(infoDetail.is_collection == 1){
+              infoDetail.is_collection = 2;
+              that.infoDetail = infoDetail;
+              that.$message.success({
+                message: '取消成功！'
+              });
+              that.is_return = true;
+              return
+            }
+
+          }else{
+            that.$message.error({
+              message: res.data.msg
+            });
+            that.is_return = true;
+
+          }
+        }).catch(e =>{
+          console.log(e)
+          that.is_return = true;
+        })
+
+      },
       // 返回上一步
       fanhui_btn(){
         let that = this;
@@ -262,9 +328,11 @@
       // 获取详情
       getDetail(i) {
         let that = this;
-        let url_md5 = i;
+        let periodical_md5 = i;
+        let uid = that.uid;
         let pearms = {
-          url_md5
+          periodical_md5,
+          uid
         };
         const loading = this.$loading({
           lock: true,
@@ -321,12 +389,12 @@
       // 点击列表
       goToDetails(i){
         let that = this;
-        let url_md5 = i;
+        let periodical_md5 = i;
         this.$emit('setsickNess','');
         this.$router.push({  //核心语句
           path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            url_md5,
+            periodical_md5,
           }
         })
       },
@@ -475,7 +543,7 @@
     margin-top: 0.5rem;
     font-size: 0.75rem;
     font-family: PingFang-SC-Bold, PingFang-SC;
-    color: #666666;
+    color: #999;
     line-height: 1rem;
     display: flex;
     align-items: center;
@@ -534,7 +602,7 @@
   }
 
   .asub-zaixian {
-    border-radius: 20px;
+    border-radius: 4px;
     color: #2B77BD;
     align-items: center;
     padding: 0.3rem 0.6rem;
