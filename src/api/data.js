@@ -485,6 +485,14 @@ export const getMyCollection = (params) =>{
     data: params
   })
 }
+// 文献首页---- 换一批
+export const getRandomDoc = (params) =>{
+  return axios.request({
+    url:'/es-random-doc',
+    method: 'post',
+    data: params
+  })
+}
 // =================  科研探索api  ↑ ==================
 
 

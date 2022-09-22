@@ -12,7 +12,7 @@
           <div :class="0 == index ?'active':'' " v-for="(item,index) in myCollectionList" :key='index' @click="getDetail(index,item.periodical_md5)">
             <p class="left-items-t">{{item.title}}</p>
             <p class="left-items-m">{{item.subject}}</p>
-            <p class="left-items-b">点击量：{{item.click_count}}</p>
+            <p class="left-items-b">点击量：{{item.click_count?item.click_count:0}}</p>
           </div>
         </div>
       </div>

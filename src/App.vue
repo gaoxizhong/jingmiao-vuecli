@@ -1,6 +1,6 @@
 <template>
   <div id="app" :style="`main-height:${viewHeight}px;`" >
-    <router-view v-if="isRouterAlive"/>
+    <router-view v-if="isRouterAlive" @setsickNess="reload"/>
   </div>
 </template>
 

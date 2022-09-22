@@ -18,7 +18,7 @@
           </div>
           <div class="text-subtitle" v-if="infoDetail.enTitle">{{infoDetail.enTitle}}</div>
           <div class="text-suju">
-            <span>点击：{{infoDetail.click_count}}</span>
+            <span>点击：{{infoDetail.click_count?infoDetail.click_count:0}}</span>
             <span>被引：{{infoDetail.total_citations_number}}</span>
             <span>下载：{{infoDetail.total_download_times}}</span>
           </div>
@@ -126,7 +126,7 @@
                 </div>
 
                 <div class="item-r">
-                  <span>点击：{{item.click_count}}</span>
+                  <span>点击：{{item.click_count?item.click_count:0}}</span>
                   <span>被引：{{item.total_citations_number}}</span>
                   <span>下载：{{item.total_download_times}}</span>
                 </div>
@@ -364,8 +364,9 @@
         let that = this;
         let title = that.infoDetail.title;
         let p = {
-           page: 1,
-           title
+          uid: that.uid,
+          page: 1,
+          title
         }
         getdocRecommend(p).then(res => {
           if (res.data.code == 0) {

@@ -18,7 +18,9 @@
         <div class="historysearch-box">
           <div class="historysearch-title">历史搜索：</div>
           <div class="history-items-box">
-            <div class="history-items" v-for="(item,index) in historyList" :key="index" @click="clickhistoryList(item.id,item.content)">{{item.content}}</div>
+            <div  v-for="(item,index) in historyList" :key="index">
+              <div class="history-items" @click="clickhistoryList(item.id,item.content)" v-if="item.tag == 1">{{item.content}}</div>
+              </div>
           </div>
         </div>
       </div>
@@ -84,7 +86,9 @@
         <div class="advancedSearch-titlebox-r">
           <div class="ad-titlebox-r-t">历史搜索：</div>
           <div class="ad-titlebox-r-tList">
-            <div class="r-tList-item" v-for="(item,index) in historyList" :key="index" @click="clickhistoryList(item.id,item.content)">{{item.content}}</div>
+            <div v-for="(item,index) in historyList" :key="index">
+              <div class="r-tList-item" @click="clickhistoryList(item.id,item.content)" v-if="item.tag == 2">{{item.content}}</div>
+            </div>
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@
         <div class="list-item" v-for="(item,index) in listData" :key="index">
           <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5)">
             <div class="listitems-b">
-              <div class="list-item-title" :title="(index+1) + '、' + item.title">{{index +1}}、{{item.title}}</div>
+              <div class="list-item-title" :title="item.title">{{item.title}}</div>s
               <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
             </div>
             <div class="list-item-subt">{{item.subject}}</div>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="item-r">
-              <span>点击：{{item.click_count}}</span>
+              <span>点击：{{item.click_count?item.click_count:0}}</span>
               <span>被引：{{item.total_citations_number}}</span>
               <span>下载：{{item.total_download_times}}</span>
             </div>
@@ -106,21 +106,16 @@
             <img src="../../assets/image/researchPages/icon-title.png" alt="" />
             <span>热门论文</span>
           </div>
-          <a href="javascript:0;" class="l-titlebox-2">
+          <a href="javascript:0;" class="l-titlebox-2" @click="clickExchange">
             <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
             <span>换一批</span>
           </a>
         </div>
 
         <div class="popular-listbox">
-          <a href="javascript:0;">
-            <span style="color:#D93636;">01</span><span style="padding-left:0.5rem;">疫情冲击下的2020年中国经济形势与政策选择…</span>
-          </a>
-          <a href="javascript:0;">
-            <span style="color:#D93636;">02</span><span style="padding-left:0.5rem;">智慧教育背景下教研活动的有效组织</span>
-          </a>
-          <a href="javascript:0;">
-            <span style="color:#FA6400;">03</span><span style="padding-left:0.5rem;">智慧教育背景下教研活动的有效组织</span>
+          <a href="javascript:0;" v-for="(item,index) in docList" :key="index">
+            <!-- <span style="color:#D93636;">01</span> -->
+            <span style="padding-left:0.5rem;">{{item.title}}</span>
           </a>
         </div>
 
@@ -132,7 +127,7 @@
 
 </template>
 <script>
-  import { getEsIndex,clickCollection, getSymptom } from "../../api/data";  
+  import { getEsIndex,clickCollection,getSymptom,getRandomDoc } from "../../api/data";  
   export default {
     data(){
       return {
@@ -146,14 +141,40 @@
         total_page:0, // 总页数
         listData:[], // 推荐列表
         is_return: true,
+        doc_page:1, // 换一批页数
+        docList:[],
       }
     },
     created(){
       this.uid = window.localStorage.getItem('uid');
       console.log(this.uid)
       this.getEsIndex();
+      // 热门论文列表
+      this.getRandomDoc();
     },
     methods:{
+      // 点击换一批
+      clickExchange(){
+        let that = this;
+        that.doc_page = that.doc_page+1;
+        that.getRandomDoc();
+      },
+      // 热门论文列表
+      getRandomDoc(){
+        let that = this;
+        let page = that.doc_page;
+        let p ={
+          page,
+        }
+        getRandomDoc(p).then(res =>{
+          if(res.data.code == 0){
+            that.docList = [];
+            that.docList = res.data.data.data;
+          }
+        }).catch(e =>{
+          console.log(e)
+        })
+      },
       //点击收藏
       clickCollection(i,md,c){
         let that = this;
@@ -557,6 +578,9 @@
     color: #666666;
     padding-left: 0.5rem;
   }
+  .l-titlebox-2>span:hover{
+    color: #2B77BD;
+  }
   .fastEntry-listbox{
     width: 100%;
     height: auto;
@@ -611,17 +635,17 @@
     padding: 0.45rem 1rem;
   }
   .popular-listbox>a{
-    padding: 0.45rem 0;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #62657C;
     text-align: left;
+    margin: 0.5rem 0;
   }
   .popular-listbox>a:hover{
     color: #2B77BD;

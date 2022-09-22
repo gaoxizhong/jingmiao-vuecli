@@ -5,7 +5,7 @@
     <el-header>
       <header>
         <div class="l-content">
-          <img src="../../assets/image/researchPages/logo.png" alt="" />
+          <img src="../../assets/image/researchPages/logo.png" alt=""  @click="clickLoge"/>
         </div>
         <div class="r-content" v-if="phone">
           <img src="../../assets/image/researchPages/img-user.png" :title="phone"  class="user-img"/>
@@ -92,11 +92,28 @@
       that.phone = phone;
     },
     created(){
-      let getViewportSize = this.$getViewportSize();
-      this.viewHeight = getViewportSize.height;
-      this.viewWidth = getViewportSize.width;
+      let that = this;
+      let getViewportSize = that.$getViewportSize();
+      that.viewHeight = getViewportSize.height;
+      that.viewWidth = getViewportSize.width;
+      let uid = window.localStorage.getItem('uid');
+      if(!uid){
+        that.$message.error('暂未登陆，请先登录！');
+        setTimeout(function(){
+          that.$router.push({name: 'Login'});
+        },1000)
+        return
+      }
     },
     methods:{
+      //点击logo
+      clickLoge(){
+        this.$emit('setsickNess','');
+        this.$router.push({
+          path:'/popularLiterature',
+          query:{},
+        })
+      },
       // 接收子组件方法
       onEmitIndex(idx) {
         console.log(idx)

@@ -371,6 +371,8 @@ const router = new VueRouter({
 router.afterEach((to) => {
   if(to.meta.title){
     document.title = to.meta.title
+  }else{
+    document.title = '菁苗健康'
   }
   window.scrollTo(0,0);
 
