@@ -19,7 +19,13 @@
           <div class="historysearch-title">历史搜索：</div>
           <div class="history-items-box">
             <div  v-for="(item,index) in historyList" :key="index">
-              <div class="history-items" @click="clickhistoryList(item.id,item.content)" v-if="item.tag == 1">{{item.content}}</div>
+              <div class="history-items" @click="clickhistoryList(item)" v-if="item.tag == 1">
+                <span v-for="(items,idx) in item.content" :key="idx">
+                  <!-- {{items.select_field}}：{{items.field_value}}、 -->
+                  {{items.field_value}}
+                  <span v-if="idx != ( idx.length-1 )">、</span>
+                </span>
+              </div>
               </div>
           </div>
         </div>
@@ -64,7 +70,7 @@
               </div>
             </div>
           </div>
-          <div class="shijian-tbox">
+          <!-- <div class="shijian-tbox">
             <div class="shijian-l">时间范围:</div>
             <div class="shijian-selbox">
               <el-date-picker
@@ -77,7 +83,7 @@
                 align="right">
               </el-date-picker>
             </div>
-          </div>
+          </div> -->
           <div class="gaojibtn-box">
             <span @click="clickReset">重置条件</span>
             <span style="background: #2B77BD;color: #fff;" @click="clickAdvancedSearch">检索</span>
@@ -87,7 +93,13 @@
           <div class="ad-titlebox-r-t">历史搜索：</div>
           <div class="ad-titlebox-r-tList">
             <div v-for="(item,index) in historyList" :key="index">
-              <div class="r-tList-item" @click="clickhistoryList(item.id,item.content)" v-if="item.tag == 2">{{item.content}}</div>
+              <div class="r-tList-item" @click="clickhistoryList(item)" v-if="item.tag == 2">
+                <span v-for="(items,idx) in item.content" :key="idx">
+                  <!-- {{items.select_field}}：{{items.field_value}}、 -->
+                  {{items.field_value}}
+                  <span v-if=" idx != Number(item.content.length-1)  ">、</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -223,6 +235,7 @@
         })
       },
       clicktitleTab(n){
+        this.clickReset();
         this.search_type = n;
       },
       // 搜索
@@ -234,6 +247,14 @@
           });
           return
         }
+        let advancedCondition = [];
+        advancedCondition.push({
+          select_field: 'title',
+          field_value: headerInput,
+          select_type: 'match',
+          select_condition: '',
+        })
+        this.advancedCondition = advancedCondition;
         this.is_pop = '2';
         this.setsickNess();
         this.getliteratureHistory();
@@ -291,14 +312,14 @@
       clickAdvancedSearch(){
         let that= this;
         let advancedOptions = this.advancedOptions;
-        let value2 = this.value2;
         let advancedCondition = [];
-        let date = '';
-        if(value2){
-          let v1 = time.formatTime1(value2[0]);
-          let v2 = time.formatTime1(value2[1]);
-          date = v1 + ',' + v2;
-        }
+        // let value2 = this.value2;
+        // let date = '';
+        // if(value2){
+        //   let v1 = time.formatTime1(value2[0]);
+        //   let v2 = time.formatTime1(value2[1]);
+        //   date = v1 + ',' + v2;
+        // }
         advancedOptions.forEach( (ele,index) =>{
           advancedCondition.push({
             select_field: ele.select_field,
@@ -308,34 +329,31 @@
           })
         })
         that.advancedCondition = advancedCondition;
-        that.date = date;
+        // that.date = date;
         that.is_pop = '2';
         that.setsickNess();
         that.getliteratureHistory();
       },
       // 点击历史记录
-      clickhistoryList(i,n){
+      clickhistoryList(n){
         let that = this;
-        let id = i;
-        let name = n;
+        // let date = d;
+        let sel_info = n;
         let search_type = this.search_type;
-        if( search_type == 'single'){
-          that.headerInput = name;
-          that.headerInputClick();
-        }else{
-          let advancedCondition = [];
-          advancedCondition.push({
-            select_field: '',
-            field_value: name,
-            select_type: '',
-            select_condition: '',
-          })
-          that.advancedCondition = advancedCondition;
-          that.date = '';
+        // if( search_type == 'single'){
+        //   that.headerInput = sel_info.content;
+        //   that.headerInputClick();
+        // }else{
+        //   that.date = date;
+        //   that.advancedCondition = sel_info.content;
+        //   that.is_pop = '2';
+        //   that.setsickNess();
+        //   that.headerInputClick();
+        // }
+          that.advancedCondition = sel_info.content;
           that.is_pop = '2';
           that.setsickNess();
-        }
-
+          that.headerInputClick();
       },
       setsickNess(){
         this.is_view = false;
@@ -616,7 +634,7 @@
   }
   .ad-titlebox-r-tList{
     flex: 1;
-    padding-left: 1.5rem;
+    padding-left: 0.1rem;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -632,7 +650,7 @@
     padding: 0.15rem 0.6rem;
     background: #EAF0F6;
     border-radius: 6px;
-    margin: 0.4rem;
+    margin: 0.3rem;
     cursor: pointer;
   }
 

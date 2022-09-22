@@ -249,7 +249,7 @@ const getForceRelation_eacharts = (d,i,t) =>{
 
   myChart.setOption(option);
 }
-      // 力导图 --- 浮点
+      // 力导图 --- 浮点气泡图
 const getForceFloating_eacharts = (d,i,t) =>{
   let taht = t;
   let id = i;

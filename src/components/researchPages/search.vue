@@ -23,17 +23,17 @@
           <label>所属期刊</label>
           <el-input v-model="filterData.filter_litJournal" placeholder="所属期刊"></el-input>
         </div>
-        <div class="input-area">
+        <!-- <div class="input-area">
           <label>影响指数</label>
           <div class="input-column">
             <input type="text" v-model="filterData.minInput" placeholder="最小值"/>
             <span>~</span>
             <input type="text" v-model="filterData.maxInput" placeholder="最大值"/>
           </div>
-        </div>
+        </div> -->
         <div class="filter-btnbox">
-          <div>重置</div>
-          <div class="filter-btn2">筛选</div>
+          <div @click="clickReset">重置</div>
+          <div class="filter-btn2" @click="clickScreening">筛选</div>
         </div>
       </div>
       <!-- 左侧筛选模块 结束 -->
@@ -84,7 +84,7 @@
             </div>
           </div> 
           <!-- ===  单条列表 结束 ===  -->
-          <el-empty description="暂无数据..." v-if="listData.length <= 0"></el-empty>
+          <el-empty description="暂无数据..." v-if="!listData"></el-empty>
         </div>
         <!-- 分页展示 -->
         <div class="pagination-box">
@@ -101,7 +101,7 @@
       <!-- 右侧文献可视化分析模块 开始 -->
       <div class="c-eacharts-box">
         <!-- 介绍 开始-->
-        <div class="eacharts-info-nambox">
+        <!-- <div class="eacharts-info-nambox">
           <div class="icon-classbox">
             <div class="classbox-l">
               <img src="../../assets/image/researchPages/icon-title.png" alt="" />
@@ -111,7 +111,7 @@
           <div class="info-box">
             正常人的血压随内外环境变化在一定范围内波动。 在整体人群，血压水平随年龄逐渐升高，以收缩压更为明显，但50岁后舒张压呈现下降趋势，脉压也随之加大。近年来，人们对心血管病多重危险因素作用以及心、脑、肾靶器官保护的认识不断深入，高 血压的诊断标准也在不断调整，目前认为…
           </div>
-        </div>
+        </div> -->
         <!-- 介绍 结束-->
         <!-- 研究趋势 开始 -->
         <div class="eacharts-itemsbox">
@@ -198,6 +198,48 @@
        this.literatureDocSearch();
     },
     methods:{
+      // 点击重置
+      clickReset(){
+        this.filterData.filter_litTitle = '';
+        this.filterData.filter_litAuthor = '';
+        this.filterData.filter_litJournal = '';
+        this.filterData.minInput = '';
+        this.filterData.maxInput = '';
+      },
+      // 点击中间左侧筛选
+      clickScreening(){
+        let that = this;
+        let advancedCondition = that.advancedCondition;
+        let filterData = that.filterData;
+        if(filterData.filter_litTitle){
+          advancedCondition.push({
+            select_field: 'title',
+            field_value: filterData.filter_litTitle,
+            select_type: 'match',
+            select_condition: 'and',
+          })
+        }
+        if(filterData.filter_litAuthor){
+          advancedCondition.push({
+            select_field: 'author',
+            field_value: filterData.filter_litAuthor,
+            select_type: 'match',
+            select_condition: 'and',
+          })
+        }
+        if(filterData.filter_litJournal){
+          advancedCondition.push({
+            select_field: 'album',
+            field_value: filterData.filter_litJournal,
+            select_type: 'match',
+            select_condition: 'and',
+          })
+        }
+
+        that.current_page = 1;
+        that.literatureDocSearch();
+
+      },
       //点击收藏
       clickCollection(i,md,c){
         let that = this;
@@ -318,17 +360,19 @@
         let advancedCondition= that.advancedCondition; // 高级 选择数据
         let params = {
           page: that.current_page,
-          uid: that.uid
+          uid: that.uid,
+          search_type : search_type,
+          condition : advancedCondition,
         }
-        if(search_type == 'single'){
-          params.search_type = search_type;
-          params.field_value = headerInput
-        }
-       if(search_type == 'many'){
-          params.search_type = search_type;
-          params.condition = advancedCondition;
-          params.date = date;
-        }
+      //   if(search_type == 'single'){
+      //     params.search_type = search_type;
+      //     params.field_value = headerInput
+      //   }
+      //  if(search_type == 'many'){
+      //     params.search_type = search_type;
+      //     params.condition = advancedCondition;
+      //     params.date = date;
+      //   }
         // let params1 = JSON.stringify(params);
         // let p = JSON.parse(params1);
         const loading = this.$loading({

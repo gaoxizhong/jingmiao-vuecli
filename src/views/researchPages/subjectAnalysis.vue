@@ -65,7 +65,7 @@
           <span class="o-items-text">期刊发文量</span>
           <span class="o-items-num">5293630</span>
         </div>
-        <div class="o-items-x">
+        <!-- <div class="o-items-x">
           <span class="o-items-icon"></span>
           <span class="o-items-text">会议发文量</span>
           <span class="o-items-num">5293630</span>
@@ -79,7 +79,7 @@
           <span class="o-items-icon"></span>
           <span class="o-items-text">核心发文量</span>
           <span class="o-items-num">5293630</span>
-        </div>
+        </div> -->
       </div>
 
       <div class="overview-items">
@@ -102,11 +102,11 @@
           <span class="o-items-text">篇均被引量</span>
           <span class="o-items-num">5293630</span>
         </div>
-        <div class="o-items-x">
+        <!-- <div class="o-items-x">
           <span class="o-items-icon"></span>
           <span class="o-items-text">H指数</span>
           <span class="o-items-num">5293630</span>
-        </div>
+        </div> -->
         <div class="o-items-x">
           <span class="o-items-icon"></span>
           <span class="o-items-text">被引率</span>
