@@ -45,7 +45,13 @@
             <div class="one_info clearfix" v-if="infoDetail.keyword">
               <label>关键词：</label>
               <p>
-                <span v-for="(items,idx) in infoDetail.keyword" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
+                <span v-for="(items,idx) in infoDetail.keyword" :key="idx">{{items}}</span>
+              </p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.author">
+              <label>作者：</label>
+              <p>
+                <span v-for="(items,idx) in infoDetail.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
               </p>
             </div>
             <div class="one_info clearfix" v-if="infoDetail.cn_name">

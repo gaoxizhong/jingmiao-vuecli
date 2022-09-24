@@ -12,7 +12,7 @@
         <div class="list-item" v-for="(item,index) in listData" :key="index">
           <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5)">
             <div class="listitems-b">
-              <div class="list-item-title" :title="item.title">{{item.title}}</div>s
+              <div class="list-item-title" :title="item.title">{{item.title}}</div>
               <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
             </div>
             <div class="list-item-subt">{{item.subject}}</div>

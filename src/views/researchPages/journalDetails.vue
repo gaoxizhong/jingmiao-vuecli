@@ -184,6 +184,7 @@
       },
       // 柱状图
       getTopics(i,data){
+        let that = this;
         let id = i;
         let infoData = data;
         let data_val = [300, 450, 770, 203, 255, 188, 156,300, 450, 770, 203, 255, 188, 156],
@@ -278,6 +279,17 @@
           ],
         };
         option && topics_eacharts.setOption(option);
+        if(that.acc_tab == '4'){ // 相关机构
+        //跳转代码
+          topics_eacharts.on("click", function (d) {
+            that.$router.push({
+              path:'/institutionalAnalysis',   //跳转的路径
+              query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                name:d.name,
+              }
+            })
+          });
+        }
       },
       // 折线图
       getLineChart(i,data){

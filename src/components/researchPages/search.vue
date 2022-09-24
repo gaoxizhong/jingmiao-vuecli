@@ -1,160 +1,159 @@
 <template>
-    <div class="c-box">
-      <!-- 左侧筛选模块 开始 -->
-      <div class="c-filter-box">
-        <div class="filter-title">
-          <div class="l-titlebox-1">
-            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-            <span>筛选条件</span>
-          </div>
-          <div class="l-titlebox-2">
-            <!-- <span>共查询到22条结果</span> -->
-          </div>
+  <div class="c-box">
+    <!-- 左侧筛选模块 开始 -->
+    <div class="c-filter-box">
+      <div class="filter-title">
+        <div class="l-titlebox-1">
+          <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+          <span>筛选条件</span>
         </div>
-        <div class="filter-inputbox">
-          <label>文献标题</label>
-          <el-input v-model="filterData.filter_litTitle" placeholder="文献标题"></el-input>
-        </div>
-        <div class="filter-inputbox">
-          <label>第一作者</label>
-          <el-input v-model="filterData.filter_litAuthor" placeholder="第一作者"></el-input>
-        </div>
-        <div class="filter-inputbox">
-          <label>所属期刊</label>
-          <el-input v-model="filterData.filter_litJournal" placeholder="所属期刊"></el-input>
-        </div>
-        <!-- <div class="input-area">
-          <label>影响指数</label>
-          <div class="input-column">
-            <input type="text" v-model="filterData.minInput" placeholder="最小值"/>
-            <span>~</span>
-            <input type="text" v-model="filterData.maxInput" placeholder="最大值"/>
-          </div>
-        </div> -->
-        <div class="filter-btnbox">
-          <div @click="clickReset">重置</div>
-          <div class="filter-btn2" @click="clickScreening">筛选</div>
+        <div class="l-titlebox-2">
+          <!-- <span>共查询到22条结果</span> -->
         </div>
       </div>
-      <!-- 左侧筛选模块 结束 -->
-      <!-- 中间文献列表模块 开始 -->
-      <div class="c-list-box">
-        <div class="list-title">
-          <span class="list-title-l">找到约{{total}}条相关结果</span>
-          <div class="list-title-r">
-            <span v-for="(item,index) in sortData" :key="index" @click="clickSorting(index)">{{item.name}}<i :class="item.status == 1?'el-icon-caret-bottom':'el-icon-caret-top'"></i></span>
-          </div>
-        </div>
-        <!-- 列表 -->
-        <div class="list-itembox">
-          <!-- ===  单条列表 开始 ===  -->
-          <div class="list-item" v-for="(item,index) in listData" :key="index">
-            <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5)">
-              <div class="listitems-b">
-                <div class="list-item-title" :title="item.title">{{item.title}}</div>
-                <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
-              </div>
-              <div class="list-item-subt">{{item.subject}}</div>
-              <div class="list-item-text" >{{item.abstract}}</div>
-              <div class="list-item-z" v-if="item.cn_name">
-                <label class="zuozhe-box">期刊：</label>
-                <div class="tap-top-span">
-                  <a href="javascript:0;" @click.stop="">《{{item.cn_name}}》</a>
-                  <span style="font-size: 0.7rem;color: #333;">{{item.first_time}}年</span>
-                </div>
-              </div>
-              <div class="list-item-z">
-                <label class="zuozhe-box">相关作者：</label>
-                <div class="tap-top-span">
-                  <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
-                </div>
-              </div>
-            </a>
-            <div class="item-btn-box">
-              <div class="asub-box">
-                <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection(index,item.periodical_md5,item.is_collection)"><i :class="item.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>收藏</a>
-                <!-- <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>在线阅读</a> -->
-              </div>
-
-              <div class="item-r">
-                <span>点击：{{item.click_count?item.click_count:0}}</span>
-                <span>被引：{{item.total_citations_number}}</span>
-                <span>下载：{{item.total_download_times}}</span>
-              </div>
-            </div>
-          </div> 
-          <!-- ===  单条列表 结束 ===  -->
-          <el-empty description="暂无数据..." v-if="!listData"></el-empty>
-        </div>
-        <!-- 分页展示 -->
-        <div class="pagination-box">
-          <div class="el-pagination is-background">
-            <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
-            <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
-            <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
-            <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
-          </div>
-        </div>
+      <div class="filter-inputbox">
+        <label>文献标题</label>
+        <el-input v-model="filterData.filter_litTitle" placeholder="文献标题"></el-input>
       </div>
-      <!-- 中间文献列表模块 结束 -->
-
-      <!-- 右侧文献可视化分析模块 开始 -->
-      <div class="c-eacharts-box">
-        <!-- 介绍 开始-->
-        <!-- <div class="eacharts-info-nambox">
-          <div class="icon-classbox">
-            <div class="classbox-l">
-              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-              <span>国防科技工业</span>
-            </div>
-          </div>
-          <div class="info-box">
-            正常人的血压随内外环境变化在一定范围内波动。 在整体人群，血压水平随年龄逐渐升高，以收缩压更为明显，但50岁后舒张压呈现下降趋势，脉压也随之加大。近年来，人们对心血管病多重危险因素作用以及心、脑、肾靶器官保护的认识不断深入，高 血压的诊断标准也在不断调整，目前认为…
-          </div>
-        </div> -->
-        <!-- 介绍 结束-->
-        <!-- 研究趋势 开始 -->
-        <div class="eacharts-itemsbox">
-          <div class="icon-classbox">
-            <div class="classbox-l">
-              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-              <span>研究趋势</span>
-            </div>
-          </div>
-          <div class="eacharts-ch-box ResearchTrends">
-            <div id="ResearchTrends" style="width: 100%;height:100%;"></div>
-          </div>
-        </div>
-        <!-- 研究趋势 结束 -->
-        <!-- 关联研究 开始 -->
-        <div class="eacharts-itemsbox">
-          <div class="icon-classbox">
-            <div class="classbox-l">
-              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-              <span>关联研究</span>
-            </div>
-          </div>
-          <div class="eacharts-ch-box AssociationStudy">
-            <div id="AssociationStudy" style="width: 100%;height:100%;"></div>
-          </div>
-        </div>
-        <!-- 关联研究 结束 -->
-        <!-- 相关学者 开始 -->
-        <div class="eacharts-itemsbox">
-          <div class="icon-classbox">
-            <div class="classbox-l">
-              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-              <span>相关学者</span>
-            </div>
-          </div>
-          <div class="eacharts-ch-box RelatedScholars">
-            <div id="RelatedScholars" style="width: 100%;height:100%;"></div>
-          </div>
-        </div>
-        <!-- 相关学者 结束 -->
+      <div class="filter-inputbox">
+        <label>第一作者</label>
+        <el-input v-model="filterData.filter_litAuthor" placeholder="第一作者"></el-input>
       </div>
-      <!-- 右侧文献可视化分析模块 结束 -->
+      <div class="filter-inputbox">
+        <label>所属期刊</label>
+        <el-input v-model="filterData.filter_litJournal" placeholder="所属期刊"></el-input>
+      </div>
+      <!-- <div class="input-area">
+        <label>影响指数</label>
+        <div class="input-column">
+          <input type="text" v-model="filterData.minInput" placeholder="最小值"/>
+          <span>~</span>
+          <input type="text" v-model="filterData.maxInput" placeholder="最大值"/>
+        </div>
+      </div> -->
+      <div class="filter-btnbox">
+        <div @click="clickReset">重置</div>
+        <div class="filter-btn2" @click="clickScreening">筛选</div>
+      </div>
     </div>
+    <!-- 左侧筛选模块 结束 -->
+    <!-- 中间文献列表模块 开始 -->
+    <div class="c-list-box">
+      <div class="list-title">
+        <span class="list-title-l">找到约{{total}}条相关结果</span>
+        <div class="list-title-r">
+          <span v-for="(item,index) in sortData" :key="index" @click="clickSorting(index)">{{item.name}}<i :class="item.status == 1?'el-icon-caret-bottom':'el-icon-caret-top'"></i></span>
+        </div>
+      </div>
+      <!-- 列表 -->
+      <div class="list-itembox">
+        <!-- ===  单条列表 开始 ===  -->
+        <div class="list-item" v-for="(item,index) in listData" :key="index">
+          <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5)">
+            <div class="listitems-b">
+              <div class="list-item-title" :title="item.title">{{item.title}}</div>
+              <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
+            </div>
+            <div class="list-item-subt">{{item.subject}}</div>
+            <div class="list-item-text" >{{item.abstract}}</div>
+            <div class="list-item-z" v-if="item.cn_name">
+              <label class="zuozhe-box">期刊：</label>
+              <div class="tap-top-span">
+                <a href="javascript:0;" @click.stop="">《{{item.cn_name}}》</a>
+                <span style="font-size: 0.7rem;color: #333;">{{item.first_time}}年</span>
+              </div>
+            </div>
+            <div class="list-item-z">
+              <label class="zuozhe-box">相关作者：</label>
+              <div class="tap-top-span">
+                <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
+              </div>
+            </div>
+          </a>
+          <div class="item-btn-box">
+            <div class="asub-box">
+              <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection(index,item.periodical_md5,item.is_collection)"><i :class="item.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>收藏</a>
+              <!-- <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>在线阅读</a> -->
+            </div>
+
+            <div class="item-r">
+              <span>点击：{{item.click_count?item.click_count:0}}</span>
+              <span>被引：{{item.total_citations_number}}</span>
+              <span>下载：{{item.total_download_times}}</span>
+            </div>
+          </div>
+        </div> 
+        <!-- ===  单条列表 结束 ===  -->
+        <el-empty description="暂无数据..." v-if="!listData"></el-empty>
+      </div>
+      <!-- 分页展示 -->
+      <div class="pagination-box">
+        <div class="el-pagination is-background">
+          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
+          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
+          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
+          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
+        </div>
+      </div>
+    </div>
+    <!-- 中间文献列表模块 结束 -->
+
+    <!-- 右侧文献可视化分析模块 开始 -->
+    <div class="c-eacharts-box">
+      <!-- 介绍 开始-->
+      <div class="eacharts-info-nambox" v-if="keywordInfo.keyword">
+        <div class="icon-classbox">
+          <div class="classbox-l">
+            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+            <span>{{keywordInfo.keyword?keywordInfo.keyword:''}}</span>
+          </div>
+        </div>
+        <!-- <div class="info-box info-box-1">{{keywordInfo.keyword_desc?keywordInfo.keyword_desc:''}}</div> -->
+        <div class="info-box">{{keywordInfo.keyword_desc?keywordInfo.keyword_desc:''}}</div>
+      </div>
+      <!-- 介绍 结束-->
+      <!-- 研究趋势 开始 -->
+      <div class="eacharts-itemsbox">
+        <div class="icon-classbox">
+          <div class="classbox-l">
+            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+            <span>研究趋势</span>
+          </div>
+        </div>
+        <div class="eacharts-ch-box ResearchTrends">
+          <div id="ResearchTrends" style="width: 100%;height:100%;"></div>
+        </div>
+      </div>
+      <!-- 研究趋势 结束 -->
+      <!-- 关联研究 开始 -->
+      <div class="eacharts-itemsbox">
+        <div class="icon-classbox">
+          <div class="classbox-l">
+            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+            <span>关联研究</span>
+          </div>
+        </div>
+        <div class="eacharts-ch-box AssociationStudy">
+          <div id="AssociationStudy" style="width: 100%;height:100%;"></div>
+        </div>
+      </div>
+      <!-- 关联研究 结束 -->
+      <!-- 相关学者 开始 -->
+      <div class="eacharts-itemsbox">
+        <div class="icon-classbox">
+          <div class="classbox-l">
+            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+            <span>相关学者</span>
+          </div>
+        </div>
+        <div class="eacharts-ch-box RelatedScholars">
+          <div id="RelatedScholars" style="width: 100%;height:100%;"></div>
+        </div>
+      </div>
+      <!-- 相关学者 结束 -->
+    </div>
+    <!-- 右侧文献可视化分析模块 结束 -->
+  </div>
 
 </template>
 <script>
@@ -190,7 +189,8 @@
           {name:'下载量',status:'2'},
         ],
         is_return: true,
-
+        authorsList:[],  // 相关学者--- 气泡图数据
+        keywordInfo:{},  // 介绍
       }
     },
     created(){
@@ -317,7 +317,6 @@
       goToauthor(n){
         let that = this;
         let name = n;
-        // 新页面打开
         that.$router.push({
           path:'/literatureAuthor',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
@@ -351,7 +350,7 @@
         this.is_titleTab = n;
       },
 
-      // 获取页面数据
+      // 获取页面数据--- 搜索
       literatureDocSearch(){
         let that = this;
         let search_type = that.search_type; // single、普通 many、高级
@@ -361,7 +360,7 @@
         let params = {
           page: that.current_page,
           uid: that.uid,
-          search_type : search_type,
+          search_type : 'many',
           condition : advancedCondition,
         }
       //   if(search_type == 'single'){
@@ -393,17 +392,23 @@
             that.total_page = total_page;
             that.total = total;
             that.listData = listData;
+
+            let authorsList = res.data.data.authors;
+            let keywordInfo = res.data.data.keyword;
+            that.authorsList = authorsList;
+            that.keywordInfo = keywordInfo;
+            // 研究趋势
+            that.getResearchTrends_eacharts();
+            // 关联研究
+            that.getAssociationStudy_eacharts();
+            // 相关学者
+            that.getRelatedScholars_eacharts();
           } else {
             this.$message.error({
               message: res.data.msg
             });
           }
-          
-          that.getResearchTrends_eacharts();
-          // 关联研究
-          that.getAssociationStudy_eacharts();
-          // 相关学者
-          that.getRelatedScholars_eacharts();
+
         })
         .catch(e => {
           loading.close();
@@ -443,7 +448,7 @@
       },
       // 相关学者
       getRelatedScholars_eacharts(){
-        getForceFloating_eacharts('3','RelatedScholars',this);
+        getForceFloating_eacharts(this.authorsList,'RelatedScholars',this);
       },
 
 
@@ -834,6 +839,13 @@
     color: #333333;
     line-height: 1.25rem;
     text-align: left;
+  }
+  .info-box.info-box-1{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
   }
   .eacharts-itemsbox{
     margin-top: 1rem;

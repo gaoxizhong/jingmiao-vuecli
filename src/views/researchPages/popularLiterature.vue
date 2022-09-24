@@ -19,11 +19,11 @@
           <div class="historysearch-title">历史搜索：</div>
           <div class="history-items-box">
             <div  v-for="(item,index) in historyList" :key="index">
-              <div class="history-items" @click="clickhistoryList(item)" v-if="item.tag == 1">
+              <div class="history-items" @click="clickhistoryList(item)">
                 <span v-for="(items,idx) in item.content" :key="idx">
                   <!-- {{items.select_field}}：{{items.field_value}}、 -->
                   {{items.field_value}}
-                  <span v-if="idx != ( idx.length-1 )">、</span>
+                  <span v-if="idx != Number(item.content.length-1)">、</span>
                 </span>
               </div>
               </div>
@@ -93,7 +93,7 @@
           <div class="ad-titlebox-r-t">历史搜索：</div>
           <div class="ad-titlebox-r-tList">
             <div v-for="(item,index) in historyList" :key="index">
-              <div class="r-tList-item" @click="clickhistoryList(item)" v-if="item.tag == 2">
+              <div class="r-tList-item" @click="clickhistoryList(item)">
                 <span v-for="(items,idx) in item.content" :key="idx">
                   <!-- {{items.select_field}}：{{items.field_value}}、 -->
                   {{items.field_value}}
@@ -353,7 +353,6 @@
           that.advancedCondition = sel_info.content;
           that.is_pop = '2';
           that.setsickNess();
-          that.headerInputClick();
       },
       setsickNess(){
         this.is_view = false;
@@ -425,6 +424,7 @@
     border: 1px solid #E3E3E3;
     height: 2rem;
     line-height: 2rem;
+    font-size: 0.75rem;
   }
   .header-input-box >>> .el-button{ 
     background: #2B77BD;
