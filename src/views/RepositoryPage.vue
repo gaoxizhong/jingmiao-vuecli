@@ -109,7 +109,8 @@ export default {
       }
       getClassBrowseList({
         tag: t,
-        page: that.pageIndex
+        page: that.pageIndex,
+        type: 'zsk'
       }).then(res =>{
         if(res.data.code == 0){
           let newlist = res.data.data;

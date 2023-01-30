@@ -25,14 +25,56 @@
           </div>
          <!-- 搜索框模块结束 -->
           <!-- 搜索结果列表部分 -->
-          <div class="MedicineTagList-infodiv">
-            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?'_blank':''" @click="(item.tag == 'ClinicalPathway' || item.tag == 'ClinicalTrial')?click_file(item.file):click_gotoxq( item.tag,item.name,item.type,item.id )">
+          <!-- 临床试验 -->
+          <template v-if="tag == 'ClinicalTrial'">
+            <div class="paddingSide15">
+              <el-table :data="getListInfo" border stripe style="width: 100%;" >
+                <el-table-column type="index" :index="indexMethod" label="序号" align="center" width="60"></el-table-column>
+                <el-table-column prop="register_number" label="登记号"  width="180">
+                  <template slot-scope="scope">
+                    <a :href="scope.row.file" target="_blank" >{{scope.row.register_number}}</a>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="trystate" label="试验状态" width="100">
+                  <template slot-scope="scope">
+                    <a :href="scope.row.file" target="_blank" >{{scope.row.trystate}}</a>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="drug_name" label="药物名称">
+                  <template slot-scope="scope">
+                    <a :href="scope.row.file" target="_blank" >{{scope.row.drug_name}}</a>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="adaptation_disease" label="适应症">
+                  <template slot-scope="scope">
+                    <a :href="scope.row.file" target="_blank" >{{scope.row.adaptation_disease}}</a>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="experimental_popular_topic" label="试验通俗题目">
+                  <template slot-scope="scope">
+                    <a :href="scope.row.file" target="_blank" >{{scope.row.experimental_popular_topic}}</a>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </template>
+
+          <div class="MedicineTagList-infodiv" v-else>
+            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway')?'_blank':''" @click="(item.tag == 'ClinicalPathway')?click_file(item.file):click_gotoxq( item.tag,item.name,item.type,item.id )">
               <span>{{ item.name }}</span>
               <i>( {{item.description}} )</i>
             </a>
             <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
           </div>
           <!-- 搜索结果列表部分结束 -->
+          <!-- 分页展示 -->
+          <div class="pagination-box">
+            <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+            :total="count"
+            :page-size="pageSize"
+            :current-page='page'>
+            </el-pagination>
+          </div>
        </div>
       </div>
     </el-main>
@@ -48,7 +90,7 @@
 <script>
 import CommonHeader from "../components/CommonHeader";
 import CommonFooter from "../components/CommonFooter";
-import { getMedicineList,getExistLabels } from "@/api/data"
+import { getMedicineList,getExistLabels,getNewClinicalTrial } from "@/api/data"
 export default {
   // provide(){
   //   return {
@@ -76,7 +118,11 @@ export default {
       cur_tab:100,
       tag:'',
       MedicineIfoList:[], // 搜索结果列表
-      id: 0
+      id: 0,
+      page: 1,
+      getListInfo:[], // 临床试验列表
+      pageSize: 10,
+      count:0,
     }
   },
   mounted(){
@@ -100,7 +146,10 @@ export default {
     this.getExistLabels();
   },
 
-  methods: {
+  methods: {      
+    indexMethod(index) {
+      return index + 1;
+    },
     setsickNess(){
       this.is_view = false;
       this.$nextTick(() => {
@@ -120,40 +169,71 @@ export default {
     clickTagname(t,i){
       this.tag = t;
       this.cur_tab = i;
-      this.inputClick(this.input_name);
-    },
-    click_file(f){
-      let file = f;
-      if(!file || file == ''){
-        this.$message.error({
-          message:'暂无数据！'
-        })
-        return
-      }
+      this.inputClick();
     },
     // 获取分类浏览列表
-    inputClick(n){
+    inputClick(){
       let that = this;
-      let name = n;
-      let tag_pages = that.tag_pages;
-      if(name == ''){
-        this.$message.error({
-          message:'请先填写内容!'
-        })
-        return
+      that.MedicineIfoList = [];
+      that.page = 1;
+      that.count = 0;
+      that.getListInfo = [];
+      let tag = that.tag;
+      if(tag == 'ClinicalTrial'){
+        that.getNewClinicalTrial();
+      }else{
+        that.getMedicineInputBtn();
       }
-      that.getMedicineInputBtn(name,tag_pages);
-      
+    },
+    // 点击分页功能
+    handleCurrentChange(val) {
+      let that = this;
+      that.page = val;
+      if(tag == 'ClinicalTrial'){
+        that.getNewClinicalTrial();
+      }else{
+        that.getMedicineInputBtn();
+      }
+      // 回到顶部的方法。
+      window.scrollTo(0,0);
+    },
+    // 获取临床试验数据
+    getNewClinicalTrial(){
+      let that = this;
+      let keyword = that.input_name;
+      let pearms = {
+        page: that.page,
+        keyword,
+      };
+      const loading = that.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.1)',
+        target:document.querySelector('.el-main'),
+      });
+      getNewClinicalTrial(pearms).then((res) => {
+        loading.close();
+        if (res.data.code == 0) {
+          let getListInfo = res.data.data.list;
+          that.count = res.data.data.total;
+          that.getListInfo= getListInfo;
+        }
+      })
+      .catch((e) => {
+        loading.close();
+        console.log(e);
+      });
     },
     // 知识搜索事件
-    getMedicineInputBtn(n,t_p) {
+    getMedicineInputBtn() {
       let that = this;
-      let inputMedicineValue = n;
-      let tag_pages = t_p;
+      let tag_pages = that.tag_pages;
       let tag = that.tag;
       let pearms = {
         tag,
-        keyword: inputMedicineValue,
+        keyword: that.input_name,
+        page: that.page
       };
       if(tag_pages == 'xyzsk'){
         pearms.type = '';
@@ -161,7 +241,6 @@ export default {
       if(tag_pages == 'zyzsk'){
         pearms.type = 'zh';
       }
-      that.MedicineIfoList = [];
       const loading = that.$loading({
           lock: true,
           text: 'Loading',
@@ -172,7 +251,7 @@ export default {
       getMedicineList(pearms).then((res) => {
         loading.close();
         if (res.data.code == 0) {
-          let list = res.data.data;
+          let list = res.data.data.data;
           let newList = [];
           for (let key in list) {
             list[key].forEach(ele => {
@@ -188,6 +267,7 @@ export default {
             });
           }
           that.MedicineIfoList = newList;
+          that.count = res.data.data.count;
         }
       })
       .catch((e) => {
@@ -272,7 +352,7 @@ export default {
     searchEnterFun(e){
       var keyCode = window.event?e.keyCode:e.which;
       if(keyCode == 13){
-        this.getExistLabels();
+        this.inputClick();
       }
     },
     // 获取搜索框下分类项
@@ -306,7 +386,7 @@ export default {
               message: '暂无数据！'
             })
           }
-          that.inputClick(that.input_name);
+          that.inputClick();
         }
       })
       .catch((e) => {
@@ -463,6 +543,32 @@ export default {
   .MedicineTagList-infodiv a i {
     font-size: 12px;
     color: #27afa1;
+  }
+  .paddingSide15 {
+    padding: 0 15px;
+  }
+  .searchTable {
+    border: 0px #dedede solid;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 15px;
+  }
+  .searchTable tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+  .el-table >>> .el-table__cell{
+    text-align: center !important;
+    cursor: pointer;
+  }
+  .el-table >>> .el-table__cell:hover{
+    color: #026ae0;
+  }
+  .el-table >>> th.el-table__cell.is-leaf{
+    background: #edf3ff !important;
+  }
+  .pagination-box{
+    margin-top: 20px;
   }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){

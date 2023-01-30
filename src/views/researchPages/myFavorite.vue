@@ -1,15 +1,20 @@
 <template>
   <div class="pages-b">
     <div class="l-titlebox-1">
-      <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+      <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
       <span style="margin-left: 0.5rem;">我收藏的</span>
     </div>
     <!-- 内容 开始 -->
     <div class="contentbox">
       <!-- 左侧模块 开始-->
       <div class="content-left">
+        <div class="myFavorite-seach-box">
+          <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select">
+            <el-button slot="append" @click="headerInputClick" >搜素</el-button>
+          </el-input>
+        </div>
         <div class="content-left-1">
-          <div :class="0 == index ?'active':'' " v-for="(item,index) in myCollectionList" :key='index' @click="getDetail(index,item.periodical_md5)">
+          <div :class="sel_tab == index ?'active':'' " v-for="(item,index) in myCollectionList" :key='index' @click="getDetail(index,item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
             <p class="left-items-t">{{item.title}}</p>
             <p class="left-items-m">{{item.subject}}</p>
             <p class="left-items-b">点击量：{{item.click_count?item.click_count:0}}</p>
@@ -21,23 +26,28 @@
       <!-- 右侧 开始-->
       <div class="content-right">
         <div class="content-info-box">
+
           <div class="text-title-box">
             <h2 class="text-title">{{infoDetail.title?infoDetail.title:'无'}}</h2>
           </div>
           <div class="text-subtitle" v-if="infoDetail.enTitle">{{infoDetail.enTitle}}</div>
-          <div class="text-suju"><span>点击量：333</span><span>被引：66</span><span>下载：154</span></div>
-          
+          <div class="text-suju">
+            <span>点击：{{infoDetail.click_count?infoDetail.click_count:0}}</span>
+            <span>被引：{{infoDetail.citation_relate_count?infoDetail.citation_relate_count:0}}</span>
+            <!-- <span>下载：{{infoDetail.total_download_times?infoDetail.total_download_times:0}}</span> -->
+          </div>
           <div class="guide-info-list">
-            <div class="one-info clearfix" v-if="infoDetail.abstract_trans">
-              <label for="">中文摘要：</label>
-              <div id="all-content">
-                <p style="color:#333;" v-html="infoDetail.abstract_trans"></p>
+            
+            <div class="one_info clearfix" v-if="infoDetail.abstract">
+              <label>中文摘要：</label>
+              <div id="all_content">
+                <p v-html="infoDetail.abstract?infoDetail.abstract:'无'"></p>
               </div>
             </div>
-            <div class="one_info clearfix" style="margin-top:0.2rem;"  v-if="infoDetail.abstract">
+            <div class="one_info clearfix" style="margin-top:4px;"  v-if="infoDetail.abstract_trans">
               <label>英文摘要：</label>
               <div id="all_content">
-                <p style="color:#333;" v-html="infoDetail.abstract"></p>
+                <p v-html="infoDetail.abstract_trans?infoDetail.abstract_trans:'无'"></p>
               </div>
             </div>
 
@@ -46,19 +56,33 @@
               <p>{{infoDetail.doi}}</p>
             </div>
 
-            <div class="one_info clearfix" v-if="infoDetail.keyword">
+            <div class="one_info clearfix" v-if="infoDetail.keyword_list">
               <label>关键词：</label>
               <p>
-                <span v-for="(items,idx) in infoDetail.keyword" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
+                <span v-for="(items,idx) in infoDetail.keyword_list" :key="idx">{{items}}</span>
+              </p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.author_list">
+              <label>作者：</label>
+              <p>
+                <span v-for="(items,idx) in infoDetail.author_list" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
               </p>
             </div>
             <div class="one_info clearfix" v-if="infoDetail.cn_name">
               <label>所属期刊:</label>
               <p>{{infoDetail.cn_name}}</p>
             </div>
-            <div class="one_info clearfix" v-if="infoDetail.type">
-              <label>专辑名称:</label>
-              <p>{{infoDetail.type}}</p>
+            <div class="one_info clearfix" v-if="infoDetail.number">
+              <label>期刊号:</label>
+              <p>{{infoDetail.number}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.first_time">
+              <label>创刊时间:</label>
+              <p>{{infoDetail.first_time}}</p>
+            </div>
+            <div class="one_info clearfix" v-if="infoDetail.subject">
+              <label>专题:</label>
+              <p>{{infoDetail.subject}}</p>
             </div>
             <div class="one_info clearfix" v-if="infoDetail.CN">
               <label>CN:</label>
@@ -72,60 +96,18 @@
               <label>出版周期:</label>
               <p>{{infoDetail.publication_cycle}}</p>
             </div>
-            <div class="one_info clearfix" v-if="infoDetail.number">
-              <label>期刊号:</label>
-              <p>{{infoDetail.number}}</p>
-            </div>
-            <div class="one_info clearfix" v-if="infoDetail.first_time">
-              <label>创刊时间:</label>
-              <p>{{infoDetail.first_time}}</p>
-            </div>
+
             <div class="one_info clearfix" v-if="infoDetail.year">
               <label>年、卷(期):</label>
               <p>{{infoDetail.year}}</p>
             </div>
             <div class="asub-box">
-              <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection()"><i :class="infoDetail.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>收藏</a>
-              <!-- <a :href="infoDetail.periodical_url?infoDetail.periodical_url:'javascript:0;'" class="asub-zaixian" :target="infoDetail.periodical_url?'_blank':''" @click.stop="goToyuedu($event,infoDetail.periodical_url)" v-if="infoDetail.periodical_url"><i class="el-icon-reading"></i>在线阅读</a> -->
+              <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection"><i :class="infoDetail.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>{{infoDetail.is_collection == 2 ? '收藏' :'取消收藏'}}</a>
+              <a :href="infoDetail.periodical_url?infoDetail.periodical_url:'javascript:0;'" class="asub-zaixian" :target="infoDetail.periodical_url?'_blank':''" @click.stop="goToyuedu($event,infoDetail.periodical_url)" v-if="infoDetail.periodical_url"><i class="el-icon-reading"></i>原文链接</a>            
             </div>
           </div>
+
         </div>
-        
-        <!-- <div class="tab-box">
-          <div class="tab-title">
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane label="相关论文" name="xglw"></el-tab-pane>
-              <el-tab-pane label="相关主体论文" name="xgztlw"></el-tab-pane>
-            </el-tabs>
-          </div>  
-          <div class="list-itembox">
-
-            <a href="javascript:0;" class="list-item" v-for="(item,index) in literatureList" :key="index"  @click.stop="goToDetails('2')">
-              <div class="list-item-title" title="1.聚乙烯微塑料对糖尿病小鼠肾脏的影响">1.聚乙烯微塑料对糖尿病小鼠肾脏的影响</div>
-              <div class="list-item-subt">德利论文事校如奶生9号.”(中国环境科回CrcOCs[土大核心822年3明）</div>
-              <div class="list-item-text" >出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加电0mESm PSP基置导致疆原病小温肾解出现明显的秀性细制麦河阳兰血等病理损代且10om PSMP对官能造成的病理商伤更为严重此100m P的基高里著加，电0mESm PSP…</div>
-              <div class="list-item-z">
-                <label class="zuozhe-box">相关作者：</label>
-                <div class="tap-top-span">
-                  <a href="javascript:0;" @click.stop="goToauthor('王桂琴')">王桂琴</a>
-                  <a href="javascript:0;" @click.stop="goToauthor('王桂琴')">王桂琴</a>
-                </div>
-              </div>
-              <div class="item-btn-box">
-                <div class="asub-box" style="margin-top:0;">
-                  <a href="javascript:0;" class="asub-zaixian" style="padding-left:0;"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i :class="is_s?'el-icon-star-on':'el-icon-star-off'"></i>收藏</a>
-                  <a href="javascript:0;" target="_blank" class="asub-zaixian"  @click.stop="goTofullText()"><i class="el-icon-reading"></i>在线阅读</a>
-                </div>
-                <div class="item-r">
-                  <span>点击：333</span>
-                  <span>被引：66</span>
-                  <span>下载：154</span>
-                </div>
-              </div>
-            </a> 
-
-          </div>
-        </div>  -->
 
 
       </div>
@@ -138,7 +120,7 @@
 </template>
 
 <script>
-  import { literatureDetails,getMyCollection,clickCollection } from "@/api/data";
+  import { literatureDetails,getMyCollection,clickCollection,getTitleOrganization } from "@/api/data";
   export default {
     inject: ['setsickNess'],
     name: 'myFavorite',
@@ -154,16 +136,7 @@
         total_page:0, // 总页数
         sel_tab: 0,
         activeName:'xglw',
-        literatureList:[
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-        ],
+        headerInput:'',
 
       };
     },
@@ -179,6 +152,18 @@
       this.getMyCollection();
     },
     methods: {
+
+      // 检索
+      headerInputClick(){
+        let headerInput = this.headerInput;
+        if(!headerInput){
+          this.$message.error({
+            message: '检索不能为空!'
+          });
+          return
+        }
+        this.getMyCollection();
+      },
       //点击收藏
       clickCollection(){
         let that = this;
@@ -186,6 +171,7 @@
         let md5 = that.infoDetail.periodical_md5;
         let col = that.infoDetail.is_collection;
         let tag = '';
+        let title = that.infoDetail.title;
         if(col == 1){
           // 1、已收藏  2、未收藏
           tag = 'cancelCollection';
@@ -194,50 +180,36 @@
           // 1、已收藏  2、未收藏
           tag = 'collection';
         }
-        let is_return = that.is_return;
-        if( !is_return ){
-          return
-        }
-        that.is_return = false;
         let p = {
           uid,
           md5,
-          tag
+          tag,
+          title
         }
         clickCollection(p).then(res =>{
           if(res.data.code == 0){
-            let infoDetail = that.infoDetail;
 
-            if(infoDetail.is_collection == 2){
-              infoDetail.is_collection = 1;
-              that.infoDetail = infoDetail;
+            if(col == 2){
+              that.infoDetail.is_collection = 1;
               that.$message.success({
                 message: '收藏成功！'
               });
-              that.is_return = true;
-              return
             }
 
-            if(infoDetail.is_collection == 1){
-              infoDetail.is_collection = 2;
-              that.infoDetail = infoDetail;
+            if(col == 1){
+              that.infoDetail.is_collection = 2;
               that.$message.success({
                 message: '取消成功！'
               });
-              that.is_return = true;
-              return
             }
 
           }else{
             that.$message.error({
               message: res.data.msg
             });
-            that.is_return = true;
-
           }
         }).catch(e =>{
           console.log(e)
-          that.is_return = true;
         })
 
       },
@@ -248,8 +220,11 @@
         let page = that.page;
         let pearms = {
           uid,
-          page
+          page,
         };
+        if(that.headerInput){
+          pearms.search = that.headerInput
+        }
         const loading = this.$loading({
           lock: true,
           text: "Loading",
@@ -264,7 +239,7 @@
             that.total_page = res.data.data.total_page;
             let sel_tab = that.sel_tab;
             // 点击收藏列表获取详情
-            that.getDetail(sel_tab,res.data.data.data[sel_tab].periodical_md5);
+            that.getDetail(sel_tab,res.data.data.data[sel_tab].periodical_md5?res.data.data.data[sel_tab].periodical_md5:'',res.data.data.data[sel_tab].uniq_id?res.data.data.data[sel_tab].uniq_id:'');
           } else {
             this.$message.error({
               message: res.data.msg
@@ -286,13 +261,14 @@
         }
       },
       // 点击收藏列表获取详情
-      getDetail(i,d) {
+      getDetail(i,d,u) {
         let that = this;
         console.log(i)
         let uid = that.uid;
         that.sel_tab = i;
         let pearms = {
           periodical_md5:d,
+          uniq_id:u,
           uid
         };
         const loading = this.$loading({
@@ -324,14 +300,37 @@
       goToauthor(n){
         let that = this;
         let name = n;
-        // 新页面打开
-        this.$router.push({
-          path: '',
-          query:{
-            name,
+        let p = {
+          author: name,
+          tag:'',
+        }
+        getTitleOrganization(p).then(res =>{
+          if(res.data.code == 0){
+            let data = res.data.data;
+            if(!data){
+              that.$message({
+                message: '暂无数据!',
+              });
+              return
+            }
+            that.$emit.setsickNess('');
+            that.$router.push({
+              path:'/literatureAuthor', 
+              query:{     
+                author: name,
+                organization: res.data.data.org,
+              }
+            })
+          }else{
+            that.$message.error({
+              message: res.data.msg
+            });
           }
-        });
+        }).catch(e =>{
+          console.log(e)
+        })
       },
+
       // 点击分页
       handleClick(tab) {
         console.log(tab)
@@ -359,10 +358,8 @@
   }
   .l-titlebox-1{
     height: auto;
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
     font-weight: bold;
-    color: #2B77BD;
   }
   .contentbox{
     flex: 1;
@@ -383,11 +380,11 @@
   .content-left-1{
     width: 21rem;
     height: auto;
-    padding-top: 0.1rem;
+    margin-top: 1rem;
   }
   .content-left-1>div{
     width: 100%;
-    height: 6.95rem;
+    height: 6rem;
     border-radius: 6px;
     margin-bottom: 0.8rem;
     background: #fff;
@@ -400,11 +397,10 @@
   }
   .left-items-t{
     text-align: left;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #333333;
-    line-height: 1rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    line-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -412,27 +408,25 @@
     -webkit-box-orient: vertical;
   }
   .left-items-m{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
-    color: #666666;
-    line-height: 1rem;
+    color: #333;
+    line-height: 20px;
     margin-top: 0.9rem;
     text-align: left;
   }
   .left-items-b{
     text-align: right;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #666666;
-    line-height: 1rem;
+    line-height: 20px;
     margin-top: 0.6rem;
   }
   .content-right{
     flex: 1;
     height: 100%;
-    padding-left: 1.5rem;
+    padding-left: 20px;
     overflow: auto;
   }
   .content-right::-webkit-scrollbar { 
@@ -447,7 +441,7 @@
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
     border-radius: 6px;
-    padding: 1.5rem;
+    padding: 1rem;
   }
   .text-title-box{
     display: flex;
@@ -456,29 +450,25 @@
   }
   .text-title-box .text-title {
     flex: 1;
-    font-size: 0.8rem;
-    font-family: "微软雅黑";
+    font-size: 14px;
     margin-bottom: 0.3rem;
     position: relative;
     overflow: hidden;
-    color: #1674CF;
+    color: #000;
     font-weight: bold;
     text-align: left;
   }
   .text-subtitle{
-    font-size: 0.75rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
     font-weight: bold;
     color: #666666;
-    line-height: 1rem;
+    line-height: 20px;
     margin-top: 0.5rem;
   }
   .text-suju{
-    margin-top: 0.5rem;
-    font-size: 0.75rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
     color: #666666;
-    line-height: 1rem;
+    line-height: 20px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -491,20 +481,22 @@
   }
   .clearfix {
     display: flex;
+    /* align-items: center; */
+    margin-top: 6px;
   }
   .one-info {
     margin-bottom: 0.1rem;
     overflow: hidden;
-    line-height: 1rem;
+    line-height: 20px;
   }
    .one_info label {
-    width: 5rem;
-    font-size: 0.75rem;
+    width: 5.6rem;
+    font-size: 14px;
     font-weight: bold;
     text-align: left;
     float: left;
     padding-right: 0.5rem;
-    line-height: 1.5rem;
+    line-height: 20px;
   }
   .one_info #all_content {
     flex: 1;
@@ -513,11 +505,12 @@
     flex: 1;
     float: left;
     margin-top: 0.1rem;
-    font-size: 0.75rem;
+    font-size: 14px;
     color: #666666;
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-start;
-    line-height: 1.5rem;
+    line-height: 20px;
   }
   .one_info p span{
     display: inline-block;
@@ -526,7 +519,7 @@
     margin-right: 1rem;
   }
   .one_info p span:hover{
-    color: #2B77BD;
+    color: #3664D9;
   }
   .asub-box {
     width: 100%;
@@ -536,54 +529,57 @@
 
   .asub-zaixian {
     border-radius: 4px;
-    color: #2B77BD;
-    align-items: center;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.75rem;
+    color: #3664D9;
+    padding: 0 8px;
+    /* width: 82px; */
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
     margin-right: 0.6rem;
-    border: 1px solid #2B77BD;
+    border: 1px solid #3664D9;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
   
   .asub-zaixian .el-icon-reading,.el-icon-star-on,.el-icon-star-off {
-    font-size: 1.2rem;
+    font-size: 14px;
     margin-right: 0.25rem;
   }
   .asub-zaixian:hover{
-    color: #fa6400;
-    border: 1px solid #fa6400;
+    color: #152F8C;
+    border: 1px solid #152F8C;
   }
 
   .tab-box{
     width: 100%;
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
+    border-radius: 6px;
     margin-top: 1rem;
   }
   .tab-title{
     width: 100%;
     height: 3.7rem;
     border-bottom: 1px solid #EBEBEB;
-    padding: 0.1rem 1rem;
+    padding: 0 1rem;
   }
   .tab-title >>> .el-tabs__item{
     height: 3.4rem;
     line-height: 3.4rem;
   }
   .tab-title >>> .el-tabs__item.is-active {
-    color: #2B77BD;
+    color: #3664D9;
   }
   .tab-title >>> .el-tabs__active-bar {
-    background-color: #2B77BD;
+    background-color: #3664D9;
   }
   .tab-title >>> .el-tabs__item:hover {
-    color: #2B77BD;
+    color: #3664D9;
   }
   .tab-title >>> .el-tabs__item {
     padding: 0 1rem;
-    font-size: 0.9rem;
+    font-size: 14px;
     font-weight: 600;
   }
   .tab-title >>> .el-tabs__header {
@@ -609,8 +605,7 @@
     background: #2B77BD0a;
   }
   .list-itembox .list-item .list-item-title{
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
     font-weight: bold;
     color: #333333;
     overflow: hidden;
@@ -620,9 +615,8 @@
     -webkit-box-orient: vertical;
   }
   .list-itembox .list-item .list-item-subt{
-    font-size: 0.7rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
-    color: #333333;
+    font-size: 14px;
+    color: #666;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -631,12 +625,11 @@
     margin-top: 0.4rem;
   }
   .list-itembox .list-item .list-item-text{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
-    color: #333333;
-    line-height: 1.3rem;
-    margin-top: 0.5rem;
+    color: #000;
+    line-height: 20px;
+    margin-top: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -644,13 +637,13 @@
     -webkit-box-orient: vertical;
   }
   .list-itembox .list-item .list-item-z{
-    margin-top: 0.5rem;
+    margin-top: 8px;
     display: flex;
   }
   .list-item .list-item-z .zuozhe-box{
     width: auto;
     padding-right: 0.5rem;
-    font-size: 0.7rem;
+    font-size: 14px;
     color: #333;
     text-align:left;
     min-inline-size: fit-content;
@@ -661,9 +654,9 @@
     align-items: center;
   }
   .list-item .list-item-z .tap-top-span>a{
-    font-size: 0.7rem;
+    font-size: 14px;
     margin-right: 0.2rem;
-    color: #333;
+    color: #666;
     display: flex;
     flex-wrap: nowrap;
   }
@@ -675,7 +668,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 0.5rem;
+    margin-top: 0.7rem;
   }
   .item-btn-box>div{
     width: auto;
@@ -690,9 +683,44 @@
     align-items: center;
   }
   .item-btn-box .item-r>span{
-    font-size: 0.65rem;
+    font-size: 14px;
     padding-right: 0.2rem;
     color: #333;
     display: flex;
+  }
+  .myFavorite-seach-box{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+  }
+  .myFavorite-seach-box >>> .el-input__inner{
+    border: 1px solid #E3E3E3;
+    height: 32px;
+    font-size: 14px;
+  }
+  .myFavorite-seach-box >>> .el-button{ 
+    background: #3664D9;
+    color: #fff;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    width: 5.4rem;
+    height: 32px;
+    padding: 0;
+    margin: 0;
+  }
+  .myFavorite-seach-box >>> .el-input{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    align-items: baseline;
+  }
+  .myFavorite-seach-box >>> .el-input-group__append{
+    background-color: #fff !important;
+    border: none !important;
+    width: auto;
+    margin: 0;
+    padding: 0;
   }
 </style>

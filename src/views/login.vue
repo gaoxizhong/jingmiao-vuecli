@@ -496,8 +496,8 @@ export default {
     getNavList(){
       let that = this;
       let headerNavItems = [
-        {id:1,name:'西医知识库',path:'/RepositoryPage',tag_pages:'xyzsk'},
-        {id:2,name:'中医知识库',path:'/RepositoryPage',tag_pages:'zyzsk'},
+        {id:1,name:'西医知识库',path:'/SearchPages',tag_pages:'xyzsk'},
+        {id:2,name:'中医知识库',path:'/SearchPages',tag_pages:'zyzsk'},
         {id:3,name:'科研探索',path:'/DocumentGuidePages',tag_pages:'Document'},
         // {id:4,name:'指南',path:'/DocumentGuidePages',tag_pages:'Guide'},
         {id:5,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},

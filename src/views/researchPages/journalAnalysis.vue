@@ -3,29 +3,38 @@
     <!-- 头部搜索模块 开始 -->
     <div class="literature-titlebox">
       <div class="header-input-box">
+        <!-- <div class="option-itemsbox option-itemsbox-1">
+          <el-select class="validate" v-model="select_title" slot="prepend" @change="selectnChange_title">
+            <el-option
+              v-for="item in options_title"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"></el-option>
+          </el-select>
+        </div> -->
         <el-input placeholder="输入期刊名称..." v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)"></el-input>
         <el-button slot="append" @click="headerInputClick">开始分析</el-button>
       </div>
     </div>
     <!-- 头部搜索模块 结束 -->
     <div class="sortbtn-box">
-      <a href="javascript:0;"><span>发文量</span><i class="el-icon-caret-bottom"></i></a>
+      <!-- <a href="javascript:0;"><span>发文量</span><i class="el-icon-caret-bottom"></i></a>
       <a href="javascript:0;"><span>H指数</span><i class="el-icon-caret-bottom"></i></a>
-      <a href="javascript:0;"><span>审稿周期</span><i class="el-icon-caret-bottom"></i></a>
+      <a href="javascript:0;"><span>审稿周期</span><i class="el-icon-caret-bottom"></i></a> -->
     </div>
 
     <div class="filterList-box">
       <!-- 左侧筛选模块 开始-->
-      <div class="filter-leftbox">
+      <div class="filter-leftbox" :class="searchBarFixed?'searchBarFixed':''" id="searchBar">
 
         <div class="filter-l-titlebox">
           <div class="l-titlebox-1">
-            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+            <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
             <span>筛选条件</span>
           </div>
-          <div class="l-titlebox-2">
+          <!-- <div class="l-titlebox-2">
             <span>共查询到22条结果</span>
-          </div>
+          </div> -->
         </div>
         <div class="input-area">
           <label>影响指数</label>
@@ -35,10 +44,10 @@
             <input type="text" v-model="maxInput" placeholder="最大值"/>
           </div>
         </div>
-        <div class="input-area">
+        <!-- <div class="input-area">
           <label>期刊领域</label>
           <div class="flex">
-            <el-select class="validate" v-model="select_1" slot="prepend" @change="selectnChange_1">
+            <el-select class="validate" v-model="select_1" placeholder="请选择大类" slot="prepend" @change="selectnChange_1">
             <el-option
               v-for="item in options_1"
               :key="item.value"
@@ -47,7 +56,7 @@
             </el-select>
           </div>
           <div class="flex" style="margin-top:1rem;">
-            <el-select class="validate" v-model="select_2" slot="prepend" @change="selectnChange_2">
+            <el-select class="validate" v-model="select_2" placeholder="请选择二级分类" slot="prepend" @change="selectnChange_2">
               <el-option
                 v-for="item in options_2"
                 :key="item.value"
@@ -55,38 +64,36 @@
                 :value="item.value"></el-option>
             </el-select>
           </div>
-        </div>
+        </div> -->
 
         <div class="filter-btnbox">
-          <div>重置</div>
-          <div class="filter-btn2">筛选</div>
+          <div @click="clickCz">重置</div>
+          <div class="filter-btn2" @click="clickQksx">筛选</div>
         </div>
 
       </div>
       <!-- 左侧筛选模块 结束-->
-
+      <div class="filter-leftbox1" v-if="searchBarFixed"></div>
       <!-- 右侧列表模块 开始-->
       <div class="filter-rightbox">
         <div class="listitems-box">
 
-          <div v-for="(item,index) in journalList" :key="index" class="list-items" @click="goToDetails(item.md5)">
+          <div v-for="(item,index) in journalList" :key="index" class="list-items" @click="goToDetails(item.tag,item.unique_val,item.doc_count,item.cited_total_Cnt,item.org_count,item.author_count,item.article_Average_cited_count)">
             <!-- <img src="" alt="" class="items-img"/> -->
             <div class="list-itemsinfo">
-              <div class="list-itemsinfo-title">{{item.special_name}}</div>
-              <div class="eh-title">{{` 《 ${item.cn_name} 》`}} <span>识别代码：{{item.ISSN}}</span></div>
+              <div class="list-itemsinfo-title">{{item.album}}</div>
+              <!-- <div class="eh-title"><span>所属期刊：</span>{{item.album}}</div> -->
               <div class="dataIndicator-box">
-                <div>发文量：{{item.published_literature_volume}}</div>
-                <div>被引量：{{item.total_citations_number}}</div>
-                <div>下载量：{{item.total_download_times}}</div>
-                <div>机构数：320</div>
-                <div>作者数：320</div>
+                <div>发文量：{{item.doc_count}}</div>
+                <div>被引量：{{item.cited_total_Cnt}}</div>
+                <div>机构数：{{item.org_count}}</div>
+                <div>作者数：{{item.author_count}}</div>
               </div>
               <div class="dataIndicator-box">
-                <div>审稿周期：平均1.25月</div>
-                <div>投稿命中率：320</div>
-                <div>H指数：320</div>
-                <div>影响指数：5.997</div>
-                <div>篇均被引量：5.997</div>
+                <div>审稿周期：{{item.review_cycle?item.review_cycle:'暂无'}}</div>
+                <div>投稿命中率：{{item.submission_hit_rate?item.submission_hit_rate:'暂无'}}</div>
+                <div>影响指数：{{item.composite_impact_factor}}</div>
+                <div>篇均被引量：{{item.article_Average_cited_count}}</div>
               </div>
               <!-- <div class="rightbox-listitems-btnbox">
                 <div>高血压</div>
@@ -95,16 +102,23 @@
             </div>
           </div>
           <!-- 分页展示 开始 -->
-          <div class="pagination-box">
+          <!-- <div class="pagination-box">
             <div class="el-pagination is-background">
               <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
               <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
               <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
               <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
             </div>
-          </div>
+          </div> -->
           <!-- 分页展示 结束 -->
-
+          <!-- 分页展示 -->
+          <div class="pagination-box">
+            <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+            :total="count"
+            :page-size="pageSize"
+            :current-page='current_page'>
+            </el-pagination>
+          </div>
         </div>
       </div>
       <!-- 右侧列表模块 结束-->
@@ -132,15 +146,17 @@
         total_page:0, // 总页数
         pageSize: 10,
         current_page: 1,
+        select_title:'',
+        options_title:[{label:'期刊',value:'album'},{label:'主题',value:'special_name'}],  // 搜索分析类型
         options_1:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], //期刊领域 大类
-        selectnChange_1:'',
-        select_1: '请选择大类',
+        select_1: '',
         options_2:[{label:'临床试验',value:'ClinicalTrial'},{label:'临床路径',value:'ClinicalPathway'}], //期刊领域 二级分类
-        selectnChange_2:'',
-        select_2: '请选择二级分类',
+        select_2: '',
         minInput:'',
         maxInput:'',
         journalList:[], // 列表数据
+        searchBarFixed: false,
+        impactIndex:'',
       }
     },
     created(){
@@ -148,27 +164,79 @@
       document.title = '期刊分析';
       this.headerInputClick();
     },
+    mounted () {
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    destroyed () {
+      console.log('destroyed')
+      window.removeEventListener('scroll', this.handleScroll)
+    },
     methods:{
-      //期刊领域 --- 大类
-      searchDownChange(e){
+      // 点击重置按钮
+      clickCz(){
+        this.select_1= '';
+        this.select_2= '';
+        this.minInput= '';
+        this.maxInput= '';
+        this.impactIndex = '';
+      },
+      // 点击筛选
+      clickQksx(){
+        let that = this;
+        let minInput = that.minInput;
+        let maxInput = that.maxInput;
+        if(minInput == '' || maxInput== ''){
+          that.impactIndex = '';
+          that.$message({
+            message:'请先填写影响指数值！',
+            type:'error'
+          })
+          return
+        }
+        that.impactIndex = minInput +',' + maxInput;
+        that.getEsIndex();
+      },
+      // 监听滚动
+      handleScroll() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        var offsetTop = document.querySelector('#searchBar').offsetTop;
+        if (scrollTop > offsetTop) {
+          this.searchBarFixed = true
+        } else {
+          this.searchBarFixed = false
+        }
+      },
+      selectnChange_title(e){
         console.log(e)
-        this.selectnChange_1 = e;
+        this.select_title = e;
+      },
+      //期刊领域 --- 大类
+      selectnChange_1(e){
+        console.log(e)
+        this.select_1 = e;
       },
       //期刊领域 --- 二级类
-      searchDownChange(e){
+      selectnChange_2(e){
         console.log(e)
-        this.selectnChange_2 = e;
+        this.select_2 = e;
       },
       // 点击列表
-      goToDetails(i){
+      goToDetails(g,i,d,c,o,a,ac){
         let that = this;
-        let md5 = i;
+        let unique_val = i;
+        let tag = g;
         this.$emit('setsickNess', '');
         // 新页面打开
         this.$router.push({  //核心语句
           path:'/journalDetails',  
-          query:{       
-            md5,
+          query:{  
+            tag,     
+            unique_val,
+            d,   //发文量   
+            c,  // 被引量
+            o,  //机构数
+            a,  // 作者数
+            ac, //篇均
           }
         })
       },
@@ -176,7 +244,7 @@
       handleCurrentChange(val) {
         let that = this;
         that.current_page = Number(val);
-        that.headerInputClick();
+        that.getEsIndex();
         // 回到顶部的方法。
          window.scrollTo(0,0);
       },
@@ -185,24 +253,32 @@
       },
       // 普通搜索
       headerInputClick(){
-        let input_name = this.headerInput;
-        this.getEsIndex(input_name);
+        this.select_1= '';
+        this.select_2= '';
+        this.minInput= '';
+        this.maxInput= '';
+        this.impactIndex = '';
+        this.getEsIndex();
       },
       // 普通搜索 回车键点击
       searchEnterFun(e){
         var keyCode = window.event?e.keyCode:e.which;
         if(keyCode == 13){
-          this.headerInputClick();
+          this.getEsIndex();
         }
       },
 
       // 获取页面列表数据
-      getEsIndex(n){
+      getEsIndex(){
         let that = this;
         let pearms = {
-          name: n,
+          search: that.headerInput,
+          // search_tag: t,
           page: that.current_page
         };
+        if(that.impactIndex != ''){
+          pearms.impact_index = that.impactIndex;
+        }
         const loading = this.$loading({
           lock: true,
           text: "Loading",
@@ -214,9 +290,10 @@
         journalAnalysisIndex(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            let total_page = res.data.data.total_page;
             let journalList = res.data.data.data;
+            let total_page = res.data.data.total_page;
             that.total_page = total_page;
+            that.count = res.data.data.total;
             that.journalList = journalList;
           } else {
             this.$message.error({
@@ -260,7 +337,7 @@
     height: 5.85rem;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 0.8rem 0;
     display: flex;
     align-items: center;
@@ -274,27 +351,52 @@
     border-radius: 6px;
     cursor: pointer;
   }
+
+  .option-itemsbox{
+    width: 8rem;
+    height: 32px;
+    margin-right: 1rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+  }
   .header-input-box .el-input{
     width: 30rem;
   }
   .header-input-box >>> .el-input__inner{
-    height: 2rem;
-    line-height: 2rem;
+    height: 32px;
+    line-height: 32px;
     border: 1px solid #E3E3E3;
+    font-size: 14px;
+  }
+  .header-input-box >>> .el-select .el-input.is-focus .el-input__inner{
+    border-color: #3664D9;
+  }
+  .el-select-dropdown__item.selected{
+    color: #3664D9;
+    font-weight: 400;
   }
   .header-input-box >>> .el-button{ 
-    margin-left: 1.7rem;
-    background: #2B77BD;
+    margin-left: 1rem;
+    background: #3664D9;
     color: #fff;
-    border-radius: 20px;
-    width: 5.8rem;
-    height: 2rem;
-    padding: 0;
-    font-size: 0.8rem;
+    border-radius: 4px;
+    padding: 0 0.8rem;
+    height: 32px;
+    width: 82px;
+    font-size: 14px;
+    line-height: 32px;
+    border: 0;
   }
+  /* .header-input-box >>> .el-button:focus, .header-input-box >>> .el-button:hover{
+    opacity: 0.8;
+  } */
   .sortbtn-box{
     width: 100%;
-    margin-top: 1.2rem;
+    margin-top: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -304,11 +406,10 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #333333;
-    line-height: 1rem;
+    line-height: 20px;
   }
   .sortbtn-box>a i{
     margin-left: 0.2rem;
@@ -324,7 +425,16 @@
     width: 14.2rem;
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
+    border-radius: 6px;
+  }
+  .filter-leftbox1{
+    width: 14.2rem;
+  }
+  .filter-leftbox.searchBarFixed{
+    position: fixed;
+		top: 3.6rem;
+		z-index: 999;
+    margin-top: 0;
   }
   .filter-rightbox{
     flex: 1;
@@ -334,13 +444,15 @@
     width: 100%;
   }
   .filter-l-titlebox{
-    width: 100%;
-    height: 2.5rem;
+    width: auto;
+    height: 40px;
+    line-height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #E5E5E5;
-    padding: 0 0.3rem 0 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
   .filter-l-titlebox>div{
     width: auto;
@@ -352,15 +464,13 @@
     height: 0.9rem;
   }
   .filter-l-titlebox .l-titlebox-1>span{
-    font-size: 0.75rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 14px;
     font-weight: 600;
-    color: #2B77BD;
+    color: #3664D9;
     padding-left: 0.25rem;
   }
   .filter-l-titlebox .l-titlebox-2>span{
-    font-size: 0.65rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #666666;
   }
@@ -373,10 +483,9 @@
 
   .input-area>label {
     width: 100%;
-    font-size: 0.7rem;
+    font-size: 14px;
     font-weight: bold;
-    line-height: 0.75rem;
-    color: #232323;
+    color: #000;
     display: inline-block;
     margin-bottom: 0.5rem;
     width: 100%;
@@ -395,14 +504,14 @@
     margin-left: 0!important;
     margin-right: 0.5rem;
     padding: 0.35rem 0;
-    font-size: 0.7rem;
+    font-size: 14px;
     border: 0;
     outline: 0;
     border-bottom: 1px solid rgba(139,148,157,0.3);
     text-align: center;
   }
  .input-column span {
-    font-size: 1.2rem;
+    font-size: 14px;
     position: relative;
     top: 0.2rem;
     margin-right: 0.3rem;
@@ -411,29 +520,30 @@
 .input-area .validate {
     width: 100%;
     padding: 0.35rem 0;
-    font-size: 0.7rem;
+    font-size: 14px;
     border: 0;
     outline: 0;
     border-bottom: 1px solid rgba(139,148,157,0.3);
     background: transparent!important;
-    height: 1.75rem !important;
-    line-height: 1.75rem !important;
+    height: 32px!important;
+    line-height: 32px !important;
   }
   .input-area .validate >>> .el-input__inner{
     border: 0;
+    border-radius: 0;
     outline: 0;
     border-bottom: 1px solid rgba(139,148,157,0.3);
-    height: 1.75rem !important;
-    line-height: 1.75rem !important;
-    font-size: 0.7rem;
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 14px;
   }
   .validate >>> .el-input__icon{
-    line-height: 1.75rem !important;
+    line-height: 32px !important;
   }
   .el-select-dropdown__item{
-    font-size: 0.7rem;
-    height: 1.7rem !important;
-    line-height: 1.7rem !important;
+    font-size: 14px;
+    height: 32px !important;
+    line-height: 32px !important;
     padding: 0 1rem;
   }
   .filter-btnbox{
@@ -444,23 +554,25 @@
     justify-content: space-around;
   }
   .filter-btnbox>div{
-    width: 4.5rem;
-    height: 1.65rem;
-    line-height: 1.65rem;
+    width: 82px;
+    height: 32px;
+    line-height: 32px;
     text-align: center;
     background: #FFFFFF;
     border-radius: 3px;
-    border: 1px solid #2B77BD;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    border: 1px solid #3664D9;
+    font-size: 14px;
     font-weight: 400;
-    color: #2B77BD;
+    color: #3664D9;
     margin-bottom: 1rem;
     cursor: pointer;
   }
    .filter-btnbox>div.filter-btn2{
-    background: #2B77BD;
+    background: #3664D9;
     color: #fff;
+  }
+  .filter-btnbox>div.filter-btn2:hover{
+    background: #3664d9f3;
   }
 
   .listitems-box .list-items{
@@ -468,7 +580,7 @@
     background: #FFFFFF;
     box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
     border-radius: 6px;
-    padding: 1rem 1rem 1.2rem;
+    padding: 1rem;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -488,27 +600,23 @@
   }
   .list-itemsinfo{
     flex: 1;
-    padding-left: 1.6rem;
     padding-right: 5rem;
     text-align: left;
   }
   .list-itemsinfo .list-itemsinfo-title{
-    font-size: 0.8rem;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
-    color: #333333;
-    line-height: 1.1rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    line-height: 20px;
   }
   .list-itemsinfo .eh-title{
     margin-top: 0.8rem;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 14px;
     font-weight: 500;
     color: #999999;
-    line-height: 1rem;
+    line-height: 20px;
   }
   .dataIndicator-box{
-    margin-top: 0.1rem;
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -516,13 +624,12 @@
     flex-wrap: wrap;
   }
   .dataIndicator-box>div{
-    width: 9rem;
+    width: 11rem;
     text-align: left;
-    font-size: 0.7rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
-    font-weight: bold;
+    font-size: 14px;
+    /* font-weight: bold; */
     color: #333333;
-    line-height: 1.35rem;
+    line-height: 20px;
     margin: 0.4rem  0;
   }
   .rightbox-listitems-btnbox{
@@ -535,12 +642,11 @@
   .rightbox-listitems-btnbox>div{
     cursor: pointer;
     width: 4.85rem;
-    height: 1.85rem;
+    height: 32px;
     border-radius: 3px;
     border: 1px solid #1674CF;
     margin-right: 0.75rem;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #1674CF;
     display: flex;

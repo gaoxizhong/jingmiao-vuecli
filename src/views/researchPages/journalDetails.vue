@@ -1,34 +1,36 @@
 <template>
   <div class="pages-b">
     <div class="list-items">
-      <!-- <img src="https://lh3.googleusercontent.com/ogw/AOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" class="items-img"/> -->
-      <div class="list-itemsinfo">
-        <div class="list-itemsinfo-title">{{infoDetail.special_name}}</div>
-        <div class="eh-title">{{` 《 ${infoDetail.cn_name} 》`}} <span>识别代码：{{infoDetail.ISSN}}</span></div>
-        <div class="dataIndicator-box">
-          <div>发文量：{{infoDetail.published_literature_volume}}</div>
-          <div>被引量：{{infoDetail.total_citations_number}}</div>
-          <div>下载量：{{infoDetail.total_download_times}}</div>
-          <div>发文数者数：320</div>
-        </div>
-        <div class="dataIndicator-box">
-          <div>审稿周期：平均1.25月</div>
-          <div>投稿命中率：320</div>
-          <div>H指数：320</div>
-          <div>综合影响指数：{{infoDetail.composite_impact_factor}}</div>
-          <div>篇均已量：5.997</div>
-        </div>
-        <!-- <div class="rightbox-listitems-btnbox">
-          <div>高血压</div>
-          <div>心血管</div>
-        </div> -->
-      </div>
       <!-- 返回按钮 -->
       <div class="fh-box"  @click="fanhui_btn()">
         <i class="el-icon-back"></i>
         <span>返回期刊查询</span>
       </div>
       <!-- 返回按钮 -->
+      <!-- <img src="https://lh3.googleusercontent.com/ogw/totalAOh-ky09CLBllHX0WAZQQdj5fN-Z6TDNNBrfYiYBkxH7=s32-c-mo" alt="" class="items-img"/> -->
+      <div class="list-itemsinfo">
+        <div class="list-itemsinfo-title">{{infoDetail.album}}</div>
+        <!-- <div class="eh-title">{{` 《 ${album} 》`}} <span>识别代码：{{infoDetail.ISSN}}</span></div> -->
+        <!-- <div class="eh-title"><span>所属期刊：</span>{{infoDetail.album}}</div> -->
+        <div class="dataIndicator-box">
+          <div>发文量：{{total?total:0}}</div>
+          <div>被引量：{{cited_total_Cnt?cited_total_Cnt:0}}</div>
+          <div>机构数：{{org_count?org_count:0}}</div>
+          <div>作者数：{{author_count?author_count:0}}</div>
+        </div>
+        <div class="dataIndicator-box">
+          <div>审稿周期：{{infoDetail.review_cycle?infoDetail.review_cycle:'暂无'}}</div>
+          <div>投稿命中率：{{infoDetail.submission_hit_rate?infoDetail.submission_hit_rate:'暂无'}}</div>
+          <!-- <div>H指数：320</div> -->
+          <div>影响指数：{{infoDetail.composite_impact_factor?infoDetail.composite_impact_factor:'暂无'}}</div>
+          <div>篇均被引量：{{article_Average_cited_count?article_Average_cited_count:'暂无'}}</div>
+        </div>
+        <!-- <div class="rightbox-listitems-btnbox">
+          <div>高血压</div>
+          <div>心血管</div>
+        </div> -->
+      </div>
+
     </div>
     <!-- tab展示 开始 -->
     <div class="accordion-box">
@@ -36,12 +38,12 @@
         <div class="acc-l-items" :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
         <div class="acc-l-items" :class="acc_tab == '2'?'active':''" @click="clickTab('2')">被引趋势</div>
         <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">研究主题</div>
-        <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">代表机构</div>
-        <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">代表学者</div>
+        <!-- <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">代表机构</div> -->
+        <!-- <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">代表学者</div> -->
       </div>
       <div class="acc-rightbox">
         
-        <div class="acc-pagebox" v-show="acc_tab == '1'">
+        <div class="acc-pagebox" id="acc-pagebox" v-show="acc_tab == '1'">
           <!-- 发文趋势 -->
           <div class="eacharts-box" id="eachartsTrends"></div>
         </div>
@@ -53,12 +55,12 @@
           <!-- 研究主题 -->
           <div class="eacharts-box" id="eachartsTheme"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '4'">
           <!-- 代表机构 -->
+        <div class="acc-pagebox" v-show="acc_tab == '4'">
           <div class="eacharts-box" id="RepresentativeBody"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '5'">
           <!-- 代表学者 -->
+        <div class="acc-pagebox" v-show="acc_tab == '5'">
           <div class="eacharts-box" id="RepresentativeScholar"></div>
         </div>
       </div>
@@ -68,7 +70,7 @@
     <!-- 相关推荐 开始-->
     <div class="icon-classbox">
       <div class="classbox-l">
-        <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+        <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
         <span>相关推荐</span>
       </div>
       <a href="javascript:0;" class="classbox-r">
@@ -80,36 +82,40 @@
 
       <div class="suggestion-titlebox">
         <div :class="album_tag == 'highest'?'active':''"  @click="clicksuggestion('highest')">最高被引用</div>
-        <div :class="album_tag == 'recently'?'active':''" @click="clicksuggestion('recently')">最新发布</div>
+        <div :class="album_tag == 'newest'?'active':''" @click="clicksuggestion('newest')">最新发布</div>
       </div>
       <div class="suggestion-tabbox">
         <el-table :data="tableData" stripe style="width: 100%">
-          <el-table-column prop="special_name" label="标题">
+          <el-table-column prop="title" label="标题">
             <template slot-scope="scope">
-              <p @click="detailData(scope.row)">{{scope.row.special_name}}</p>
+              <p @click="detailData(scope.row)">{{scope.row.title}}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="author" label="作者" width="160">
+          <el-table-column prop="author" label="作者" width="180">
             <template slot-scope="scope">
-              <p>{{scope.row.author?scope.row.author:'暂无'}}</p>
+              <p @click="detailData(scope.row)">{{scope.row.author?scope.row.author:'暂无'}}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="cn_name" label="来源" width="320">
+          <el-table-column prop="album" label="来源" width="280">
             <template slot-scope="scope">
-              <p>{{scope.row.cn_name?scope.row.cn_name:'暂无'}}</p>
+              <p @click="detailData(scope.row)">{{scope.row.album?scope.row.album:'暂无'}}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="first_time" label="年份" width="160">
+          <el-table-column prop="year" label="年份" width="160">
             <template slot-scope="scope">
-              <p>{{scope.row.first_time?scope.row.first_time:'暂无'}}</p>
+              <p @click="detailData(scope.row)">{{scope.row.year?scope.row.year:'暂无'}}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="total_citations_number" label="被引量" width="160">
+          <el-table-column prop="citation_relate_count" label="被引量" width="160">
             <template slot-scope="scope">
-              <p>{{scope.row.total_citations_number?scope.row.total_citations_number:'暂无'}}</p>
+              <p @click="detailData(scope.row)">{{scope.row.citation_relate_count?scope.row.citation_relate_count:'暂无'}}</p>
             </template>
           </el-table-column>
         </el-table>
+      </div>
+      <div class="demo-block-control" style="left: 0px;" @click="clickMore"  v-if="total_page > 1">
+        <i class="el-icon-caret-bottom"></i>
+        <span>加载更多...</span>
       </div>
     </div>
     <!-- 相关推荐 结束-->
@@ -118,7 +124,7 @@
 
 </template>
 <script>
-  import { journalAnalysisDetail,getalbumRecommend } from "../../api/data";
+  import { journalAnalysisDetail,getRelationRecommend } from "../../api/data";
   export default {
     provide(){
       return {
@@ -133,41 +139,68 @@
       return {
         is_view: true,
         acc_tab:'1', 
-        md5:'',
+        album:'',
         infoDetail:{},
-        album_tag:'highest', // recently: 最新文献；highest ： 最高文献
+        album_tag:'highest', // newest: 最新文献；highest ： 最高文献
         tableData: [],
+        page:1,
+        total_page:0,
+        unique_val:'',
+        tag:'',
+        total:'', // 发文量
+        cited_total_Cnt:'',  //被引量
+        org_count:'', //机构数
+        author_count:'', // 作者数
+        article_Average_cited_count:'', // 篇均被引量
       }
     },
     created(){
       this.$emit('onEmitIndex', '/journalAnalysis'); // 触发父组件的方法，并传递参数index
-      this.md5 = this.$route.query.md5;
-      this.getDetail(this.md5);
-      this.getalbumRecommend();
-
+      this.unique_val = this.$route.query.unique_val;
+      this.tag = this.$route.query.tag;
+      this.total = this.$route.query.d;
+      this.cited_total_Cnt = this.$route.query.c;
+      this.org_count = this.$route.query.o;
+      this.author_count = this.$route.query.a;
+      this.article_Average_cited_count = this.$route.query.ac;
+      this.getDetail(this.tag,this.unique_val);
     },
     methods:{
+      //点击加载更多
+      clickMore(){
+        let that = this;
+        if( that.page >= that.total_page){
+          that.$message({
+            title:'暂无更多数据!',
+          })
+          return
+        }
+        that.page = that.page+1;
+        // 获取相关文献
+       that.getRelationRecommend();
+      },
       // 返回上一步
       fanhui_btn(){
         let that = this;
         // that.$router.go(-1);  // ios 不支持
         location.href = "javascript:history.go(-1);"
       },
+      
       // 点击分析类项 tab
       clickTab(i){
         let that = this;
         that.acc_tab = i;
         if(i == '1'){
           // 发文趋势
-          that.getLineChart('eachartsTrends','1');
+          that.getLineChart('eachartsTrends',that.infoDetail.post_trend);
         }
         if(i == '2'){
           // 被引趋势
-          that.getLineChart('eachartsCited','2');
+          that.getLineChart('eachartsCited',that.infoDetail.cited_trend);
         }
         if(i == '3'){
           // 研究主题
-          that.getTopics('eachartsTheme','3');
+          that.getTopics('eachartsTheme',that.infoDetail.research_topic);
         }
         if(i == '4'){
           // 代表机构
@@ -187,17 +220,33 @@
         let that = this;
         let id = i;
         let infoData = data;
-        let data_val = [300, 450, 770, 203, 255, 188, 156,300, 450, 770, 203, 255, 188, 156],
-          xAxis_val = ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"];
+        let data_val = [],
+          xAxis_v = [];
+        infoData.forEach(ele =>{
+          data_val.push(ele.doc_count);
+          xAxis_v.push(ele.key);
+        })
+        let xAxis_val = [];
+        xAxis_v.forEach( (ele,index)=>{
+          if( ele.indexOf(' ') != -1 ){
+            xAxis_val.push(ele.substring(0,ele.indexOf(' ')))
+          }else{
+             xAxis_val.push(ele)
+          }
+        })
+        
         let topics_eacharts = this.$echarts.init(document.getElementById(id));
+        var mWidth = $("#acc-pagebox").width();  // 获取父节点宽高
+        var mHeight = $("#acc-pagebox").height();
+        topics_eacharts.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         let option = {
-            grid: {
-              left: 20,
-              top: 60,
-              bottom: 30,
-              right: 40,
-              containLabel: true,
-            },
+          grid: {
+            left: 20,
+            top: 40,
+            bottom: 0,
+            right: 10,
+            containLabel: true,
+          },
           backgroundColor: "#fff",
           tooltip: {
             trigger: "axis",
@@ -205,30 +254,53 @@
               type: "shadow",
             },
           },
+          toolbox: {
+            show: true,
+            itemSize: 16,
+            right:15,
+            top: 10,
+            feature: {
+              saveAsImage: {}  // 导出图片
+            }
+          },
           xAxis: [
             {
               type: "category",
               data: xAxis_val,
-              axisLine: {
+              axisLine: {  // x轴
                 lineStyle: {
                   color: "#D2D2D2",
                 },
               },
               axisLabel: {
-                color: "#999",
-                textStyle: {
-                  fontSize: 14,
+
+                formatter:function(value) { //X轴的内容
+                  var ret = ""; //拼接加\n返回的类目项
+                  var max = 10;  //每行显示的文字字数
+                  var val = value.length;  //X轴内容的文字字数
+                  var rowN = Math.ceil(val / max);  //需要换的行数
+                  if(rowN > 1){ //判断 如果字数大于2就换行
+                    for(var i = 0; i<rowN;i++){
+                      var temp = "";  //每次截取的字符串
+                      var start = i * max;  //开始截取的位置
+                      var end = start + max;  //结束截取的位置
+                      temp = value.substring(start,end)+ "\n";
+                      ret += temp;  //最终的字符串
+                    }
+                    return ret;
+                  }
+                  else {return value}
                 },
+                color: "#999",
+                fontSize: '0.7rem',
+                interval: 0, // 设置斜切
+                rotate: 20, // 设置斜切
               },
             },
           ],
           yAxis: [
             {
-              name: "单位:K",
-              nameTextStyle: {
-                color: "#999",
-                fontSize: 14,
-              },
+
               axisLine: {
                 show: true,
                 lineStyle: {
@@ -238,7 +310,7 @@
               axisLabel: { // y轴数字字体
                 show: true,
                 color: "#D2D2D2",
-                fontSize: 14,
+                fontSize: '0.7rem',
               },
               splitLine: { // y轴每级横线样式
                 show: true,
@@ -246,7 +318,7 @@
                   color: "#EFEFEF",
                 },
               },
-              splitNumber: 10,
+              splitNumber: 8,
             }
           ],
           series: [
@@ -279,45 +351,48 @@
           ],
         };
         option && topics_eacharts.setOption(option);
-        if(that.acc_tab == '4'){ // 相关机构
-        //跳转代码
-          topics_eacharts.on("click", function (d) {
-            that.$router.push({
-              path:'/institutionalAnalysis',   //跳转的路径
-              query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-                name:d.name,
-              }
-            })
-          });
-        }
       },
       // 折线图
       getLineChart(i,data){
         let id = i;
         let infoData = data;
+        let data_val = [];
+        let xAxis_val = [];
+        infoData.forEach(ele =>{
+          data_val.push(ele.doc_count);
+          xAxis_val.push(ele.key);
+        })
         let myChart = this.$echarts.init(document.getElementById(id));
-        let data_val = [2220, 1682, 2791, 3000, 4090, 3230, 2910, 2791, 3000, 4090, 2220, 1682, 2910],
-          xAxis_val = ["2010", "2011", "2012", "2013", "2014", "2015", "2016","2017","2018","2019","2020","2021","2022"];
-        // let data_val1 = [0, 0, 0, 0, 0, 0, 0];
+        var mWidth = $("#acc-pagebox").width();  // 获取父节点宽高
+        var mHeight = $("#acc-pagebox").height();
+        myChart.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         let option = {
           backgroundColor: "#fff",
           grid: {
-            left: 20,
-            top: 60,
-            bottom: 30,
-            right: 40,
-            containLabel: true,
-          },
-          tooltip: { // 鼠标浮动展示框样式
-            show: true,
-            backgroundColor: "#3664D9",
-            borderColor: "#3664D9",
-            textStyle: {
-              color: "#fff",
+              left: 20,
+              top: 50,
+              bottom: 30,
+              right: 20,
+              containLabel: true,
             },
-            borderWidth: 1,
+             // 鼠标浮动展示框样式
+          // tooltip: {
+          //   show: true,
+          //   backgroundColor: "#3664D9",
+          //   borderColor: "#3664D9",
+          //   textStyle: {
+          //     color: "#fff",
+          //   },
+          //   borderWidth: 1,
+          //   formatter: "{b}:{c}",
+          //   extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
+          // },
+          tooltip: {
+            trigger: "axis",
             formatter: "{b}:{c}",
-            extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
+            axisPointer: {
+              type: "shadow",
+            },
           },
           // legend: {
           //   right: 0,
@@ -335,6 +410,15 @@
           //     color: "#5c6076",
           //   },
           // },
+          toolbox: {
+            show: true,
+            itemSize: 16,
+            right:15,
+            top: 20,
+            feature: {
+              saveAsImage: {}  // 导出图片
+            }
+          },
           xAxis: {  // X轴
             data: xAxis_val,
             boundaryGap: false,
@@ -342,11 +426,13 @@
               show: true,
               lineStyle: {
                 color: "#EFEFEF",
+                
               },
             },
             axisLabel: {
               textStyle: {
                 color: "#999",
+                fontSize: '0.7rem',
               },
             },
             axisTick: {
@@ -354,11 +440,7 @@
             },
           },
           yAxis: {
-            name: "单位:K",
-            nameTextStyle: {
-              color: "#999",
-              fontSize: 14,
-            },
+
             axisLine: {
               show: true,
               lineStyle: {
@@ -368,6 +450,7 @@
             axisLabel: {
               textStyle: {
                 color: "#999",
+                fontSize: '0.7rem',
               },
             },
             splitLine: {
@@ -406,7 +489,7 @@
               name: "linedemo",
               smooth: true,
               symbolSize: 10,
-              animation: true,
+              animation: false,
               lineWidth: 1.2,
               hoverAnimation: false,
               data: data_val,
@@ -416,7 +499,7 @@
                   color: "#3664D9",
                   shadowBlur: 44,
                   label: {
-                    show: true,
+                    show: false,
                     position: "top",
                     textStyle: {
                       color: "#000",
@@ -438,11 +521,14 @@
 
 
       // 获取详情
-      getDetail(i) {
+      getDetail(g,i) {
         let that = this;
-        let md5 = i;
+        let unique_val = i;
+        let tag = g;
         let pearms = {
-          md5
+          tag,
+          unique_val
+
         };
         const loading = this.$loading({
           lock: true,
@@ -455,10 +541,11 @@
         journalAnalysisDetail(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            document.title = res.data.data.special_name;
             that.infoDetail = res.data.data;
+            document.title = that.infoDetail.special_name;
             // 发文趋势
-            that.getLineChart('eachartsTrends','1');
+            that.getLineChart('eachartsTrends',that.infoDetail.post_trend);
+            that.getRelationRecommend();
           } else {
             this.$message.error({
               message: res.data.msg
@@ -471,15 +558,19 @@
         });
       },
       // 获取相关文献
-      getalbumRecommend(){
+      getRelationRecommend(){
         let that = this;
         let p = {
-          page:'1',
-          tag: that.album_tag
+          value: that.infoDetail.album,
+          page: that.page,
+          tag: 'album',
+          type: that.album_tag,
         }
-        getalbumRecommend(p).then(res => {
+        getRelationRecommend(p).then(res => {
           if (res.data.code == 0) {
-            that.tableData = res.data.data.data;
+            let newData = that.tableData.concat(res.data.data.list);
+            that.tableData = newData;
+            that.total_page = res.data.data.total_page;
           }
         })
         .catch(e => {
@@ -487,12 +578,23 @@
           console.log(e);
         });
       },
+      // 点击相关文献tab
       clicksuggestion(n){
+        this.tableData=[];
         this.album_tag = n;
-        this.getalbumRecommend();
+        this.getRelationRecommend();
       },
+       // 相关推荐点击列表
       detailData(n){
-        console.log(n)
+        let periodical_md5 = n.periodical_md5;
+        this.$emit('setsickNess', '');
+        // 新页面打开
+        this.$router.push({  //核心语句
+          path:'/literatureDetails',   //跳转的路径
+          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+            periodical_md5,
+          }
+        })
       }
 
     },
@@ -526,23 +628,13 @@
     box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
     border-radius: 6px;
     padding: 1rem 1rem 1.2rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
     position: relative;
   }
   .fh-box{
-    position: absolute;
-    top: 0.75rem;
-    right: 0.5rem;
-    border-radius: 6px;
-    border: 1px solid #1674CF;
-    color: #1674CF;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    color: #3664D9;
+    font-size: 14px;
     font-weight: 400;
-    padding: 0 0.75rem;
-    height: 2rem;
+    width: max-content;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -552,12 +644,11 @@
     opacity: 0.8;
   }
   .fh-box>i{
-    font-size: 1.2rem;
+    font-size: 14px;
     font-weight: bold;
   }
   .fh-box>span{
-    margin-left: 0.5rem;
-    margin-top: 1px;
+    margin-left: 0.3rem;
   }
   .list-items .items-img{
     width: 9.25rem;
@@ -566,27 +657,25 @@
   }
   .list-itemsinfo{
     flex: 1;
-    padding-left: 1.6rem;
     padding-right: 5rem;
     text-align: left;
+    margin-top: 1rem;
   }
   .list-itemsinfo .list-itemsinfo-title{
-    font-size: 0.8rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 15px;
     font-weight: bold;
     color: #333333;
-    line-height: 1.1rem;
+    line-height: 1.2rem;
   }
   .list-itemsinfo .eh-title{
     margin-top: 0.8rem;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 14px;
     font-weight: 500;
     color: #999999;
     line-height: 1rem;
   }
   .dataIndicator-box{
-    margin-top: 0.1rem;
+    margin-top: 12px;
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -594,14 +683,11 @@
     flex-wrap: wrap;
   }
   .dataIndicator-box>div{
-    width: 9rem;
+    width: 11rem;
     text-align: left;
-    font-size: 0.7rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
-    font-weight: bold;
-    color: #333333;
-    line-height: 1.35rem;
-    margin: 0.4rem  0;
+    font-size: 14px;
+    color: #333;
+    line-height: 20px;
   }
   .rightbox-listitems-btnbox{
     width: 100%;
@@ -617,8 +703,7 @@
     border-radius: 3px;
     border: 1px solid #1674CF;
     margin-right: 0.75rem;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #1674CF;
     display: flex;
@@ -635,10 +720,10 @@
   }
     .classbox-l{
     height: auto;
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
+    line-height: 20px;
     font-weight: bold;
-    color: #2B77BD;
+    color: #000;
     display: flex;
     align-items: center;
   }
@@ -655,8 +740,7 @@
     height: 0.8rem;
   }
   .classbox-r>span{
-    font-size: 0.65rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #666666;
     padding-left: 0.5rem;
@@ -667,36 +751,41 @@
     background: #FFFFFF;
     box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
     border-radius: 6px;
-    padding: 1rem;
     overflow: hidden;
   }
   .suggestion-titlebox{
     width: 100%;
-    padding: 0 0.75rem;
+    height: 32px;
+    line-height: 32px;
     display: flex;
     justify-content: flex-start;
+    border-bottom: 1px solid #EBEBEB;
   }
   .suggestion-titlebox>div{
-    margin: 0 0.75rem;
-    font-size: 0.8rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    margin-left: 2rem;
+    font-size: 14px;
     font-weight: 600;
     color: #333333;
-    line-height: 1.25rem;
+    height: 32px;
+    line-height: 32px;
     padding-bottom: 0.2rem;
     cursor: pointer;
   }
-  .suggestion-titlebox>div.active{
-    color: #2B77BD;
-    border-bottom: 4px solid #2B77BD;
+  .suggestion-titlebox>div:nth-of-type(1){
+    margin-left: 1rem;
   }
-  .suggestion-tabbox{
+  .suggestion-titlebox>div.active{
+    color: #3664D9;
+    border-bottom: 2px solid #3664D9;
+  }
+ .suggestion-tabbox{
     margin-top: 1rem;
-    font-size: 0.8rem;
+    font-size: 14px;
+    padding: 0 1rem;
   }
   .suggestion-tabbox >>> .el-table td.el-table__cell,.suggestion-tabbox >>> .el-table th.el-table__cell.is-leaf {
     border-bottom: none;
-    font-size: 0.8rem;
+    font-size:14px;
     padding: 0;
   }
   .suggestion-tabbox >>> .el-table td.el-table__cell .cell p{
@@ -721,6 +810,33 @@
   /* ========  相关推荐  ↑==============   */
 
 
-
+  .demo-block-control {
+    border-top: 1px solid #eaeefb;
+    height: 44px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    text-align: center;
+    margin-top: -1px;
+    color: #999;
+    cursor: pointer;
+    position: relative;
+  }
+  .demo-block-control:hover{
+    color: #3664D9;
+  }
+  .demo-block-control i {
+    font-size: 16px;
+    line-height: 44px;
+    transition: .3s;
+  }
+  .demo-block-control>span {
+    font-size: 15px;
+    line-height: 44px;
+    transition: .3s;
+    display: inline-block;
+    padding-left: 4px;
+  }
 
 </style>

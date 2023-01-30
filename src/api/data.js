@@ -354,6 +354,22 @@ export const getGuideMindMapZh = (params) =>{
     data: params
   })
 }
+// 知识库新详情
+export const getNewBaseDetail = (params) =>{  
+  return axios.request({
+    url:'/new/detail',
+    method: 'post',
+    data: params
+  })
+}
+// 知识库临床试验检索
+export const getNewClinicalTrial = (params) =>{  
+  return axios.request({
+    url:'/new/get-clinical-trial',
+    method: 'post',
+    data: params
+  })
+}
 // =================  h5页面方法 ==================
 export const getConfig = (params) =>{  
   return axios.request({
@@ -424,7 +440,7 @@ export const literatureDocSearch = (params) =>{
 // 期刊分析首页
 export const journalAnalysisIndex = (params) =>{
   return axios.request({
-    url:'/es-album',
+    url:'/es-album-index',
     method: 'post',
     data: params
   })
@@ -461,14 +477,6 @@ export const getdocRecommend = (params) =>{
     data: params
   })
 }
-// 学科分析--- 获取分析数据
-export const getSubjectAnalysis = (params) =>{
-  return axios.request({
-    url:'',
-    method: 'post',
-    data: params
-  })
-}
 //点击收藏
 export const clickCollection = (params) =>{
   return axios.request({
@@ -489,6 +497,88 @@ export const getMyCollection = (params) =>{
 export const getRandomDoc = (params) =>{
   return axios.request({
     url:'/es-random-doc',
+    method: 'post',
+    data: params
+  })
+}
+// 学者分析首页列表
+export const getAuthorIndex = (params) =>{
+  return axios.request({
+    url:'/es-author-index',
+    method: 'post',
+    data: params
+  })
+}
+// 学者分析详情页 -- 分析接口
+export const getAnalysisDetail = (params) =>{
+  return axios.request({
+    url:'/es-author-detail',
+    method: 'post',
+    data: params
+  })
+}
+// 学者分析首页 -- 开始分析
+export const getAnalysisSearch = (params) =>{
+  return axios.request({
+    url:'/es-author-search',
+    method: 'post',
+    data: params
+  })
+}
+// 文献点击相关作者获取机构名
+export const getTitleOrganization = (params) =>{
+  return axios.request({
+    url:'/es-get-organization',
+    method: 'post',
+    data: params
+  })
+}
+// 机构分析详情页
+export const getOrganizationDetail = (params) =>{
+  return axios.request({
+    url:'/es-organization-detail',
+    method: 'post',
+    data: params
+  })
+}
+
+// 学科分析接口
+export const getDepartmentIndex = (params) =>{
+  return axios.request({
+    url:'/es-department-index',
+    method: 'post',
+    data: params
+  })
+}
+// 学科分析接口
+export const getRelationRecommend = (params) =>{
+  return axios.request({
+    url:'/es-relation-recommend',
+    method: 'post',
+    data: params
+  })
+}
+
+// 清除历史记录
+export const clearHistory = (params) =>{
+  return axios.request({
+    url:'/es-clear-history',
+    method: 'post',
+    data: params
+  })
+}
+// 文献检索模糊匹配
+export const searchTip = (params) =>{
+  return axios.request({
+    url:'/search-tip',
+    method: 'post',
+    data: params
+  })
+}
+// 学者分析检索匹配机构
+export const getAuthorOrganization = (params) =>{
+  return axios.request({
+    url:'/es-get-select-organization',
     method: 'post',
     data: params
   })

@@ -134,31 +134,28 @@
     background-position: 95.2% 80%;
   }
   .items-t{
-    font-size: 1rem;
-    font-family: PingFang-SC-Heavy, PingFang-SC;
+    font-size: 14px;
     font-weight: 800;
     color: #333333;
-    line-height: 1.4rem;
+    line-height: 20px;
   }
   .items-text{
-    font-size: 0.8rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #333333;
-    line-height: 1.75rem;
+    line-height: 20px;
     margin-top: 0.4rem;
   }
   .items-btn{
     margin-top: 0.85rem;
     width: 5.8rem;
-    height: 2rem;
-    background: #1674CF;
-    border-radius: 20px;
+    height: 32px;
+    background: #3664D9;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #FFFFFF;
     cursor: pointer;

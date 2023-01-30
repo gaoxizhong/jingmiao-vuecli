@@ -10,37 +10,42 @@
       <div class="list-itembox">
          <!-- ===  单条列表 开始 ===  -->
         <div class="list-item" v-for="(item,index) in listData" :key="index">
-          <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5)">
+          <a href="javascript:0;"  @click.stop="goToDetails(item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
             <div class="listitems-b">
               <div class="list-item-title" :title="item.title">{{item.title}}</div>
               <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
             </div>
-            <div class="list-item-subt">{{item.subject}}</div>
-            <div class="list-item-text" >{{item.abstract}}</div>
-            <div class="list-item-z" v-if="item.cn_name">
+            <div class="list-item-text" v-if="item.abstract">{{item.abstract}}</div>
+            <div class="list-item-z" v-if="item.album">
               <label class="zuozhe-box">期刊：</label>
               <div class="tap-top-span">
-                <a href="javascript:0;" @click.stop="">《{{item.cn_name}}》</a>
-                <span style="font-size: 0.7rem;color: #333;">{{item.first_time}}年</span>
+                <a href="javascript:0;" @click.stop="">{{item.album}}</a>
+                <!-- <span style="font-size: 0.7rem;color: #333;">{{item.first_time}}年</span> -->
               </div>
             </div>
             <div class="list-item-z">
-              <label class="zuozhe-box">相关作者：</label>
+              <label class="zuozhe-box">作者：</label>
               <div class="tap-top-span">
-                <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
+                <a href="javascript:0;" v-for="(items,idx) in item.author_list" :key="idx" @click.stop="goToauthor(items,item.title)">{{items}}</a>
+              </div>
+            </div>
+            <div class="list-item-z">
+              <label class="zuozhe-box">关键词：</label>
+              <div class="tap-top-span">
+                <a href="javascript:0;" v-for="(items,idx) in item.keyword_list" :key="idx" @click.stop="">{{items}}</a>
               </div>
             </div>
           </a>
           <div class="item-btn-box">
             <div class="asub-box">
-              <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection(index,item.periodical_md5,item.is_collection)"><i :class="item.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>收藏</a>
-              <!-- <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>在线阅读</a> -->
+              <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection(index,item.periodical_md5,item.is_collection,item.title)"><i :class="item.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>{{item.is_collection == 2 ? '收藏' :'取消收藏'}}</a>
+              <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>原文链接</a>
             </div>
 
             <div class="item-r">
-              <span>点击：{{item.click_count?item.click_count:0}}</span>
-              <span>被引：{{item.total_citations_number}}</span>
-              <span>下载：{{item.total_download_times}}</span>
+              <span>点击量：{{item.click_count?item.click_count:0}}</span>
+              <span>被引量：{{item.citation_relate_count?item.citation_relate_count:0}}</span>
+              <!-- <span>下载量：{{item.total_download_times?item.total_download_times:0}}</span> -->
             </div>
           </div>
         </div> 
@@ -68,7 +73,6 @@
 
         <div class="fastEntry-l-titlebox">
           <div class="l-titlebox-1">
-            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
             <span>快速入口</span>
           </div>
         </div>
@@ -100,10 +104,8 @@
       <!-- 快速入口 结束 -->
 
       <div class="popularList-box">
-
         <div class="fastEntry-l-titlebox">
           <div class="l-titlebox-1">
-            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
             <span>热门论文</span>
           </div>
           <a href="javascript:0;" class="l-titlebox-2" @click="clickExchange">
@@ -114,8 +116,8 @@
 
         <div class="popular-listbox">
           <a href="javascript:0;" v-for="(item,index) in docList" :key="index">
-            <!-- <span style="color:#D93636;">01</span> -->
-            <span style="padding-left:0.5rem;">{{item.title}}</span>
+            <!-- <span>{{ index + 1 }}、</span> -->
+            <span style="padding-left:0.1rem;" @click.stop="goToDetails(item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">{{item.title}}</span>
           </a>
         </div>
 
@@ -127,7 +129,7 @@
 
 </template>
 <script>
-  import { getEsIndex,clickCollection,getSymptom,getRandomDoc } from "../../api/data";  
+  import { getEsIndex,clickCollection,getSymptom,getRandomDoc,getTitleOrganization } from "../../api/data";  
   export default {
     data(){
       return {
@@ -176,13 +178,14 @@
         })
       },
       //点击收藏
-      clickCollection(i,md,c){
+      clickCollection(i,md,c,t){
         let that = this;
         let index = i;
         let uid = that.uid;
         let md5 = md;
         let col = c;
         let tag = '';
+        let title = t;
         if(col == 1){
           // 1、已收藏  2、未收藏
           tag = 'cancelCollection';
@@ -199,14 +202,14 @@
         let p = {
           uid,
           md5,
-          tag
+          tag,
+          title
         }
 
         console.log(p)
         clickCollection(p).then(res =>{
           if(res.data.code == 0){
             let listData = that.listData;
-
 
             if(listData[index].is_collection == 2){
               listData[index].is_collection = 1;
@@ -254,24 +257,60 @@
       goToauthor(n){
         let that = this;
         let name = n;
-        // 新页面打开
-        that.$router.push({
-          path:'/literatureAuthor',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            name,
+        let p = {
+          author: name,
+        }
+        getTitleOrganization(p).then(res =>{
+          if(res.data.code == 0){
+            let data = res.data.data;
+            if(!data){
+              that.$message({
+                message: '暂无数据!',
+              });
+              return
+            }
+            that.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
+            that.$router.push({
+              path:'/literatureAuthor', 
+              query:{     
+                author: name,
+                organization: res.data.data.org,
+              }
+            })
+          }else{
+            that.$message.error({
+              message: res.data.msg
+            });
           }
+        }).catch(e =>{
+          console.log(e)
         })
       },
+
+      // 点击作者搜索方法
+      authorFunction(n){
+        let that = this;
+        let advancedCondition = [];
+        advancedCondition.push({
+          select_field: 'author',
+          field_value: n,
+          select_type: 'match',
+          select_condition: '',
+        })
+       this.$emit('setsickNess', {advancedCondition,is_p:'2'});
+      },
       // 点击列表
-      goToDetails(i){
+      goToDetails(i,u){
         let that = this;
         let periodical_md5 = i;
+        let uniq_id = u;
         this.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
         // 新页面打开
         this.$router.push({  //核心语句
           path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             periodical_md5,
+            uniq_id
           }
         })
       },
@@ -304,7 +343,7 @@
         getEsIndex(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            let total_page = res.data.data.total;
+            let total_page = res.data.data.total_page; // 总页数
             let listData = res.data.data.data;
             that.total_page = total_page;
             that.listData = listData;
@@ -361,7 +400,7 @@
   .listbox{
     width: 100%;
     height: auto;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     display: flex;
     justify-content: space-between;
   }
@@ -370,33 +409,29 @@
     height: auto;
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
+    border-radius: 6px;
   }
   .listbox-l-titlebox{
     width: 100%;
-    height: 2.5rem;
-    line-height: 2.5rem;
+    height: 40px;
+    line-height: 40px;
     border-bottom: 1px solid #E5E5E5;
     text-align: left;
   }
   .listbox-l-titlebox>span{
-    margin-left: 2.2rem;
-    font-size: 0.8rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 16px;
     font-weight: 500;
-    color: #2B77BD;
+    color: #3664D9;
     display: inline-block;
     width: auto;
-    padding: 0 0.5rem;
+    padding: 0 1rem;
     height: 100%;
-    line-height: 2.5rem;
-    border-bottom: 3px solid #2B77BD; 
+    /* border-bottom: 2px solid #3664D9;  */
    }
 
   .list-itembox{
     width: 100%;
     height: auto;
-    padding: 0.5rem 1.25rem;
   }
   .list-itembox .list-item{
     display: inline-block;
@@ -407,7 +442,7 @@
     text-align: left;
   }
   .list-itembox .list-item:hover{
-    background: #2B77BD0a;
+    background: #3664D90a;
   }
   .list-itembox .list-item .listitems-b{
     width: 100%;
@@ -417,9 +452,10 @@
   }
   .list-itembox .list-item .listitems-b .list-item-title{
     flex: 1;
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 16px;
+    line-height: 24px;
     font-weight: bold;
+    font-weight: medium;
     color: #333333;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -430,12 +466,11 @@
   .listitems-b span{
     color: #999;
     width: auto;
-    font-size: 0.7rem;
+    font-size: 12px;
   }
   .list-itembox .list-item .list-item-subt{
-    font-size: 0.7rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
-    color: #333333;
+    font-size: 14px;
+    color: #666;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -444,12 +479,11 @@
     margin-top: 0.4rem;
   }
   .list-itembox .list-item .list-item-text{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
-    color: #333333;
-    line-height: 1.3rem;
-    margin-top: 0.5rem;
+    color: #000;
+    line-height: 20px;
+    margin-top: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -457,13 +491,13 @@
     -webkit-box-orient: vertical;
   }
   .list-itembox .list-item .list-item-z{
-    margin-top: 0.5rem;
+    margin-top: 8px;
     display: flex;
   }
   .list-item .list-item-z .zuozhe-box{
     width: auto;
     padding-right: 0.5rem;
-    font-size: 0.7rem;
+    font-size: 14px;
     color: #333;
     text-align:left;
     min-inline-size: fit-content;
@@ -471,24 +505,25 @@
 
   .list-item .list-item-z .tap-top-span{
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
   }
   .list-item .list-item-z .tap-top-span>a{
-    font-size: 0.7rem;
+    font-size: 14px;
     margin-right: 0.3rem;
-    color: #333;
+    color: #666;
     display: flex;
     flex-wrap: nowrap;
   }
   .list-item .list-item-z .tap-top-span>a:hover{
-    color: #D54B4B;
+    color: #3664D9;
   }
   .item-btn-box{
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 0.5rem;
+    margin-top: 0.7rem;
   }
   .item-btn-box>div{
     width: auto;
@@ -497,23 +532,26 @@
   }
   .asub-zaixian {
     border-radius: 4px;
-    color: #2B77BD;
-    align-items: center;
-    padding: 0.3rem 0.5rem;
-    font-size: 0.7rem;
+    color: #3664D9;
+    padding: 0 8px;
+    /* width: 82px; */
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
     margin-right: 0.6rem;
     display: flex;
     align-items: center;
-    border: 1px solid #2B77BD; 
+    justify-content: center;
+    border: 1px solid #3664D9; 
   }
 
   .asub-zaixian .el-icon-reading,.el-icon-star-on,.el-icon-star-off {
-    font-size: 1rem;
+    font-size: 16px;
     margin-right: 0.25rem;
   }
   .asub-zaixian:hover{
-    color: #fa6400;
-    border: 1px solid #fa6400;
+    color: #152F8C;
+    border: 1px solid #152F8C;
   }
   .item-btn-box .item-r{
     display: flex;
@@ -521,7 +559,7 @@
   }
 
   .item-btn-box .item-r>span{
-    font-size: 0.65rem;
+    font-size: 14px;
     padding-right: 0.1rem;
     color: #999;
     display: flex;
@@ -530,12 +568,13 @@
   .item-btn-box .item-r>span:last-child {
     margin-right: 0;
   }
-
-
-
+  .listbox-right{
+    flex:1;
+    padding-left: 1rem;
+  }
 
   .listbox-right>div{
-    width: 22rem;
+    width: 100%;
     height: auto;
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
@@ -543,7 +582,7 @@
   }
   .fastEntry-l-titlebox{
     width: 100%;
-    height: 2.5rem;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -561,30 +600,27 @@
     height: 0.9rem;
   }
   .l-titlebox-1>span{
-    font-size: 0.8rem;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 600;
-    color: #2B77BD;
-    padding-left: 0.5rem;
+    font-size: 16px;
+    line-height: 24px;
+    color: #3664D9;
   }
   .l-titlebox-2>img{
     width: 0.75rem;
     height: 0.8rem;
   }
   .l-titlebox-2>span{
-    font-size: 0.65rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #666666;
     padding-left: 0.5rem;
   }
   .l-titlebox-2>span:hover{
-    color: #2B77BD;
+    color: #3664D9;
   }
   .fastEntry-listbox{
     width: 100%;
     height: auto;
-    padding: 1rem 1.5rem;
+    padding: 1rem;
     display: flex;
     flex-wrap: wrap;
   }
@@ -593,14 +629,13 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 0.8rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #333333;
     padding: 0.65rem 0;
   }
   .fastEntry-listbox>a:hover{
-    color: #2B77BD;
+    color: #3664D9;
   }
   .fastEntry-listbox>a .img1{
     width: 0.95rem;
@@ -640,15 +675,15 @@
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    font-size: 0.75rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 14px;
+    line-height: 20px;
     font-weight: 500;
-    color: #62657C;
+    color: #000;
     text-align: left;
-    margin: 0.5rem 0;
+    margin: 0.7rem 0;
   }
   .popular-listbox>a:hover{
-    color: #2B77BD;
+    color: #3664D9;
   }
   .pagination-box{
     padding: 1.5rem 0;

@@ -429,12 +429,11 @@
               </div>
               <!-- 常见检查模块结束 -->
               <!-- 鉴别诊断模块开始 -->
-              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+              <!-- <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
                 <h1 style="background: #EAF7FA;"> 
                   <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAk1JREFUOBGNVM1qFEEQrprs+ASevEoIZJ8hQRQ8qAcDmRiyG/CQBCQXfQBhwQfwFASTg5BNiFlBQZODoCz6CllJMLl78AmcZMuvaqbanskmsWHo6q+qvuqpnya6csl8e2qEkWStXwGWbPG2HyoKByu7ZO29AMjC4/FwKIWE8jxVWWZbYnvWPkxI6K4ZMBfuIt/YtJ1OQoPjj8S8z7ubawaaQrn/5O+JaQ7eA2DPYPSQe91bqreFGAcu13cBs8y37jTsyiJNN/CLgW0PbA8svNC9gjFr992wvsvc4qpi4Y560BB0xmskMoHjOr/bWlF85KpkL7IIjDDog+kDdC8Rp4k/36Vr6Qxvv/kZ7C+qklbSS2K/Ts3xG8ErEri3+dVyqxhCHka6UDfHEG1SZdRQJmD8SQ/+IyGXBtLA9ABf69mXG4fzbOupy+RJDUAkwLEfjtrLbuyMVuOomUMe1au8xjLqfERjsso7W1+crWLooDlpOU/pEZymy5Ki4CBAw1KD3sYksV+F0MbuTHrEyQuavPmKO52hkRfDI9Z1APT69OPkCcnwOY1xxjvd7zGpyZoE/+9zyksA9akkUG01J/j+pb9GoIn15NZUdlTfMq/EZihSDI7Ob697350qOgcvs4GuiIB29JZzv3hHdNEvxmJZfRHcWjoxBUqvY2TJji1LGQPL+o1QFQXSEVQOrGBkY5bnqFayYNM0yruGFQ/tcJvSdMrnORC6bUF8uo5+uw5sAyE/l8+fhtcHQR/SJfTkb0oby07k/v+1a3Hw2SRf5fAXDTEdluow+PQAAAAASUVORK5CYII=" alt=""/>
                   鉴别诊断
                 </h1>
-                <!-- 鉴别诊断列表 -->
                 <div>
                   <div class="cjyp-table-tr" style="padding:5px;" v-for="(item, index) in identity_list" :key="index">
                     <div class="cjyp-table-tr-l" style="-webkit-line-clamp: 3;" :title="item.name">{{ item.name.substring(0,25)+'...' }}</div>
@@ -442,16 +441,14 @@
                   </div>
                   <div style="padding: 6px 0 6px 15px" v-if="!identity_list || identity_list.length <= 0">暂无数据...</div>
                 </div>
-                <!-- 鉴别诊断列表结束 -->
-              </div>
+              </div> -->
               <!-- 鉴别诊断模块结束 -->
               <!-- 并发症模块开始 -->
-              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+              <!-- <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
                 <h1> 
                   <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
                   并发症
                 </h1>
-                <!-- 并发症列表 -->
                 <div>
                   <div class="cjyp-table-tr" v-for="(item, index) in complication_list" :key="index">
                     <div class="cjyp-table-tr-l">{{ item.name }}</div>
@@ -459,8 +456,7 @@
                   </div>
                   <div style="padding: 6px 0 6px 15px" v-if="!complication_list || complication_list.length <= 0">暂无数据...</div>
                 </div>
-                <!-- 并发症列表结束 -->
-              </div>
+              </div> -->
               <!-- 并发症模块结束 -->
 
               <!-- 病案首页质控模块开始 -->
@@ -849,7 +845,8 @@ li {
     getDiagnosis,
     getIcd,
     getDiseases,
-    DrumpServices_ZK
+    DrumpServices_ZK,
+    getNewBaseDetail
   } from "@/api/data";
   // const x2js = require("x2js");
   export default {
@@ -1887,7 +1884,7 @@ li {
       let kgid = k;
       let symptoms = that.symptoms;
       let pearms = {
-        sickness: name,
+        name,
         tag: tag,
         symptoms,
       };
@@ -1895,10 +1892,10 @@ li {
       if( kgid && (tag == 'CnMedicinalCrop' || tag == 'zySickNess' || tag == 'ChannelCollateral') ){
         pearms.sickness = kgid
       }
-      getSickNess(pearms).then((res) => {
+      getNewBaseDetail(pearms).then((res) => {
           if (res.data.code == 0) {
             let getinfo = res.data.data;
-            that.name_1 = getinfo.sickness_name.text;
+            that.name_1 = getinfo.name.text;
             // let kgid = getinfo.kgid?getinfo.kgid.text:'';
             let getinfo_arr = [];
             for (let key in getinfo) {

@@ -3,7 +3,19 @@
     <!-- 头部搜索模块 开始 -->
     <div class="literature-titlebox">
       <div class="header-input-box">
-        <el-input placeholder="输入姓名..." v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)"></el-input>
+        <el-input placeholder="输入姓名..." v-model="headerAuthor" @input="getAuthorOrganization(headerAuthor)" class="input-with-select"></el-input>
+
+        <el-input placeholder="输入机构名称..." v-model="headerOrganization" class="input-with-select" v-if="optionsList.length <= 0"></el-input>
+        
+        <div class="option-itemsbox" v-else>
+          <el-select class="validate" v-model="headerOrganization" placeholder="请选择或输入机构名称..." clearable filterable :filter-method="dataFilter" slot="prepend">
+            <el-option
+              v-for="(item,index) in optionsList"
+              :key="index"
+              :label="item"
+              :value="item"></el-option>
+          </el-select>
+        </div>
         <el-button slot="append" @click="headerInputClick">开始分析</el-button>
       </div>
     </div>
@@ -11,10 +23,10 @@
 
     <div class="icon-classbox">
       <div class="classbox-l">
-        <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+        <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
         <span>热门学者</span>
       </div>
-      <a href="javascript:0;" class="classbox-r">
+      <a href="javascript:0;" class="classbox-r" @click="clickExchange">
         <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
         <span>换一批</span>
       </a>
@@ -24,37 +36,38 @@
     <div class="scholarList-box">
 
       <div class="scholarList-items" v-for="(item,index) in scholarList" :key="index">
-        <img src="../../assets/image/researchPages/img-scholar.png" alt="" class="items-userimg" />
-        <p class="items-name">张天永</p>
-        <div class="infodata-box">
-          <div>
-            <span class="infodata-name">机构名称</span>
-            <span class="infodata-text">中国科学院长春应用化学应用化学</span>
-          </div>
-          <div>
+        <!-- <img src="../../assets/image/researchPages/img-scholar.png" alt="" class="items-userimg" /> -->
+        <!-- <p class="items-name">{{item.author}}</p> -->
+        <div class="items-box" @click="clickItemsbtn(item.author,item.org)">
+          <div class="infodata-box">
+            <div>
+              <!-- <span class="infodata-name">学者姓名</span> -->
+              <span class="infodata-text infodata-author" :title="item.author">{{item.author}}</span>
+            </div>
+            <div style="margin-top: 10px;color:#000;">
+              <!-- <span class="infodata-name">机构名称</span> -->
+              <span class="infodata-text" :title="item.org">{{item.org?item.org:'暂无机构名称'}}</span>
+            </div>
+          <!-- <div>
             <span class="infodata-name">研究领域</span>
             <span class="infodata-text">中国科学院长春应用化学应用化学</span>
+          </div> -->
           </div>
-        </div>
-        <div class="infodata-box" style="border:0;">
-          <div>
-            <span class="infodata-name">成果数</span>
-            <span class="infodata-text">301</span>
+          <div class="infodata-box infodata-num" style="padding-bottom:0;">
+            <div style="flex:1;">
+              <div style="display: flex;">
+                <span class="infodata-name">成果数:</span>
+                <span class="infodata-text">{{item.achievement_num?item.achievement_num:0}}</span>
+              </div>
+              <div style="display: flex;margin-left:1rem;">
+                <span class="infodata-name">被引频次:</span>
+                <span class="infodata-text">{{item.citation_frequency?item.citation_frequency:0}}</span>
+              </div>
+            </div>
+            <div class="items-btn" @click.stop="clickItemsbtn(item.author,item.org)">立即查看</div>
           </div>
-          <div>
-            <span class="infodata-name">被引频次</span>
-            <span class="infodata-text">3367</span>
-          </div>
-          <div>
-            <span class="infodata-name">H指数</span>
-            <span class="infodata-text">28</span>
-          </div>
-          <div>
-            <span class="infodata-name">G指数</span>
-            <span class="infodata-text">65</span>
-          </div>
-        </div>
-        <div class="items-btn" @click="clickItemsbtn(item.name)">立即查看</div>
+      </div>
+
       </div>
       
     </div>
@@ -64,7 +77,7 @@
 
 </template>
 <script>
-  import { getEsIndex } from "../../api/data";
+  import { getAuthorIndex,getAnalysisSearch,getAuthorOrganization } from "../../api/data";
   export default {
     provide(){
       return {
@@ -80,31 +93,65 @@
         is_s:false,
         is_view: true,
         is_titleTab:'1',
-        headerInput:'', // 普通搜索
+        headerAuthor:'', // 学者名、
+        headerOrganization:'', // 机构名
         count:0, // 总条数
         pageSize: 10,
         current_page: 1,
-        scholarList:[{},{},{},{},{}], // 列表数据
+        scholarList:[], // 列表数据
+        optionsList:[], // 机构分类
+        o_list:[],// 机构分类
       }
     },
     created(){
       this.$emit('onEmitIndex', '/scholarAnalysis'); // 触发父组件的方法，并传递参数index
       document.title = '学者分析';
-      this.getEsIndex();
+      this.getAuthorIndex();
     },
     methods:{
-      // 点击分页功能
-      handleCurrentChange(val) {
+      // 点击换一批
+      clickExchange(){
         let that = this;
-        that.current_page = Number(val);
-        that.getHomeRightList();
-        // 回到顶部的方法。
-         window.scrollTo(0,0);
+        that.current_page = that.current_page+1;
+        that.getAuthorIndex();
       },
       // 普通搜索
       headerInputClick(){
-        let input_name = this.headerInput;
-        this.clickItemsbtn(input_name);
+        let that = this;
+        let headerAuthor = that.headerAuthor; // 学者名、
+        let headerOrganization = that.headerOrganization; // 机构数
+        // if(headerAuthor == '' || headerOrganization == ''){
+        //   that.$message.error('请先填写内容!');
+        //   return
+        // }
+        let pearms = {
+          author: headerAuthor,
+          org: headerOrganization,
+          tag:'',
+        }
+        const loading = that.$loading({
+          lock: true,
+          text: "Loading",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.1)",
+          target: document.querySelector("body")
+        });
+        getAnalysisSearch(pearms).then(res => {
+          loading.close();
+          if (res.data.code == 0) {
+            that.current_page= 1;
+            that.scholarList= []; // 列表数据
+            that.scholarList = res.data.data;
+          } else {
+            that.$message.error({
+              message: res.data.msg
+            });
+          }
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+        });
       },
       // 普通搜索 回车键点击
       searchEnterFun(e){
@@ -115,10 +162,10 @@
       },
 
       // 获取页面数据
-      getEsIndex(){
+      getAuthorIndex(){
         let that = this;
         let pearms = {
-
+          page: that.current_page,
         };
         const loading = this.$loading({
           lock: true,
@@ -128,13 +175,13 @@
           target: document.querySelector("body")
         });
         that.infoDetail = {};
-        getEsIndex(pearms).then(res => {
+        getAuthorIndex(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            let count = res.data.data.total;
-            let listData = res.data.data.data;
-            that.count = count;
-            that.listData = listData;
+            // let count = res.data.total;
+            // that.count = count;
+            let scholarList = res.data.data;
+            that.scholarList = scholarList;
           } else {
             this.$message.error({
               message: res.data.msg
@@ -147,22 +194,76 @@
         });
       },
       // 点击立即查看
-      clickItemsbtn(n){
-        let name = n;
+      clickItemsbtn(n,o){
+        let author = n;
+        let organization = o;
         this.$emit('setsickNess', '');
         this.$router.push({
           path:'/literatureAuthor',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            name
+            author,
+            organization
           }
         })
-      }
+      },
+
+      dataFilter(val){
+        this.headerOrganization = val; //给绑定值赋值
+        if (val) {
+          //val存在筛选数组
+          this.optionsList = this.o_list.filter((i) => {
+            let index = -1,
+              reflag = true
+ 
+            // 逐字对比筛选
+            let valArr = val.split(''),
+              len = valArr.length
+            loop: for (let k = 0; k < len; k++) {
+              if (i.label.indexOf(valArr[k]) <= index) {
+                reflag = false
+                break loop
+              }
+              index = i.label.indexOf(valArr[k]) //赋筛选的字在i中的索引
+            }
+ 
+            return reflag
+          })
+        } else {
+          //val不存在还原数组
+          this.optionsList= this.o_list
+        }
+      },
+      // 学者名称搜索相关机构
+      getAuthorOrganization(a){
+        console.log(a)
+        let that = this;
+        // 弹窗列表数据
+        that.optionsList = [];
+        that.o_list = [];
+        let pearms = {
+          author: a,
+        }
+        getAuthorOrganization(pearms).then(res => {
+          if (res.data.code == 0) {
+              let data = res.data.data;
+              if (data.length <= 0) {
+                return;
+              } else {
+                that.optionsList = data;
+                that.o_list = data;
+              }
+            }
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+        });
+
+      },
 
 
     },
-
-
-
+ 
     // setsickNess(){
     //   this.is_view = false;
     //   this.$nextTick(() => {
@@ -181,7 +282,7 @@
     height: 5.85rem;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 0.8rem 0;
     display: flex;
     align-items: center;
@@ -196,23 +297,32 @@
     cursor: pointer;
   }
   .header-input-box .el-input{
-    width: 30rem;
+    width: 18rem;
+    margin: 0 0.5rem;
   }
   .header-input-box >>> .el-input__inner{
-    height: 2rem;
-    line-height: 2rem;
+    height: 32px;
+    line-height: 32px;
     border: 1px solid #E3E3E3;
   }
-  .header-input-box >>> .el-button{ 
-    margin-left: 1.7rem;
-    background: #2B77BD;
-    color: #fff;
-    border-radius: 20px;
-    width: 5.8rem;
-    height: 2rem;
-    padding: 0;
-    font-size: 0.8rem;
+   .header-input-box >>> .el-input.is-focus .el-input__inner{
+    border-color: #3664D9;
   }
+  .header-input-box >>> .el-button{ 
+    width: 82px;
+    margin-left: 0.5rem;
+    background: #3664D9;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 0 0.8rem;
+    height: 32px;
+    line-height: 32px;
+    border: 0;
+  }
+  /* .header-input-box>>> .el-button:focus, .header-input-box >>> .el-button:hover{
+    border-color: #3664D9;
+  } */
   .icon-classbox{
     width: 100%;
     margin-top: 1rem;
@@ -222,10 +332,10 @@
   }
   .classbox-l{
     height: auto;
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
+    line-height: 20px;
     font-weight: bold;
-    color: #2B77BD;
+    color: #000;
     display: flex;
     align-items: center;
   }
@@ -242,8 +352,7 @@
     height: 0.8rem;
   }
   .classbox-r>span{
-    font-size: 0.65rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #666666;
     padding-left: 0.5rem;
@@ -257,32 +366,48 @@
     /* justify-content: space-between; */
   }
   .scholarList-items{
-    width: 14.55rem;
+    width: 33.3333%;
     height: auto;
-    background: #FFFFFF;
+    border-radius: 6px;
+    padding: 0.5rem 0;
+  }
+  .scholarList-items .items-box{
+    padding: 1rem 0.5rem;
     box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
     border-radius: 6px;
-    padding: 1rem;
-    margin-top: 1.1rem;
-    margin-right: 1.61rem;
+    overflow: hidden;
+    background: #fff;
+    cursor: pointer;
   }
-  .scholarList-items:nth-of-type(5n){
-    margin-right: 0;
+  .scholarList-items .items-box:hover{
+    background: #ecf5ff79;
+  }
+  .scholarList-items:nth-of-type(3n-2){
+   padding-left: 0;
+   padding-right: 0.75rem;
+  }
+  .scholarList-items:nth-of-type(3n){
+   padding-right: 0;
+   padding-left: 0.75rem;
+  }
+  .scholarList-items:nth-of-type(3n-1){
+   padding-right: 0.25rem;
+   padding-left: 0.25rem;
   }
   .items-userimg{
     width: 5.05rem;
     height: 5.05rem;
   }
   .items-name{
-    font-size: 0.8rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 14px;
     font-weight: 600;
     color: #333333;
-    line-height: 1.1rem;
+    line-height: 20px;
   }
   .infodata-box{
     width: 100%;
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
+    padding-top: 0.5rem;
     padding-bottom: 0.85rem;
     border-bottom: 1px solid #E7E7E7;
   }
@@ -291,14 +416,13 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 0.75rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
     color: #333333;
-    line-height: 1.35rem;
+    line-height: 20px;
   }
   .infodata-box>div .infodata-name{
-    font-size: 0.65rem;
-    width: auto;
+    font-size: 14px;
+    width: 3.6rem;
     color: #666666;
     text-align: left;
   }
@@ -311,21 +435,73 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     padding-left: 0.6rem;
-    font-weight: bold;
+  }
+  .infodata-box>div .infodata-author{
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
   }
   .items-btn{
-    width: 6.05rem;
-    height: 2.1rem;
-    line-height: 2.1rem;
-    background: #1674CF;
-    border-radius: 20px;
-    color: #fff;
-    font-size: 0.8rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    width: 100%;
+    line-height: 18px;
+    color: #3664D9;
+    font-size: 12px;
     font-weight: 400;
-    text-align: center;
+    text-align: right;
     margin: 0 auto;
     cursor: pointer;
   }
-
+  /* .items-btn:hover{
+    color: #3664D9;
+  } */
+  .infodata-num{
+    border: 0px;
+    padding-left: 0.6rem;
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .infodata-num>div{
+    width: auto;
+  }
+  .infodata-num>div .infodata-name{
+    width: auto;
+    color: #000;
+    /* font-weight: 600; */
+  }
+  .option-itemsbox{
+    width: 18rem;
+    margin: 0 0.5rem;
+    height: 32px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+  }
+  .option-itemsbox .validate {
+    width: 100%;
+    font-size: 14px;
+    background: transparent!important;
+  }
+  .option-itemsbox >>> .el-input__inner{
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 14px;
+    padding-right: 1rem;
+  }
+  .option-itemsbox-4 >>> .el-input__inner{
+    padding-left: 1.8rem;
+  }
+  .option-itemsbox >>> .el-input__icon{
+    line-height: 32px !important;
+  }
+  .option-itemsbox >>> .el-select .el-input.is-focus .el-input__inner{
+    border-color: #3664D9;
+  }
+  .option-itemsbox >>> .el-select .el-input__inner:focus,.validate-input >>> .el-input__inner:focus{
+     border-color: #3664D9;
+  }
 </style>

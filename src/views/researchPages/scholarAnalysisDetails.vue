@@ -292,7 +292,7 @@
     height: 5.85rem;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 0.8rem 0;
     display: flex;
     align-items: center;
@@ -316,13 +316,13 @@
   }
   .header-input-box >>> .el-button{ 
     margin-left: 1.7rem;
-    background: #2B77BD;
+    background: #3664D9;
     color: #fff;
     border-radius: 20px;
     width: 5.8rem;
     height: 2rem;
     padding: 0;
-    font-size: 0.8rem;
+    font-size: 14px;
   }
   .icon-classbox{
     width: 100%;
@@ -333,10 +333,9 @@
   }
   .classbox-l{
     height: auto;
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
     font-weight: bold;
-    color: #2B77BD;
+    color: #3664D9;
     display: flex;
     align-items: center;
   }
@@ -353,8 +352,7 @@
     height: 0.8rem;
   }
   .classbox-r>span{
-    font-size: 0.65rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size:14px;
     font-weight: 400;
     color: #666666;
     padding-left: 0.5rem;
@@ -415,16 +413,14 @@
     flex-direction: column;
   }
   .r-info-name{
-    font-size: 1.2rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
     font-weight: bold;
     color: #333333;
-    line-height: 1.65rem;
+    line-height: 20px;
     text-align: left;
   }
   .r-info-jg{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #333333;
     line-height: 0.8rem;
@@ -449,29 +445,26 @@
     padding-left: 0;
   }
   .r-info-sjbox>div .sjitems-name{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #333333;
     line-height: 0.9rem;
   }
   .r-info-sjbox>div .sjitems-num{
-    font-size: 1rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: bold;
     color: #333333;
-    line-height: 1.2rem;
+    line-height: 20px;
     margin-top: 0.3rem;
   }
   .r-info-ly{
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #666666;
-    line-height: 1rem;
+    line-height: 20px;
     margin-top: 1rem;
   }
   .classNumber-box{
@@ -495,18 +488,16 @@
     padding-left: 2rem;
   }
   .classNumber-numbox-t{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #666666;
-    line-height: 1rem;
+    line-height: 20px;
   }
   .classNumber-numbox-n{
-    font-size: 1.4rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: bold;
     color: #333333;
-    line-height: 1.6rem;
+    line-height: 20px;
   }
   .effectmap_line_wr {
     height: 10.4rem;

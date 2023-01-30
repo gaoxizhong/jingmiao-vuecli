@@ -1,9 +1,15 @@
 <template>
   <div class="pages-b">
+
     <!-- 头部搜索模块 开始 -->
     <div class="literature-titlebox">
+      <!-- 返回 开始 -->
+      <a href="javascript:0;" class="box2-span" @click="fanhui_btn()">
+        <img src="../../assets/image/fan-left.png" alt=""> 返回
+      </a>
+      <!-- 返回 结束 -->
       <div class="header-input-box">
-        <el-input placeholder="输入机构名称..." v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)"></el-input>
+        <el-input placeholder="输入机构名称..." v-model="organization" class="input-with-select" @keydown.enter.native="searchEnterFun($event)"></el-input>
         <el-button slot="append" @click="headerInputClick">开始分析</el-button>
       </div>
     </div>
@@ -11,47 +17,46 @@
 
     <div class="icon-classbox">
       <div class="classbox-l">
-        <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-        <span>国防科技工业</span>
+        <span>相关信息</span>
       </div>
     </div>
 
     <div class="details-box">
-      <div class="details-ehbox">Defence Science & Technology Industry</div>
-      <div class="details-spanbox"><span>发文量：9600</span><span>被引量：4087</span><span>影响因子：暂无数据</span></div>
+      <div class="details-ehbox">{{infoData.organization}}</div>
+      <div class="details-spanbox"><span>发文量：{{infoData.achievement_num?infoData.achievement_num:0}}</span><span>被引量：{{infoData.citation_frequency?infoData.citation_frequency:0}}</span></div>
     </div>
     <!-- 详细分析 开始 -->
     <div class="icon-classbox">
       <div class="classbox-l">
-        <img src="../../assets/image/researchPages/icon-title.png" alt="" />
         <span>详细分析</span>
       </div>
     </div>
         <!-- tab展示 开始 -->
     <div class="accordion-box">
       <div class="acc-leftbox">
-        <div class="acc-l-items" :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
-        <div class="acc-l-items" :class="acc_tab == '2'?'active':''" @click="clickTab('2')">关联研究</div>
-        <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">代表期刊</div>
+          <div class="acc-l-items" :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
+          <div class="acc-l-items" :class="acc_tab == '2'?'active':''" @click="clickTab('2')">被引趋势</div>
+          <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">代表期刊</div>
+          <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">研究热点</div>
       </div>
       <div class="acc-rightbox">
-        
-        <div class="acc-pagebox" v-show="acc_tab == '1'">
-          <!-- <div class="acc-page-title">
-            <div></div>
-            <div></div>
-          </div> -->
+        <div class="acc-pagebox" id="acc-pagebox" v-show="acc_tab == '1'">
           <!-- 发文趋势 -->
           <div class="eacharts-box" id="eachartsTrends"></div>
         </div>
         <div class="acc-pagebox" v-show="acc_tab == '2'">
-          <!-- 关联研究 -->
-          <div class="eacharts-box" id="research"></div>
+          <!-- 被引趋势 -->
+          <div class="eacharts-box" id="eachartsCited"></div>
         </div>
         <div class="acc-pagebox" v-show="acc_tab == '3'">
-          <!-- 相关机构 -->
-          <div class="eacharts-box" id="RepresentativeBody"></div>
+          <!-- 代表期刊 -->
+          <div class="eacharts-box" id="RepresentativePeriodicals"></div>
         </div>
+        <div class="acc-pagebox" v-show="acc_tab == '4'">
+          <!-- 研究热点 -->
+          <div class="eacharts-box" id="research"></div>
+        </div>
+
 
       </div>
     </div>
@@ -64,7 +69,7 @@
 
 </template>
 <script>
-  import { getEsIndex } from "../../api/data";
+  import { getOrganizationDetail } from "../../api/data";
   export default {
     provide(){
       return {
@@ -79,20 +84,26 @@
       return {
         is_s:false,
         is_view: true,
-        headerInput:'', // 普通搜索
+        organization:'', // 普通搜索
         infoData:{},
+        acc_tab:'1',
       }
     },
     created(){
-      this.headerInput = this.$route.query.name;
-      this.getEsIndex(this.headerInput);
+      this.organization = this.$route.query.name;
+      this.getOrganizationDetail(this.organization);
     },
     methods:{
-
+      // 返回上一步
+      fanhui_btn(){
+        let that = this;
+        // that.$router.go(-1);  // ios 不支持
+        location.href = "javascript:history.go(-1);"
+      },
       // 普通搜索
       headerInputClick(){
-        let input_name = this.headerInput;
-        this.getEsIndex(input_name);
+        let organization = this.organization;
+        this.getOrganizationDetail(organization);
       },
       // 普通搜索 回车键点击
       searchEnterFun(e){
@@ -103,10 +114,10 @@
       },
 
       // 获取页面数据
-      getEsIndex(n){
+      getOrganizationDetail(n){
         let that = this;
         let pearms = {
-          name: n
+          organization: n
         };
         const loading = this.$loading({
           lock: true,
@@ -116,10 +127,12 @@
           target: document.querySelector("body")
         });
         that.infoDetail = {};
-        getEsIndex(pearms).then(res => {
+        getOrganizationDetail(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
             that.infoData = res.data.data;
+            // 发文趋势
+            that.getLineChart('eachartsTrends',res.data.data.post_trend);
           } else {
             this.$message.error({
               message: res.data.msg
@@ -137,25 +150,53 @@
         that.acc_tab = i;
         if(i == '1'){
           // 发文趋势
-          that.getLineChart('eachartsTrends','1');
+          that.getLineChart('eachartsTrends',that.infoData.post_trend);
         }
         if(i == '2'){
-          // 关联研究
-
+          // 被引趋势
+          that.getLineChart('eachartsCited',that.infoData.cited_trend);
         }
         if(i == '3'){
-          // 相关机构
-          that.getTopics('RepresentativeBody','3');
+          // 代表期刊
+          that.getTopics('RepresentativePeriodicals',that.infoData.top_album);
+        }
+         if(i == '4'){
+          // 热点研究
+          that.getTopics('research',that.infoData.research_topic);
         }
       },
       // 柱状图
       getTopics(i,data){
+        let that = this;
         let id = i;
         let infoData = data;
-        let data_val = [300, 450, 770, 203, 255, 188, 156,300, 450, 770, 203, 255, 188, 156],
-          xAxis_val = ["湖北", "福建", "山东", "广西", "浙江", "河南", "河北","湖北", "福建", "山东", "广西", "浙江", "河南", "河北"];
+        let data_val = [],
+          xAxis_v = [];
+        infoData.forEach(ele =>{
+          data_val.push(ele.doc_count);
+          xAxis_v.push(ele.key);
+        })
+        let xAxis_val = [];
+        xAxis_v.forEach( (ele,index)=>{
+          if( ele.indexOf(' ') != -1 ){
+            xAxis_val.push(ele.substring(0,ele.indexOf(' ')))
+          }else{
+             xAxis_val.push(ele)
+          }
+        })
+        
         let topics_eacharts = this.$echarts.init(document.getElementById(id));
+        var mWidth = $("#acc-pagebox").width();  // 获取父节点宽高
+        var mHeight = $("#acc-pagebox").height();
+        topics_eacharts.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         let option = {
+          grid: {
+            left: 20,
+            top: 40,
+            bottom: 0,
+            right: 40,
+            containLabel: true,
+          },
           backgroundColor: "#fff",
           tooltip: {
             trigger: "axis",
@@ -163,30 +204,53 @@
               type: "shadow",
             },
           },
+          toolbox: {
+            show: true,
+            itemSize: 16,
+            right:30,
+            top: 10,
+            feature: {
+              saveAsImage: {}  // 导出图片
+            }
+          },
           xAxis: [
             {
               type: "category",
               data: xAxis_val,
-              axisLine: {
+              axisLine: {  // x轴
                 lineStyle: {
                   color: "#D2D2D2",
                 },
               },
               axisLabel: {
-                color: "#999",
-                textStyle: {
-                  fontSize: 14,
+
+                formatter:function(value) { //X轴的内容
+                  var ret = ""; //拼接加\n返回的类目项
+                  var max = 10;  //每行显示的文字字数
+                  var val = value.length;  //X轴内容的文字字数
+                  var rowN = Math.ceil(val / max);  //需要换的行数
+                  if(rowN > 1){ //判断 如果字数大于2就换行
+                    for(var i = 0; i<rowN;i++){
+                      var temp = "";  //每次截取的字符串
+                      var start = i * max;  //开始截取的位置
+                      var end = start + max;  //结束截取的位置
+                      temp = value.substring(start,end)+ "\n";
+                      ret += temp;  //最终的字符串
+                    }
+                    return ret;
+                  }
+                  else {return value}
                 },
+                color: "#999",
+                fontSize: '0.7rem',
+                interval: 0, // 设置斜切
+                rotate: 20, // 设置斜切
               },
             },
           ],
           yAxis: [
             {
-              name: "单位:K",
-              nameTextStyle: {
-                color: "#999",
-                fontSize: 14,
-              },
+
               axisLine: {
                 show: true,
                 lineStyle: {
@@ -196,7 +260,7 @@
               axisLabel: { // y轴数字字体
                 show: true,
                 color: "#D2D2D2",
-                fontSize: 14,
+                fontSize: '0.7rem',
               },
               splitLine: { // y轴每级横线样式
                 show: true,
@@ -204,7 +268,7 @@
                   color: "#EFEFEF",
                 },
               },
-              splitNumber: 10,
+              splitNumber: 8,
             }
           ],
           series: [
@@ -237,23 +301,42 @@
           ],
         };
         option && topics_eacharts.setOption(option);
+        if(that.acc_tab == '4'){ // 相关机构
+        //跳转代码
+          topics_eacharts.on("click", function (d) {
+            that.$emit('setsickNess', '');
+            that.$router.push({
+              path:'/institutionalAnalysis',   //跳转的路径
+              query:{           //路由传参时push和query搭配使用 ，作用时传递参数
+                name:d.name,
+              }
+            })
+          });
+        }
       },
       // 折线图
       getLineChart(i,data){
         let id = i;
         let infoData = data;
+        let data_val = [];
+        let xAxis_val = [];
+        infoData.forEach(ele =>{
+          data_val.push(ele.doc_count);
+          xAxis_val.push(ele.key);
+        })
         let myChart = this.$echarts.init(document.getElementById(id));
-        let data_val = [2220, 1682, 2791, 3000, 4090, 3230, 2910, 2791, 3000, 4090, 2220, 1682, 2910],
-          xAxis_val = ["2010", "2011", "2012", "2013", "2014", "2015", "2016","2017","2018","2019","2020","2021","2022"];
+        var mWidth = $("#acc-pagebox").width();  // 获取父节点宽高
+        var mHeight = $("#acc-pagebox").height();
+        myChart.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         let option = {
           backgroundColor: "#fff",
-          // grid: {
-          //   left: 100,
-          //   top: "12%",
-          //   bottom: 30,
-          //   right: 40,
-          //   containLabel: true,
-          // },
+          grid: {
+              left: 20,
+              top: 60,
+              bottom: 30,
+              right: 40,
+              containLabel: true,
+            },
           tooltip: { // 鼠标浮动展示框样式
             show: true,
             backgroundColor: "#3664D9",
@@ -281,6 +364,15 @@
           //     color: "#5c6076",
           //   },
           // },
+          toolbox: {
+            show: true,
+            itemSize: 16,
+            right:30,
+            top: 10,
+            feature: {
+              saveAsImage: {}  // 导出图片
+            }
+          },
           xAxis: {  // X轴
             data: xAxis_val,
             boundaryGap: false,
@@ -288,11 +380,13 @@
               show: true,
               lineStyle: {
                 color: "#EFEFEF",
+                
               },
             },
             axisLabel: {
               textStyle: {
                 color: "#999",
+                fontSize: '0.7rem',
               },
             },
             axisTick: {
@@ -300,11 +394,7 @@
             },
           },
           yAxis: {
-            name: "单位:K",
-            nameTextStyle: {
-              color: "#999",
-              fontSize: 14,
-            },
+
             axisLine: {
               show: true,
               lineStyle: {
@@ -314,6 +404,7 @@
             axisLabel: {
               textStyle: {
                 color: "#999",
+                fontSize: '0.7rem',
               },
             },
             splitLine: {
@@ -362,7 +453,7 @@
                   color: "#3664D9",
                   shadowBlur: 44,
                   label: {
-                    show: true,
+                    show: false,
                     position: "top",
                     textStyle: {
                       color: "#000",
@@ -380,7 +471,7 @@
           ],
         };
         myChart.setOption(option);
-      }
+      },
 
 
 
@@ -408,11 +499,12 @@
     height: 5.85rem;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 0.8rem 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
   }
   .header-input-box{
     display: flex;
@@ -426,19 +518,21 @@
     width: 30rem;
   }
   .header-input-box >>> .el-input__inner{
-    height: 2rem;
-    line-height: 2rem;
+    height: 32px;
+    line-height: 32px;
     border: 1px solid #E3E3E3;
   }
   .header-input-box >>> .el-button{ 
     margin-left: 1.7rem;
-    background: #2B77BD;
+    background: #3664D9;
     color: #fff;
-    border-radius: 20px;
-    width: 5.8rem;
-    height: 2rem;
+    border-radius: 4px;
+    width: 82px;
+    height: 32px;
+    line-height: 32px;
     padding: 0;
-    font-size: 0.8rem;
+    font-size: 14px;
+    border: 0;
   }
   .icon-classbox{
     width: 100%;
@@ -449,10 +543,8 @@
   }
   .classbox-l{
     height: auto;
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
     font-weight: bold;
-    color: #2B77BD;
     display: flex;
     align-items: center;
   }
@@ -469,8 +561,7 @@
     height: 0.8rem;
   }
   .classbox-r>span{
-    font-size: 0.65rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #666666;
     padding-left: 0.5rem;
@@ -481,14 +572,14 @@
     background: #FFFFFF;
     box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
     border-radius: 6px;
-    padding: 1.1rem 2.3rem;
+    padding: 1.1rem 2rem;
   }
   .details-ehbox{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #333333;
     line-height: 1.7rem;
+    text-align: left;
   }
   .details-spanbox{
     display: flex;
@@ -496,12 +587,27 @@
     justify-content: flex-start;
   }
   .details-spanbox>span{
-    font-size: 0.7rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 14px;
     font-weight: bold;
     color: #333333;
     line-height: 1.7rem;
     padding-right: 4.5rem;
+  }
+  .literature-titlebox>a.box2-span{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 14px;
+    font-weight: 400;
+    color: #666;
+    position: absolute;
+    left: 1rem;
+    top: 0.5rem;
+  }
+  .box2-span img{
+    width: 0.6rem;
+    height: 0.7rem;
+    margin-right: 0.4rem;
   }
 
 </style>

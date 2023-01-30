@@ -34,9 +34,12 @@
             <i class="el-icon-location"></i>
             <span slot="title">科研灵感探索</span>
           </template>
-          <el-menu-item index="/popularLiterature">
+          <el-submenu index="3">
             <span slot="title">文献库</span>
-          </el-menu-item>
+            <el-menu-item index="/popularLiterature">
+              <span>文献库</span>
+            </el-menu-item>
+          </el-submenu>
           <el-submenu index="2">
             <span slot="title">灵感发现</span>
             <el-menu-item index="/subjectAnalysis">学科分析</el-menu-item>
@@ -128,10 +131,10 @@
         this.isColl = !this.isColl;
       },
       handleOpen(key, keyPath) {
-        console.log(key, keyPath);
+        // console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
-        console.log(key, keyPath);
+        // console.log(key, keyPath);
       },
       setsickNess(){
         this.is_view = false;
@@ -153,6 +156,9 @@
 /* ==============  滚动条样式   ==================== */
 
 /* ==============  滚动条样式   ==================== */
+  *{
+    font-family:"PingFang SC", "Noto Sans SC", "微软雅黑", "黑体", Helvetica, Verdana, sans-serif;
+  }
   .el-container{
     overflow: hidden;
   }
@@ -185,14 +191,20 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    height:2.8rem;
-    line-height:2.8rem;
-    font-size: 0.8rem !important;
+    height:40px;
+    line-height:40px;
+    font-size: 14px !important;
     border-bottom: 1px solid #e9e9e94f;
+  }
+  .el-aside >>> .el-submenu .el-submenu__title:hover{
+    background: #DBEAFF;
+  }
+  .el-aside >>> .el-submenu .el-submenu__title span{
+    padding-left: 0.5rem;
   }
   .el-main{
     background: #FAFBFF;
-    padding: 5.1rem 1.5rem 0.75rem 15rem;
+    padding: 4.6rem 16px 16px 216px;
     box-sizing: border-box;
   }
   .l-content{
@@ -202,8 +214,8 @@
     align-items: center;
   }
   .l-content>img{
-    width: 6.65rem;
-    height: 1.55rem;
+    width: auto;
+    height: 2.3rem;
     display: inline-block;
   }
 
@@ -219,61 +231,64 @@
     cursor: pointer;
   }
   .r-toLogin{
-    font-size: 0.9rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #333333;
     margin-left: 1rem;
   }
   .r-toLogin:hover{
-    color: #2B77BD;
+    color: #3664D9;
   }
 
   .el-menu{
     text-align: left;
     height: 100%;
+    padding: 0 0.5rem;
   }
   .el-menu-vertical-demo:not(.el-menu--collapse){
-    width: 13.8rem;
+    width: 200px;
   }
 
   
   .el-submenu .el-menu-item {
-    width: 13.8rem;
-    height: 2.5rem;
-    line-height: 2.5rem;
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+    line-height: 38px;
     justify-content: flex-start;
     text-align: left;
     display: flex;
-    font-size: 0.8rem !important;
+    font-size: 14px !important;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    background: rgba(49, 130, 211, 0.048);
+    /* background: rgba(49, 130, 211, 0.048); */
+    color: #666;
+    
   }
   .el-submenu .el-menu-item:hover {
-    background-color: #ecf5ff;
-    color: #1674CF !important;
-    font-weight: bold;
+    background-color: #DBEAFF;
+    color: #3664D9 !important;
 }
   .el-submenu .el-menu-item{
     width: 100%
   }
   .el-menu-item.is-active{
     opacity: 1;
-    color: #1674CF !important;
-    font-weight: bold;
+    color: #3664D9 !important;
+    background: #DBEAFF;
+   
   }
   .el-icon-arrow-down:before{
     color: #000;
   }
   .isCollapse-box{
-    width: 13.8rem;
+    width: 200px;
     display: flex;
     align-items: center;
-    height: 3rem;
-    font-size: 0.8rem;
+    height: 40px;
+    font-size: 14px;
     padding: 0 1.5rem;
     box-sizing: border-box;
     border-bottom: 1px solid #E1E1E1;
@@ -283,6 +298,18 @@
     height: 0.9rem;
   }
   .isCollapse-box .isCollapse-s{
-    padding-left: 1rem;
+    padding-left: 0.5rem;
+  }
+  .el-submenu [class^=el-icon-]{
+    width: auto;
+    margin-right: 0;
+    width: 16px;
+    height: 16px;
+  }
+  .el-aside>ul>li >>> .el-menu li ul{
+    background: #3182d30c;
+  }
+  .el-aside >>> .el-submenu__icon-arrow{
+    right: 4px;
   }
 </style>

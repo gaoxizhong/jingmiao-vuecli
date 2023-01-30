@@ -4,28 +4,42 @@ const getLine_eacharts = (d,i,t) =>{
         let id = i;
         let newData = d;
         let myChart = taht.$echarts.init(document.getElementById(id));
-        let data_val = [2220, 1682, 2791, 3000, 4090, 3230, 2910, 2791, 3000, 4090, 2220, 1682, 2910],
-          xAxis_val = ["2010", "2011", "2012", "2013", "2014", "2015", "2016","2017","2018","2019","2020","2021","2022"];
+        let data_val = [];
+        let xAxis_val = [];
+        newData.forEach(ele =>{
+          data_val.push(ele.doc_count);
+          xAxis_val.push(ele.key);
+        })
+       
         let option = {
           backgroundColor: "#fff",
           grid: {  // 控制图标在模块内距离边框的距离，不设置会自动居中
             left: 0,
-            top: 14,
+            top: 20,
             bottom: 0,
-            right: 14,
+            right: 10,
             containLabel: true,
           },
           tooltip: { // 鼠标浮动展示框样式
             show: true,
-            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            backgroundColor: "#fff",
             textStyle: {
-              color: "#fff",
+              color: "#333",
             },
             formatter: "{b}:{c}",
             borderWidth:0
             // borderColor: "rgba(0, 0, 0, 1)",
             // borderWidth: 0.5,
             // extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
+          },
+          toolbox: {
+            show: true,
+            itemSize: 16,
+            right:-4,
+            top: -4,
+            feature: {
+              saveAsImage: {}  // 导出图片
+            }
           },
           xAxis: {  // X轴
             data: xAxis_val,
@@ -37,9 +51,27 @@ const getLine_eacharts = (d,i,t) =>{
               },
             },
             axisLabel: {
-              textStyle: {
-                color: "#999",
+              formatter:function(value) { //X轴的内容
+                var ret = ""; //拼接加\n返回的类目项
+                var max = 10;  //每行显示的文字字数
+                var val = value.length;  //X轴内容的文字字数
+                var rowN = Math.ceil(val / max);  //需要换的行数
+                if(rowN > 1){ //判断 如果字数大于2就换行
+                  for(var i = 0; i<rowN;i++){
+                    var temp = "";  //每次截取的字符串
+                    var start = i * max;  //开始截取的位置
+                    var end = start + max;  //结束截取的位置
+                    temp = value.substring(start,end)+ "\n";
+                    ret += temp;  //最终的字符串
+                  }
+                  return ret;
+                }
+                else {return value}
               },
+              color: "#999",
+              fontSize: '0.7rem',
+              interval: 0, // 设置斜切
+              rotate: 40 // 设置斜切
             },
             axisTick: {
               show: false,
@@ -55,6 +87,7 @@ const getLine_eacharts = (d,i,t) =>{
             axisLabel: {
               textStyle: {
                 color: "#999",
+                fontSize: '0.7rem',
               },
             },
             splitLine: {
@@ -129,12 +162,18 @@ const getForceRelation_eacharts = (d,i,t) =>{
         let newData = d;
         let myChart = taht.$echarts.init(document.getElementById(id));
 
-        var baseName = "项目";
-        var chartData = {
-          '人员': [],
-          '机构': [],
-          '文献': [],
-        };
+        var baseName = newData.search;
+        let k = [];
+        newData.keyword.forEach(ele =>{
+          if(ele != baseName){
+            k.push(ele)
+          }
+        })
+        
+        var chartData = {};
+        k.forEach(ele =>{
+          chartData[ele] = [];
+        })
         var datas = [
           {
             name: baseName || "",
@@ -172,6 +211,15 @@ const getForceRelation_eacharts = (d,i,t) =>{
           },
           tooltip: {},
           animationDurationUpdate: 1500,
+          toolbox: {
+            show: true,
+            itemSize: 16,
+            right:-4,
+            top: -4,
+            feature: {
+              saveAsImage: {}  // 导出图片
+            }
+          },
           label: {
             normal: {
               show: true,
@@ -268,6 +316,15 @@ const getForceFloating_eacharts = (d,i,t) =>{
         let myChart = that.$echarts.init(document.getElementById(id));
 
         let option = {
+              toolbox: {
+                show: true,
+                itemSize: 16,
+                right:0,
+                top: 0,
+                feature: {
+                  saveAsImage: {}  // 导出图片
+                }
+              },
             // 图表标题
             title: {
               show: false, //显示策略，默认值true,可选为：true（显示） | false（隐藏）
@@ -306,7 +363,7 @@ const getForceFloating_eacharts = (d,i,t) =>{
                 type: "graph",
                 layout: "force",
                 force: {
-                  repulsion: 300,
+                  repulsion: 80,
                   edgeLength: 10,
                 },
                 roam: true,
@@ -325,6 +382,7 @@ const getForceFloating_eacharts = (d,i,t) =>{
         myChart.setOption(option);
         //跳转代码
         myChart.on("click", function (d) {
+          that.$emit('setsickNess', '');
           that.$router.push({
             path:'/literatureAuthor',   //跳转的路径
             query:{           //路由传参时push和query搭配使用 ，作用时传递参数

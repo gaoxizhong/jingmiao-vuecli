@@ -8,7 +8,6 @@
 *{
   padding: 0;
   margin: 0;
-  font-family:Source Han Serif CN;
   box-sizing: border-box;
 }
 h6 {
@@ -39,7 +38,7 @@ button{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #000;
 }
 
 #nav {
@@ -119,6 +118,7 @@ button{
     border: 1px solid #dfdcdc;
     transform-origin: 0 0;
     transform: scale(0.5);
+    z-index: -1;
   }
 
   table tbody tr{
@@ -140,6 +140,7 @@ button{
     border: 1px solid #dfdcdc;
     transform-origin: 0 0;
     transform: scale(0.5);
+    z-index: -1;
   }
 @media only screen and (max-width: 1366px){
   .el-main{

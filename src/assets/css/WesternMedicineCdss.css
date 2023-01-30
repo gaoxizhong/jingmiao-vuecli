@@ -461,6 +461,7 @@ table {
     z-index: 19;
     padding: 0 20px;
     background: #fff;
+    padding-bottom: 20px;
   }
   .srcdiv-box{
     width: 100%;
@@ -794,7 +795,6 @@ table {
   }
   .yp-position-nbox.is-nofr{
     padding: 0 10px 0 10px;
-
   }
   .yp-info-box {
     width: 100%;

@@ -8,11 +8,11 @@
             <span class="l-content-title-span">{{tag_name}}</span>
           </div>
 
-          <div class="header-input-box" v-if="!is_search">
+          <!-- <div class="header-input-box" v-if="!is_search">
             <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="headerInput" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
               <el-button slot="append" @click="headerInputClick" >搜索</el-button>
             </el-input>
-          </div>
+          </div> -->
 
           <div class="r-content" v-if="phone">
             <div class="position-relative ms-2 dropdown">
@@ -281,8 +281,8 @@ export default {
   },
   created(){
       let headerNavItems = [
-        {id:1,name:'西医知识库',path:'/RepositoryPage',tag_pages:'xyzsk'},
-        {id:2,name:'中医知识库',path:'/RepositoryPage',tag_pages:'zyzsk'},
+        {id:1,name:'西医知识库',path:'/SearchPages',tag_pages:'xyzsk'},
+        {id:2,name:'中医知识库',path:'/SearchPages',tag_pages:'zyzsk'},
         // {id:3,name:'科研探索',path:'/DocumentGuidePages',tag_pages:'Document'},
         {id:3,name:'科研探索',path:'/popularLiterature',tag_pages:'Document'},
         // {id:4,name:'指南',path:'/DocumentGuidePages',tag_pages:'Guide'},
@@ -351,8 +351,8 @@ export default {
           path,
         });
       }else{
-        this.nav_id = id;
-        this.tag_name = name;
+        // this.nav_id = id;
+        // this.tag_name = name;
         this.$emit('sickNess');
         // this.$router.replace({
         //   path,  

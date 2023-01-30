@@ -4,7 +4,7 @@ import store from '../store/index'
 
 
 // import Main from '../views/Main.vue'
-import Login from '../views/Login.vue'
+import Login from '../views/login.vue'
 import QAhome from '../views/QAhome.vue'
 import VideoDetails from '../views/VideoDetails.vue'
 import inquiryResultPage from '../views/inquiryResultPage.vue'
@@ -347,7 +347,7 @@ const routes = [
         name: 'institutionalAnalysis',
         component: () => import('@/views/researchPages/institutionalAnalysis'),
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           scollTopPosition: 0,
           requireAuth:true,
         }

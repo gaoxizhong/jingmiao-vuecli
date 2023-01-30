@@ -1,166 +1,172 @@
 <template>
-  <div class="c-box">
-    <!-- 左侧筛选模块 开始 -->
-    <div class="c-filter-box">
-      <div class="filter-title">
-        <div class="l-titlebox-1">
-          <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-          <span>筛选条件</span>
-        </div>
-        <div class="l-titlebox-2">
-          <!-- <span>共查询到22条结果</span> -->
-        </div>
-      </div>
-      <div class="filter-inputbox">
-        <label>文献标题</label>
-        <el-input v-model="filterData.filter_litTitle" placeholder="文献标题"></el-input>
-      </div>
-      <div class="filter-inputbox">
-        <label>第一作者</label>
-        <el-input v-model="filterData.filter_litAuthor" placeholder="第一作者"></el-input>
-      </div>
-      <div class="filter-inputbox">
-        <label>所属期刊</label>
-        <el-input v-model="filterData.filter_litJournal" placeholder="所属期刊"></el-input>
-      </div>
-      <!-- <div class="input-area">
-        <label>影响指数</label>
-        <div class="input-column">
-          <input type="text" v-model="filterData.minInput" placeholder="最小值"/>
-          <span>~</span>
-          <input type="text" v-model="filterData.maxInput" placeholder="最大值"/>
-        </div>
-      </div> -->
-      <div class="filter-btnbox">
-        <div @click="clickReset">重置</div>
-        <div class="filter-btn2" @click="clickScreening">筛选</div>
-      </div>
-    </div>
-    <!-- 左侧筛选模块 结束 -->
-    <!-- 中间文献列表模块 开始 -->
-    <div class="c-list-box">
-      <div class="list-title">
-        <span class="list-title-l">找到约{{total}}条相关结果</span>
-        <div class="list-title-r">
-          <span v-for="(item,index) in sortData" :key="index" @click="clickSorting(index)">{{item.name}}<i :class="item.status == 1?'el-icon-caret-bottom':'el-icon-caret-top'"></i></span>
-        </div>
-      </div>
-      <!-- 列表 -->
-      <div class="list-itembox">
-        <!-- ===  单条列表 开始 ===  -->
-        <div class="list-item" v-for="(item,index) in listData" :key="index">
-          <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5)">
-            <div class="listitems-b">
-              <div class="list-item-title" :title="item.title">{{item.title}}</div>
-              <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
-            </div>
-            <div class="list-item-subt">{{item.subject}}</div>
-            <div class="list-item-text" >{{item.abstract}}</div>
-            <div class="list-item-z" v-if="item.cn_name">
-              <label class="zuozhe-box">期刊：</label>
-              <div class="tap-top-span">
-                <a href="javascript:0;" @click.stop="">《{{item.cn_name}}》</a>
-                <span style="font-size: 0.7rem;color: #333;">{{item.first_time}}年</span>
-              </div>
-            </div>
-            <div class="list-item-z">
-              <label class="zuozhe-box">相关作者：</label>
-              <div class="tap-top-span">
-                <a href="javascript:0;" v-for="(items,idx) in item.author" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
-              </div>
-            </div>
-          </a>
-          <div class="item-btn-box">
-            <div class="asub-box">
-              <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection(index,item.periodical_md5,item.is_collection)"><i :class="item.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>收藏</a>
-              <!-- <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>在线阅读</a> -->
-            </div>
+  <div>
 
-            <div class="item-r">
-              <span>点击：{{item.click_count?item.click_count:0}}</span>
-              <span>被引：{{item.total_citations_number}}</span>
-              <span>下载：{{item.total_download_times}}</span>
+    <div class="c-box">
+
+      <div style="margin-right:1rem;flex:1;">
+        <!-- 筛选模块 开始 -->
+        <div class="c-filter-box" :class="searchBarFixed?'searchBarFixed':''" id="searchBar">
+          <div class="c-filter-l">
+            <div class="filter-inputbox">
+              <label>标题:</label>
+              <el-input v-model="filterData.filter_litTitle" placeholder="标题"></el-input>
+            </div>
+            <div class="filter-inputbox">
+              <label>作者:</label>
+              <el-input v-model="filterData.filter_litAuthor" placeholder="作者"></el-input>
+            </div>
+            <div class="filter-inputbox">
+              <label>所属期刊:</label>
+              <el-input v-model="filterData.filter_litJournal" placeholder="所属期刊"></el-input>
+            </div>
+            <div class="input-area">
+              <label>时间范围:</label>
+              <div class="input-column">
+                <input v-model="filterData.minYear" placeholder="年" placeholder-style=" color: red;" />
+                <span>~</span>
+                <input v-model="filterData.maxYear"  placeholder="年"/>
+              </div>
+            </div> 
+          </div>
+          <div class="filter-btnbox">
+            <div @click="clickReset">重置</div>
+            <div class="filter-btn2" @click="clickScreening">筛选</div>
+          </div>
+        </div>
+        <!-- 筛选模块 结束 -->
+        <!-- 中间文献列表模块 开始 -->
+        <div class="c-list-box">
+          <div class="list-title">
+            <span class="list-title-l">找到约{{total}}条相关结果</span>
+            <div class="list-title-r">
+              <span v-for="(item,index) in sortData" :key="index" :class="item.is_type?'is-type':''" @click="clickSorting(index,item.order_field,item.order)">{{item.name}}<i :class="item.order == 'desc'?'el-icon-caret-bottom':'el-icon-caret-top'"></i></span>
             </div>
           </div>
-        </div> 
-        <!-- ===  单条列表 结束 ===  -->
-        <el-empty description="暂无数据..." v-if="!listData"></el-empty>
-      </div>
-      <!-- 分页展示 -->
-      <div class="pagination-box">
-        <div class="el-pagination is-background">
-          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
-          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
-          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
-          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
-        </div>
-      </div>
-    </div>
-    <!-- 中间文献列表模块 结束 -->
+          <!-- 列表 -->
+          <div class="list-itembox" ref="get">
+            <!-- ===  单条列表 开始 ===  -->
+            <div class="list-item" v-for="(item,index) in listData" :key="index">
+              <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
+                <div class="listitems-b">
+                  <div class="list-item-title" :title="item.title" v-html="item.title"></div>
+                  <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
+                </div>
+                <div class="list-item-text" v-html=" item.abstract?item.abstract:'暂无' "></div>
+                <div class="list-item-z" v-if="item.album">
+                  <label class="zuozhe-box">期刊：</label>
+                  <div class="tap-top-span">
+                    <a href="javascript:0;" @click.stop="" v-html="item.album"></a>
+                  </div>
+                </div>
+                <div class="list-item-z">
+                  <label class="zuozhe-box" >作者：</label>
+                  <div class="tap-top-span">
+                    <a href="javascript:0;" v-for="(items,idx) in item.author_list" :key="idx" @click.stop="goToauthor(items)" v-html="items"></a>
+                  </div>
+                </div>
+                <div class="list-item-z">
+                  <label class="zuozhe-box">关键词：</label>
+                  <div class="tap-top-span">
+                    <a href="javascript:0;" v-for="(items,idx) in item.keyword_list" :key="idx" @click.stop="" v-html="items"></a>
+                  </div>
+                </div>
+              </a>
+              <div class="item-btn-box">
+                <div class="asub-box">
+                  <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection(index,item.periodical_md5,item.is_collection,item.title)"><i :class="item.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>{{item.is_collection == 2 ? '收藏' :'取消收藏'}}</a>
+                  <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>原文链接</a>
+                </div>
 
-    <!-- 右侧文献可视化分析模块 开始 -->
-    <div class="c-eacharts-box">
-      <!-- 介绍 开始-->
-      <div class="eacharts-info-nambox" v-if="keywordInfo.keyword">
-        <div class="icon-classbox">
-          <div class="classbox-l">
-            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-            <span>{{keywordInfo.keyword?keywordInfo.keyword:''}}</span>
+                <div class="item-r">
+                  <span>点击量：{{item.click_count?item.click_count:0}}</span>
+                  <span>被引量：{{item.citation_relate_count?item.citation_relate_count:0}}</span>
+                  <!-- <span>下载量：{{item.total_download_times?item.total_download_times:0}}</span> -->
+                </div>
+              </div>
+            </div> 
+            <!-- ===  单条列表 结束 ===  -->
+            <el-empty description="暂无数据..." v-if="!listData"></el-empty>
+          </div>
+          <!-- 分页展示 -->
+          <div class="pagination-box">
+            <div class="el-pagination is-background">
+              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
+              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
+              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
+              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
+            </div>
           </div>
         </div>
-        <!-- <div class="info-box info-box-1">{{keywordInfo.keyword_desc?keywordInfo.keyword_desc:''}}</div> -->
-        <div class="info-box">{{keywordInfo.keyword_desc?keywordInfo.keyword_desc:''}}</div>
+        <!-- 中间文献列表模块 结束 -->
       </div>
-      <!-- 介绍 结束-->
-      <!-- 研究趋势 开始 -->
-      <div class="eacharts-itemsbox">
-        <div class="icon-classbox">
-          <div class="classbox-l">
-            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-            <span>研究趋势</span>
+
+      <!-- 右侧文献可视化分析模块 开始 -->
+      <div class="c-eacharts-box">
+        <!-- 介绍 开始-->
+        <!-- <div class="eacharts-info-nambox">
+          <div class="icon-classbox">
+            <div class="classbox-l">
+              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
+              <span>{{keywordInfo.keyword?keywordInfo.keyword:''}}</span>
+            </div>
+          </div>
+          <div class="info-box" :class="is_h && shoow_status ?'info-box-1':'' ">{{keywordInfo.keyword_desc?keywordInfo.keyword_desc:''}}</div>
+          <el-empty description="暂无数据..." v-if="!keywordInfo.keyword_desc"></el-empty>
+          <div class="info-box-z" v-if="is_h">
+            <a href="javascript:0;" class="info-box-zt" @click.stop="clickShow(shoow_status)">{{shoow_status?'展开':'收起'}}</a>
+          </div>
+        </div> -->
+        <!-- 介绍 结束-->
+        <!-- 研究趋势 开始 -->
+        <div class="eacharts-itemsbox">
+          <div class="icon-classbox">
+            <div class="classbox-l">
+              <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
+              <span>研究趋势</span>
+            </div>
+          </div>
+          <div class="eacharts-ch-box ResearchTrends">
+            <div id="ResearchTrends" style="width: 100%;height:100%;"></div>
           </div>
         </div>
-        <div class="eacharts-ch-box ResearchTrends">
-          <div id="ResearchTrends" style="width: 100%;height:100%;"></div>
-        </div>
-      </div>
-      <!-- 研究趋势 结束 -->
-      <!-- 关联研究 开始 -->
-      <div class="eacharts-itemsbox">
-        <div class="icon-classbox">
-          <div class="classbox-l">
-            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-            <span>关联研究</span>
+        <!-- 研究趋势 结束 -->
+        <!-- 关联研究 开始 -->
+        <div class="eacharts-itemsbox">
+          <div class="icon-classbox">
+            <div class="classbox-l">
+              <span>关联研究</span>
+            </div>
+          </div>
+          <div class="eacharts-ch-box AssociationStudy">
+            <div id="AssociationStudy" style="width: 100%;height:100%;"></div>
           </div>
         </div>
-        <div class="eacharts-ch-box AssociationStudy">
-          <div id="AssociationStudy" style="width: 100%;height:100%;"></div>
-        </div>
-      </div>
-      <!-- 关联研究 结束 -->
-      <!-- 相关学者 开始 -->
-      <div class="eacharts-itemsbox">
-        <div class="icon-classbox">
-          <div class="classbox-l">
-            <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-            <span>相关学者</span>
+        <!-- 关联研究 结束 -->
+        <!-- 相关学者 开始 -->
+        <div class="eacharts-itemsbox">
+          <div class="icon-classbox">
+            <div class="classbox-l">
+              <span>相关学者</span>
+            </div>
+          </div>
+          <div class="eacharts-ch-box RelatedScholars">
+            <div id="RelatedScholars" style="width: 100%;height:100%;"></div>
           </div>
         </div>
-        <div class="eacharts-ch-box RelatedScholars">
-          <div id="RelatedScholars" style="width: 100%;height:100%;"></div>
-        </div>
+        <!-- 相关学者 结束 -->
       </div>
-      <!-- 相关学者 结束 -->
+      <!-- 右侧文献可视化分析模块 结束 -->
     </div>
-    <!-- 右侧文献可视化分析模块 结束 -->
   </div>
+
 
 </template>
 <script>
-  import { literatureDocSearch,clickCollection } from "../../api/data";
-  import { getLine_eacharts,getForceRelation_eacharts,getForceFloating_eacharts } from "../../assets/js/getEcharts";
+  import { literatureDocSearch,clickCollection,getTitleOrganization } from "../../api/data";
+  import { getLine_eacharts,getForceRelation_eacharts } from "../../assets/js/getEcharts";
   export default {
     props:{
+      tag: Number, // 请求数据时 1、普通 2、高级
       search_type: String, // single、普通 many、高级
       headerInput:String, // 普通搜索内容
       date:String, // 高级时间范围
@@ -181,23 +187,49 @@
           filter_litJournal:'', // 所属期刊
           minInput:'', // 影响指数
           maxInput:'', // 影响指数
+          minYear:'',  // 时间范围
+          maxYear:'', // 时间范围
         },
         sortData:[
-          {name:'时间',status:'2'},
-          {name:'被引量',status:'2'},
-          {name:'点击量',status:'2'},
-          {name:'下载量',status:'2'},
+          {name:'时间',order_field:'year',order:'desc',is_type:true},
+          {name:'被引量',order_field:'citation_relate_count',order:'desc',is_type:false},
+          {name:'点击量',order_field:'click_count',order:'desc',is_type:false},
+          // {name:'下载量',status:'1'},
         ],
         is_return: true,
         authorsList:[],  // 相关学者--- 气泡图数据
+        research_trends:[], // 研究趋势
+        associationStudy:{}, // 关联研究
         keywordInfo:{},  // 介绍
+        shoow_status: true,
+        is_h: true,
+        searchBarFixed: false
       }
     },
     created(){
-
        this.literatureDocSearch();
     },
+    mounted () {
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    destroyed () {
+      window.removeEventListener('scroll', this.handleScroll)
+    },
     methods:{
+      // 监听滚动
+      handleScroll () {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        var offsetTop = document.querySelector('#searchBar').offsetTop;
+        if (scrollTop > offsetTop) {
+          this.searchBarFixed = true
+        } else {
+          this.searchBarFixed = false
+        }
+      },
+      // 点击展开、收起
+      clickShow(s){
+        this.shoow_status = !s;
+      },
       // 点击重置
       clickReset(){
         this.filterData.filter_litTitle = '';
@@ -205,12 +237,20 @@
         this.filterData.filter_litJournal = '';
         this.filterData.minInput = '';
         this.filterData.maxInput = '';
+        this.filterData.minYear = '';  // 时间范围
+        this.filterData.maxYear = ''; // 时间范围
+        this.search_type = 'many';
       },
       // 点击中间左侧筛选
       clickScreening(){
         let that = this;
         let advancedCondition = that.advancedCondition;
         let filterData = that.filterData;
+        if( filterData.filter_litTitle == '' && filterData.filter_litAuthor == '' && filterData.filter_litJournal =='' 
+          && filterData.minYear == '' && filterData.maxYear == ''  ){
+            that.$message.error('请填写内容！');
+            return
+        }
         if(filterData.filter_litTitle){
           advancedCondition.push({
             select_field: 'title',
@@ -220,12 +260,14 @@
           })
         }
         if(filterData.filter_litAuthor){
+
           advancedCondition.push({
             select_field: 'author',
             field_value: filterData.filter_litAuthor,
             select_type: 'match',
             select_condition: 'and',
           })
+          
         }
         if(filterData.filter_litJournal){
           advancedCondition.push({
@@ -235,19 +277,26 @@
             select_condition: 'and',
           })
         }
-
+        if(filterData.minYear || filterData.maxYear){
+          advancedCondition.push({
+            select_field: 'year',
+            field_value: (that.filterData.minYear?that.filterData.minYear:'1900') + ',' + (that.filterData.maxYear?that.filterData.maxYear:'2300'),
+            select_type: 'match',
+            select_condition: 'and',
+          })
+        }
         that.current_page = 1;
-        that.literatureDocSearch();
-
+        that.literatureDocSearch('crosswise');
       },
       //点击收藏
-      clickCollection(i,md,c){
+      clickCollection(i,md,c,t){
         let that = this;
         let index = i;
         let uid = that.uid;
         let md5 = md;
         let col = c;
         let tag = '';
+        let title = t;
         if(col == 1){
           // 1、已收藏  2、未收藏
           tag = 'cancelCollection';
@@ -264,7 +313,8 @@
         let p = {
           uid,
           md5,
-          tag
+          tag,
+          title
         }
 
         console.log(p)
@@ -306,28 +356,69 @@
 
       },
       // 点击排序
-      clickSorting(i){
+      clickSorting(i,t,s){
         let that = this;
         let index = i;
+        let type = t;
+        let order = s;
         let sortData = that.sortData;
-        sortData[index].status = 1;
+        sortData.forEach((ele,ind) =>{
+          if(index == ind){
+            ele.is_type = true;
+            if(order == 'desc'){
+              ele.order = 'asc';
+            }else{
+              ele.order = 'desc';
+            }
+          }else{
+            ele.is_type = false;
+          }
+        })
         that.sortData = sortData;
+        that.current_page = 1;
+        that.literatureDocSearch();
       },
       // 点击作者
       goToauthor(n){
         let that = this;
         let name = n;
-        that.$router.push({
-          path:'/literatureAuthor',   //跳转的路径
-          query:{           //路由传参时push和query搭配使用 ，作用时传递参数
-            name,
+        let p = {
+          author: name,
+          tag:'',
+        }
+        getTitleOrganization(p).then(res =>{
+          if(res.data.code == 0){
+            let data = res.data.data;
+            if(!data){
+              that.$message({
+                message: '暂无数据!',
+              });
+              return
+            }
+            that.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
+            that.$router.push({
+              path:'/literatureAuthor', 
+              query:{     
+                author: name,
+                organization: res.data.data.org,
+              }
+            })
+          }else{
+            that.$message.error({
+              message: res.data.msg
+            });
           }
+        }).catch(e =>{
+          console.log(e)
         })
       },
+
+
       // 点击列表
-      goToDetails(i){
+      goToDetails(i,u){
         let that = this;
         let periodical_md5 = i;
+        let uniq_id = u;
         // this.$emit('setsickNess', '');
         this.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
         // 新页面打开
@@ -335,6 +426,7 @@
           path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             periodical_md5,
+            uniq_id
           }
         })
       },
@@ -351,17 +443,37 @@
       },
 
       // 获取页面数据--- 搜索
-      literatureDocSearch(){
+      literatureDocSearch(n){
         let that = this;
-        let search_type = that.search_type; // single、普通 many、高级
+        let tag = that.tag;
         let headerInput= that.headerInput; // 普通搜索内容
         let date= that.date; // 高级时间范围
         let advancedCondition= that.advancedCondition; // 高级 选择数据
+        if(advancedCondition.length >= 2){
+          advancedCondition[0].select_condition = advancedCondition[1].select_condition;
+        }else{
+          advancedCondition[0].select_condition = '';
+        }
+        let year = that.filterData.minYear == ''?'': (that.filterData.minYear) + ',' + (that.filterData.maxYear);
+        let sele_order= '';
+        let sele_order_field= '';
+
+        let sortData = that.sortData;
+        sortData.forEach(ele =>{
+          if(ele.is_type == true){
+            sele_order = ele.order;
+            sele_order_field = ele.order_field
+          }
+        })
         let params = {
           page: that.current_page,
           uid: that.uid,
-          search_type : 'many',
+          search_type : n == 'crosswise'?'crosswise':'many',
+          search_tag: tag,  // 1 普通 2高级
           condition : advancedCondition,
+          year,
+          order_field: sele_order_field,
+          order: sele_order,
         }
       //   if(search_type == 'single'){
       //     params.search_type = search_type;
@@ -392,19 +504,35 @@
             that.total_page = total_page;
             that.total = total;
             that.listData = listData;
-
-            let authorsList = res.data.data.authors;
             let keywordInfo = res.data.data.keyword;
-            that.authorsList = authorsList;
             that.keywordInfo = keywordInfo;
+            if( keywordInfo.keyword_desc.length >= 350 ){
+              that.is_h = true;
+              that.shoow_status =  true;
+            }
+            if( keywordInfo.keyword_desc.length < 350 || keywordInfo.keyword_desc == '' ){
+              that.is_h = false;
+              that.shoow_status =  false;
+            }
+            
+            let authorsList = res.data.data.authors;
+            that.authorsList = authorsList; // 相关学者
+            let research_trends = res.data.data.research_trends;
+            that.research_trends = research_trends;  // 研究趋势
+            let associationStudy = res.data.data.associationStudy; // 关联研究
+            associationStudy.search = res.data.data.keyword.keyword;
+            that.associationStudy = associationStudy;
+            
             // 研究趋势
             that.getResearchTrends_eacharts();
             // 关联研究
             that.getAssociationStudy_eacharts();
             // 相关学者
             that.getRelatedScholars_eacharts();
+
+            that.$emit("getliteratureHistory", '');
           } else {
-            this.$message.error({
+            that.$message.error({
               message: res.data.msg
             });
           }
@@ -413,6 +541,9 @@
         .catch(e => {
           loading.close();
           console.log(e);
+          that.$message.error({
+            message: e
+          });
         });
       },
 
@@ -440,17 +571,125 @@
       },
       // 研究趋势
       getResearchTrends_eacharts(){
-          getLine_eacharts('1','ResearchTrends',this);
+        getLine_eacharts(this.research_trends,'ResearchTrends',this);
       },
        // 关联研究
       getAssociationStudy_eacharts(){
-        getForceRelation_eacharts('2','AssociationStudy',this);
+        getForceRelation_eacharts(this.associationStudy,'AssociationStudy',this);
       },
       // 相关学者
       getRelatedScholars_eacharts(){
-        getForceFloating_eacharts(this.authorsList,'RelatedScholars',this);
+        this.getForceFloating_eacharts(this.authorsList,'RelatedScholars',this);
       },
-
+      // 力导图 --- 浮点气泡图-- 相关作者
+      getForceFloating_eacharts(d,i,t){
+        let that = t;
+        let id = i;
+        let data = d;
+        data.forEach( (ele,index) =>{
+          ele.symbolSize = 48;
+          ele.draggable = true;
+          ele.itemStyle = {
+            normal: {
+              color: '#5DADE2',
+            },
+          }
+        })
+        let myChart = that.$echarts.init(document.getElementById(id));
+        let option = {
+          toolbox: {
+            show: true,
+            itemSize: 16,
+            right:0,
+            top: 0,
+            feature: {
+              saveAsImage: {}  // 导出图片
+            }
+          },
+            // 图表标题
+            title: {
+              show: false, //显示策略，默认值true,可选为：true（显示） | false（隐藏）
+              text: '"新时代"主题图谱', //主标题文本，'\n'指定换行
+              x: "center", // 水平安放位置，默认为左对齐，可选为：
+              // 'center' ¦ 'left' ¦ 'right'
+              // ¦ {number}（x坐标，单位px）
+              y: "bottom", // 垂直安放位置，默认为全图顶端，可选为：
+              // 'top' ¦ 'bottom' ¦ 'center'
+              // ¦ {number}（y坐标，单位px）
+              //textAlign: null          // 水平对齐方式，默认根据x设置自动调整
+              backgroundColor: "rgba(0,0,0,0)",
+              borderColor: "#ccc", // 标题边框颜色
+              borderWidth: 0, // 标题边框线宽，单位px，默认为0（无边框）
+              padding: 5, // 标题内边距，单位px，默认各方向内边距为5，
+              // 接受数组分别设定上右下左边距，同css
+              itemGap: 10, // 主副标题纵向间隔，单位px，默认为10，
+              textStyle: {
+                fontSize: 16,
+                fontWeight: "bolder",
+                color: "#333", // 主标题文字颜色
+              },
+              subtextStyle: {
+                color: "#aaa", // 副标题文字颜色
+              },
+            },
+            backgroundColor: "#fff",
+            tooltip: {},
+            animationDurationUpdate: function (idx) {
+              // 越往后的数据延迟越大
+              return idx * 100;
+            },
+            animationEasingUpdate: "bounceIn",
+            series: [
+              {
+                type: "graph",
+                layout: "force",
+                force: {
+                  repulsion: 80,
+                  edgeLength: 10,
+                },
+                roam: true,
+                label: {
+                  normal: {
+                    show: true,
+                    textStyle: {
+                      color: '#333',
+                    },
+                  },
+                },
+                data,
+              },
+            ],
+        };
+        myChart.setOption(option);
+        //跳转代码
+        myChart.on("click", function (d) {
+          // that.$router.push({
+          //   path:'/literatureAuthor',   
+          //   query:{
+          //     name:d.name,
+          //   }
+          // })
+          
+          that.authorFunction(d.name);
+        });
+      },
+      // 点击作者搜索方法
+      authorFunction(n){
+        let that = this;
+        let advancedCondition = [];
+         // 点击重置筛选
+        that.clickReset();
+        advancedCondition.push({
+          select_field: 'author',
+          field_value: n,
+          select_type: 'match',
+          select_condition: '',
+        })
+        that.advancedCondition = advancedCondition;
+        // 获取页面数据--- 搜索
+        that.literatureDocSearch();
+        window.scrollTo(0,0);
+      }
 
     },
 
@@ -469,7 +708,7 @@
   .listbox{
     width: 100%;
     height: auto;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     display: flex;
     justify-content: space-between;
   }
@@ -480,77 +719,70 @@
     align-items: flex-start;
     justify-content: flex-start;
   }
-  .c-box>div.c-filter-box{
+  .c-filter-box{
+    padding: 0.5rem 1rem;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgb(227 227 227 / 50%);
-    border-radius: 8px;
-    width: 13rem;
-  }
-  .c-filter-box .filter-title{
     width: 100%;
-    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #E5E5E5;
-    padding: 0 0.3rem 0 0.5rem;
   }
-  .filter-title>div {
-    width: auto;
+  .c-filter-box.searchBarFixed{
+    position: fixed;
+		background-color: #Fff;
+		top: 3.6rem;
+    right: 0;
+		z-index: 999;
+    margin-top: 0;
+    box-shadow:none;
+    border-bottom: 1px solid rgb(227 227 227 / 50%);
+    padding-left: 14.8rem;
+  }
+  .c-filter-box .c-filter-l{
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .c-filter-box .c-filter-l .filter-inputbox{
+    padding: 0 0.2rem;
+    text-align: left;
     display: flex;
     align-items: center;
-  }
-  .filter-title .l-titlebox-1>img {
-    width: 0.3rem;
-    height: 0.9rem;
-  }
-  .filter-title .l-titlebox-1>span {
-    font-size: 0.75rem;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 600;
-    color: #2B77BD;
-    padding-left: 0.25rem;
-  }
-  .filter-title .l-titlebox-2>span {
-    font-size: 0.65rem;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #666666;
-  }
-  .filter-inputbox{
-    margin-top: 1rem;
-    padding: 0 0.6rem;
-    text-align: left;
+    margin: 8px 0;
+
   }
   .filter-inputbox>label{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: bold;
-    color: #62657C;
+    padding-right: 0.25rem;
+    font-size: 14px;
+    color: #333;
     line-height: 1rem;
+  }
+  .filter-inputbox .el-input{
+    width: 5.7rem;
   }
   .filter-inputbox >>> .el-input__inner{
     border: none;
     border-radius: 0;
-    border-bottom: 2px solid #E5E5E5;
-    padding: 0;
-    font-size: 0.7rem;
+    border-bottom: 1px solid #E5E5E5;
+    padding-left: 0.25rem;
+    font-size: 14px;
+    height: 32px;
+    line-height: 32px;
+    padding-right: 0;
   }
   .input-area {
-    width: 100%;
-    margin: 1rem 0;
-    padding: 0 0.5rem;
+    padding: 0 0.25rem;
     text-align: left;
+    display: flex;
+    align-items: center;
   }
   .input-area>label {
-    width: 100%;
-    font-size: 0.7rem;
-    font-weight: bold;
-    line-height: 0.75rem;
-    color: #232323;
+    width: auto;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
     display: inline-block;
-    margin-bottom: 0.5rem;
-    width: 100%;
   }
   .input-column {
     display: -webkit-box!important;
@@ -561,63 +793,61 @@
     justify-content: center;
   }
   .input-column input {
-    flex: 1;
-    min-width: 0;
-    margin-left: 0!important;
-    margin-right: 0.5rem;
+    width: 4rem;
+    margin-left: 0.25rem!important;
+    margin-right: 0.25rem;
     padding: 0.35rem 0;
-    font-size: 0.7rem;
-    border: 0;
+    font-size: 14px;
+    border-radius: 0;
     outline: 0;
-    border-bottom: 1px solid rgba(139,148,157,0.3);
+    border: 0;
+    border-bottom: 1px solid #E5E5E5;
     text-align: center;
+    height: 32px;
+    line-height: 32px;
+
   }
  .input-column span {
-    font-size: 1.2rem;
+    font-size: 14px;
     position: relative;
-    top: 0.2rem;
-    margin-right: 0.3rem;
+    margin-right: 0.25rem;
+    line-height: 32px;
   }
   .filter-btnbox{
-    width: 100%;
-    margin-top: 2rem;
+    width: auto;
     display: flex;
     align-items: center;
     justify-content: space-around;
   }
   .filter-btnbox>div{
-    width: 4.5rem;
-    height: 1.65rem;
-    line-height: 1.65rem;
+    height: 32px;
+    line-height: 32px;
     text-align: center;
     background: #FFFFFF;
-    border-radius: 3px;
-    border: 1px solid #2B77BD;
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
-    color: #2B77BD;
-    margin-bottom: 1rem;
+    color: #868686;
     cursor: pointer;
+    margin-right: 0.5rem
   }
    .filter-btnbox>div.filter-btn2{
-    background: #2B77BD;
-    color: #fff;
+    color: #3664D9;
   }
   .c-list-box{
     flex: 1;
-    margin: 0 1rem;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgb(227 227 227 / 50%);
-    border-radius: 8px;
+    border-radius: 6px;
+    margin-top: 0.5rem;
   }
+
   .c-eacharts-box{
     width: 29rem;
   }
   /* =========  中间列表部分  ↓ ================ */
   .c-list-box .list-title{
     width: 100%;
-    height: 2.5rem;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -625,11 +855,10 @@
     padding: 0 0.5rem 0 1.2rem;
   }
   .list-title-l{
-    font-size: 0.8rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #999999;
-    line-height: 1.1rem;
+    line-height: 20px;
   }
   .list-title-r{
     width: auto;
@@ -638,24 +867,29 @@
     justify-content: flex-end;
   }
   .list-title-r>span{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
     color: #333333;
-    line-height: 1rem;
+    line-height: 20px;
     margin-left: 0.5rem;
     cursor: pointer;
     display: flex;
     align-items: center;
   }
+   .list-title-r>span.is-type{
+    color: #ff0000;
+   }
   .list-title-r>span i{
-    font-size: 0.8rem;
+    font-size: 14px;
     color: #666;
     margin-left: 0.2rem;
-    line-height: 1rem;
+    line-height: 20px;
   }
+  .list-title-r>span.is-type i{
+    color: #ff0000;
+   }
   .list-title-r>span:hover{
-    color: #2B77BD;
+    color: #3664D9;
   }
     .list-itembox{
     width: 100%;
@@ -666,7 +900,7 @@
     display: inline-block;
     width: 100%;
     height: auto;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid #E6E6E6;
     text-align: left;
   }
@@ -681,9 +915,10 @@
   }
   .list-itembox .list-item .listitems-b .list-item-title{
     flex: 1;
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-size: 16px;
+    line-height: 24px;
     font-weight: bold;
+    font-weight: medium;
     color: #333333;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -692,9 +927,8 @@
     -webkit-box-orient: vertical;
   }
   .list-itembox .list-item .list-item-subt{
-    font-size: 0.7rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
-    color: #333333;
+    font-size: 14px;
+    color: #666;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -705,15 +939,14 @@
   .listitems-b span{
     color: #999;
     width: auto;
-    font-size: 0.7rem;
+    font-size: 12px;
   }
   .list-itembox .list-item .list-item-text{
-    font-size: 0.7rem;
-    font-family: PingFangSC-Regular, PingFang SC;
+    font-size: 14px;
     font-weight: 400;
-    color: #333333;
-    line-height: 1.3rem;
-    margin-top: 0.5rem;
+    color: #000;
+    line-height: 20px;
+    margin-top: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -721,13 +954,13 @@
     -webkit-box-orient: vertical;
   }
   .list-itembox .list-item .list-item-z{
-    margin-top: 0.5rem;
+    margin-top: 8px;
     display: flex;
   }
     .list-item .list-item-z .zuozhe-box{
     width: auto;
     padding-right: 0.5rem;
-    font-size: 0.7rem;
+    font-size: 14px;
     color: #333;
     text-align:left;
     min-inline-size: fit-content;
@@ -735,24 +968,25 @@
 
   .list-item .list-item-z .tap-top-span{
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
   }
   .list-item .list-item-z .tap-top-span>a{
-    font-size: 0.7rem;
+    font-size:14px;
     margin-right: 0.3rem;
-    color: #333;
+    color: #666;
     display: flex;
     flex-wrap: nowrap;
   }
   .list-item .list-item-z .tap-top-span>a:hover{
-    color: #D54B4B;
+    color: #3664D9;
   }
   .item-btn-box{
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 0.5rem;
+    margin-top: 0.7rem;
   }
   .item-btn-box>div{
     width: auto;
@@ -761,30 +995,33 @@
   }
   .asub-zaixian {
     border-radius: 4px;
-    color: #2B77BD;
-    align-items: center;
-    padding: 0.3rem 0.5rem;
-    font-size: 0.7rem;
+    color: #3664D9;
+    padding: 0 8px;
+    font-size: 14px;
+    /* width: 82px; */
+    height: 32px;
+    line-height: 32px;
     margin-right: 0.6rem;
     display: flex;
     align-items: center;
-    border: 1px solid #2B77BD; 
+    justify-content: center;
+    border: 1px solid #3664D9; 
   }
 
   .asub-zaixian .el-icon-reading,.el-icon-star-on,.el-icon-star-off {
-    font-size: 1rem;
+    font-size: 16px;
     margin-right: 0.25rem;
   }
   .asub-zaixian:hover{
-    color: #fa6400;
-    border: 1px solid #fa6400;
+    color: #152F8C;
+    border: 1px solid #152F8C;
   }
   .item-btn-box .item-r{
     display: flex;
     align-items: center;
   }
   .item-btn-box .item-r>span{
-    font-size: 0.65rem;
+    font-size: 14px;
     padding-right: 0.1rem;
     color: #999;
     display: flex;
@@ -817,9 +1054,8 @@
   }
   .classbox-l{
     height: auto;
-    font-size: 0.8rem;
-    font-family: PingFang-SC-Bold, PingFang-SC;
-    color: #333333;
+    font-size: 16px;
+    color: #000;
     display: flex;
     align-items: center;
   }
@@ -827,17 +1063,16 @@
     width: 0.3rem;
     height: 1.05rem;
   }
-  .classbox-l>span{
+  /* .classbox-l>span{
     padding-left: 0.5rem;
-  }
+  } */
   .info-box{
     width: 100%;
     margin-top: 1.1rem;
-    font-size: 0.8rem;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-size: 14px;
     font-weight: 500;
     color: #333333;
-    line-height: 1.25rem;
+    line-height: 20px;
     text-align: left;
   }
   .info-box.info-box-1{
@@ -846,6 +1081,24 @@
     display: -webkit-box;
     -webkit-line-clamp: 8;
     -webkit-box-orient: vertical;
+    /* height: 10rem;
+    overflow: hidden; */
+  }
+  .info-box-z{
+    margin-top: 0.5rem;
+    width: 100%;
+    text-align: right;
+  }
+  .info-box-z>a{
+    padding: 0.25rem;
+    font-size: 14px;
+    color: #3664D9;
+  }
+  .info-box-z>a:hover{
+    color: #fa6400;
+  }
+  .eacharts-itemsbox:nth-of-type(1){
+    margin-top: 0;
   }
   .eacharts-itemsbox{
     margin-top: 1rem;
@@ -862,7 +1115,7 @@
     height: 12rem;
   }
   .eacharts-ch-box.AssociationStudy,.eacharts-ch-box.RelatedScholars{
-    height: 18rem;
+    height: 20rem;
   }
   /* ================= 右侧文献可视化分析模块 ↑ ======================= */
 
