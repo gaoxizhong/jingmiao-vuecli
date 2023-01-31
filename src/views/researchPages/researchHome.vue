@@ -14,43 +14,43 @@
       </header>
     </el-header>
     <!-- 头部 结束  -->
-    <!-- 左侧导航 开始 -->
-    <el-aside width="auto">
-      <el-menu 
-        :default-active="activeIndex" 
-        class="el-menu-vertical-demo" 
-        @open="handleOpen" 
-        @close="handleClose" 
-        :collapse="!isColl" 
-        router 
-        unique-opened
-      >
-        <a href="javascript:0;" class="isCollapse-box" @click="menu_btn">
-          <img src="../../assets/image/researchPages/isCollapse.png" class="isCollapse-i" />
-          <span class="isCollapse-s" v-if="isColl">折叠面板</span>
-        </a>
-        <el-submenu index="1">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span slot="title">科研灵感探索</span>
-          </template>
-          <el-submenu index="3">
-            <span slot="title">文献库</span>
-            <el-menu-item index="/popularLiterature">
-              <span>文献库</span>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <span slot="title">灵感发现</span>
-            <el-menu-item index="/subjectAnalysis">学科分析</el-menu-item>
-            <el-menu-item index="/scholarAnalysis">学者分析</el-menu-item>
-            <el-menu-item index="/journalAnalysis">期刊分析</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-      </el-menu>
-    </el-aside>
-    <!-- 左侧导航 结束 -->
     <el-container>
+      <!-- 左侧导航 开始 -->
+      <el-aside width="auto">
+        <el-menu 
+          :default-active="activeIndex" 
+          class="el-menu-vertical-demo" 
+          @open="handleOpen" 
+          @close="handleClose" 
+          :collapse="!isColl" 
+          router 
+          unique-opened
+        >
+          <a href="javascript:0;" class="isCollapse-box" @click="menu_btn">
+            <img src="../../assets/image/researchPages/isCollapse.png" class="isCollapse-i" />
+            <span class="isCollapse-s" v-if="isColl">折叠面板</span>
+          </a>
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span slot="title">科研灵感探索</span>
+            </template>
+            <el-submenu index="3">
+              <span slot="title">文献库</span>
+              <el-menu-item index="/popularLiterature">
+                <span>文献库</span>
+              </el-menu-item>
+            </el-submenu>
+            <el-submenu index="2">
+              <span slot="title">灵感发现</span>
+              <el-menu-item index="/subjectAnalysis">学科分析</el-menu-item>
+              <el-menu-item index="/scholarAnalysis">学者分析</el-menu-item>
+              <el-menu-item index="/journalAnalysis">期刊分析</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <!-- 左侧导航 结束 -->
       <!-- 主题 开始 -->
       <el-main>
         <keep-alive>

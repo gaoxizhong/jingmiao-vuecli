@@ -609,7 +609,7 @@
             // 图表标题
             title: {
               show: false, //显示策略，默认值true,可选为：true（显示） | false（隐藏）
-              text: '"新时代"主题图谱', //主标题文本，'\n'指定换行
+              text: '主题图谱', //主标题文本，'\n'指定换行
               x: "center", // 水平安放位置，默认为左对齐，可选为：
               // 'center' ¦ 'left' ¦ 'right'
               // ¦ {number}（x坐标，单位px）
@@ -633,7 +633,17 @@
               },
             },
             backgroundColor: "#fff",
-            tooltip: {},
+            tooltip: { // 鼠标浮动展示框样式
+              show: true,
+              textStyle: {
+                color: "#333",
+              },
+              borderWidth: 1,
+              formatter: function (params, ticket, callback) {
+                var tipString = '<p style="text-align: left;">' + params.data.name + "——" + params.data.org + '</br>热度：'+params.data.value + '</p>';
+                return tipString;
+              }
+            },
             animationDurationUpdate: function (idx) {
               // 越往后的数据延迟越大
               return idx * 100;

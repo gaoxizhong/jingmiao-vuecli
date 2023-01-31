@@ -257,7 +257,6 @@
       let author = this.$route.query.author;
       let keyword = this.$route.query.keyword;
       if(is_p && author){
-        console.log(1)
         let advancedCondition = [];
         advancedCondition.push({
           select_field: 'author',
@@ -283,7 +282,6 @@
       }
       document.addEventListener("click", (e) => {
         let box_2 = document.getElementById("is_symptomSearch");
-        console.log(box_2)
         if (!box_2.contains(e.target)) {
           this.is_symptomSearch = false;
           this.symptomSearch_data = [];
@@ -307,6 +305,7 @@
         let advancedOptions = that.advancedOptions;
         let select_field = advancedOptions[i].select_field;
         let field_value = advancedOptions[i].field_value;
+        console.log(advancedOptions)
         if(select_field == 'keyword' || select_field == 'author') {
           return
         }else{
