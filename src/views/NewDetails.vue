@@ -601,7 +601,17 @@
               width:'100',
               formatter: function (params) {
                 var tipString = params.data.target;
-                return tipString;
+                var arrText = [];
+                var num = 70;
+                for (let i = 0; i < tipString.length; i += num){
+                  // 分割总数据，每个子数组里包含个数为num
+                  arrText.push(tipString.slice(i, i + num))
+                }
+                var stringText = '';
+                arrText.forEach(ele =>{
+                  stringText += ( ele + '</br>')
+                })
+                return  '<div style="text-align:left;">' + stringText + '</div>';
               }
           },
           animationDurationUpdate: 1500,
