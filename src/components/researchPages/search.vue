@@ -88,13 +88,20 @@
             <el-empty description="暂无数据..." v-if="!listData"></el-empty>
           </div>
           <!-- 分页展示 -->
-          <div class="pagination-box">
+          <!-- <div class="pagination-box">
             <div class="el-pagination is-background">
               <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
               <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
               <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
               <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
             </div>
+          </div> -->
+          <div class="pagination-box">
+            <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+            :total="total"
+            :page-size="pageSize"
+            :current-page='current_page'>
+            </el-pagination>
           </div>
         </div>
         <!-- 中间文献列表模块 结束 -->
@@ -102,21 +109,6 @@
 
       <!-- 右侧文献可视化分析模块 开始 -->
       <div class="c-eacharts-box">
-        <!-- 介绍 开始-->
-        <!-- <div class="eacharts-info-nambox">
-          <div class="icon-classbox">
-            <div class="classbox-l">
-              <img src="../../assets/image/researchPages/icon-title.png" alt="" />
-              <span>{{keywordInfo.keyword?keywordInfo.keyword:''}}</span>
-            </div>
-          </div>
-          <div class="info-box" :class="is_h && shoow_status ?'info-box-1':'' ">{{keywordInfo.keyword_desc?keywordInfo.keyword_desc:''}}</div>
-          <el-empty description="暂无数据..." v-if="!keywordInfo.keyword_desc"></el-empty>
-          <div class="info-box-z" v-if="is_h">
-            <a href="javascript:0;" class="info-box-zt" @click.stop="clickShow(shoow_status)">{{shoow_status?'展开':'收起'}}</a>
-          </div>
-        </div> -->
-        <!-- 介绍 结束-->
         <!-- 研究趋势 开始 -->
         <div class="eacharts-itemsbox">
           <div class="icon-classbox">
@@ -167,7 +159,6 @@
   export default {
     props:{
       tag: Number, // 请求数据时 1、普通 2、高级
-      search_type: String, // single、普通 many、高级
       headerInput:String, // 普通搜索内容
       date:String, // 高级时间范围
       advancedCondition:Array, // 高级 选择数据
@@ -175,6 +166,7 @@
     data(){
       return {
         uid: window.localStorage.getItem('uid'),
+        search_type: 'many', // single、普通 many、高级
         is_s:false,
         pageSize: 10,
         current_page: 1,
@@ -475,15 +467,6 @@
           order_field: sele_order_field,
           order: sele_order,
         }
-      //   if(search_type == 'single'){
-      //     params.search_type = search_type;
-      //     params.field_value = headerInput
-      //   }
-      //  if(search_type == 'many'){
-      //     params.search_type = search_type;
-      //     params.condition = advancedCondition;
-      //     params.date = date;
-      //   }
         // let params1 = JSON.stringify(params);
         // let p = JSON.parse(params1);
         const loading = this.$loading({

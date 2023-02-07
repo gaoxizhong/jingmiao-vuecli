@@ -3,7 +3,7 @@
     <!-- 头部搜索模块 开始 -->
     <div class="literature-titlebox">
       <div class="header-input-box">
-        <el-input placeholder="输入姓名..." v-model="headerAuthor" @input="getAuthorOrganization(headerAuthor)" class="input-with-select"></el-input>
+        <el-input placeholder="输入姓名..." v-model="headerAuthor" @input="getAuthorOrganization" class="input-with-select"></el-input>
 
         <el-input placeholder="输入机构名称..." v-model="headerOrganization" class="input-with-select" v-if="optionsList.length <= 0"></el-input>
         
@@ -14,6 +14,7 @@
               :key="index"
               :label="item"
               :value="item"></el-option>
+              <div class="optionPageDiv" @click.stop="clickOptionPageDiv" v-if=" option_page < total_optionpage">加载更多</div>
           </el-select>
         </div>
         <el-button slot="append" @click="headerInputClick">开始分析</el-button>
@@ -72,7 +73,13 @@
       
     </div>
     <!-- 学者列表模块 结束 -->
-
+      <!-- <div class="pagination-box">
+        <el-pagination background @current-change="clickExchange" layout="total, prev, pager, next"
+        :total="count"
+        :page-size="pageSize"
+        :current-page='current_page'>
+        </el-pagination>
+      </div> -->
   </div>
 
 </template>
@@ -98,6 +105,8 @@
         count:0, // 总条数
         pageSize: 10,
         current_page: 1,
+        option_page: 1, //机构下拉框分页
+        total_optionpage: 1, // 机构下拉框分页总页数
         scholarList:[], // 列表数据
         optionsList:[], // 机构分类
         o_list:[],// 机构分类
@@ -109,6 +118,11 @@
       this.getAuthorIndex();
     },
     methods:{
+      // 点击机构下拉框下一页
+      clickOptionPageDiv(){
+        this.option_page = this.option_page+1;
+        this.getAuthorOrganization();
+      },
       // 点击换一批
       clickExchange(){
         let that = this;
@@ -234,14 +248,16 @@
         }
       },
       // 学者名称搜索相关机构
-      getAuthorOrganization(a){
-        console.log(a)
+      getAuthorOrganization(){
         let that = this;
+        if(that.headerAuthor == ''){
+          that.optionsList = [];
+        }
         // 弹窗列表数据
-        that.optionsList = [];
         that.o_list = [];
         let pearms = {
-          author: a,
+          author: that.headerAuthor,
+          page: that.option_page,
         }
         getAuthorOrganization(pearms).then(res => {
           if (res.data.code == 0) {
@@ -249,8 +265,10 @@
               if (data.length <= 0) {
                 return;
               } else {
-                that.optionsList = data;
-                that.o_list = data;
+                let newData = that.optionsList.concat(res.data.data.orgs);
+                that.optionsList = newData;
+                that.o_list = newData;
+                that.total_optionpage = res.data.data.total_page;
               }
             }
         })
@@ -503,5 +521,20 @@
   }
   .option-itemsbox >>> .el-select .el-input__inner:focus,.validate-input >>> .el-input__inner:focus{
      border-color: #3664D9;
+  }
+  .optionPageDiv{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-top: 6px;
+    padding: 6px 0;
+    background: rgba(49, 130, 211, 0.048);
+    cursor: pointer;
+    color: #666;
+  }
+  .optionPageDiv:hover{
+    background: #DBEAFF;
   }
 </style>

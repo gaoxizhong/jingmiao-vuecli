@@ -52,13 +52,20 @@
         <!-- ===  单条列表 结束 ===  -->
       </div>
       <!-- 分页展示 -->
-      <div class="pagination-box">
+      <!-- <div class="pagination-box">
         <div class="el-pagination is-background">
           <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
           <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
           <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
           <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
         </div>
+      </div> -->
+      <div class="pagination-box">
+        <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+        :total="total"
+        :page-size="pageSize"
+        :current-page='current_page'>
+        </el-pagination>
       </div>
     </div>  
     <!-- 左侧推荐列表 结束-->
@@ -137,7 +144,7 @@
         is_s:false,
         is_view: true,
         is_titleTab:'1',
-        count:0, // 总条数
+        total:0, // 总条数
         pageSize: 10,
         current_page: 1,
         total_page:0, // 总页数
@@ -343,9 +350,11 @@
         getEsIndex(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
+            let total = res.data.data.total;// 总条数
             let total_page = res.data.data.total_page; // 总页数
             let listData = res.data.data.data;
             that.total_page = total_page;
+            that.total = total;
             that.listData = listData;
           } else {
             this.$message.error({

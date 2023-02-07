@@ -3,12 +3,12 @@
     <!-- 头部检索模块 开始 -->
     <div class="literature-titlebox">
       <div class="titlebox-tab">
-        <div class="titlebox-tab-item" :class="search_type == 'single'?'hover':'' " @click="clicktitleTab('single')">检索</div>
+        <div class="titlebox-tab-item" :class="titleTag == 1?'hover':'' " @click="clicktitleTab(1)">检索</div>
         <div class="titlebox-tab-m"></div>
-        <div class="titlebox-tab-item" :class="search_type == 'many'?'hover':'' " @click="clicktitleTab('many')">高级检索</div>
+        <div class="titlebox-tab-item" :class="titleTag == 2?'hover':'' " @click="clicktitleTab(2)">高级检索</div>
       </div>
       <!-- 普通检索头部 开始 -->
-      <div class="headerInpuBox" v-if="search_type == 'single'">
+      <div class="headerInpuBox" v-if="titleTag == 1">
         <div class="header-input-box">
           <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select" @input="getInputBtn" @keydown.enter.native="searchEnterFun($event)">
             <el-button slot="append" @click="headerInputClick" >检索</el-button>
@@ -35,7 +35,7 @@
       <!-- 普通检索头部 结束 -->
 
       <!-- 高级检索头部 开始-->
-      <div class="advancedSearch-titlebox" v-if="search_type == 'many'">
+      <div class="advancedSearch-titlebox" v-if="titleTag == 2">
         <div class="advancedSearch-titlebox-l">
           <div class="listbox-l-titlebox"></div>
           <div class="duoxiang-tbox">
@@ -160,7 +160,7 @@
       <Popular v-on='$listeners' @setsickNess="setsickNess"/>
     </div>
     <div v-if="is_pop == 2">
-      <Search v-on='$listeners' @getliteratureHistory="getliteratureHistory" :search_type="search_type" :tag="tag" :headerInput="headerInput"  :date="date" :advancedCondition="advancedCondition" v-if="is_view"/>
+      <Search v-on='$listeners' @getliteratureHistory="getliteratureHistory" :tag="titleTag" :headerInput="headerInput"  :date="date" :advancedCondition="advancedCondition" v-if="is_view"/>
     </div>
     <!-- 列表推荐 结束 -->
 
@@ -194,8 +194,7 @@
         is_pop: '1',  // 1、默认页面； 2、检索结果页面
         is_s:false,
         is_view: true,
-        search_type:'single',
-        tag: 1, // 历史记录上标识 1、 普通 2、高级
+        titleTag: 1, // 历史记录,普通/高级tab 上标识 1、 普通 2、高级
         headerInput:'', // 普通检索
         listData:[], // 推荐列表
          // 高级检索选项
@@ -397,10 +396,8 @@
       // 获取历史记录
       getliteratureHistory(){
         let that = this;
-        let search_type = that.search_type;
         let p = {
           uid: that.uid,
-          search_type, //1普通  2高级
         }
         getliteratureHistory(p).then(res =>{
           if(res.data.code == 0){
@@ -421,8 +418,7 @@
         })
       },
       clicktitleTab(n){
-        this.search_type = n;
-        this.tag = n == 'single'? 1: 2;
+        this.titleTag = n;
         this.is_ls = false;
         this.clickReset();
       },
@@ -540,14 +536,12 @@
         let that = this;
         // let date = d;
         let sel_info = n;
-        let tag = sel_info.tag;
-        that.tag = tag;
-        if(tag == '1'){
+        let titleTag = sel_info.tag;
+        that.titleTag = titleTag;
+        if(titleTag == 1){
           that.headerInput = sel_info.search_desc;
-          that.search_type = 'single';
           that.advancedCondition = sel_info.content;
         }else{
-          that.search_type = 'many';
           let content = sel_info.content;
           let options_0 = that.options_0;
           let options_1 = that.options_1;
