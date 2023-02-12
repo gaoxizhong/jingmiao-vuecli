@@ -104,7 +104,6 @@ button{
   z-index: 1000;
 }
   table{
-    margin: 0 auto;
     position: relative;
   }
   

@@ -14,7 +14,6 @@
               :key="index"
               :label="item"
               :value="item"></el-option>
-              <div class="optionPageDiv" @click.stop="clickOptionPageDiv" v-if=" option_page < total_optionpage">加载更多</div>
           </el-select>
         </div>
         <el-button slot="append" @click="headerInputClick">开始分析</el-button>
@@ -118,11 +117,6 @@
       this.getAuthorIndex();
     },
     methods:{
-      // 点击机构下拉框下一页
-      clickOptionPageDiv(){
-        this.option_page = this.option_page+1;
-        this.getAuthorOrganization();
-      },
       // 点击换一批
       clickExchange(){
         let that = this;
@@ -142,6 +136,7 @@
           author: headerAuthor,
           org: headerOrganization,
           tag:'',
+          page: 1,
         }
         const loading = that.$loading({
           lock: true,
@@ -178,7 +173,11 @@
       // 获取页面数据
       getAuthorIndex(){
         let that = this;
+        let headerAuthor = that.headerAuthor; // 学者名、
+        let headerOrganization = that.headerOrganization; // 机构数
         let pearms = {
+          author: headerAuthor,
+          org: headerOrganization,
           page: that.current_page,
         };
         const loading = this.$loading({
@@ -257,7 +256,6 @@
         that.o_list = [];
         let pearms = {
           author: that.headerAuthor,
-          page: that.option_page,
         }
         getAuthorOrganization(pearms).then(res => {
           if (res.data.code == 0) {
@@ -265,10 +263,8 @@
               if (data.length <= 0) {
                 return;
               } else {
-                let newData = that.optionsList.concat(res.data.data.orgs);
-                that.optionsList = newData;
-                that.o_list = newData;
-                that.total_optionpage = res.data.data.total_page;
+                that.optionsList = res.data.data.orgs;
+                that.o_list = res.data.data.orgs;
               }
             }
         })

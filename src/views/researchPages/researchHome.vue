@@ -7,10 +7,15 @@
         <div class="l-content">
           <img src="../../assets/image/researchPages/logo.png" alt=""  @click="clickLoge"/>
         </div>
-        <div class="r-content" v-if="phone">
-          <img src="../../assets/image/researchPages/img-user.png" :title="phone"  class="user-img"/>
-          <a href="javascript:0;" class="r-toLogin" @click="toLogin">退出</a>
+        <div class="headerTitle-box">
+          <div class="headerTitle-home"  @click="clickLoge"><i class="el-icon-s-home"></i>首页</div>
+          <div class="r-content" v-if="phone">
+            <img src="../../assets/image/researchPages/img-user.png" :title="phone"  class="user-img"/>
+            <a href="javascript:0;" class="r-toLogin" @click="toLogin">退出</a>
+          </div>
+
         </div>
+
       </header>
     </el-header>
     <!-- 头部 结束  -->
@@ -39,6 +44,9 @@
               <span slot="title">文献库</span>
               <el-menu-item index="/popularLiterature">
                 <span>文献库</span>
+              </el-menu-item>
+              <el-menu-item index="/myFavorite">
+                <span>我收藏的</span>
               </el-menu-item>
             </el-submenu>
             <el-submenu index="2">
@@ -153,6 +161,20 @@
   }
 </script>
 <style scoped>
+.headerTitle-box{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 60px;
+}
+.headerTitle-home{
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: #999;
+  cursor: pointer;
+}
 /* ==============  滚动条样式   ==================== */
 
 /* ==============  滚动条样式   ==================== */

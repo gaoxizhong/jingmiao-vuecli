@@ -421,6 +421,14 @@ export const getEsIndex = (params) =>{
     data: params
   })
 }
+// 文献首页普通检索右侧推荐
+export const getSingleRecommendDisease = (params) =>{
+  return axios.request({
+    url:'/es-single-recommend-disease',
+    method: 'post',
+    data: params
+  })
+}
 // 文献详情页
 export const literatureDetails = (params) =>{
   return axios.request({
@@ -579,6 +587,23 @@ export const searchTip = (params) =>{
 export const getAuthorOrganization = (params) =>{
   return axios.request({
     url:'/es-get-select-organization',
+    method: 'post',
+    data: params
+  })
+}
+
+// 文献高级检索匹配关键词
+export const getRecommendDisease = (params) =>{
+  return axios.request({
+    url:'/es-recommend-disease',
+    method: 'post',
+    data: params
+  })
+}
+// 学科分析匹配关键词
+export const getXkfxDiseases = (params) =>{
+  return axios.request({
+    url:'/es-search-diseases',
     method: 'post',
     data: params
   })

@@ -116,28 +116,68 @@
           <!-- <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">代表学者</div> -->
         </div>
         <div class="acc-rightbox">
-          <div class="acc-pagebox" id="acc-pagebox" v-show=" acc_tab == '1' ">
+          <div class="acc-title-tabbox">
+            <span :class="accTitleTab == 1?'active':''" @click.stop="clickAccTab(1)">图表</span>
+            <span :class="accTitleTab == 2?'active':''" @click.stop="clickAccTab(2)">列表</span>
+          </div>
+          <!-- 图表 开始 -->
+          <div class="acc-pagebox" id="acc-pagebox" v-show=" acc_tab == '1' && accTitleTab == 1">
             <!-- 发文趋势 -->
             <div class="eacharts-box" id="eachartsTrends"></div>
           </div>
-          <div class="acc-pagebox" v-show=" acc_tab == '2' ">
+          <div class="acc-pagebox" v-show=" acc_tab == '2' && accTitleTab == 1">
             <!-- 被引趋势 -->
             <div class="eacharts-box" id="eachartsCited"></div>
           </div>
-          <div class="acc-pagebox" v-show=" acc_tab == '3' ">
+          <div class="acc-pagebox" v-show=" acc_tab == '3' && accTitleTab == 1">
             <!-- 研究主题 -->
             <div class="eacharts-box" id="eachartsTheme"></div>
           </div>
-          <div class="acc-pagebox" v-show=" acc_tab == '4' ">
-            <!-- 代表机构 -->
+          <div class="acc-pagebox" v-show=" acc_tab == '4' && accTitleTab == 1">
+            <!-- 合作机构 -->
             <div class="eacharts-box" id="RepresentativeBody"></div>
           </div>
           <!-- 代表学者 -->
-          <div class="acc-pagebox" v-show="acc_tab == '5'">
+          <!-- <div class="acc-pagebox" v-show="acc_tab == '5' && accTitleTab == 1">
             <div class="eacharts-box" id="RepresentativeScholar"></div>
-          </div>
-        </div>
+          </div> -->
+          <!-- 图表 结束 -->
 
+          <!-- 列表 开始  -->
+          <div class="acc-pagebox" v-show="accTitleTab == 2">
+            <div class="acc-listbox">
+              <!-- 发文趋势 -->
+              <div class="acc-listitemsbox" v-show="acc_tab == '1'&& accTitleTab == 2">
+                <el-table stripe :data="infoDetail.post_trend" style="width: 100%">
+                  <el-table-column prop="key" label="年份" width="230"></el-table-column>
+                  <el-table-column prop="doc_count" label="发文量" width="180"></el-table-column>
+                </el-table>
+              </div>
+              <!-- 被引趋势 -->
+              <div class="acc-listitemsbox" v-show="acc_tab == '2'&& accTitleTab == 2">
+                <el-table stripe :data="infoDetail.cited_trend" style="width: 100%">
+                  <el-table-column prop="key" label="年份" width="230"></el-table-column>
+                  <el-table-column prop="doc_count" label="被引量" width="180"></el-table-column>
+                </el-table>
+              </div>
+              <!-- 研究主题 -->
+              <div class="acc-listitemsbox" v-show="acc_tab == '3'&& accTitleTab == 2">
+                <el-table stripe :data="infoDetail.research_topic" style="width: 100%">
+                  <el-table-column prop="key" label="主题" width="230"></el-table-column>
+                  <el-table-column prop="doc_count" label="研究量" width="180"></el-table-column>
+                </el-table>
+              </div>
+              <!-- 合作机构 -->
+              <div class="acc-listitemsbox" v-show="acc_tab == '4'&& accTitleTab == 2">
+                <el-table stripe :data="infoDetail.co_organization_list" style="width: 100%">
+                  <el-table-column prop="key" label="机构" width="230"></el-table-column>
+                  <el-table-column prop="doc_count" label="发文量" width="180"></el-table-column>
+                </el-table>
+              </div>
+            </div>
+          </div>
+          <!-- 列表 结束  -->
+        </div>
       </div>
       <!-- tab展示 结束 -->
       <!-- 相关推荐 开始-->
@@ -207,6 +247,7 @@
     name: 'literatureAuthor',
     data() {
       return {
+        accTitleTab:1,
         author:'', // 学者姓名
         organization:'', // 相关机构organization
         infoDetail: {},
@@ -215,7 +256,7 @@
         album_tag:'highest', // newest: 最新文献；highest ： 最高文献
         acc_tab:'1',
         page: 1,
-
+        total_page:0,
       };
     },
     mounted(){
@@ -234,6 +275,9 @@
 
     },
     methods: {
+      clickAccTab(a){
+        this.accTitleTab = a;
+      },
       //点击加载更多
       clickMore(){
         let that = this;
@@ -257,9 +301,20 @@
         let that = this;
         let author = n;
         let organization = m;
+        that.page = 1;
         that.author = author;
         that.organization = organization;
         that.getDetail();
+        that.getRelationRecommend();
+        // that.$emit('setsickNess', '');
+        // that.$router.push({
+        //     path:'/literatureAuthor',
+        //     query:{     
+        //       author: author,
+        //       organization: organization,
+        //     }
+        //   })
+ 
       },
       // 获取作者详情
       getDetail(n,m){
@@ -276,12 +331,11 @@
           background: "rgba(0, 0, 0, 0.1)",
           target: document.querySelector("body")
         });
-        that.infoDetail = {};
         getAnalysisDetail(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            document.title = res.data.data.author;
             that.infoDetail = res.data.data;
+            document.title = res.data.data.author;
             that.authorList = res.data.data.co_author_list;
           } else {
             this.$message.error({
@@ -289,7 +343,7 @@
             });
           }
           // 发文趋势
-          that.getLineChart('eachartsTrends',res.data.data.post_trend);
+          that.getLineChart('eachartsTrends',that.infoDetail.post_trend);
 
         })
         .catch(e => {
@@ -303,7 +357,7 @@
         that.acc_tab = i;
         if(i == '1'){
           // 发文趋势
-          that.getLineChart('eachartsTrends',that.infoData.post_trend);
+          that.getLineChart('eachartsTrends',that.infoDetail.post_trend);
         }
         if(i == '2'){
           // 被引趋势
@@ -645,6 +699,7 @@
       // 获取相关文献
       getRelationRecommend(){
         let that = this;
+        that.tableData = [];
         let p = {
           value: that.author,
           page: that.page,

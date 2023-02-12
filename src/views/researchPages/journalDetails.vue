@@ -42,29 +42,53 @@
         <!-- <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">代表学者</div> -->
       </div>
       <div class="acc-rightbox">
-        
-        <div class="acc-pagebox" id="acc-pagebox" v-show="acc_tab == '1'">
+        <div class="acc-title-tabbox">
+          <span :class="accTitleTab == 1?'active':''" @click.stop="clickAccTab(1)">图表</span>
+          <span :class="accTitleTab == 2?'active':''" @click.stop="clickAccTab(2)">列表</span>
+        </div>
+        <!-- 图表 开始 -->
+        <div class="acc-pagebox" id="acc-pagebox" v-show="acc_tab == '1' && accTitleTab == 1">
           <!-- 发文趋势 -->
           <div class="eacharts-box" id="eachartsTrends"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '2'">
+        <div class="acc-pagebox" v-show="acc_tab == '2' && accTitleTab == 1">
           <!-- 被引趋势 -->
           <div class="eacharts-box" id="eachartsCited"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '3'">
+        <div class="acc-pagebox" v-show="acc_tab == '3' && accTitleTab == 1">
           <!-- 研究主题 -->
           <div class="eacharts-box" id="eachartsTheme"></div>
         </div>
-          <!-- 代表机构 -->
-        <div class="acc-pagebox" v-show="acc_tab == '4'">
-          <div class="eacharts-box" id="RepresentativeBody"></div>
+        <!-- 图表 结束 -->
+        
+        <!-- 列表 开始  -->
+        <div class="acc-pagebox" v-show="accTitleTab == 2">
+          <div class="acc-listbox">
+            <!-- 发文趋势 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '1'&& accTitleTab == 2">
+              <el-table stripe :data="infoDetail.post_trend" style="width: 100%">
+                <el-table-column prop="key" label="年份" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="发文量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 被引趋势 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '2'&& accTitleTab == 2">
+              <el-table stripe :data="infoDetail.cited_trend" style="width: 100%">
+                <el-table-column prop="key" label="年份" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="被引量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 研究主题 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '3'&& accTitleTab == 2">
+              <el-table stripe :data="infoDetail.research_topic" style="width: 100%">
+                <el-table-column prop="key" label="主题" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="研究量" width="180"></el-table-column>
+              </el-table>
+            </div>
+          </div>
         </div>
-          <!-- 代表学者 -->
-        <div class="acc-pagebox" v-show="acc_tab == '5'">
-          <div class="eacharts-box" id="RepresentativeScholar"></div>
-        </div>
+        <!-- 列表 结束  -->
       </div>
-
     </div>
     <!-- tab展示 结束 -->
     <!-- 相关推荐 开始-->
@@ -137,6 +161,7 @@
     },
     data(){
       return {
+        accTitleTab:1,
         is_view: true,
         acc_tab:'1', 
         album:'',
@@ -166,6 +191,9 @@
       this.getDetail(this.tag,this.unique_val);
     },
     methods:{
+      clickAccTab(a){
+        this.accTitleTab = a;
+      },
       //点击加载更多
       clickMore(){
         let that = this;
@@ -414,7 +442,7 @@
             show: true,
             itemSize: 16,
             right:15,
-            top: 20,
+            top: 10,
             feature: {
               saveAsImage: {}  // 导出图片
             }

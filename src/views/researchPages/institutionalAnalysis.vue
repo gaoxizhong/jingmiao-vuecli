@@ -40,23 +40,63 @@
           <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">研究热点</div>
       </div>
       <div class="acc-rightbox">
-        <div class="acc-pagebox" id="acc-pagebox" v-show="acc_tab == '1'">
+        <div class="acc-title-tabbox">
+          <span :class="accTitleTab == 1?'active':''" @click.stop="clickAccTab(1)">图表</span>
+          <span :class="accTitleTab == 2?'active':''" @click.stop="clickAccTab(2)">列表</span>
+        </div>
+        <!-- 图表 开始 -->
+
+        <div class="acc-pagebox" id="acc-pagebox" v-show="acc_tab == '1' && accTitleTab == 1">
           <!-- 发文趋势 -->
           <div class="eacharts-box" id="eachartsTrends"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '2'">
+        <div class="acc-pagebox" v-show="acc_tab == '2' && accTitleTab == 1">
           <!-- 被引趋势 -->
           <div class="eacharts-box" id="eachartsCited"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '3'">
+        <div class="acc-pagebox" v-show="acc_tab == '3' && accTitleTab == 1">
           <!-- 代表期刊 -->
           <div class="eacharts-box" id="RepresentativePeriodicals"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '4'">
+        <div class="acc-pagebox" v-show="acc_tab == '4' && accTitleTab == 1">
           <!-- 研究热点 -->
           <div class="eacharts-box" id="research"></div>
         </div>
-
+        <!-- 图表 结束 -->
+        <!-- 列表 开始  -->
+        <div class="acc-pagebox" v-show="accTitleTab == 2">
+          <div class="acc-listbox">
+            <!-- 发文趋势 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '1'&& accTitleTab == 2">
+              <el-table stripe :data="infoData.post_trend" style="width: 100%">
+                <el-table-column prop="key" label="年份" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="发文量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 被引趋势 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '2'&& accTitleTab == 2">
+              <el-table stripe :data="infoData.cited_trend" style="width: 100%">
+                <el-table-column prop="key" label="年份" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="被引量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 代表期刊 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '3'&& accTitleTab == 2">
+              <el-table stripe :data="infoData.top_album" style="width: 100%">
+                <el-table-column prop="key" label="期刊" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="发文量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 研究热点 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '4'&& accTitleTab == 2">
+              <el-table stripe :data="infoData.research_topic" style="width: 100%">
+                <el-table-column prop="key" label="主题" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="研究量" width="180"></el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </div>
+        <!-- 列表 结束  -->
 
       </div>
     </div>
@@ -82,6 +122,7 @@
     },
     data(){
       return {
+        accTitleTab:1,
         is_s:false,
         is_view: true,
         organization:'', // 普通搜索
@@ -94,6 +135,9 @@
       this.getOrganizationDetail(this.organization);
     },
     methods:{
+      clickAccTab(a){
+        this.accTitleTab = a;
+      },
       // 返回上一步
       fanhui_btn(){
         let that = this;
@@ -192,9 +236,9 @@
         let option = {
           grid: {
             left: 20,
-            top: 40,
-            bottom: 0,
-            right: 40,
+            top: 50,
+            bottom: 30,
+            right: 20,
             containLabel: true,
           },
           backgroundColor: "#fff",
@@ -207,7 +251,7 @@
           toolbox: {
             show: true,
             itemSize: 16,
-            right:30,
+            right:15,
             top: 10,
             feature: {
               saveAsImage: {}  // 导出图片
@@ -332,9 +376,9 @@
           backgroundColor: "#fff",
           grid: {
               left: 20,
-              top: 60,
+              top: 50,
               bottom: 30,
-              right: 40,
+              right: 20,
               containLabel: true,
             },
           tooltip: { // 鼠标浮动展示框样式
@@ -367,7 +411,7 @@
           toolbox: {
             show: true,
             itemSize: 16,
-            right:30,
+            right:15,
             top: 10,
             feature: {
               saveAsImage: {}  // 导出图片

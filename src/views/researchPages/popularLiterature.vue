@@ -1,151 +1,211 @@
 <template>
   <div class="pages-b">
     <!-- 头部检索模块 开始 -->
-    <div class="literature-titlebox">
+    <div class="literature-titlebox" :class="searchBarFixed?'searchBarFixed':''" id="searchBar">
       <div class="titlebox-tab">
         <div class="titlebox-tab-item" :class="titleTag == 1?'hover':'' " @click="clicktitleTab(1)">检索</div>
         <div class="titlebox-tab-m"></div>
         <div class="titlebox-tab-item" :class="titleTag == 2?'hover':'' " @click="clicktitleTab(2)">高级检索</div>
+        <span @click="clickkeyTab" class="keyTab-tabspan">{{is_keyTab?'展开':'收起'}}<i style="padding-left:6px;" :class="is_keyTab?'el-icon-caret-bottom':'el-icon-caret-top'"></i></span>
       </div>
-      <!-- 普通检索头部 开始 -->
-      <div class="headerInpuBox" v-if="titleTag == 1">
-        <div class="header-input-box">
-          <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select" @input="getInputBtn" @keydown.enter.native="searchEnterFun($event)">
-            <el-button slot="append" @click="headerInputClick" >检索</el-button>
-          </el-input>
-          <div class="tabslist" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></div>
+      <div :style="`height:${is_keyTab?'0':'auto'};overflow:${is_keyTab?'hidden':''};`">
+        <!-- 普通检索头部 开始 -->
+        <div class="headerInpuBox" v-if="titleTag == 1">
+          <div class="header-input-box">
+            <div class="header-input-selectord">
+              <el-input placeholder="输入关键词" v-model="headerInput" clearable class="input-with-select" @input="getInputBtn" @keydown.enter.native="searchEnterFun($event)">
+                <el-button slot="append" @click="headerInputClick" >检索</el-button>
+              </el-input>
+            </div>
+            
+            <div class="tabslist" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></div>
 
-          <!-- 弹窗 开始-->
-          <div class="qt-inputPop-box" id="is_symptomSearch">
-            <div class="scrollarea" style="max-height: 180px" v-show="is_symptomSearch" >
+            <!-- 弹窗 开始-->
+            <!-- <div class="qt-inputPop-box" id="is_symptomSearch">
+              <div class="scrollarea" style="max-height: 180px" v-show="is_symptomSearch" >
+                <div class="scrollarea-content content">
+                  <ul>
+                    <el-checkbox-group v-model="checkOrdList" @change="checkOrdGroup">
+                      <el-checkbox class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
+                        :label="item"
+                        v-for="(item, index) in symptomSearch_data"
+                        :key="index">
+                      </el-checkbox>
+                    </el-checkbox-group>
+                  </ul>
+                </div>
+              </div>
+            </div> -->
+            <!-- 弹窗 结束-->
+
+          </div>
+          <!-- 普通相关关键词 开始 -->
+          <div class="KeyWords-box">
+            <div class="keyWords-title">
+              <span>相关关键词</span>
+              <span @click="clickxggjc" class="keyWords-tab">{{is_xggjc?'收起':'展开'}}<i style="padding-left:6px;" :class="is_xggjc?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
+            </div>
+            <div class="keyWords-items-box" :style="`height:${is_xggjc?'auto':'0'};`">
               <div class="scrollarea-content content">
                 <ul>
-                  <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
-                    v-for="(item, index) in symptomSearch_data" :key="index" @click.stop="symptomSearchClick(item)">
-                    {{ item }}
-                  </li>
+                  <el-checkbox-group v-model="checkOrdList" @change="checkOrdGroup">
+                    <el-checkbox class="keyWords-items-c"
+                      :label="item"
+                      v-for="(item, index) in symptomSearch_data"
+                      :key="index" 
+                      :title="item">
+                    </el-checkbox>
+                  </el-checkbox-group>
+                  <el-empty description="暂无数据..." v-if='symptomSearch_data.length == 0'></el-empty>
                 </ul>
               </div>
             </div>
           </div>
-          <!-- 弹窗 结束-->
-
+          <!-- 相关关键词 结束 -->
         </div>
-      </div>
-      <!-- 普通检索头部 结束 -->
+        <!-- 普通检索头部 结束 -->
 
-      <!-- 高级检索头部 开始-->
-      <div class="advancedSearch-titlebox" v-if="titleTag == 2">
-        <div class="advancedSearch-titlebox-l">
-          <div class="listbox-l-titlebox"></div>
-          <div class="duoxiang-tbox">
-            <div class="duoxiang-itemsbox" v-for="(item,index) in advancedOptions" :key="index">
-              <div class="advancedOptions-l">
-                <el-select class="validate validate-1" v-model="item.select_condition" slot="prepend" @change="selectnChange" v-if="index != 0" >
-                  <el-option
-                    v-for="items in item.options_0"
-                    :key="items.value"
-                    :label="items.label"
-                    :value="items.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <el-select class="validate validate-2" v-model="item.select_field" slot="prepend" @change="selectnChange">
-                <el-option
-                  v-for="items in item.options_1"
-                  :key="items.value"
-                  :label="items.label"
-                  :value="items.value">
-                </el-option>
-              </el-select>
-              <div class="inputbox">
-                <el-input placeholder="输入关键词..." v-model="item.field_value"  @input="getInputBtn1(index)" class="input-with-select"></el-input>
-                  <!-- 弹窗 开始-->
-                  <div class="qt-inputPop-box" id="is_symptomSearch">
-                    <div class="scrollarea" style="max-height: 180px" v-show="is_symptomSearch1 && ( index == select_index )">
-                      <div class="scrollarea-content content">
-                        <ul>
-                          <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
-                            v-for="(itm, idx) in symptomSearch_data1" :key="idx" @click.stop="symptomSearchClick1(itm,index)">
-                            {{ itm }}
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+        <!-- 高级检索头部 开始-->
+        <div class="advancedSearch-titlebox" v-if="titleTag == 2">
+          <div class="advancedSearch-titlebox-l">
+            <div class="duoxiang-tbox">
+              <div class="duoxiang-items-box">
+                <!-- 高级检索选项 开始-->
+                <div class="duoxiang-itemsbox" v-for="(item,index) in advancedOptions" :key="index">
+                  <div class="advancedOptions-l">
+                    <el-select class="validate validate-1" v-model="item.select_condition" slot="prepend" @change="selectnChange" v-if="index != 0" >
+                      <el-option
+                        v-for="items in item.options_0"
+                        :key="items.value"
+                        :label="items.label"
+                        :value="items.value">
+                      </el-option>
+                    </el-select>
                   </div>
-                  <!-- 弹窗 结束-->
+                  <el-select class="validate validate-2" v-model="item.select_field" slot="prepend" @change="selectnChange">
+                    <el-option
+                      v-for="items in item.options_1"
+                      :key="items.value"
+                      :label="items.label"
+                      :value="items.value"
+                      >
+                    </el-option>
+                  </el-select>
+                  <div class="inputbox">
+                    <el-input placeholder="输入关键词..." v-model="item.field_value" clearable  @input="getInputBtn1(item.field_value,index)" class="input-with-select"></el-input>
+                      <!-- 弹窗 开始-->
+                      <div class="qt-inputPop-box" id="is_symptomSearch">
+                        <div class="scrollarea" style="max-height: 180px" v-show="is_symptomSearch1 && ( index == select_index )">
+                          <div class="scrollarea-content content">
+                            <ul>
+                              <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
+                                v-for="(itm, idx) in symptomSearch_data1" :key="idx" @click.stop="symptomSearchClick1(itm,index)">
+                                {{ itm }}
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 弹窗 结束-->
+                  </div>
+                  <el-select class="validate validate-3" v-model="item.select_type" slot="prepend" @change="selectnChange">
+                    <el-option
+                      v-for="items in item.options_2" 
+                      :key="items.value"
+                      :label="items.label"
+                      :value="items.value">
+                    </el-option>
+                  </el-select>
+                  <div class="jiaorjian-box">
+                    <span @click="clickJian(index)"> - </span>
+                    <span @click="clickAdd(index)" v-if=" index ==  Number(advancedOptions.length - 1) "> + </span>
+                  </div>
+                </div>
+                <!-- 高级检索选项 结束 -->
+                <div class="gaojibtn-t-box">
+                  <div class="gaojibtn-box">
+                    <span @click="clickReset">重置条件</span>
+                    <span style="background: #3664D9;color: #fff;" @click="clickAdvancedSearch">检索</span>
+                  </div>
+                  <div class="tabslist" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></div>
+                </div>
               </div>
-              <el-select class="validate validate-3" v-model="item.select_type" slot="prepend" @change="selectnChange">
-                <el-option
-                  v-for="items in item.options_2" 
-                  :key="items.value"
-                  :label="items.label"
-                  :value="items.value">
-                </el-option>
-              </el-select>
-              <div class="jiaorjian-box">
-                <span @click="clickJian(index)"> - </span>
-                <span @click="clickAdd(index)" v-if=" index ==  Number(advancedOptions.length - 1) "> + </span>
+              <!-- 高级检索 关键词 开始 -->
+              <div class="KeyWords-box">
+                <div class="keyWords-title">
+                  <span>相关关键词</span>
+                  <span @click="clickGJxggjc" class="keyWords-tab">{{is_GJxggjc?'收起':'展开'}}<i style="padding-left:6px;" :class="is_GJxggjc?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
+                </div>
+                <div class="keyWords-items-box" :style="`height:${is_GJxggjc?'auto':'0'};`">
+                  <div class="scrollarea-content content">
+                    <ul>
+                    <el-checkbox-group v-model="advancedKeyWordsList" @change="checkAdvancedKeyWordsGroup">
+                      <el-checkbox class="keyWords-items-c"
+                        :label="item"
+                        v-for="(item, index) in advancedKeyWords_data"
+                        :key="index"
+                        :title="item">
+                      </el-checkbox>
+                    </el-checkbox-group>
+                    <el-empty description="暂无数据..." v-if='advancedKeyWords_data.length == 0'></el-empty>
+                  </ul>
+                  </div>
+                </div>
               </div>
+              <!-- 高级检索 关键词 结束 -->
             </div>
-            <div class="gaojibtn-t-box">
-              <div class="gaojibtn-box">
-                <span @click="clickReset">重置条件</span>
-                <span style="background: #3664D9;color: #fff;" @click="clickAdvancedSearch">检索</span>
-              </div>
-              <div class="tabslist" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></div>
-            </div>
-          </div>
-          <!-- <div class="shijian-tbox">
-            <div class="shijian-l">时间范围:</div>
-            <div class="shijian-selbox">
-              <el-date-picker
-                v-model="value2"
-                type="datetimerange"
-                :picker-options="pickerOptions"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                align="right">
-              </el-date-picker>
-            </div>
-          </div> -->
-    
-        </div>
-      </div>
-      <!-- 高级检索头部 结束-->
 
-      <div v-if="is_ls">
-        <div class="search-history">
-          <div></div>
-          <div class="sh-tabscont">
-            <el-table :data="historyList" stripe style="width: 100%">
-              <el-table-column prop="search_desc" label="检索式" align="left">
-                <template slot-scope="scope">
-                  <p @click="clickhistoryList(scope.row)" title="点击检索" class="tbale-title">{{scope.row.search_desc}}</p>
-                </template>
-              </el-table-column>
-              <el-table-column prop="search_doc_count" label="检索类型" align="center" width="100">
-                <template slot-scope="scope">
-                  <p @click="clickhistoryList(scope.row)" title="" style="cursor: pointer;">{{scope.row.tag == 1?'快速检索':'高级检索'}}</p>
-                </template>
-              </el-table-column>
-              <el-table-column prop="search_doc_count" label="检索结果" align="center" width="120">
-                <template slot-scope="scope">
-                  <p @click="clickhistoryList(scope.row)" title="点击检索" style="cursor: pointer;">{{scope.row.search_doc_count}}条</p>
-                </template>
-              </el-table-column>
-              <el-table-column prop="search_time" label="检索时间" width="120">
-                <template slot-scope="scope">
-                  <p @click="clickhistoryList(scope.row)" title="点击检索" style="cursor: pointer;">{{scope.row.search_time}}</p>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" width="70">
-                <template slot-scope="scope">
-                  <p class="tbale-p" @click="clickClear(scope.row)">清除</p>
-                </template>
-              </el-table-column>
-            </el-table>
+            <!-- <div class="shijian-tbox">
+              <div class="shijian-l">时间范围:</div>
+              <div class="shijian-selbox">
+                <el-date-picker
+                  v-model="value2"
+                  type="datetimerange"
+                  :picker-options="pickerOptions"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  align="right">
+                </el-date-picker>
+              </div>
+            </div> -->
+      
+          </div>
+        </div>
+        <!-- 高级检索头部 结束-->
+
+        <div v-if="is_ls">
+          <div class="search-history">
+            <div></div>
+            <div class="sh-tabscont">
+              <el-table :data="historyList"  height="340" stripe style="width: 100%">
+                <el-table-column prop="search_desc" label="检索式" align="left">
+                  <template slot-scope="scope">
+                    <p @click="clickhistoryList(scope.row)" title="点击检索" class="tbale-title">{{scope.row.search_desc}}</p>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="search_doc_count" label="检索类型" align="center" width="100">
+                  <template slot-scope="scope">
+                    <p @click="clickhistoryList(scope.row)" title="" style="cursor: pointer;">{{scope.row.tag == 1?'快速检索':'高级检索'}}</p>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="search_doc_count" label="检索结果" align="center" width="120">
+                  <template slot-scope="scope">
+                    <p @click="clickhistoryList(scope.row)" title="点击检索" style="cursor: pointer;">{{scope.row.search_doc_count}}条</p>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="search_time" label="检索时间" width="120">
+                  <template slot-scope="scope">
+                    <p @click="clickhistoryList(scope.row)" title="点击检索" style="cursor: pointer;">{{scope.row.search_time}}</p>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" width="70">
+                  <template slot-scope="scope">
+                    <p class="tbale-p" @click="clickClear(scope.row)">清除</p>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
           </div>
         </div>
       </div>
@@ -172,7 +232,7 @@
   import Popular from '../../components/researchPages/popular.vue';
   import Search from '../../components/researchPages/search.vue';
   import time from "../../assets/js/time";
-  import { getliteratureHistory,clearHistory,searchTip } from "../../api/data";
+  import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease } from "../../api/data";
   export default {
     name: 'popularLiterature',
     components: {
@@ -181,13 +241,31 @@
     },
     data(){
       return {
+        searchBarFixed: false,
+        duoWidth: 50,
+        advancedKeyWordsList:[], // 高级关键词多选数据
+        advancedKeyWords_data:[], // 高级关键词数据列表
+        is_keyTab: false,
+        is_xggjc: false,
+        is_GJxggjc: false,
+        checkOrdList:[], // 普通检索多选框选中项
         select_index:0,
         is_symptomSearch1: false,
         symptomSearch_data1:[], // 高级输入框模糊匹配弹窗列表数据
-        is_symptomSearch: false,
+        // is_symptomSearch: false,
         symptomSearch_data:[], // 普通输入框模糊匹配弹窗列表数据
         options_0:[{label:'AND',value:'and'},{label:'OR',value:'or'},{label:'NOT',value:'not'}],
-        options_1:[{label:'标题',value:'title'},{label:'作者',value:'author'},{label:'摘要',value:'abstract'},{label:'关键词',value:'keyword'}],
+        options_1:[
+          {label:'标题',value:'title'},
+          {label:'作者',value:'author'},
+          {label:'摘要',value:'abstract'},
+          {label:'关键词',value:'keyword'},
+          {label:'基金',value:'funds'},
+          {label:'参考文献',value:'references'},
+          {label:'doi',value:'doi'},
+          {label:'期刊',value:'album'},
+          {label:'作者单位',value:'organization'}
+          ],
         options_2:[{label:'精准',value:'term'},{label:'模糊',value:'match'}],
         is_ls: false,
         uid: window.localStorage.getItem('uid'),
@@ -246,10 +324,10 @@
         historyList:[], // 高级历史检索
         date: '', // 选中的时间
         advancedCondition:[], // 选中的检索选项
+        title_text:'',
       }
     },
     created(){
-      this.$emit('onEmitIndex', '/popularLiterature'); // 触发父组件的方法，并传递参数index
       // 获取历史记录
       this.getliteratureHistory();
       let is_p = this.$route.query.is_p;
@@ -282,31 +360,82 @@
       document.addEventListener("click", (e) => {
         let box_2 = document.getElementById("is_symptomSearch");
         if (!box_2.contains(e.target)) {
-          this.is_symptomSearch = false;
-          this.symptomSearch_data = [];
+          // this.is_symptomSearch = false;
+          // this.symptomSearch_data = [];
           this.is_symptomSearch1 = false;
           this.symptomSearch_data1 = [];
         }
       });
     },
+     mounted () {
+      window.addEventListener('scroll', this.handleScroll)
+    },
     destroyed () {
-      window.removeEventListener('click')
+      window.removeEventListener('click');
+      window.removeEventListener('scroll', this.handleScroll);
     },
     methods:{
+
+      // 监听滚动
+      handleScroll () {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        var offsetTop = document.querySelector('#searchBar').offsetTop;
+        if (scrollTop > offsetTop) {
+          this.searchBarFixed = true
+        } else {
+          this.searchBarFixed = false
+        }
+      },
+      clickkeyTab(){
+        this.is_keyTab = !this.is_keyTab;
+      },
+      // 普通检索相关关键词
+      clickxggjc(){
+        this.is_xggjc = !this.is_xggjc;
+      },
+      // 高级检索相关关键词
+      clickGJxggjc(){
+        this.is_GJxggjc = !this.is_GJxggjc;
+      },
       // 高级检索--模糊匹配
-      getInputBtn1(i){
+      getInputBtn1(v,i){
         console.log(i)
         let that = this;
         that.select_index = i;
+        if(v ==''){
+          that.is_GJxggjc = false;
+        }
         // 弹窗列表数据
         that.symptomSearch_data1 = [];
         that.is_symptomSearch1 = false;
         let advancedOptions = that.advancedOptions;
         let select_field = advancedOptions[i].select_field;
         let field_value = advancedOptions[i].field_value;
-        console.log(advancedOptions)
         if(select_field == 'keyword' || select_field == 'author') {
           return
+        }else if( select_field == 'title'){
+          that.title_text = v;
+          if(that.title_text == ''){
+            that.advancedKeyWordsList = [];
+            that.is_GJxggjc = false;
+          }
+          that.advancedKeyWords_data = [];
+          getRecommendDisease({
+              keyword: field_value,
+            }).then((res) => {
+              if (res.data.code == 0) {
+                that.advancedKeyWords_data = res.data.data;
+                if(that.advancedKeyWords_data.length == 0){
+                  that.is_GJxggjc = false;
+                }else{
+                  that.is_GJxggjc = true;
+                }
+                
+              }
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         }else{
           searchTip({
             search: field_value,
@@ -339,18 +468,23 @@
       getInputBtn() {
         let that = this;
         // 弹窗列表数据
-        that.symptomSearch_data = [];
-        that.is_symptomSearch = false;
-        searchTip({
+        if(that.headerInput == ''){
+          that.checkOrdList = [];
+          that.symptomSearch_data = [];
+          that.is_xggjc = false;
+        }
+        getSingleRecommendDisease({
           search: that.headerInput,
         }).then((res) => {
           if (res.data.code == 0) {
             let symptomSearch_data = res.data.data;
             if (symptomSearch_data.length <= 0) {
+              that.symptomSearch_data = [];
+              that.is_xggjc = false;
               return;
             } else {
               that.symptomSearch_data = symptomSearch_data;
-              that.is_symptomSearch = true;
+              that.is_xggjc = true;
             }
           }
         })
@@ -358,11 +492,30 @@
           console.log(e);
         });
       },
-      // 普通检索模糊查询点击查询到的列表项
-      symptomSearchClick(n) {
-        this.headerInput = n;
-        this.is_symptomSearch = false;
+      // 普通检索复选框
+      checkOrdGroup(arr){
+        this.headerInput = arr.join(',');
       },
+      // 高级关键词复选框选中数据
+      checkAdvancedKeyWordsGroup(arr,index){
+        let that = this;
+        let select_index = that.select_index;
+        let newarr =  '';
+        if(arr.length == 0){
+         newarr =  that.title_text;
+        }else{
+        //  newarr =  that.title_text + '+' + arr.join('+');
+         newarr = arr.join('+');
+        }
+        let advancedOptions = that.advancedOptions;
+        advancedOptions[select_index].field_value = newarr;
+        that.advancedOptions = advancedOptions;
+      },
+      // 普通检索模糊查询点击查询到的列表项
+      // symptomSearchClick(n) {
+      //   this.headerInput = n;
+      //   this.is_symptomSearch = false;
+      // },
       // 点击清除历史记录
       clickClear(e){
         const that = this;
@@ -424,6 +577,7 @@
       },
       // 普通检索
       headerInputClick(){
+        let that = this;
         let headerInput = this.headerInput;
         if(!headerInput){
           this.$message.error({
@@ -432,16 +586,29 @@
           return
         }
         let advancedCondition = [];
-        advancedCondition.push({
-          select_field: 'title',
-          field_value: headerInput,
-          select_type: 'match',
-          select_condition: '',
-        })
-        this.advancedCondition = advancedCondition;
-        this.is_pop = '2';
-        this.is_symptomSearch = false;
-        this.setsickNess();
+        let checkOrdList = that.checkOrdList;
+
+        if(checkOrdList.length > 0){
+          checkOrdList.forEach(ele =>{
+            advancedCondition.push({
+              select_field: 'title',
+              field_value: ele,
+              select_type: 'match',
+              select_condition: '',
+            })
+          })
+        }else{
+          advancedCondition.push({
+            select_field: 'title',
+            field_value: headerInput,
+            select_type: 'match',
+            select_condition: '',
+          })
+        }
+      
+        that.advancedCondition = advancedCondition;
+        that.is_pop = '2';
+        that.setsickNess();
       },
 
       // 普通检索 回车键点击
@@ -508,24 +675,21 @@
       // 点击高级检索-- 检索按钮
       clickAdvancedSearch(){
         let that= this;
+        let select_index = that.select_index;
         let advancedOptions = this.advancedOptions;
-        let advancedCondition = [];
-        // let value2 = this.value2;
-        // let date = '';
-        // if(value2){
-        //   let v1 = time.formatTime1(value2[0]);
-        //   let v2 = time.formatTime1(value2[1]);
-        //   date = v1 + ',' + v2;
-        // }
-        advancedOptions.forEach( (ele,index) =>{
-          advancedCondition.push({
-            select_field: ele.select_field,
-            field_value: ele.field_value,
-            select_type: ele.select_type,
-            select_condition: ele.select_condition,
+        let newArr  = JSON.parse(JSON.stringify(advancedOptions));
+        let arr = advancedOptions[select_index].field_value.split('+');
+        // let newAdv = advancedOptions.slice(select_index,select_index+1);
+        newArr.splice(select_index,1);
+        arr.forEach((ele,index) =>{
+          newArr.splice(select_index + index,0,{
+            field_value:ele,
+            select_condition:select_index == 0?'':'or',
+            select_field:advancedOptions[select_index].select_field,
+            select_type:'match',
           })
         })
-        that.advancedCondition = advancedCondition;
+        that.advancedCondition = newArr;
         // that.date = date;
         that.is_pop = '2';
         that.is_symptomSearch1= false;
@@ -595,18 +759,32 @@
   }
   .literature-titlebox{
     width: 100%;
-    min-height: 144px;
+    /* min-height: 144px; */
     height: auto;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
     border-radius: 6px;
-    padding: 0.8rem 0 2rem 0;
+    padding: 1rem;
+  }
+  .literature-titlebox.searchBarFixed{
+    position: fixed;
+		background-color: #Fff;
+		top: 3.6rem;
+    right: 0;
+		z-index: 999;
+    margin-top: 0;
+    box-shadow:none;
+    box-shadow: 0px 4px 9px 0px rgba(227,227,227,0.5);
+    padding-left: 14.8rem;
   }
   .titlebox-tab{
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #E5E5E5;
+    position: relative;
   }
   .titlebox-tab .titlebox-tab-item{
     font-size: 16px;
@@ -626,21 +804,29 @@
     border: 1px solid #D7D7D7;
   }
   .headerInpuBox{
-    width: 60%;
+    width: 38rem;
     margin: 0 auto;
     text-align: left;
+    display: flex;
+    position: relative;
   }
   .header-input-box{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex: 1;
     border-radius: 6px;
-    margin: 1rem auto 0;
+    margin: 1.2rem auto 0;
     cursor: pointer;
     position: relative;
   }
-
+  .header-input-selectord{
+    display: flex;
+    align-items: center;
+  }
+  .header-input-selectord .validate{
+    width: 7rem;
+    font-size: 14px;
+    background: transparent!important;
+    margin-right: 10px;
+  }
   .qt-inputPop-box {
     position: absolute;
     background: #fff;
@@ -656,16 +842,32 @@
     overflow-y: auto;
   }
   /* ==============  滚动条样式   ==================== */
-    .scrollarea::-webkit-scrollbar { 
+  .scrollarea::-webkit-scrollbar { 
     width:8px; 
     height:10px; 
     background-color:#dfdbdb; 
-    }
+  }
+  /* 滚动条上的滚动滑块. */
+  .scrollarea::-webkit-scrollbar-thumb { 
+    background-color:#3664D9; 
+    border-radius: 50px;
+  }
+  .keyWords-items-box::-webkit-scrollbar { 
+    width:8px; 
+    height:10px; 
+    background-color:#dfdbdb; 
+  }
+  .keyWords-items-box /deep/ .el-empty{
+    padding: 0;
+  }
+  .keyWords-items-box /deep/ .el-empty__image{
+    height: 7rem;
+  }
     /* 滚动条上的滚动滑块. */
-    .scrollarea::-webkit-scrollbar-thumb { 
-      background-color:#27afa1; 
-      border-radius: 50px;
-    }
+  .keyWords-items-box::-webkit-scrollbar-thumb { 
+    background-color:#3664D9; 
+    border-radius: 50px;
+  }
   /* ==============  滚动条样式   ==================== */
   .scrollarea-content {
     margin: 0;
@@ -677,6 +879,13 @@
   .scrollarea-content ul li:hover {
     color:#3664D9;
     background: #f5f7fa;
+  }
+  .scrollarea-content /deep/ .el-checkbox__input.is-checked .el-checkbox__inner,.scrollarea-content /deep/ .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #3664D9;
+    border-color: #3664D9;
+  }
+  .scrollarea-content /deep/ .el-checkbox__input.is-checked+.el-checkbox__label {
+    color: #3664D9;
   }
   .src-common-components-LiItem-3S7Fa {
     height: 30px;
@@ -751,22 +960,26 @@
   .tabslist{
     margin-left: 10px;
     width: auto;
-    padding: 0 0.8rem;
     height: 32px;
     color: #3d3d3d;
     line-height: 32px;
-    text-align: center;
+    text-align: right;
     cursor: pointer;
     font-size: 12px;
   }
   .tabslist:hover{
     color: #3664D9;
   }
+  .header-input-box /deep/ .el-input__suffix{
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   /* ===============  高级检索头部 ↓ ======================= */
   .advancedSearch-titlebox{
     width: 100%;
     background: #fff;
-    margin-top: 1rem;
     border-radius: 6px;
     position: relative;
   }
@@ -774,20 +987,17 @@
   .advancedSearch-titlebox-l{
     flex: 1;
     padding: 0 1rem;
-  }
-  .listbox-l-titlebox{
-    width: 100%;
-    border-bottom: 1px solid #E5E5E5;
+    display: flex;
+    justify-content: center;
   }
   .duoxiang-itemsbox{
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-right: 0.5rem;
     margin-top: 1rem;
   }
   .duoxiang-itemsbox .validate {
-    width: 7.4rem;
+    width: 7rem;
     font-size: 14px;
     background: transparent!important;
   }
@@ -827,9 +1037,14 @@
     font-weight: 400;
   }
   .duoxiang-itemsbox .input-with-select{
-    width: 20rem;
+    width: 15rem;
     height: 32px !important;
     line-height: 32px !important;
+  }
+  .duoxiang-itemsbox .input-with-select /deep/ .el-input__suffix{
+    line-height: 32px;
+    display: flex;
+    align-items: center;
   }
   .duoxiang-itemsbox .input-with-select >>> .el-input__inner{
     display: flex;
@@ -980,10 +1195,10 @@
   }
   /* ===============  高级检索头部 ↑ ======================= */
   .search-history{
-    width: 70%;
+    width: 72%;
     margin: 0 auto;
     border-radius: 2px;
-    margin-top: 20px;
+    margin-top: 10px;
     background: #fff;
   }
   .sh-tabscont {
@@ -1028,7 +1243,88 @@
   background: none;
 }
 .duoxiang-tbox{
-  width: 50rem;
-  margin: 0 auto;
+  width: auto;
+  display: flex;
+  position: relative;
+}
+.duoxiang-items-box{
+  flex: 1;
+}
+.KeyWords-box{
+  width: 18rem;
+  text-align: left;
+  padding: 0.5rem;
+  box-shadow: 0px 2px 9px 0px #dddddd80;
+  border-radius: 8px;
+  position: absolute;
+  background: #fff;
+  right: -19rem;
+  top: 1.2rem;
+  z-index: 999;
+}
+.keyWords-items-box{
+  max-height: 200px;
+  position: relative;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.keyWords-title{
+  padding: 0 10px 4px 0;
+  font-size: 15px;
+  color: #8f8f8f;
+  border-bottom: 1px solid #dddddd80;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.keyWords-title .keyWords-tab{
+  text-align: right;
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+}
+.keyWords-title .keyWords-tab:hover{
+  color: #3664D9;
+}
+.keyWords-items-box .scrollarea-content {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    touch-action: none;
+}
+.keyWords-items-box /deep/ .el-checkbox{
+  margin: 0;
+}
+/* .keyWords-items-box /deep/ .el-checkbox-group{
+  display: flex;
+  flex-wrap: wrap;
+} */
+.keyWords-items-box .scrollarea-content ul .keyWords-items-c{
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+  text-align: left;
+  overflow: hidden;
+  flex-wrap: wrap;
+  cursor: pointer;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.keyTab-tabspan{
+  position: absolute;
+  top: -6px;
+  right: 0;
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+}
+.keyTab-tabspan:hover{
+  color: #3664D9;
 }
 </style>

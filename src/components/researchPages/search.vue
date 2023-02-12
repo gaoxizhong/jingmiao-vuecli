@@ -5,7 +5,7 @@
 
       <div style="margin-right:1rem;flex:1;">
         <!-- 筛选模块 开始 -->
-        <div class="c-filter-box" :class="searchBarFixed?'searchBarFixed':''" id="searchBar">
+        <div class="c-filter-box">
           <div class="c-filter-l">
             <div class="filter-inputbox">
               <label>标题:</label>
@@ -195,29 +195,12 @@
         keywordInfo:{},  // 介绍
         shoow_status: true,
         is_h: true,
-        searchBarFixed: false
       }
     },
     created(){
        this.literatureDocSearch();
     },
-    mounted () {
-      window.addEventListener('scroll', this.handleScroll)
-    },
-    destroyed () {
-      window.removeEventListener('scroll', this.handleScroll)
-    },
     methods:{
-      // 监听滚动
-      handleScroll () {
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-        var offsetTop = document.querySelector('#searchBar').offsetTop;
-        if (scrollTop > offsetTop) {
-          this.searchBarFixed = true
-        } else {
-          this.searchBarFixed = false
-        }
-      },
       // 点击展开、收起
       clickShow(s){
         this.shoow_status = !s;
@@ -467,6 +450,7 @@
           order_field: sele_order_field,
           order: sele_order,
         }
+        console.log(params)
         // let params1 = JSON.stringify(params);
         // let p = JSON.parse(params1);
         const loading = this.$loading({
@@ -654,15 +638,8 @@
             ],
         };
         myChart.setOption(option);
-        //跳转代码
+        //跳转代码--  加 myChart.off('click') 防止点击一次 成倍请求
         myChart.on("click", function (d) {
-          // that.$router.push({
-          //   path:'/literatureAuthor',   
-          //   query:{
-          //     name:d.name,
-          //   }
-          // })
-          
           that.authorFunction(d.name);
         });
       },

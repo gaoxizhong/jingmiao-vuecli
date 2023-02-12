@@ -23,16 +23,23 @@
         </div>
         <div class="option-itemsbox option-itemsbox-3">
           <div class="validate-input">
-            <el-input type="text" v-model="select_3" placeholder="输入疾病名称..."  @input="getInputBtn(select_3) "/>
+            <el-input type="text" v-model="select_3" clearable placeholder="输入疾病名称..."  @input="getInputBtn(select_3) "/>
             <!-- 弹窗 开始-->
             <div class="qt-inputPop-box" id="is_symptomSearch">
               <div class="scrollarea" style="max-height: 180px" v-show="is_symptomSearch">
                 <div class="scrollarea-content content">
                   <ul>
-                    <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
-                      v-for="(itm, idx) in symptomSearch_data" :key="idx" @click.stop="symptomSearchClick(itm)">
-                      {{ itm }}
-                    </li>
+                    <el-checkbox-group v-model="checkOrdList" @change="checkOrdGroup">
+                      <el-checkbox class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
+                        :label="item.name"
+                        v-for="(item, index) in symptomSearch_data"
+                        :key="index">
+                      </el-checkbox>
+                    </el-checkbox-group>
+                    <!-- <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
+                      v-for="(itm, idx) in symptomSearch_data" :key="idx" @click.stop="symptomSearchClick(itm.name)">
+                      {{ itm.name }}
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -67,13 +74,14 @@
       <div class="classbox-l">
         <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
         <span>统计总览</span>
+        <span class="classbox-title">{{ select_title }}</span>
       </div>
-      <span class="classbox-title">{{ select_title }}</span>
+      <!-- <span></span> -->
     </div>
     <!-- 统计总览 开始 -->
     <div class="statisticalOverview-box">
 
-      <div class="overview-items">
+      <div class="overview-items" @click="jump_xsccl(1)">
         <div class="o-items-title">
           <img src="../../assets/image/researchPages/icon-xsccl.png" alt="" />
           <span>学术产出力</span>
@@ -81,7 +89,7 @@
         <div id="xsccl" style="flex: 1;"></div>
       </div>
 
-      <div class="overview-items">
+      <div class="overview-items" @click="jump_xsccl(2)">
         <div class="o-items-title">
           <img src="../../assets/image/researchPages/icon-xsyxl.png" alt="" />
           <span>学术影响力</span>
@@ -89,7 +97,7 @@
         <div id="xsyxl" style="flex: 1;"></div>
 
       </div>
-      <div class="overview-items">
+      <div class="overview-items" @click="jump_xsccl(5)">
         <div class="o-items-title">
           <img src="../../assets/image/researchPages/icon-hzgcl.png" alt="" />
           <span>合作共创力</span>
@@ -97,7 +105,7 @@
         <div id="hzgcl" style="flex: 1;"></div>
 
       </div>
-      <div class="overview-items">
+      <div class="overview-items" @click="jump_xsccl(6)">
         <div class="o-items-title">
           <img src="../../assets/image/researchPages/icon-kyxzl.png" alt="" />
           <span>科研学者力</span>
@@ -107,7 +115,7 @@
       </div>
     </div>
     <!-- 统计总览 结束 -->
-    <div class="icon-classbox">
+    <div class="icon-classbox" id="xxfx-id">
       <div class="classbox-l">
         <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
         <span>详细分析</span>
@@ -116,35 +124,40 @@
     <!-- tab展示 开始 -->
     <div class="accordion-box">
       <div class="acc-leftbox">
-        <div class="acc-l-items" :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
-        <div class="acc-l-items" :class="acc_tab == '2'?'active':''" @click="clickTab('2')">被引趋势</div>
+        <div class="acc-l-items" id='fwqs' :class="acc_tab == '1'?'active':''" @click="clickTab('1')">发文趋势</div>
+        <div class="acc-l-items" id='byqs' :class="acc_tab == '2'?'active':''" @click="clickTab('2')">被引趋势</div>
         <div class="acc-l-items" :class="acc_tab == '3'?'active':''" @click="clickTab('3')">学科渗透</div>
         <div class="acc-l-items" :class="acc_tab == '4'?'active':''" @click="clickTab('4')">研究主题</div>
-        <div class="acc-l-items" :class="acc_tab == '5'?'active':''" @click="clickTab('5')">热门机构</div>
-        <div class="acc-l-items" :class="acc_tab == '6'?'active':''" @click="clickTab('6')">相关学者</div>
+        <div class="acc-l-items" id='rmjg' :class="acc_tab == '5'?'active':''" @click="clickTab('5')">热门机构</div>
+        <div class="acc-l-items" id='xgxz' :class="acc_tab == '6'?'active':''" @click="clickTab('6')">相关学者</div>
         <!-- <div class="acc-l-items" :class="acc_tab == '7'?'active':''" @click="clickTab('7')">代表期刊</div> -->
       </div>
       <div class="acc-rightbox">
-        <div class="acc-pagebox" id="acc-pagebox" v-show="acc_tab == '1'">
+        <div class="acc-title-tabbox">
+          <span :class="accTitleTab == 1?'active':''" @click.stop="clickAccTab(1)">图表</span>
+          <span :class="accTitleTab == 2?'active':''" @click.stop="clickAccTab(2)">列表</span>
+        </div>
+        <!-- 图表 开始 -->
+        <div class="acc-pagebox" id="acc-pagebox" v-show="acc_tab == '1' && accTitleTab == 1">
           <div class="eacharts-box" id="eachartsTrends"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '2'">
+        <div class="acc-pagebox" v-show="acc_tab == '2'&& accTitleTab == 1">
           <!-- 被引趋势 -->
           <div class="eacharts-box" id="eachartsCited"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '3'">
+        <div class="acc-pagebox" v-show="acc_tab == '3'&& accTitleTab == 1">
           <!-- 学科渗透 -->
           <div class="eacharts-box" id="eachartsDisciplinaryPenetration"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '4'">
+        <div class="acc-pagebox" v-show="acc_tab == '4'&& accTitleTab == 1">
           <!-- 研究主题 -->
           <div class="eacharts-box" id="eachartsTheme"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '5'">
+        <div class="acc-pagebox" v-show="acc_tab == '5'&& accTitleTab == 1">
           <!-- 热门机构 -->
           <div class="eacharts-box" id="RepresentativeBody"></div>
         </div>
-        <div class="acc-pagebox" v-show="acc_tab == '6'">
+        <div class="acc-pagebox" v-show="acc_tab == '6'&& accTitleTab == 1">
           <!-- 相关学者 -->
           <div class="eacharts-box" id="RepresentativeScholar"></div>
         </div>
@@ -152,7 +165,56 @@
         <!-- <div class="acc-pagebox" v-show="acc_tab == '7'">
           <div class="eacharts-box" id="RepresentativePeriodicals"></div>
         </div> -->
-
+        <!-- 图表 结束 -->
+        <!-- 列表 开始  -->
+        <div class="acc-pagebox" v-show="accTitleTab == 2">
+          
+          <div class="acc-listbox">
+            <!-- 发文趋势 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '1'&& accTitleTab == 2">
+              <el-table stripe :data="detail_analyse.post_trend" style="width: 100%">
+                <el-table-column prop="key" label="年份" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="发文量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 被引趋势 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '2'&& accTitleTab == 2">
+              <el-table stripe :data="detail_analyse.cited_trend" style="width: 100%">
+                <el-table-column prop="key" label="年份" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="被引量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 学科渗透 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '3'&& accTitleTab == 2">
+              <el-table stripe :data="detail_analyse.subject_infiltration" style="width: 100%">
+                <el-table-column prop="key" label="学科" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="渗透量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 研究主题 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '4'&& accTitleTab == 2">
+              <el-table stripe :data="detail_analyse.research_topic" style="width: 100%">
+                <el-table-column prop="key" label="主题" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="研究量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 热门机构 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '5'&& accTitleTab == 2">
+              <el-table stripe :data="detail_analyse.hot_body" style="width: 100%">
+                <el-table-column prop="key" label="机构" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="发文量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 相关学者 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '6'&& accTitleTab == 2">
+              <el-table stripe :data="detail_analyse.relevant_scholars" style="width: 100%">
+                <el-table-column prop="key" label="学者" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="发文量" width="180"></el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </div>
+        <!-- 列表 结束  -->
       </div>
     </div>
     <!-- tab展示 结束 -->
@@ -215,7 +277,7 @@
 
 </template>
 <script>
-  import { searchTip,getClassBrowseList,getRelationRecommend,getDepartmentIndex } from "../../api/data";
+  import { getXkfxDiseases,getClassBrowseList,getRelationRecommend,getDepartmentIndex } from "../../api/data";
   import yearPicker from '../../components/researchPages/yearPicker.vue';
 
   export default {
@@ -230,6 +292,8 @@
     },
     data(){
       return {
+        accTitleTab:1,
+        checkOrdList:[], // 普通检索多选框选中项
         in_year:'',
         is_view: true,
         headerInput:'', // 普通搜索
@@ -290,16 +354,37 @@
       window.removeEventListener('click')
     },
     methods:{
-    // 普通检索--模糊匹配
+      clickAccTab(a){
+        this.accTitleTab = a;
+      },
+      jump_xsccl(n){
+        let that = this;
+        let scrollItem = document.getElementById('xxfx-id')
+        // 锚点对应的模块与最近的一个具有定位的祖宗元素顶部的距离
+        this.offsetTop = scrollItem.offsetTop
+        window.scrollTo({
+          top: scrollItem.offsetTop - 50,
+          behavior: "smooth",
+        });
+        that.clickTab(n);
+      },
+      // 检索复选框
+      checkOrdGroup(arr){
+        this.select_3 = arr.join(',');
+      },
+    // 检索--模糊匹配
       getInputBtn() {
         let that = this;
         // 弹窗列表数据
+        that.checkOrdList = [];
         that.symptomSearch_data = [];
         that.is_symptomSearch = false;
-        searchTip({
-          search: that.select_3,
+        getXkfxDiseases({
+           disease: that.select_3,
+           department: that.select_2
         }).then((res) => {
           if (res.data.code == 0) {
+            that.checkOrdList = [];
             let symptomSearch_data = res.data.data;
             if (symptomSearch_data.length <= 0) {
               return;
@@ -573,17 +658,19 @@
       getStatisticalAnalysis_1(data){
         const that = this;
         const infoData = data;
-        const arr = ['','',''];
+        const arr = [''];
+        arr.push(infoData.subject_sub);
+        arr.push(infoData.subject_top);
         arr.push(infoData.doc_num);
-        var cost = [0,0,0,0.8]//占比（大于1按1处理）
-        var totalCost = [ 1,1, 1, 1,1]//比例综合
+        var cost = [0,0.3,0.5,0.8]//占比（大于1按1处理）
+        var totalCost = [1,1,1,1]//比例综合
         arr.forEach((ele,index) =>{
           if(ele == 0){
             cost[index] = 0
           }
         })
         var visits = arr; //本期占总的百分比*100
-        var grade = ['','','','文献发文量']
+        var grade = ['','次要主题','主要主题','文献发文量']
         var myColor = ['#21BF57','#56D0E3', '#3664D9', '#F8B448','#F57474', ];
         var data = {
             grade: grade,
@@ -604,20 +691,20 @@
                   show: false,
               },
               yAxis: {
-                  type: 'category',
-                  axisLabel: {
-                      margin:30,
-                      show: true,
-                      color: '#000',
-                      fontSize: 14
-                  },
-                  axisTick: {
-                      show: false,
-                  },
-                  axisLine: {
-                      show: false,
-                  },
-                  data: data.grade
+                type: 'category',
+                axisLabel: {
+                    margin:30,
+                    show: true,
+                    color: '#000',
+                    fontSize: 14
+                },
+                axisTick: {
+                    show: false,
+                },
+                axisLine: {
+                    show: false,
+                },
+                data: data.grade
               },
               series: [{
                   type: 'bar',
@@ -635,12 +722,12 @@
                       }
                   },
                   itemStyle: {
-                      normal: {
-                          borderColor: '#ffffff10',
-                          borderWidth: 0,
-                          barBorderRadius: 15,
-                          color: 'rgba(102, 102, 102,0)'
-                      },
+                    normal: {
+                      borderColor: '#ffffff10',
+                      borderWidth: 0,
+                      barBorderRadius: 15,
+                      color: 'rgba(102, 102, 102,0)'
+                    },
                   },
                   z: 0,
                   data: data.totalCost,
@@ -651,7 +738,7 @@
                 type: "bar",
                 barWidth: 12,
                 barGap: "-100%",
-                data: [0,0,0,1],
+                data: [0,1,1,1],
                 itemStyle: {
                   normal: {
                     color: "#f1f1f150",
@@ -659,34 +746,33 @@
                   },
                 },
                 z: 1,
-                data: [0,0,0,1],
               },
               {
-                  type: 'bar',
-                  barGap: '-85%',
-                  barWidth: '21%',
-                  itemStyle: {
-                      normal: {
-                          barBorderRadius: 16,
-                          color: function(params) {
-                              var num = myColor.length;
-                              return myColor[params.dataIndex % num]
-                          },
-                      }
-                  },
-                  max: 1,
-                  label: {
-                      normal: {
-                          show: false,
-                          position: 'inside',
-                          formatter: '{c}%'
-                      }
-                  },
-                  labelLine: {
-                      show: true,
-                  },
-                  z: 2,
-                  data: data.cost,
+                type: 'bar',
+                barGap: '-85%',
+                barWidth: '21%',
+                itemStyle: {
+                    normal: {
+                        barBorderRadius: 16,
+                        color: function(params) {
+                            var num = myColor.length;
+                            return myColor[params.dataIndex % num]
+                        },
+                    }
+                },
+                max: 1,
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'inside',
+                        formatter: '{c}%'
+                    }
+                },
+                labelLine: {
+                    show: true,
+                },
+                z: 2,
+                data: data.cost,
               }]
           }
         option && topics_eacharts.setOption(option);
@@ -770,7 +856,6 @@
                   },
                   z: 0,
                   data: data.totalCost,
-                  // data: da
               },
               {
                 name: "",
@@ -1604,7 +1689,7 @@
     justify-content: flex-start;
   }
   .option-itemsbox{
-    width: 15rem;
+    width: 17rem;
     height: 2rem;
     margin-right: 20px;
     display: -webkit-box;
@@ -1613,6 +1698,9 @@
     display: -ms-flexbox;
     display: flex;
     align-items: center;
+  }
+  .option-itemsbox-2{
+    width: 12rem;
   }
   .option-itemsbox:nth-of-type(1){
     width: 8rem;
@@ -1944,6 +2032,13 @@
     color:#3664D9;
     background: #f5f7fa;
   }
+  .scrollarea-content /deep/ .el-checkbox__input.is-checked .el-checkbox__inner,.scrollarea-content /deep/ .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #3664D9;
+    border-color: #3664D9;
+  }
+  .scrollarea-content /deep/ .el-checkbox__input.is-checked+.el-checkbox__label {
+    color: #3664D9;
+  }
   .src-common-components-LiItem-3S7Fa {
     height: 30px;
     line-height: 30px;
@@ -1955,5 +2050,6 @@
     overflow: hidden;
     cursor: pointer;
     font-size: 14px;
+    display: block;
   }
 </style>
