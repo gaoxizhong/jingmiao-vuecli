@@ -10,7 +10,7 @@
       <div class="content-left">
         <div class="myFavorite-seach-box">
           <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select">
-            <el-button slot="append" @click="headerInputClick" >搜素</el-button>
+            <el-button slot="append" @click="headerInputClick">搜索</el-button>
           </el-input>
         </div>
         <div class="content-left-1">
