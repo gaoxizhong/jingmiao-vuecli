@@ -70,13 +70,13 @@
       </div>
     </div>
     <!-- 头部搜索模块 结束 -->
-    <div class="icon-classbox" style="justify-content: flex-start;">
+    <div class="icon-classbox" style="padding-right: 10px;">
       <div class="classbox-l">
         <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
         <span>统计总览</span>
         <span class="classbox-title">{{ select_title }}</span>
       </div>
-      <!-- <span></span> -->
+      <span>共{{ doc_num?doc_num:0 }}篇</span>
     </div>
     <!-- 统计总览 开始 -->
     <div class="statisticalOverview-box">
@@ -234,41 +234,51 @@
       <div class="suggestion-titlebox">
         <div :class="album_tag == 'highest'?'active':''"  @click="clicksuggestion('highest')">最高被引用</div>
         <div :class="album_tag == 'newest'?'active':''" @click="clicksuggestion('newest')">最新发布</div>
+        <div :class="album_tag == 'document'?'active':''" @click="clicksuggestion('document')">全部文献</div>
       </div>
-      <div class="suggestion-tabbox">
-        <el-table :data="tableData" stripe style="width: 100%">
-          <el-table-column prop="title" label="标题">
-            <template slot-scope="scope">
-              <p @click="detailData(scope.row)">{{scope.row.title}}</p>
-            </template>
-          </el-table-column>
-          <el-table-column prop="author" label="作者" width="180">
-            <template slot-scope="scope">
-              <p @click="detailData(scope.row)">{{scope.row.author?scope.row.author:'暂无'}}</p>
-            </template>
-          </el-table-column>
-          <el-table-column prop="album" label="来源" width="280">
-            <template slot-scope="scope">
-              <p @click="detailData(scope.row)">{{scope.row.album?scope.row.album:'暂无'}}</p>
-            </template>
-          </el-table-column>
-          <el-table-column prop="year" label="年份" width="160">
-            <template slot-scope="scope">
-              <p @click="detailData(scope.row)">{{scope.row.year?scope.row.year:'暂无'}}</p>
-            </template>
-          </el-table-column>
-          <el-table-column prop="citation_relate_count" label="被引量" width="160">
-            <template slot-scope="scope">
-              <p @click="detailData(scope.row)">{{scope.row.citation_relate_count?scope.row.citation_relate_count:'暂无'}}</p>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+      <div v-if="tableData.length > 0">
+        <div class="suggestion-tabbox">
+          <el-table :data="tableData" stripe style="width: 100%">
+            <el-table-column prop="title" label="标题">
+              <template slot-scope="scope">
+                <p @click="detailData(scope.row)">{{scope.row.title}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="author" label="作者" width="180">
+              <template slot-scope="scope">
+                <p @click="detailData(scope.row)">{{scope.row.author?scope.row.author:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="album" label="来源" width="280">
+              <template slot-scope="scope">
+                <p @click="detailData(scope.row)">{{scope.row.album?scope.row.album:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="album" label="关键词" width="160" v-if=" album_tag == 'document' ">
+              <template slot-scope="scope">
+                <p @click="detailData(scope.row)">{{scope.row.keyword?scope.row.keyword:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="year" label="年份" width="90">
+              <template slot-scope="scope">
+                <p @click="detailData(scope.row)">{{scope.row.year?scope.row.year:'暂无'}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="citation_relate_count" label="被引量" width="90">
+              <template slot-scope="scope">
+                <p @click="detailData(scope.row)">{{scope.row.citation_relate_count?scope.row.citation_relate_count:'暂无'}}</p>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
 
-      <div class="demo-block-control" style="left: 0px;" @click="clickMore"  v-if="total_page > 1">
-        <i class="el-icon-caret-bottom"></i>
-        <span>加载更多...</span>
+        <div class="demo-block-control" style="left: 0px;" @click="clickMore"  v-if="total_page > 1">
+          <i class="el-icon-caret-bottom"></i>
+          <span>加载更多...</span>
+        </div>
       </div>
+      
+        <el-empty description="暂无数据..." v-if='tableData.length == 0'></el-empty>
 
     </div>
     <!-- 相关推荐 结束-->
@@ -277,7 +287,7 @@
 
 </template>
 <script>
-  import { getXkfxDiseases,getClassBrowseList,getRelationRecommend,getDepartmentIndex } from "../../api/data";
+  import { getXkfxDiseases,getClassBrowseList,getRelationRecommend,getDepartmentIndex,getXkfxEsDocument } from "../../api/data";
   import yearPicker from '../../components/researchPages/yearPicker.vue';
 
   export default {
@@ -292,6 +302,7 @@
     },
     data(){
       return {
+        doc_num:0,
         accTitleTab:1,
         checkOrdList:[], // 普通检索多选框选中项
         in_year:'',
@@ -307,6 +318,8 @@
         options_3:[], // 三级分类
         list_3:[],// 三级分类
         acc_tab:'1', 
+        acc_tag:'',
+        tagInfo:{},
         value:'', // 搜索疾病名称
         tableData: [],
         page:1,
@@ -326,7 +339,6 @@
     },
     
     mounted(){
-      this.getEsIndex();
 
       // ========  时间范围 展示数据 默认10年  ↓ ============
       let now = new Date();
@@ -341,7 +353,7 @@
 
     },
     created(){
-      this.$emit('onEmitIndex', '/subjectAnalysis'); // 触发父组件的方法，并传递参数index
+      this.getEsIndex();
       document.title = '学科分析';
       document.addEventListener("click", (e) => {
         let box_2 = document.getElementById("is_symptomSearch");
@@ -413,8 +425,14 @@
           return
         }
         that.page = that.page+1;
-        // 获取相关文献
-       that.getRelationRecommend();
+
+        if(that.album_tag == 'document'){
+          // 全部文献
+          that.getXkfxEsDocument();
+        }else{
+          //最高被引用-- 最新发布
+          that.getRelationRecommend();
+        }
       },
       // 点击热门学科
       clickHotItem(n,i){
@@ -558,6 +576,7 @@
           if (res.data.code == 0) {
             let dataInfo = res.data.data.count;
             that.select_title = res.data.data.value;
+            that.doc_num = dataInfo.academic_productivity.doc_num;
             that.dataInfo = dataInfo;
             that.detail_analyse = res.data.data.detail_analyse;
             //学术产出力图表
@@ -621,31 +640,47 @@
         });
       },
       // 点击分析类项 tab
-      clickTab(i){
+      clickTab(i,t){
         let that = this;
         that.acc_tab = i;
+        that.acc_tag = '';
+        that.tagInfo = {};
         if(i == '1'){
           // 发文趋势
           that.getLineChart('eachartsTrends',that.detail_analyse.post_trend);
+          that.clicksuggestion('highest');
         }
         if(i == '2'){
           // 被引趋势
           that.getLineChart('eachartsCited',that.detail_analyse.cited_trend);
+          that.clicksuggestion('newest');
         }
         if(i == '3'){
+          that.acc_tag = 'subject_infiltration';
+          that.tagInfo = that.detail_analyse.subject_infiltration;
+          that.clicksuggestion('document');
           // 学科渗透
           // that.getLineChart('eachartsDisciplinaryPenetration',that.detail_analyse.subject_infiltration);
           that.getForceRelation('eachartsDisciplinaryPenetration',that.detail_analyse.subject_infiltration)
         }
         if(i == '4'){
+          that.acc_tag = 'research_topic';
+          that.tagInfo = that.detail_analyse.research_topic;
+          that.clicksuggestion('document');
           // 研究主题
           that.getTopics('eachartsTheme',that.detail_analyse.research_topic);
         }
         if(i == '5'){
+          that.acc_tag = 'hot_body';
+          that.tagInfo = that.detail_analyse.hot_body;
+          that.clicksuggestion('document');
           // 热门机构
           that.getTopics('RepresentativeBody',that.detail_analyse.hot_body);
         }
         if(i == '6'){
+          that.acc_tag = 'relevant_scholars';
+          that.tagInfo = that.detail_analyse.relevant_scholars;
+          that.clicksuggestion('document');
           // 相关学者
           that.getTopics('RepresentativeScholar',that.detail_analyse.relevant_scholars);
         }
@@ -653,6 +688,7 @@
           // 代表期刊
           that.getTopics('RepresentativePeriodicals','7');
         }
+        console.log(that.tagInfo)
       },
       // 统计分析--- 学术产出力图表
       getStatisticalAnalysis_1(data){
@@ -1605,6 +1641,31 @@
 
         myChart.setOption(option);
       },
+      // 获取全部文献
+      getXkfxEsDocument(){
+        let that = this;
+        let arr = [];
+        that.tagInfo.forEach((ele,index) =>{
+          if(index == 0 || index == 1){
+            arr.push(ele.key)
+          }
+        })
+        let p = {
+          values: arr.join(','),
+          page: that.page,
+          tag: that.acc_tag,
+        }
+        getXkfxEsDocument(p).then(res => {
+          if (res.data.code == 0) {
+            let newData = that.tableData.concat(res.data.data.list);
+            that.tableData = newData;
+            that.total_page = res.data.data.total_page;
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
       // 获取相关文献
       getRelationRecommend(){
         let that = this;
@@ -1630,7 +1691,13 @@
         this.tableData=[];
         this.page = 1;
         this.album_tag = n;
-        this.getRelationRecommend();
+        if(this.album_tag == 'document'){
+          // 全部文献
+          this.getXkfxEsDocument();
+        }else{
+          //最高被引用-- 最新发布
+          this.getRelationRecommend();
+        }
       },
       // 相关推荐点击列表
       detailData(n){

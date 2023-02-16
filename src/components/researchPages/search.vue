@@ -5,7 +5,7 @@
 
       <div style="margin-right:1rem;flex:1;">
         <!-- 筛选模块 开始 -->
-        <div class="c-filter-box">
+        <!-- <div class="c-filter-box">
           <div class="c-filter-l">
             <div class="filter-inputbox">
               <label>标题:</label>
@@ -32,13 +32,17 @@
             <div @click="clickReset">重置</div>
             <div class="filter-btn2" @click="clickScreening">筛选</div>
           </div>
-        </div>
+        </div> -->
         <!-- 筛选模块 结束 -->
         <!-- 中间文献列表模块 开始 -->
         <div class="c-list-box">
           <div class="list-title">
             <span class="list-title-l">找到约{{total}}条相关结果</span>
             <div class="list-title-r">
+              <div class="language-box">
+                <span :class="language == 'document_zh'?'is-type':''" @click="clickLanguage('document_zh')">中文</span>
+                <span :class="language == 'document_en'?'is-type':''"  @click="clickLanguage('document_en')">英文</span>
+              </div>
               <span v-for="(item,index) in sortData" :key="index" :class="item.is_type?'is-type':''" @click="clickSorting(index,item.order_field,item.order)">{{item.name}}<i :class="item.order == 'desc'?'el-icon-caret-bottom':'el-icon-caret-top'"></i></span>
             </div>
           </div>
@@ -154,7 +158,7 @@
 
 </template>
 <script>
-  import { literatureDocSearch,clickCollection,getTitleOrganization } from "../../api/data";
+  import { literatureDocSearch,clickCollection,getTitleOrganization,getSetLanguage } from "../../api/data";
   import { getLine_eacharts,getForceRelation_eacharts } from "../../assets/js/getEcharts";
   export default {
     props:{
@@ -165,6 +169,7 @@
     },
     data(){
       return {
+        language: window.localStorage.getItem('language'),
         uid: window.localStorage.getItem('uid'),
         search_type: 'many', // single、普通 many、高级
         is_s:false,
@@ -201,11 +206,43 @@
        this.literatureDocSearch();
     },
     methods:{
+      clickLanguage(n){
+        let that = this;
+        let p = {
+          language: n
+        }
+        that.infoDetail = {};
+        that.headerInput = '';
+        that.clickReset();
+        getSetLanguage(p).then(res => {
+          if (res.data.code == 0) {
+            that.language = res.data.data.language;
+            window.localStorage.setItem('language',res.data.data.language);
+            // setTimeout(()=>{
+            //   that.literatureDocSearch();
+            // },100)
+            
+          } else {
+            that.$message.error({
+              message: res.data.msg
+            });
+          }
+
+        })
+        .catch(e => {
+          loading.close();
+          console.log(e);
+          that.$message.error({
+            message: e
+          });
+        });
+      },
       // 点击展开、收起
       clickShow(s){
         this.shoow_status = !s;
       },
       // 点击重置
+      
       clickReset(){
         this.filterData.filter_litTitle = '';
         this.filterData.filter_litAuthor = '';
@@ -416,11 +453,15 @@
       clicktitleTab(n){
         this.is_titleTab = n;
       },
+      // 中英切换
+      getSetLanguage(){
 
+      },
       // 获取页面数据--- 搜索
       literatureDocSearch(n){
         let that = this;
         let tag = that.tag;
+        let language = that.language;
         let headerInput= that.headerInput; // 普通搜索内容
         let date= that.date; // 高级时间范围
         let advancedCondition= that.advancedCondition; // 高级 选择数据
@@ -462,7 +503,6 @@
         });
         that.infoDetail = {};
         literatureDocSearch(params).then(res => {
-
           loading.close();
           if (res.data.code == 0) {
             let total_page = res.data.data.total_page; // 总页数
@@ -846,7 +886,7 @@
     display: flex;
     align-items: center;
   }
-   .list-title-r>span.is-type{
+  span.is-type{
     color: #ff0000;
    }
   .list-title-r>span i{
@@ -1088,5 +1128,13 @@
     height: 20rem;
   }
   /* ================= 右侧文献可视化分析模块 ↑ ======================= */
-
+  .language-box{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  .language-box>span{
+    padding: 2px 10px;
+    cursor: pointer;
+  }
 </style>

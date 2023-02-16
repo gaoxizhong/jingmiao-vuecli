@@ -608,6 +608,22 @@ export const getXkfxDiseases = (params) =>{
     data: params
   })
 }
+//学科分析/全部文献接口
+export const getXkfxEsDocument = (params) =>{
+  return axios.request({
+    url:'/es-all-document',
+    method: 'post',
+    data: params
+  })
+}
+//文献中英切换
+export const getSetLanguage = (params) =>{
+  return axios.request({
+    url:'/set-language',
+    method: 'post',
+    data: params
+  })
+}
 // =================  科研探索api  ↑ ==================
 
 
