@@ -10,6 +10,7 @@ export const input_name = state => state.input_name;
 export const hot_name = state => state.hot_name;
 export const crumbsarr = state => state.crumbsarr;
 export const barckArr = state => state.barckArr;
+export const retrievalArr = state => state.retrievalArr;
 export const stateurl = state => state.stateurl;
 export const cdssInfo = state => state.cdssInfo;
 export const is_pom = state => state.is_pom;

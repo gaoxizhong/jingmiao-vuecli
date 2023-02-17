@@ -234,7 +234,7 @@
 <script>
   import { literatureDetails,getdocRecommend,clickCollection,getTitleOrganization } from "@/api/data";
   export default {
-    inject: ['setsickNess'],
+    // inject: ['setsickNess'],
     name: 'literatureDetails',
     data() {
       return {

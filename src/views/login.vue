@@ -455,8 +455,10 @@ export default {
               if (that.$store.state.token) {
                 window.localStorage.setItem('setUser',data.phone);
                 window.localStorage.setItem('uid',data.uid);
+                window.localStorage.setItem('retrievalArr','');
                 that.$store.dispatch("setUser",data.phone);
-                that.$store.dispatch("setIsAuthenticated",true)
+                that.$store.dispatch("setIsAuthenticated",true);
+
                 let stateurl = that.stateurl;
                 if(stateurl){
                   that.$router.push({path:decodeURIComponent(stateurl)});

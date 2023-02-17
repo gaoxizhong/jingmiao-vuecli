@@ -14,10 +14,10 @@ const getLine_eacharts = (d,i,t) =>{
         let option = {
           backgroundColor: "#fff",
           grid: {  // 控制图标在模块内距离边框的距离，不设置会自动居中
-            left: 0,
+            left: 10,
             top: 20,
             bottom: 0,
-            right: 10,
+            right: 4,
             containLabel: true,
           },
           tooltip: { // 鼠标浮动展示框样式
@@ -87,7 +87,7 @@ const getLine_eacharts = (d,i,t) =>{
             axisLabel: {
               textStyle: {
                 color: "#999",
-                fontSize: '0.7rem',
+                fontSize: '12px',
               },
             },
             splitLine: {

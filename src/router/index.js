@@ -379,7 +379,7 @@ router.afterEach((to) => {
 })
 
 router.beforeEach(async(to, from, next) => {
-  // to要进入的目标路由,到哪去from离开的路由,哪来的savePosition内容
+  // to要进入的目标路由,到哪去from离开的路由
   //判断是否需要缓存
   if(to.path == from.path ){
     // 让 列表页 即不缓存，刷新
@@ -389,7 +389,7 @@ router.beforeEach(async(to, from, next) => {
 })
 
 // router.beforeEach(async(to, from, next) => {
-//   // to要进入的目标路由,到哪去from离开的路由,哪来的savePosition内容
+//   // to要进入的目标路由,到哪去from离开的路由
 //   //判断是否需要缓存
 //   if(to.path == 'text' && from.path =='/orderInfo'){
 //     // 让 列表页 缓存，即不刷新

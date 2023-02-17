@@ -572,7 +572,7 @@
     color: #fff;
   }
   .filter-btnbox>div.filter-btn2:hover{
-    background: #3664d9f3;
+    background: #3664D9f3;
   }
 
   .listitems-box .list-items{

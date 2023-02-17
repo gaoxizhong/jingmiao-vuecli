@@ -2,6 +2,12 @@
   <div class="pages-b">
     <!-- 头部检索模块 开始 -->
     <div class="literature-titlebox" :class="searchBarFixed?'searchBarFixed':''" id="searchBar">
+       <!-- 返回按钮 -->
+       <!-- <div class="fh-box" style="z-index:10000;" @click="fanhui_btn()">
+          <i class="el-icon-back"></i>
+          <span>返回</span>
+        </div> -->
+          <!-- 返回按钮 -->
       <div class="titlebox-tab">
         <div class="titlebox-tab-item" :class="titleTag == 1?'hover':'' " @click="clicktitleTab(1)">检索</div>
         <div class="titlebox-tab-m"></div>
@@ -26,8 +32,9 @@
             </div>
             
             
-            <div class="tabslist" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></div>
-
+            <div class="tabslist">
+              <span style="display: inline-block;height: 100%;" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
+            </div>
             <!-- 弹窗 开始-->
             <!-- 普通相关关键词 开始 -->
             <div class="KeyWords-box" ref="sordPop" v-show="is_sordPop">
@@ -86,7 +93,7 @@
                     </el-option>
                   </el-select>
                   <div class="inputbox" id="advInput">
-                    <el-input placeholder="输入关键词..." v-model="item.field_value"  @focus="advInputFocus(item.field_value,index)" clearable  @input="getInputBtn1(item.field_value,index)" class="input-with-select"></el-input>
+                    <el-input placeholder="输入关键词..." v-model="item.field_value"  @focus="advInputFocus(item.field_value,index)" clearable  @input="getInputBtn1(item.select_field,item.field_value,index)" class="input-with-select"></el-input>
                       <!-- 弹窗 开始-->
                       <!-- <div class="qt-inputPop-box">
                         <div class="scrollarea" style="max-height: 180px" v-show="is_advPop && ( index == select_index )">
@@ -141,6 +148,14 @@
                   </div>
                 </div>
                 <!-- 高级检索选项 结束 -->
+                <div class="advTime-box">
+                  <div class="advTime-title">时间范围:</div>
+                  <!-- 年份区间 开始 -->
+                  <div class="advTime-itemsbox">
+                    <yearPicker ref="advStatisticPicker" labelText="" setYear='advSetYear' :initYear="dateValue2"  @updateTimeRange="advUpdateStatisticYear"/>
+                  </div>
+                  <!-- 年份区间 结束 -->
+                </div>
                 <div class="gaojibtn-t-box">
                   <div class="gaojibtn-box">
                     <span @click="clickReset">重置条件</span>
@@ -216,7 +231,7 @@
       <Popular v-on='$listeners' @setsickNess="setsickNess"/>
     </div>
     <div v-if="is_pop == 2">
-      <Search v-on='$listeners' @getliteratureHistory="getliteratureHistory" :tag="titleTag" :headerInput="headerInput"  :date="date" :advancedCondition="advancedCondition" v-if="is_view"/>
+      <Search v-on='$listeners' @setReset="setReset" @getliteratureHistory="getliteratureHistory" :tag="titleTag" :headerInput="headerInput"  :date="date" :advancedCondition="advancedCondition" v-if="is_view"/>
     </div>
     <!-- 列表推荐 结束 -->
 
@@ -242,6 +257,8 @@
         dateValue2:2,
         startYear:'',
         endYear:'',
+        advStartYear:'',
+        advEndYear:'',
         searchBarFixed: false,
         duoWidth: 50,
         advancedKeyWordsList:[], // 高级关键词多选数据
@@ -342,6 +359,7 @@
           select_type: 'match',
           select_condition: '',
         })
+        this.headerInput = author;
         this.advancedCondition = advancedCondition;
         this.is_pop = '2';
         this.setsickNess();
@@ -354,6 +372,7 @@
           select_type: 'match',
           select_condition: '',
         })
+        this.headerInput = keyword;
         this.advancedCondition = advancedCondition;
         this.is_pop = '2';
         this.setsickNess();
@@ -375,14 +394,14 @@
      mounted () {
       window.addEventListener('scroll', this.handleScroll);
       // ========  时间范围 展示数据 默认10年  ↓ ============
-      let now = new Date();
-      let year = now.getFullYear();
-      let s_year = Number(year - 10);
-      this.endYear = year;
-      this.startYear = s_year;
-      let s_num = Date.parse(s_year);
-      let e_num = Date.parse(year);
-      this.$refs.statisticPicker.setYear( s_num, e_num);
+      // let now = new Date();
+      // let year = now.getFullYear();
+      // let s_year = Number(year - 10);
+      // this.endYear = year;
+      // this.startYear = s_year;
+      // let s_num = Date.parse(s_year);
+      // let e_num = Date.parse(year);
+      // this.$refs.statisticPicker.setYear( s_num, e_num);
       // ======== 时间范围 展示数据 默认10年  ↑ ==========
     },
     destroyed () {
@@ -390,6 +409,37 @@
       window.removeEventListener('scroll', this.handleScroll);
     },
     methods:{
+      // 返回上一步
+      fanhui_btn(){
+        console.log(1)
+        let retrievalArr = JSON.parse(window.localStorage.getItem('retrievalArr'));
+        if(retrievalArr){
+          let aa = retrievalArr.splice(retrievalArr.length-1);
+          console.log(aa)
+        }
+        window.localStorage.setItem('retrievalArr',JSON.stringify(retrievalArr))
+        let a1 = retrievalArr[retrievalArr.length-1];
+        this.advancedCondition = a1;
+        console.log(a1)
+        location.href = "javascript:history.go(-1);"
+      },
+      //接收组件方法setReset
+      setReset(e){
+        let newarr = JSON.parse(e);
+        console.log(newarr)
+        return
+        this.clickReset();
+        if(newarr){
+          
+        }
+      },
+      // 高级检索时间
+      advUpdateStatisticYear(e){
+        // 回调返回时间戳
+        this.advStartYear = e.startYear;
+        this.advEndYear = e.endYear;
+      },
+      // 普通检索时间
      updateStatisticYear(e){
         // 回调返回时间戳
         this.startYear = e.startYear;
@@ -425,10 +475,12 @@
         }
       },
       // 高级检索--模糊匹配
-      getInputBtn1(v,i){
+      getInputBtn1(s,v,i){
         console.log(i)
         let that = this;
-        that.select_index = i;
+        if(s == 'title'){
+          that.select_index = i;
+        }
         if(v ==''){
           that.is_GJxggjc = false;
         }
@@ -648,13 +700,27 @@
             select_condition: '',
           })
         }
-        advancedCondition.push({
-          select_field: 'year',
-          field_value: (that.startYear?that.startYear:'1900') + ',' + (that.endYear?that.endYear:'2300'),
-          select_type: 'match',
-          select_condition: 'and',
-        })
+        if(that.startYear || that.endYear){
+          advancedCondition.push({
+            select_field: 'year',
+            field_value: (that.startYear?that.startYear:'1900') + ',' + (that.endYear?that.endYear:'2300'),
+            select_type: 'match',
+            select_condition: 'and',
+          })
+        }
+        
         that.advancedCondition = advancedCondition;
+        // 储存 ↓
+        let retrievalArr = window.localStorage.getItem('retrievalArr')?window.localStorage.getItem('retrievalArr') : [];
+        if(retrievalArr.length== 0){
+          let a1 = retrievalArr.concat(that.advancedCondition)
+          window.localStorage.setItem('retrievalArr',JSON.stringify(a1));
+        }else{
+          let aa = JSON.parse(retrievalArr);
+          let a2 = aa.concat(that.advancedCondition);
+          window.localStorage.setItem('retrievalArr',JSON.stringify(a2));
+        }
+        // 储存 ↑
         that.is_pop = '2';
         that.setsickNess();
       },
@@ -716,8 +782,13 @@
           }
         ];
         that.value2 = '';
-        that.date= '', // 选中的时间
+        that.date= ''; // 选中的时间
+        that.startYear = '';
+        that.endYear = '';
+        that.advStartYear = '';
+        that.advEndYear = '';
         that.advancedCondition= []; // 选中的检索选项
+        that.headerInput = '';
       },
 
       // 点击高级检索-- 检索按钮
@@ -738,6 +809,14 @@
           })
         })
         that.advancedCondition = newArr;
+        if(that.advStartYear || that.advEndYear){
+          that.advancedCondition.push({
+            select_field: 'year',
+            field_value: (that.advStartYear?that.advStartYear:'1900') + ',' + (that.advEndYear?that.advEndYear:'2300'),
+            select_type: 'match',
+            select_condition: 'and',
+          })
+        }
         // that.date = date;
         that.is_pop = '2';
         that.is_advPop= false;
@@ -823,7 +902,7 @@
     margin-top: 0;
     box-shadow:none;
     box-shadow: 0px 4px 9px 0px rgba(227,227,227,0.5);
-    padding-left: 14.8rem;
+    padding-left: 216px;
   }
   .titlebox-tab{
     width: 100%;
@@ -1067,6 +1146,19 @@
     display: flex;
     justify-content: center;
   }
+  .advTime-box{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+  .advTime-title{
+    width: 7.4rem;
+    font-size: 15px;
+    text-align: right;
+    padding-right: 0.4rem;
+    margin-right: 1rem;
+  }
   .duoxiang-itemsbox{
     display: flex;
     align-items: center;
@@ -1085,6 +1177,9 @@
     padding: 0;
     padding-left: 0.5rem;
     border-radius: 0;
+  }
+  .yearPicker{
+    border: 1px solid #E3E3E3;
   }
   .duoxiang-itemsbox .validate-1 >>> .el-input__inner{
     border-radius: 4px;
@@ -1295,7 +1390,7 @@
     border-top: 1px #ebebeb solid;
     line-height: 20px;
     padding: 6px 5px;
-    font-size: 12px;
+    font-size: 0.7rem;
     background: none;
   }
   .sh-tabscont >>> .tbale-p{
@@ -1404,4 +1499,25 @@
 .keyTab-tabspan:hover{
   color: #3664D9;
 }
+.fh-box{
+    color: #3664D9;
+    font-size: 14px;
+    font-weight: 400;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    position: absolute;
+  }
+  .fh-box:hover{
+    opacity: 0.8;
+  }
+  .fh-box>i{
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .fh-box>span{
+    margin-left: 0.3rem;
+  }
 </style>

@@ -45,6 +45,9 @@ export const crumbsarr = ({commit},data) =>{
 export const barckArr = ({commit},data) =>{
   commit('barckArr',data);
 }
+export const retrievalArr = ({commit},data) =>{
+  commit('retrievalArr',data);
+}
 export const cdssInfo = ({commit},data) =>{
   commit('cdssInfo',data);
 }

@@ -5,6 +5,7 @@
 </template>
 
 <style lang="scss">
+
 *{
   padding: 0;
   margin: 0;
@@ -24,6 +25,9 @@ a{
 }
 a{
   color: #333;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active{
+  background: #3664D9;
 }
 a:hover{
   color: #026ae0;

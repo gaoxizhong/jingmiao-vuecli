@@ -18,6 +18,7 @@ const state ={
   hot_name:'',  // 气泡图name
   crumbsarr:[],  //  面包屑数组
   barckArr:[],  //  面包屑数组
+  retrievalArr:[],  //  记录检索数组
   stateurl:'',  //  保存路径
   cdssInfo:'', // cdss问诊数据
   is_pom:false,

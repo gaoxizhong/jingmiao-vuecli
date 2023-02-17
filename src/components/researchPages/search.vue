@@ -189,6 +189,7 @@
         },
         sortData:[
           {name:'时间',order_field:'year',order:'desc',is_type:true},
+          {name:'相关度',order_field:'relevancy',order:'desc',is_type:false},
           {name:'被引量',order_field:'citation_relate_count',order:'desc',is_type:false},
           {name:'点击量',order_field:'click_count',order:'desc',is_type:false},
           // {name:'下载量',status:'1'},
@@ -206,14 +207,14 @@
        this.literatureDocSearch();
     },
     methods:{
+      // 中英文按钮
       clickLanguage(n){
         let that = this;
         let p = {
           language: n
         }
         that.infoDetail = {};
-        that.headerInput = '';
-        that.clickReset();
+        that.$emit("setReset", '');
         getSetLanguage(p).then(res => {
           if (res.data.code == 0) {
             that.language = res.data.data.language;
@@ -679,6 +680,7 @@
         };
         myChart.setOption(option);
         //跳转代码--  加 myChart.off('click') 防止点击一次 成倍请求
+        myChart.off('click');
         myChart.on("click", function (d) {
           that.authorFunction(d.name);
         });
@@ -688,14 +690,24 @@
         let that = this;
         let advancedCondition = [];
          // 点击重置筛选
-        that.clickReset();
         advancedCondition.push({
           select_field: 'author',
           field_value: n,
           select_type: 'match',
           select_condition: '',
         })
-        that.advancedCondition = advancedCondition;
+        let advancedConditions  = JSON.stringify(advancedCondition);
+        that.$emit('setReset',advancedConditions);
+        window.scrollTo(0,0);
+        that.$emit('setsickNess','');
+        that.$router.push({
+          path:'/popularLiterature', 
+          query:{     
+            author:n,
+            is_p:'2',
+          }
+        })
+        return
         // 获取页面数据--- 搜索
         that.literatureDocSearch();
         window.scrollTo(0,0);
@@ -892,7 +904,6 @@
   .list-title-r>span i{
     font-size: 14px;
     color: #666;
-    margin-left: 0.2rem;
     line-height: 20px;
   }
   .list-title-r>span.is-type i{
@@ -1134,6 +1145,7 @@
     margin-right: 20px;
   }
   .language-box>span{
+    font-size: 15px;
     padding: 2px 10px;
     cursor: pointer;
   }

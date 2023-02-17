@@ -62,7 +62,7 @@
       <!-- 主题 开始 -->
       <el-main>
         <keep-alive>
-          <router-view v-if="$route.meta.keepAlive" @onEmitIndex="onEmitIndex" @setsickNess="setsickNess"></router-view>
+          <router-view v-if="$route.meta.keepAlive && is_view" @onEmitIndex="onEmitIndex" @setsickNess="setsickNess"></router-view>
         </keep-alive>
         <router-view v-if="!$route.meta.keepAlive && is_view" @onEmitIndex="onEmitIndex" @setsickNess="setsickNess"/>
       </el-main>
@@ -75,11 +75,11 @@
 <script>
   // import CommonAside from "../../components/CommonAside";
   export default {
-    provide(){ 
-      return {
-        setsickNess: this.setsickNess
-      }
-    },
+    // provide(){ 
+    //   return {
+    //     setsickNess: this.setsickNess
+    //   }
+    // },
     name: 'researchHome',
     components: {
       // CommonAside,
@@ -119,7 +119,8 @@
     methods:{
       //点击logo
       clickLoge(){
-        this.$emit('setsickNess','');
+        this.$emit('setsickNess', '');
+        window.localStorage.setItem("retrievalArr", '');
         this.$router.push({
           path:'/popularLiterature',
           query:{},
