@@ -45,7 +45,7 @@
   right: 3.2rem;
   font-size: 14px;
   color: #333;
-  z-index: 10000;
+  z-index: 998;
 }
 .acc-rightbox .acc-title-tabbox span{
   margin-right: 8px;

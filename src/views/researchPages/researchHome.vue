@@ -133,6 +133,7 @@
       },
       // 点击头部退出
       toLogin(){
+        window.localStorage.setItem("retrievalArr", '');
         this.$router.push({name: 'Login'});
       },
       // 折叠面板
@@ -190,7 +191,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1999;
+    z-index: 999;
   }
 
   header{

@@ -134,6 +134,8 @@
       </div>
       <div class="acc-rightbox">
         <div class="acc-title-tabbox">
+          <!-- <span :class="is_theme == 1?'active':''" v-if="acc_tab == '4'" @click.stop="clickThemeTab(1)">主要主题</span> -->
+          <!-- <span :class="is_theme == 2?'active':''" v-if="acc_tab == '4'" @click.stop="clickThemeTab(2)">次要主题</span> -->
           <span :class="accTitleTab == 1?'active':''" @click.stop="clickAccTab(1)">图表</span>
           <span :class="accTitleTab == 2?'active':''" @click.stop="clickAccTab(2)">列表</span>
         </div>
@@ -232,8 +234,8 @@
 
     <div class="suggestion-box">
       <div class="suggestion-titlebox">
-        <div :class="album_tag == 'highest'?'active':''"  @click="clicksuggestion('highest')">最高被引用</div>
         <div :class="album_tag == 'newest'?'active':''" @click="clicksuggestion('newest')">最新发布</div>
+        <div :class="album_tag == 'highest'?'active':''"  @click="clicksuggestion('highest')">最高被引用</div>
         <div :class="album_tag == 'document'?'active':''" @click="clicksuggestion('document')">全部文献</div>
       </div>
       <div v-if="tableData.length > 0">
@@ -302,6 +304,7 @@
     },
     data(){
       return {
+        is_theme: 1, // 1、主要主题 2、次要主题
         doc_num:0,
         accTitleTab:1,
         checkOrdList:[], // 普通检索多选框选中项
@@ -325,7 +328,7 @@
         page:1,
         total_page: 0, // 总页数
         newest_result: [],
-        album_tag:'highest', // newest: 最新文献；highest ： 最高文献
+        album_tag:'newest', // newest: 最新文献；highest ： 最高文献
         dataInfo:'', // 分析后数据
         detail_analyse:{}, // 数据分析
         dateValue2:2,
@@ -366,6 +369,9 @@
       window.removeEventListener('click')
     },
     methods:{
+      clickThemeTab(a){
+        this.is_theme = a;
+      },
       clickAccTab(a){
         this.accTitleTab = a;
       },
@@ -588,10 +594,6 @@
             //科研学者力图表
             that.getStatisticalAnalysis_4(dataInfo.power_scientific_research_scholar);
             that.clickTab('1');
-            // 相关文献--- 最高被引
-            that.album_tag = 'highest';
-            that.clicksuggestion('highest');
-            
           } else {
             console.log(1)
             that.$message.error({
@@ -648,12 +650,12 @@
         if(i == '1'){
           // 发文趋势
           that.getLineChart('eachartsTrends',that.detail_analyse.post_trend);
-          that.clicksuggestion('highest');
+          that.clicksuggestion('newest');
         }
         if(i == '2'){
           // 被引趋势
           that.getLineChart('eachartsCited',that.detail_analyse.cited_trend);
-          that.clicksuggestion('newest');
+          that.clicksuggestion('highest');
         }
         if(i == '3'){
           that.acc_tag = 'subject_infiltration';

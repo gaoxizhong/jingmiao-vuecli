@@ -14,7 +14,7 @@ const getLine_eacharts = (d,i,t) =>{
         let option = {
           backgroundColor: "#fff",
           grid: {  // 控制图标在模块内距离边框的距离，不设置会自动居中
-            left: 10,
+            left: 0,
             top: 20,
             bottom: 0,
             right: 4,

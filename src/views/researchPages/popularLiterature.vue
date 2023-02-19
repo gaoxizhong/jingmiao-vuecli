@@ -3,10 +3,10 @@
     <!-- 头部检索模块 开始 -->
     <div class="literature-titlebox" :class="searchBarFixed?'searchBarFixed':''" id="searchBar">
        <!-- 返回按钮 -->
-       <!-- <div class="fh-box" style="z-index:10000;" @click="fanhui_btn()">
+       <div class="fh-box" style="z-index:10000;" @click="fanhui_btn()" v-if="retrievalArr">
           <i class="el-icon-back"></i>
-          <span>返回</span>
-        </div> -->
+          <span>返回检索</span>
+        </div>
           <!-- 返回按钮 -->
       <div class="titlebox-tab">
         <div class="titlebox-tab-item" :class="titleTag == 1?'hover':'' " @click="clicktitleTab(1)">检索</div>
@@ -149,7 +149,7 @@
                 </div>
                 <!-- 高级检索选项 结束 -->
                 <div class="advTime-box">
-                  <div class="advTime-title">时间范围:</div>
+                  <div class="advTime-title">发表时间:</div>
                   <!-- 年份区间 开始 -->
                   <div class="advTime-itemsbox">
                     <yearPicker ref="advStatisticPicker" labelText="" setYear='advSetYear' :initYear="dateValue2"  @updateTimeRange="advUpdateStatisticYear"/>
@@ -167,7 +167,7 @@
             </div>
 
             <!-- <div class="shijian-tbox">
-              <div class="shijian-l">时间范围:</div>
+              <div class="shijian-l">发表时间:</div>
               <div class="shijian-selbox">
                 <el-date-picker
                   v-model="value2"
@@ -254,6 +254,7 @@
     },
     data(){
       return {
+        retrievalArr: window.localStorage.getItem('retrievalArr'),
         dateValue2:2,
         startYear:'',
         endYear:'',
@@ -393,7 +394,7 @@
     },
      mounted () {
       window.addEventListener('scroll', this.handleScroll);
-      // ========  时间范围 展示数据 默认10年  ↓ ============
+      // ========  发表时间 展示数据 默认10年  ↓ ============
       // let now = new Date();
       // let year = now.getFullYear();
       // let s_year = Number(year - 10);
@@ -402,7 +403,7 @@
       // let s_num = Date.parse(s_year);
       // let e_num = Date.parse(year);
       // this.$refs.statisticPicker.setYear( s_num, e_num);
-      // ======== 时间范围 展示数据 默认10年  ↑ ==========
+      // ======== 发表时间 展示数据 默认10年  ↑ ==========
     },
     destroyed () {
       window.removeEventListener('click');
@@ -411,17 +412,49 @@
     methods:{
       // 返回上一步
       fanhui_btn(){
-        console.log(1)
-        let retrievalArr = JSON.parse(window.localStorage.getItem('retrievalArr'));
+        let that = this;
+        let retrievalArr = this.retrievalArr;
+        console.log(retrievalArr)
         if(retrievalArr){
-          let aa = retrievalArr.splice(retrievalArr.length-1);
-          console.log(aa)
+          let sel_info = JSON.parse(retrievalArr);
+          that.titleTag = sel_info.tag;
+          if(that.titleTag == 1){
+            that.headerInput = sel_info.search_desc;
+            that.advancedCondition = sel_info.content;
+          }else{
+            let content = sel_info.content;
+            let options_0 = that.options_0;
+            let options_1 = that.options_1;
+            let options_2 = that.options_2;
+            content.forEach(ele =>{
+              ele.options_0 = options_0;
+              ele.options_1 = options_1;
+              ele.options_2 = options_2;
+            })
+            that.advancedCondition = content;
+
+          }
+          that.retrievalArr = '';
+          window.localStorage.setItem("retrievalArr", '');
+          that.is_pop = '2';
+        }else{
+          location.href = "javascript:history.go(-1);"
         }
-        window.localStorage.setItem('retrievalArr',JSON.stringify(retrievalArr))
-        let a1 = retrievalArr[retrievalArr.length-1];
-        this.advancedCondition = a1;
-        console.log(a1)
-        location.href = "javascript:history.go(-1);"
+        that.setsickNess();
+        return
+        if(retrievalArr){
+          let re = JSON.parse(retrievalArr);
+          console.log(re)
+          let aa = retrievalArr.splice(re.length-1);
+          window.localStorage.setItem('retrievalArr',JSON.stringify(re))
+          let a1 = retrievalArr[re.length-1];
+          this.advancedCondition = a1;
+          this.is_pop = '2';
+          this.setsickNess();
+        }else{
+          location.href = "javascript:history.go(-1);"
+          this.setsickNess();
+        }
       },
       //接收组件方法setReset
       setReset(e){
@@ -710,7 +743,18 @@
         }
         
         that.advancedCondition = advancedCondition;
+
         // 储存 ↓
+        let newarr = that.advancedCondition.slice();
+        let obj = {};
+        obj.content = newarr;
+        obj.tag = that.titleTag;
+        obj.search_desc = that.headerInput;
+        window.localStorage.setItem( 'retrievalArr',JSON.stringify(obj) );
+        that.retrievalArr = window.localStorage.getItem('retrievalArr');
+        that.is_pop = '2';
+        that.setsickNess();
+        return
         let retrievalArr = window.localStorage.getItem('retrievalArr')?window.localStorage.getItem('retrievalArr') : [];
         if(retrievalArr.length== 0){
           let a1 = retrievalArr.concat(that.advancedCondition)
@@ -720,6 +764,7 @@
           let a2 = aa.concat(that.advancedCondition);
           window.localStorage.setItem('retrievalArr',JSON.stringify(a2));
         }
+        console.log(window.localStorage.getItem('retrievalArr'))
         // 储存 ↑
         that.is_pop = '2';
         that.setsickNess();
@@ -818,6 +863,12 @@
           })
         }
         // that.date = date;
+        let newarr = that.advancedCondition.slice();
+        let obj = {};
+        obj.content = newarr;
+        obj.tag = that.titleTag;
+        window.localStorage.setItem( 'retrievalArr',JSON.stringify(obj) );
+        that.retrievalArr = window.localStorage.getItem('retrievalArr');
         that.is_pop = '2';
         that.is_advPop= false;
         that.setsickNess();
@@ -845,6 +896,8 @@
           that.advancedCondition = content;
           that.advancedOptions = content.slice();
         }
+        window.localStorage.setItem( 'retrievalArr',JSON.stringify(n) );
+        that.retrievalArr = window.localStorage.getItem('retrievalArr');
         that.is_pop = '2';
         that.is_ls = false;
         that.setsickNess();

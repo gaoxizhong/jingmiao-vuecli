@@ -39,10 +39,10 @@
           <div class="list-title">
             <span class="list-title-l">找到约{{total}}条相关结果</span>
             <div class="list-title-r">
-              <div class="language-box">
+              <!-- <div class="language-box">
                 <span :class="language == 'document_zh'?'is-type':''" @click="clickLanguage('document_zh')">中文</span>
                 <span :class="language == 'document_en'?'is-type':''"  @click="clickLanguage('document_en')">英文</span>
-              </div>
+              </div> -->
               <span v-for="(item,index) in sortData" :key="index" :class="item.is_type?'is-type':''" @click="clickSorting(index,item.order_field,item.order)">{{item.name}}<i :class="item.order == 'desc'?'el-icon-caret-bottom':'el-icon-caret-top'"></i></span>
             </div>
           </div>
@@ -50,7 +50,7 @@
           <div class="list-itembox" ref="get">
             <!-- ===  单条列表 开始 ===  -->
             <div class="list-item" v-for="(item,index) in listData" :key="index">
-              <a href="javascript:0;"   @click.stop="goToDetails(item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
+              <a href="javascript:0;" @click.stop="goToDetails(item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
                 <div class="listitems-b">
                   <div class="list-item-title" :title="item.title" v-html="item.title"></div>
                   <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
