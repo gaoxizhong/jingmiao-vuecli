@@ -937,9 +937,9 @@
           })
         }
         // that.date = date;
-        let newarr = that.advancedCondition.slice();
+        let newarr1 = that.advancedCondition.slice();
         let obj = {};
-        obj.content = newarr;
+        obj.content = newarr1;
         obj.tag = that.titleTag;
         window.localStorage.setItem( 'retrievalArr',JSON.stringify(obj) );
         that.retrievalArr = window.localStorage.getItem('retrievalArr');
