@@ -93,7 +93,7 @@
                     </el-option>
                   </el-select>
                   <div class="inputbox" id="advInput">
-                    <el-input placeholder="输入关键词..." v-model="item.field_value"  @focus="advInputFocus(item.field_value,index)" clearable  @input="getInputBtn1(item.select_field,item.field_value,index)" class="input-with-select"></el-input>
+                    <el-input placeholder="输入关键词..." v-model=" item.select_field == 'author'? item.field_valueitem.field_org:item.field_value "  @focus="advInputFocus(item.select_field,item.field_value,index)" clearable  @input="getInputBtn1(item.select_field,item.field_value,index)" class="input-with-select"></el-input>
                       <!-- 弹窗 开始-->
                       <!-- <div class="qt-inputPop-box">
                         <div class="scrollarea" style="max-height: 180px" v-show="is_advPop && ( index == select_index )">
@@ -107,6 +107,21 @@
                           </div>
                         </div>
                       </div> -->
+                      <!-- 高级检索 作者弹窗 开始 -->
+                      <div id="advPop"  class="KeyWords-box" v-show="is_authorPop && item.select_field == 'author' && ( index == selectauthor_index )">
+                        <div class="keyWords-items-box">
+                          <div class="scrollarea-content content">
+                            <ul>
+                              <li class=" src-common-components-LiItem-2PM-m src-common-components-LiItem-3S7Fa"
+                                v-for="(itm, idx) in  advAuthor_data" :key="idx" @click.stop="advAuthorClick(itm,index)">
+                                {{ itm }}
+                              </li>
+                              <el-empty description="暂无数据..." v-if='advAuthor_data.length == 0'></el-empty>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 高级检索 关键词 结束 -->
                       <!-- 高级检索 关键词弹窗 开始 -->
                       <div id="advPop"  class="KeyWords-box" v-show="is_advPop && item.select_field == 'title' && ( index == select_index )">
                         <div>
@@ -244,7 +259,7 @@
   import Search from '../../components/researchPages/search.vue';
   import yearPicker from '../../components/researchPages/yearPicker.vue';
   import time from "../../assets/js/time";
-  import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease } from "../../api/data";
+  import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease,getAuthorOrganization  } from "../../api/data";
   export default {
     name: 'popularLiterature',
     components: {
@@ -269,7 +284,10 @@
         is_GJxggjc: false,
         checkOrdList:[], // 普通检索多选框选中项
         select_index:0,
+        selectauthor_index:0,
+        advAuthor_data:[],
         is_advPop: false,
+        is_authorPop:false,
         symptomSearch_data1:[], // 高级输入框模糊匹配弹窗列表数据
         is_sordPop: false, // 普通检索弹窗
         symptomSearch_data:[], // 普通输入框模糊匹配弹窗列表数据
@@ -283,7 +301,12 @@
           {label:'参考文献',value:'references'},
           {label:'doi',value:'doi'},
           {label:'期刊',value:'album'},
-          {label:'作者单位',value:'organization'}
+          {label:'作者单位',value:'organization'},
+          {label:'篇名',value:'title_'},
+          {label:'第一作者',value:'author_'},
+          {label:'通讯作者',value:'author_o'},
+          {label:'分类号',value:'number'},
+          {label:'文献来源',value:'references_'}
           ],
         options_2:[{label:'精准',value:'term'},{label:'模糊',value:'match'}],
         is_ls: false,
@@ -344,6 +367,7 @@
         date: '', // 选中的时间
         advancedCondition:[], // 选中的检索选项
         title_text:'',
+        author_text:'',
       }
     },
     created(){
@@ -389,6 +413,7 @@
         let advPop = document.getElementById("advPop");
         if ( (!advPop.contains(e.target)) && !(advInput.contains(event.target)) ) {
           this.is_advPop = false;
+          this.is_authorPop = false;
         }
       });
     },
@@ -500,17 +525,28 @@
         this.is_GJxggjc = !this.is_GJxggjc;
       },
       //
-      advInputFocus(v,i){
-        if(v ==''){
+      advInputFocus(s,v,i){
+
+        if(s == 'title' && v ==''){
           this.is_advPop = false;
-        }else{
+        }
+        if(s == 'title' && v !=''){
           this.is_advPop = true;
+        }
+        if(s == 'author' && v ==''){
+          this.is_authorPop = false;
+        }
+        if(s == 'author' && v !=''){
+          this.is_authorPop = true;
         }
       },
       // 高级检索--模糊匹配
       getInputBtn1(s,v,i){
         console.log(i)
         let that = this;
+        if(s == 'author'){
+          that.selectauthor_index = i;
+        }
         if(s == 'title'){
           that.select_index = i;
         }
@@ -523,7 +559,7 @@
         let advancedOptions = that.advancedOptions;
         let select_field = advancedOptions[i].select_field;
         let field_value = advancedOptions[i].field_value;
-        if(select_field == 'keyword' || select_field == 'author') {
+        if(select_field == 'keyword') {
           return
         }else if( select_field == 'title'){
           that.title_text = v;
@@ -551,6 +587,30 @@
             .catch((e) => {
               console.log(e);
             });
+        }else if( select_field == 'author'){
+          that.author_text = v;
+          if(that.author_text == ''){
+            that.advAuthor_data = [];
+          }
+          let pearms = {
+            author: that.author_text,
+          }
+          getAuthorOrganization(pearms).then(res => {
+            if (res.data.code == 0) {
+                let data = res.data.data.orgs;
+                if (data.length <= 0) {
+                  that.is_authorPop = false;
+                  return;
+                } else {
+                  that.advAuthor_data = res.data.data.orgs;
+                  that.is_authorPop = true;
+                }
+              }
+          })
+          .catch(e => {
+            loading.close();
+            console.log(e);
+          });
         }else{
           searchTip({
             search: field_value,
@@ -579,7 +639,15 @@
         this.advancedOptions = advancedOptions;
         console.log( this.advancedOptions[i] )
       },
-      
+      // 高级检索作者相关推荐点击
+      advAuthorClick(n,i) {
+        let advancedOptions = this.advancedOptions;
+        this.is_authorPop = false;
+        advancedOptions[i].field_value = this.author_text;
+        advancedOptions[i].field_org = n;
+        this.advancedOptions = advancedOptions;
+        console.log( this.advancedOptions[i] )
+      },
       // 普通检索失焦
       ordInputBlur(){
         // this.is_sordPop = false;

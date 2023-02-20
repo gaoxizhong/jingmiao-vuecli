@@ -189,7 +189,7 @@
         },
         sortData:[
           {name:'时间',order_field:'year',order:'desc',is_type:true},
-          {name:'相关度',order_field:'relevancy',order:'desc',is_type:false},
+          {name:'相关度',order_field:'_score',order:'desc',is_type:false},
           {name:'被引量',order_field:'citation_relate_count',order:'desc',is_type:false},
           {name:'点击量',order_field:'click_count',order:'desc',is_type:false},
           // {name:'下载量',status:'1'},

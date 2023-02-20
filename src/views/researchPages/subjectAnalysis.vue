@@ -76,7 +76,7 @@
         <span>统计总览</span>
         <span class="classbox-title">{{ select_title }}</span>
       </div>
-      <span>共{{ doc_num?doc_num:0 }}篇</span>
+      <span style="font-size:14px;">共{{ doc_num?doc_num:0 }}篇</span>
     </div>
     <!-- 统计总览 开始 -->
     <div class="statisticalOverview-box">
@@ -1647,11 +1647,19 @@
       getXkfxEsDocument(){
         let that = this;
         let arr = [];
-        that.tagInfo.forEach((ele,index) =>{
-          if(index == 0 || index == 1){
-            arr.push(ele.key)
-          }
-        })
+        
+        if(that.acc_tag == 'relevant_scholars'){
+          arr.push(that.tagInfo[0].key)
+        }else{
+          arr.push(that.tagInfo[0].key);
+          arr.push(that.tagInfo[1].key)
+
+        }
+        // that.tagInfo.forEach((ele,index) =>{
+        //   if(index == 0 || index == 1){
+        //     arr.push(ele.key)
+        //   }
+        // })
         let p = {
           values: arr.join(','),
           page: that.page,
