@@ -93,7 +93,7 @@
                     </el-option>
                   </el-select>
                   <div class="inputbox" id="advInput">
-                    <el-input placeholder="输入关键词..." v-model=" item.select_field == 'author'? item.field_valueitem.field_org:item.field_value "  @focus="advInputFocus(item.select_field,item.field_value,index)" clearable  @input="getInputBtn1(item.select_field,item.field_value,index)" class="input-with-select"></el-input>
+                    <el-input placeholder="输入关键词..." v-model="item.field_value"  @focus="advInputFocus(item.select_field,item.field_value,index)" clearable  @input="getInputBtn1(item.select_field,item.field_value,index)" class="input-with-select"></el-input>
                       <!-- 弹窗 开始-->
                       <!-- <div class="qt-inputPop-box">
                         <div class="scrollarea" style="max-height: 180px" v-show="is_advPop && ( index == select_index )">
@@ -643,8 +643,8 @@
       advAuthorClick(n,i) {
         let advancedOptions = this.advancedOptions;
         this.is_authorPop = false;
-        advancedOptions[i].field_value = this.author_text;
-        advancedOptions[i].field_org = n;
+        advancedOptions[i].field_value = this.author_text + '-' + n;
+        advancedOptions[i].field_name = this.author_text;
         this.advancedOptions = advancedOptions;
         console.log( this.advancedOptions[i] )
       },
@@ -908,14 +908,20 @@
       clickAdvancedSearch(){
         let that= this;
         let select_index = that.select_index;
+
+
         let advancedOptions = this.advancedOptions;
         let newArr  = JSON.parse(JSON.stringify(advancedOptions));
-        let arr = advancedOptions[select_index].field_value.split('+');
-        // let newAdv = advancedOptions.slice(select_index,select_index+1);
+        newArr.forEach(ele =>{
+          if(ele.field_name){
+            ele.field_value = ele.field_name
+          }
+        })
         newArr.splice(select_index,1);
+        let arr = advancedOptions[select_index].field_value.split('+');
         arr.forEach((ele,index) =>{
           newArr.splice(select_index + index,0,{
-            field_value:ele,
+            field_value: advancedOptions[select_index].field_name ? advancedOptions[select_index].field_name:ele,
             select_condition:select_index == 0?'':'or',
             select_field:advancedOptions[select_index].select_field,
             select_type:'match',

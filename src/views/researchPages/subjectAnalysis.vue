@@ -134,8 +134,8 @@
       </div>
       <div class="acc-rightbox">
         <div class="acc-title-tabbox">
-          <!-- <span :class="is_theme == 1?'active':''" v-if="acc_tab == '4'" @click.stop="clickThemeTab(1)">主要主题</span> -->
-          <!-- <span :class="is_theme == 2?'active':''" v-if="acc_tab == '4'" @click.stop="clickThemeTab(2)">次要主题</span> -->
+          <span :class="is_theme == 1?'active':''" v-if="acc_tab == '4'" @click.stop="clickThemeTab(1)">主要主题</span>
+          <span :class="is_theme == 2?'active':''" v-if="acc_tab == '4'" @click.stop="clickThemeTab(2)">次要主题</span>
           <span :class="accTitleTab == 1?'active':''" @click.stop="clickAccTab(1)">图表</span>
           <span :class="accTitleTab == 2?'active':''" @click.stop="clickAccTab(2)">列表</span>
         </div>
@@ -152,8 +152,10 @@
           <div class="eacharts-box" id="eachartsDisciplinaryPenetration"></div>
         </div>
         <div class="acc-pagebox" v-show="acc_tab == '4'&& accTitleTab == 1">
-          <!-- 研究主题 -->
-          <div class="eacharts-box" id="eachartsTheme"></div>
+          <!-- 研究主题-- 主要主题 -->
+          <div class="eacharts-box" id="subject_top" v-show="is_theme == 1"></div>
+          <!-- 研究主题-- 次要主题 -->
+          <div class="eacharts-box" id="subject_sub" v-show="is_theme == 2"></div>
         </div>
         <div class="acc-pagebox" v-show="acc_tab == '5'&& accTitleTab == 1">
           <!-- 热门机构 -->
@@ -193,9 +195,16 @@
                 <el-table-column prop="doc_count" label="渗透量" width="180"></el-table-column>
               </el-table>
             </div>
-            <!-- 研究主题 -->
-            <div class="acc-listitemsbox" v-show="acc_tab == '4'&& accTitleTab == 2">
-              <el-table stripe :data="detail_analyse.research_topic" style="width: 100%">
+            <!-- 研究主题-- 主要主题 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '4'&& accTitleTab == 2 && is_theme == 1">
+              <el-table stripe :data="detail_analyse.subject_top" style="width: 100%">
+                <el-table-column prop="key" label="主题" width="230"></el-table-column>
+                <el-table-column prop="doc_count" label="研究量" width="180"></el-table-column>
+              </el-table>
+            </div>
+            <!-- 研究主题-- 次要主题 -->
+            <div class="acc-listitemsbox" v-show="acc_tab == '4'&& accTitleTab == 2 && is_theme == 2">
+              <el-table stripe :data="detail_analyse.subject_sub" style="width: 100%">
                 <el-table-column prop="key" label="主题" width="230"></el-table-column>
                 <el-table-column prop="doc_count" label="研究量" width="180"></el-table-column>
               </el-table>
@@ -667,10 +676,16 @@
         }
         if(i == '4'){
           that.acc_tag = 'research_topic';
-          that.tagInfo = that.detail_analyse.research_topic;
+          if(that.is_theme == 1){
+            that.tagInfo = that.detail_analyse.subject_top;
+            // 研究主题-- 主要主题
+            that.getTopics('subject_top',that.detail_analyse.subject_top);
+          }else{
+            that.tagInfo = that.detail_analyse.subject_sub;
+            // 研究主题-- 次要要主题
+            that.getTopics('subject_sub',that.detail_analyse.subject_sub);
+          }
           that.clicksuggestion('document');
-          // 研究主题
-          that.getTopics('eachartsTheme',that.detail_analyse.research_topic);
         }
         if(i == '5'){
           that.acc_tag = 'hot_body';
@@ -1651,9 +1666,10 @@
         if(that.acc_tag == 'relevant_scholars'){
           arr.push(that.tagInfo[0].key)
         }else{
-          arr.push(that.tagInfo[0].key);
-          arr.push(that.tagInfo[1].key)
-
+          if(that.tagInfo){
+            arr.push(that.tagInfo[0].key);
+            arr.push(that.tagInfo[1].key)
+          }
         }
         // that.tagInfo.forEach((ele,index) =>{
         //   if(index == 0 || index == 1){
