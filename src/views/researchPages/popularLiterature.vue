@@ -556,9 +556,9 @@
         // 弹窗列表数据
         that.symptomSearch_data1 = [];
         that.is_advPop = false;
-        let advancedOptions = that.advancedOptions;
-        let select_field = advancedOptions[i].select_field;
-        let field_value = advancedOptions[i].field_value;
+        that.advancedOptions[i].field_name = '';
+        let select_field = that.advancedOptions[i].select_field;
+        let field_value = that.advancedOptions[i].field_value;
         if(select_field == 'keyword') {
           return
         }else if( select_field == 'title'){

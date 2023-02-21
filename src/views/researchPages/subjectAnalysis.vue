@@ -380,6 +380,15 @@
     methods:{
       clickThemeTab(a){
         this.is_theme = a;
+        if(this.is_theme == 1){
+          this.tagInfo = this.detail_analyse.subject_top;
+            // 研究主题-- 主要主题
+            this.getTopics('subject_top',this.detail_analyse.subject_top);
+          }else{
+            this.tagInfo = this.detail_analyse.subject_sub;
+            // 研究主题-- 次要要主题
+            this.getTopics('subject_sub',this.detail_analyse.subject_sub);
+          }
       },
       clickAccTab(a){
         this.accTitleTab = a;
