@@ -496,9 +496,11 @@
         // 回调返回时间戳
         this.advStartYear = e.startYear;
         this.advEndYear = e.endYear;
+        
       },
       // 普通检索时间
      updateStatisticYear(e){
+      console.log(e)
         // 回调返回时间戳
         this.startYear = e.startYear;
         this.endYear = e.endYear;

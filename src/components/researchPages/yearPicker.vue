@@ -157,24 +157,18 @@ export default {
         this.startShowYear = this.startYear;
         this.endShowYear = this.endYear;
       }
-      if (this.startYear && this.endYear) {
-        
-        // this.$emit("updateTimeRange", {
-        //   startYear: moment(this.startYear + "")
-        //     .startOf("year")
-        //     .valueOf(),
-        //   endYear:
-        //     moment(this.endYear + "")
-        //       .endOf("year")
-        //       .valueOf() + 1,
-        // });
-         this.$emit("updateTimeRange", {
+      this.$emit("updateTimeRange", {
           startYear: this.startShowYear,
           endYear: this.endShowYear,
         });
-      } else {
-        console.warn("WARN:年份不合法", this.startYear, this.endYear);
-      }
+      // if (this.startYear && this.endYear) {
+      //    this.$emit("updateTimeRange", {
+      //     startYear: this.startShowYear,
+      //     endYear: this.endShowYear,
+      //   });
+      // } else {
+      //   console.warn("WARN:年份不合法", this.startYear, this.endYear);
+      // }
     },
     onHoverItem(iYear) {
       if (this.curState === SELECT_STATE.selecting) {
