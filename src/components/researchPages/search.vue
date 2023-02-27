@@ -466,11 +466,12 @@
         let headerInput= that.headerInput; // 普通搜索内容
         let date= that.date; // 高级时间范围
         let advancedCondition= that.advancedCondition; // 高级 选择数据
-        if(advancedCondition.length >= 2){
-          advancedCondition[0].select_condition = advancedCondition[1].select_condition;
-        }else{
-          advancedCondition[0].select_condition = '';
-        }
+        // if(advancedCondition.length >= 2){
+        //   advancedCondition[0].select_condition = advancedCondition[1].select_condition;
+        // }else{
+        //   advancedCondition[0].select_condition = '';
+        // }
+        advancedCondition[0].select_condition = '';
         let year = that.filterData.minYear == ''?'': (that.filterData.minYear) + ',' + (that.filterData.maxYear);
         let sele_order= '';
         let sele_order_field= '';
