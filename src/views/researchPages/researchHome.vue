@@ -102,11 +102,13 @@
       let phone = window.localStorage.getItem('setUser');
       that.phone = phone;
     },
+    
     created(){
       let that = this;
       let getViewportSize = that.$getViewportSize();
       that.viewHeight = getViewportSize.height;
       that.viewWidth = getViewportSize.width;
+      that.setCurrentRoute();
       let uid = window.localStorage.getItem('uid');
       if(!uid){
         that.$message.error('暂未登陆，请先登录！');
@@ -116,7 +118,16 @@
         return
       }
     },
+    watch: {
+      $route() {
+        this.setCurrentRoute();
+      }
+    },
     methods:{
+      //监听到当前路由状态并激活当前菜单
+      setCurrentRoute() {
+        this.activeIndex = this.$route.path;    
+      },
       //点击logo
       clickLoge(){
         this.$emit('setsickNess', '');
@@ -129,7 +140,7 @@
       // 接收子组件方法
       onEmitIndex(idx) {
         console.log(idx)
-        this.activeIndex = idx;
+        // this.activeIndex = idx;
       },
       // 点击头部退出
       toLogin(){

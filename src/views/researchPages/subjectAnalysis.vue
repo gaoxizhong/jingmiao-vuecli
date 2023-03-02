@@ -2005,8 +2005,8 @@
   }
   .suggestion-titlebox{
     width: 100%;
-    height: 32px;
-    line-height: 32px;
+    height: 40px;
+    line-height: 40px;
     display: flex;
     justify-content: flex-start;
     border-bottom: 1px solid #EBEBEB;
@@ -2015,8 +2015,8 @@
     margin-left: 2rem;
     font-size: 14px;
     color: #333333;
-    height: 32px;
-    line-height: 32px;
+    height: 40px;
+    line-height: 40px;
     padding-bottom: 0.2rem;
     cursor: pointer;
   }
