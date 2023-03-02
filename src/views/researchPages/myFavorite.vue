@@ -3,6 +3,12 @@
     <div class="l-titlebox-1">
       <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
       <span style="margin-left: 0.5rem;">我收藏的</span>
+      <!-- 返回按钮 -->
+      <div class="fh-box" @click="goToPopularLiterature">
+        <i class="el-icon-back"></i>
+        <span>返回文献库</span>
+      </div>
+      <!-- 返回按钮 -->
     </div>
     <!-- 内容 开始 -->
     <div class="contentbox">
@@ -152,7 +158,10 @@
       this.getMyCollection();
     },
     methods: {
-
+      goToPopularLiterature(){
+        this.$emit('setsickNess', '');
+        this.$router.push('/popularLiterature');
+      },
       // 检索
       headerInputClick(){
         let headerInput = this.headerInput;
@@ -313,7 +322,7 @@
               });
               return
             }
-            that.$emit.setsickNess('');
+            that.$emit('setsickNess', '');
             that.$router.push({
               path:'/literatureAuthor', 
               query:{     
@@ -360,6 +369,8 @@
     height: auto;
     font-size: 14px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
   }
   .contentbox{
     flex: 1;
@@ -722,5 +733,26 @@
     width: auto;
     margin: 0;
     padding: 0;
+  }
+  .fh-box{
+    color: #3664D9;
+    font-size: 14px;
+    font-weight: 400;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .fh-box:hover{
+    opacity: 0.8;
+  }
+  .fh-box>i{
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .fh-box>span{
+    margin-left: 0.3rem;
   }
 </style>
