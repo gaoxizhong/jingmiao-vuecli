@@ -266,8 +266,8 @@ export default {
         let endYear = moment(endYearStamp).format("yyyy");
         this.startYear = startYear * 1;
         this.endYear = endYear * 1;
-        this.endShowYear = endYear * 1;
-        this.startShowYear = startYear * 1;
+        this.endShowYear = '';
+        this.startShowYear = '';
       }
     },
   },

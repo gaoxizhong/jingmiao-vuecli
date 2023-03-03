@@ -33,7 +33,7 @@
             
             
             <div class="tabslist">
-              <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我的收藏</span>
+              <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我收藏的</span>
               <span class="tabslist-span2" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
             </div>
             <!-- 弹窗 开始-->
@@ -168,7 +168,7 @@
                   <div class="advTime-title">发表时间:</div>
                   <!-- 年份区间 开始 -->
                   <div class="advTime-itemsbox">
-                    <yearPicker ref="advStatisticPicker" labelText="" setYear='advSetYear' :initYear="dateValue2"  @updateTimeRange="advUpdateStatisticYear"/>
+                    <yearPicker ref="advStatisticPicker" labelText="" setYear='' :initYear="dateValue2"  @updateTimeRange="advUpdateStatisticYear"/>
                   </div>
                   <!-- 年份区间 结束 -->
                 </div>
@@ -179,7 +179,7 @@
                   </div>
               
                   <div class="tabslist">
-                    <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我的收藏</span>
+                    <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我收藏的</span>
                     <span class="tabslist-span2" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
                   </div>
                 </div>
@@ -407,23 +407,24 @@
         this.is_pop = '2';
         this.setsickNess();
       }
-      document.addEventListener("click", (e) => {
-        let sordPop = this.$refs.sordPop;
-        let sordInput = this.$refs.sordInput;
-        if(!(sordInput.contains(event.target)) && !(sordPop.contains(event.target))){
-          this.is_sordPop = false
-        }
 
-        let advInput = document.getElementById("advInput");
-        let advPop = document.getElementById("advPop");
-        if ( (!advPop.contains(e.target)) && !(advInput.contains(event.target)) ) {
-          this.is_advPop = false;
-          this.is_authorPop = false;
-        }
-      });
+    },
+    // beforeDestroy(){
+    //   document.removeEventListener("scroll", this.handleScroll);
+    //   document.removeEventListener('click');
+    // },
+    //我们在生命周期 beforeDestory 中关闭即可，一旦页面中使用了keep-alive 进行缓存，此时 beforeDestory 会失效。需要在 deactivated 钩子函数去关闭，他是 keep-alive 特有的钩子函数。
+    deactivated(){
+      document.removeEventListener("scroll", this.handleScroll);
+      document.removeEventListener('click',this.addEventListenerClick);
+      this.searchBarFixed = false
+    },
+    activated(){
+      document.addEventListener('click',this.addEventListenerClick);
+      document.addEventListener('scroll', this.handleScroll);
     },
      mounted () {
-      window.addEventListener('scroll', this.handleScroll);
+
       // ========  发表时间 展示数据 默认10年  ↓ ============
       // let now = new Date();
       // let year = now.getFullYear();
@@ -433,13 +434,30 @@
       // let s_num = Date.parse(s_year);
       // let e_num = Date.parse(year);
       // this.$refs.statisticPicker.setYear( s_num, e_num);
+      // this.$refs.statisticPicker.setYear( '', '');
+      // this.$refs.advStatisticPicker.setYear( '', '');
       // ======== 发表时间 展示数据 默认10年  ↑ ==========
     },
-    destroyed () {
-      window.removeEventListener('click');
-      window.removeEventListener('scroll', this.handleScroll);
-    },
     methods:{
+      addEventListenerClick(){
+        document.addEventListener("click", (e) => {
+          let sordPop = this.$refs.sordPop;
+          let sordInput = this.$refs.sordInput;
+          if(sordInput || sordPop){
+            
+          }
+          if(!(sordInput.contains(e.target)) && !(sordPop.contains(e.target))){
+            this.is_sordPop = false
+          }
+
+          let advInput = document.getElementById("advInput");
+          let advPop = document.getElementById("advPop");
+          if ( (!advPop.contains(e.target)) && !(advInput.contains(e.target)) ) {
+            this.is_advPop = false;
+            this.is_authorPop = false;
+          }
+        });
+      },
       // 返回上一步
       fanhui_btn(){
         let that = this;
@@ -907,6 +925,8 @@
         that.endYear = '';
         that.advStartYear = '';
         that.advEndYear = '';
+        that.$refs.statisticPicker.setYear( 0, 0);
+        that.$refs.advStatisticPicker.setYear( 0, 0);
         that.advancedCondition= []; // 选中的检索选项
         that.headerInput = '';
       },

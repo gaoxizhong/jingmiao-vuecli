@@ -102,7 +102,9 @@
       let phone = window.localStorage.getItem('setUser');
       that.phone = phone;
     },
-    
+    beforeCreate(){
+      console.log('beforeCreate')
+    },
     created(){
       let that = this;
       let getViewportSize = that.$getViewportSize();

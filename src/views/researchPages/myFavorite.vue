@@ -1,8 +1,7 @@
 <template>
   <div class="pages-b">
     <div class="l-titlebox-1">
-      <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
-      <span style="margin-left: 0.5rem;">我收藏的</span>
+      <!-- <span style="margin-left: 0.5rem;">我收藏的</span> -->
       <!-- 返回按钮 -->
       <div class="fh-box" @click="goToPopularLiterature">
         <i class="el-icon-back"></i>
@@ -15,7 +14,7 @@
       <!-- 左侧模块 开始-->
       <div class="content-left">
         <div class="myFavorite-seach-box">
-          <el-input placeholder="输入关键词" v-model="headerInput" class="input-with-select">
+          <el-input placeholder="输入标题" v-model="headerInput" class="input-with-select">
             <el-button slot="append" @click="headerInputClick">搜索</el-button>
           </el-input>
         </div>
@@ -128,7 +127,7 @@
 <script>
   import { literatureDetails,getMyCollection,clickCollection,getTitleOrganization } from "@/api/data";
   export default {
-    inject: ['setsickNess'],
+    // inject: ['setsickNess'],
     name: 'myFavorite',
     data() {
       return {
@@ -290,6 +289,8 @@
         that.infoDetail = {};
         literatureDetails(pearms).then(res => {
           loading.close();
+          // 回到顶部的方法。
+          window.scrollTo(0,0);
           if (res.data.code == 0) {
             document.title = res.data.data.title;
             that.infoDetail = res.data.data;
