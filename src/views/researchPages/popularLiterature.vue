@@ -33,7 +33,8 @@
             
             
             <div class="tabslist">
-              <span style="display: inline-block;height: 100%;" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
+              <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我的收藏</span>
+              <span class="tabslist-span2" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
             </div>
             <!-- 弹窗 开始-->
             <!-- 普通相关关键词 开始 -->
@@ -176,7 +177,11 @@
                     <span @click="clickReset">重置条件</span>
                     <span style="background: #3664D9;color: #fff;" @click="clickAdvancedSearch">检索</span>
                   </div>
-                  <div class="tabslist" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></div>
+              
+                  <div class="tabslist">
+                    <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我的收藏</span>
+                    <span class="tabslist-span2" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1252,7 +1257,14 @@
     cursor: pointer;
     font-size: 12px;
   }
-  .tabslist:hover{
+  .tabslist>span{
+    display: inline-block;
+    height: 100%;
+  }
+  .tabslist-span2{
+    margin-left:12px;
+  }
+  .tabslist>span:hover{
     color: #3664D9;
   }
   .header-input-box /deep/ .el-input__suffix{
