@@ -155,6 +155,7 @@
           <div v-if="activeName == 'ckwx'">
             <div class="list-itembox">
               <div class="list-item" v-for="(item,index) in infoDetail.references" :key="index">{{item}}</div>
+              <el-empty description="暂无数据..." v-if="infoDetail.references.length == 0"></el-empty>
             </div>
           </div>
         </div>  

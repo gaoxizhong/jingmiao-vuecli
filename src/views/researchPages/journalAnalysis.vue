@@ -165,11 +165,11 @@
       this.headerInputClick();
     },
     mounted () {
-      window.addEventListener('scroll', this.handleScroll)
+      document.addEventListener('scroll', this.handleScroll)
     },
-    destroyed () {
-      console.log('destroyed')
-      window.removeEventListener('scroll', this.handleScroll)
+    //我们在生命周期 beforeDestory 中关闭即可，一旦页面中使用了keep-alive 进行缓存，此时 beforeDestory 会失效。需要在 deactivated 钩子函数去关闭，他是 keep-alive 特有的钩子函数。
+    deactivated(){
+      document.removeEventListener("scroll", this.handleScroll);
     },
     methods:{
       // 点击重置按钮

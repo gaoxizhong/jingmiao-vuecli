@@ -25,7 +25,28 @@
               </div>
               <!-- 年份区间 开始 -->
               <div class="option-itemsbox option-itemsbox-4">
-                <yearPicker ref="statisticPicker" labelText="" setYear='setYear' :initYear="dateValue2"  @updateTimeRange="updateStatisticYear"/>
+                <div class="advTime-yearBox">
+                  <el-date-picker 
+                    :append-to-body="popperAppend"
+                    v-model="startYear"
+                    format="yyyy"
+                    value-format="yyyy"
+                    type="year"
+                    placeholder="开始时间">
+                  </el-date-picker>
+                </div>
+                <span style="padding: 0 6px;">-</span>
+                <div class="advTime-yearBox">
+                  <el-date-picker
+                    :append-to-body="popperAppend"
+                    v-model="endYear"
+                    format="yyyy"
+                    value-format="yyyy"
+                    type="year"
+                    placeholder="结束时间">
+                  </el-date-picker>
+                </div>
+                <!-- <yearPicker ref="statisticPicker" labelText="" setYear='setYear' :initYear="dateValue2"  @updateTimeRange="updateStatisticYear"/> -->
               </div>
               <!-- 年份区间 结束 -->
               <el-button slot="append" @click="headerInputClick">检索</el-button>
@@ -75,7 +96,7 @@
                 <!-- 高级检索选项 开始-->
                 <div class="duoxiang-itemsbox" v-for="(item,index) in advancedOptions" :key="index">
                   <div class="advancedOptions-l">
-                    <el-select class="validate validate-1" v-model="item.select_condition" slot="prepend" @change="selectnChange" v-if="index != 0" >
+                    <el-select class="validate validate-1" :popper-append-to-body="popperAppend" v-model="item.select_condition" slot="prepend" @change="selectnChange" v-if="index != 0" >
                       <el-option
                         v-for="items in item.options_0"
                         :key="items.value"
@@ -84,7 +105,7 @@
                       </el-option>
                     </el-select>
                   </div>
-                  <el-select class="validate validate-2" v-model="item.select_field" slot="prepend" @change="selectnChange">
+                  <el-select class="validate validate-2" :popper-append-to-body="popperAppend" v-model="item.select_field" slot="prepend" @change="selectnChange">
                     <el-option
                       v-for="items in item.options_1"
                       :key="items.value"
@@ -150,7 +171,7 @@
                       </div>
                       <!-- 高级检索 关键词 结束 -->
                   </div>
-                  <el-select class="validate validate-3" v-model="item.select_type" slot="prepend" @change="selectnChange">
+                  <el-select class="validate validate-3" :popper-append-to-body="popperAppend" v-model="item.select_type" slot="prepend" @change="selectnChange">
                     <el-option
                       v-for="items in item.options_2" 
                       :key="items.value"
@@ -168,7 +189,28 @@
                   <div class="advTime-title">发表时间:</div>
                   <!-- 年份区间 开始 -->
                   <div class="advTime-itemsbox">
-                    <yearPicker ref="advStatisticPicker" labelText="" setYear='' :initYear="dateValue2"  @updateTimeRange="advUpdateStatisticYear"/>
+                    <div class="advTime-yearBox">
+                      <el-date-picker 
+                        :append-to-body="popperAppend"
+                        v-model="advStartYear"
+                        format="yyyy"
+                        value-format="yyyy"
+                        type="year"
+                        placeholder="选择年">
+                      </el-date-picker>
+                    </div>
+                    <span class="advTime-span">至</span>
+                    <div class="advTime-yearBox">
+                      <el-date-picker
+                        :append-to-body="popperAppend"
+                        v-model="advEndYear"
+                        format="yyyy"
+                        value-format="yyyy"
+                        type="year"
+                        placeholder="选择年">
+                      </el-date-picker>
+                    </div>
+                    <!-- <yearPicker ref="advStatisticPicker" labelText="" setYear='' :initYear="dateValue2"  @updateTimeRange="advUpdateStatisticYear"/> -->
                   </div>
                   <!-- 年份区间 结束 -->
                 </div>
@@ -262,7 +304,7 @@
 
   import Popular from '../../components/researchPages/popular.vue';
   import Search from '../../components/researchPages/search.vue';
-  import yearPicker from '../../components/researchPages/yearPicker.vue';
+  // import yearPicker from '../../components/researchPages/yearPicker.vue';
   import time from "../../assets/js/time";
   import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease,getAuthorOrganization  } from "../../api/data";
   export default {
@@ -270,16 +312,17 @@
     components: {
       Popular,
       Search,
-      yearPicker
+      // yearPicker
     },
     data(){
       return {
+        popperAppend: false,  //是否将弹出框插入至 body 元素。在弹出框的定位出现问题时，可将该属性设置为 false
         retrievalArr: window.localStorage.getItem('retrievalArr'),
         dateValue2:2,
-        startYear:'',
-        endYear:'',
-        advStartYear:'',
-        advEndYear:'',
+        startYear:'', // 普通检索开始时间
+        endYear:'',  // 普通检索结束时间
+        advStartYear:'', // 高级检索开始时间
+        advEndYear:'', // 高级检索结束时间
         searchBarFixed: false,
         duoWidth: 50,
         advancedKeyWordsList:[], // 高级关键词多选数据
@@ -415,9 +458,10 @@
     // },
     //我们在生命周期 beforeDestory 中关闭即可，一旦页面中使用了keep-alive 进行缓存，此时 beforeDestory 会失效。需要在 deactivated 钩子函数去关闭，他是 keep-alive 特有的钩子函数。
     deactivated(){
+      console.log('deactivated')
       document.removeEventListener("scroll", this.handleScroll);
       document.removeEventListener('click',this.addEventListenerClick);
-      this.searchBarFixed = false
+      this.searchBarFixed = false;
     },
     activated(){
       document.addEventListener('click',this.addEventListenerClick);
@@ -444,18 +488,19 @@
           let sordPop = this.$refs.sordPop;
           let sordInput = this.$refs.sordInput;
           if(sordInput || sordPop){
-            
+            if(!(sordInput.contains(e.target)) && !(sordPop.contains(e.target))){
+              this.is_sordPop = false
+            }
           }
-          if(!(sordInput.contains(e.target)) && !(sordPop.contains(e.target))){
-            this.is_sordPop = false
-          }
-
           let advInput = document.getElementById("advInput");
           let advPop = document.getElementById("advPop");
-          if ( (!advPop.contains(e.target)) && !(advInput.contains(e.target)) ) {
-            this.is_advPop = false;
-            this.is_authorPop = false;
+          if(advInput || advPop){
+            if ( (!advPop.contains(e.target)) && !(advInput.contains(e.target)) ) {
+              this.is_advPop = false;
+              this.is_authorPop = false;
+            }
           }
+          
         });
       },
       // 返回上一步
@@ -925,8 +970,8 @@
         that.endYear = '';
         that.advStartYear = '';
         that.advEndYear = '';
-        that.$refs.statisticPicker.setYear( 0, 0);
-        that.$refs.advStatisticPicker.setYear( 0, 0);
+        // that.$refs.statisticPicker.setYear( 0, 0);
+        // that.$refs.advStatisticPicker.setYear( 0, 0);
         that.advancedCondition= []; // 选中的检索选项
         that.headerInput = '';
       },
@@ -1085,7 +1130,7 @@
     border: 1px solid #D7D7D7;
   }
   .headerInpuBox{
-    width: 40rem;
+    width: 44rem;
     margin: 0 auto;
     text-align: left;
     display: flex;
@@ -1110,7 +1155,7 @@
     position: relative;
   }
   .option-itemsbox{
-    width: 12rem;
+    width: 14rem;
     height: 2rem;
     margin-right: 20px;
     display: -webkit-box;
@@ -1680,5 +1725,42 @@
   }
   .fh-box>span{
     margin-left: 0.3rem;
+  }
+  .advTime-itemsbox{
+    display: flex;
+    align-items: center;
+  }
+  .advTime-span{
+    padding: 0 20px;
+  }
+  .advTime-yearBox{
+    width: 180px;
+
+  }
+  .advTime-yearBox /deep/ .el-date-editor.el-input, .advTime-yearBox /deep/ .el-date-editor.el-input__inner{
+    width: 100%;
+    display: flex;
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 14px;
+  }
+  .advTime-yearBox /deep/ .el-input__inner{
+    height: 32px !important;
+    line-height: 32px !important;
+    border: 1px solid #E3E3E3;
+    padding: 0 10px;
+  }
+  .advTime-yearBox /deep/ .el-input__icon{
+    display: none;
+    line-height: 32px !important;
+  }
+  .advTime-yearBox /deep/ .el-year-table td.today .cell{
+    color: #3664D9;
+  }
+  .advTime-yearBox /deep/ .el-date-picker__header-label.active,.advTime-yearBox /deep/ .el-date-picker__header-label:hover{
+    color: #3664D9;
+  }
+  .advTime-yearBox /deep/ .el-picker-panel__icon-btn:hover,.advTime-yearBox /deep/ .el-year-table td .cell:hover{
+    color: #3664D9;
   }
 </style>

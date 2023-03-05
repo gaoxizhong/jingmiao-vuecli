@@ -206,7 +206,9 @@
             </el-table-column>
             <el-table-column prop="author" label="作者" width="180">
               <template slot-scope="scope">
-                <p @click="detailData(scope.row)">{{scope.row.author?scope.row.author:'暂无'}}</p>
+                <p>
+                  <span v-for="(item,index) in scope.row.author_list" :key="index" v-html="item"></span>
+                </p>
               </template>
             </el-table-column>
             <el-table-column prop="album" label="来源" width="280">
@@ -226,9 +228,17 @@
             </el-table-column>
           </el-table>
         </div>
+
         <div class="demo-block-control" style="left: 0px;" @click="clickMore"  v-if="total_page > 1">
-          <i class="el-icon-caret-bottom"></i>
-          <span>加载更多...</span>
+          <!-- <i class="el-icon-caret-bottom"></i>
+          <span>加载更多...</span> -->
+          <!-- <div class="pagination-box">
+            <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+            :total="total"
+            :page-size="pageSize"
+            :current-page='current_page'>
+            </el-pagination>
+          </div> -->
         </div>
       </div>
       <!-- 相关推荐 结束-->
@@ -275,6 +285,11 @@
 
     },
     methods: {
+      handleCurrentChange(val) {
+        let that = this;
+        that.current_page = Number(val);
+        that.literatureDocSearch();
+      },
       clickAccTab(a){
         this.accTitleTab = a;
       },

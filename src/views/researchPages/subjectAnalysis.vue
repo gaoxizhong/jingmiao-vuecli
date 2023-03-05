@@ -249,7 +249,7 @@
       </div>
       <div v-if="tableData.length > 0">
         <div class="suggestion-tabbox">
-          <el-table :data="tableData" stripe style="width: 100%">
+          <el-table :data="tableData" stripe style="width: 100%" :default-sort = "{prop: 'year', order: 'descending'}">
             <el-table-column prop="title" label="标题">
               <template slot-scope="scope">
                 <p @click="detailData(scope.row)">{{scope.row.title}}</p>
@@ -270,7 +270,7 @@
                 <p @click="detailData(scope.row)">{{scope.row.keyword?scope.row.keyword:'暂无'}}</p>
               </template>
             </el-table-column>
-            <el-table-column prop="year" label="年份" width="90">
+            <el-table-column prop="year" sortable label="年份" width="90">
               <template slot-scope="scope">
                 <p @click="detailData(scope.row)">{{scope.row.year?scope.row.year:'暂无'}}</p>
               </template>
@@ -283,10 +283,18 @@
           </el-table>
         </div>
 
-        <div class="demo-block-control" style="left: 0px;" @click="clickMore"  v-if="total_page > 1">
+        <!-- <div class="demo-block-control" style="left: 0px;" @click="clickMore"  v-if="total_page > 1">
           <i class="el-icon-caret-bottom"></i>
           <span>加载更多...</span>
-        </div>
+        </div> -->
+          <div class="pagination-box">
+            <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+            :total="total"
+            :page-size="pageSize"
+            :current-page='page'>
+            </el-pagination>
+          </div>
+        
       </div>
       
         <el-empty description="暂无数据..." v-if='tableData.length == 0'></el-empty>
@@ -335,6 +343,8 @@
         value:'', // 搜索疾病名称
         tableData: [],
         page:1,
+        pageSize: 10,
+        total:0, // 总条数
         total_page: 0, // 总页数
         newest_result: [],
         album_tag:'newest', // newest: 最新文献；highest ： 最高文献
@@ -367,17 +377,25 @@
     created(){
       this.getEsIndex();
       document.title = '学科分析';
-      document.addEventListener("click", (e) => {
-        let box_2 = document.getElementById("is_symptomSearch");
-        if (!box_2.contains(e.target)) {
-          this.is_symptomSearch = false;
-        }
-      });
     },
-    destroyed () {
-      window.removeEventListener('click')
+    activated(){
+      document.addEventListener('click',this.addEventListenerClick);
+    },
+    //我们在生命周期 beforeDestory 中关闭即可，一旦页面中使用了keep-alive 进行缓存，此时 beforeDestory 会失效。需要在 deactivated 钩子函数去关闭，他是 keep-alive 特有的钩子函数。
+    deactivated(){
+      document.removeEventListener('click',this.addEventListenerClick);
     },
     methods:{
+      addEventListenerClick(){
+        document.addEventListener("click", (e) => {
+          let box_2 = document.getElementById("is_symptomSearch");
+          if(box_2){
+            if (!box_2.contains(e.target)) {
+              this.is_symptomSearch = false;
+            }
+          }
+        });
+      },
       clickThemeTab(a){
         this.is_theme = a;
         if(this.is_theme == 1){
@@ -439,17 +457,10 @@
         this.select_3 = n;
         this.is_symptomSearch = false;
       },
-      //点击加载更多
-      clickMore(){
+      // 点击分页功能
+      handleCurrentChange(val) {
         let that = this;
-        if( that.page >= that.total_page){
-          that.$message({
-            title:'暂无更多数据!',
-          })
-          return
-        }
-        that.page = that.page+1;
-
+        that.page = Number(val);
         if(that.album_tag == 'document'){
           // 全部文献
           that.getXkfxEsDocument();
@@ -458,6 +469,25 @@
           that.getRelationRecommend();
         }
       },
+      //点击加载更多
+      // clickMore(){
+      //   let that = this;
+      //   if( that.page >= that.total_page){
+      //     that.$message({
+      //       title:'暂无更多数据!',
+      //     })
+      //     return
+      //   }
+      //   that.page = that.page+1;
+
+      //   if(that.album_tag == 'document'){
+      //     // 全部文献
+      //     that.getXkfxEsDocument();
+      //   }else{
+      //     //最高被引用-- 最新发布
+      //     that.getRelationRecommend();
+      //   }
+      // },
       // 点击热门学科
       clickHotItem(n,i){
         let index = i;
@@ -709,10 +739,6 @@
           that.clicksuggestion('document');
           // 相关学者
           that.getTopics('RepresentativeScholar',that.detail_analyse.relevant_scholars);
-        }
-        if(i == '7'){
-          // 代表期刊
-          that.getTopics('RepresentativePeriodicals','7');
         }
         console.log(that.tagInfo)
       },
@@ -1253,6 +1279,16 @@
             axisPointer: {
               type: "shadow",
             },
+            formatter: function (params, ticket, callback) {
+              let org = infoData[params[0].dataIndex].org;
+              let tipString = '';
+              if(org){
+                tipString = '<p style="text-align: left;">' + params[0].name + '<span style="padding:0 6px;font-weight: 900;">—</span>' + org + '</br><span style="display: inline-block;width: 10px;height: 10px;border-radius: 50%;background: #3664D9;margin-right:10px;"></span>'+params[0].value + '</p>';
+              }else{
+                tipString = '<p style="text-align: left;">' + params[0].name + '</br><span style="display: inline-block;width: 10px;height: 10px;border-radius: 50%;background: #3664D9;margin-right:10px;"></span>'+params[0].value + '</p>';
+              }
+              return tipString;
+            }
           },
           toolbox: {
             show: true,
@@ -1275,6 +1311,7 @@
               axisLabel: {
 
                 formatter:function(value) { //X轴的内容
+                  return value
                   var ret = ""; //拼接加\n返回的类目项
                   var max = 10;  //每行显示的文字字数
                   var val = value.length;  //X轴内容的文字字数
@@ -1671,7 +1708,9 @@
       getXkfxEsDocument(){
         let that = this;
         let arr = [];
-        
+        if( !that.acc_tag || that.acc_tag == ''){
+          return
+        }
         if(that.acc_tag == 'relevant_scholars'){
           arr.push(that.tagInfo[0].key)
         }else{
@@ -1692,9 +1731,10 @@
         }
         getXkfxEsDocument(p).then(res => {
           if (res.data.code == 0) {
-            let newData = that.tableData.concat(res.data.data.list);
-            that.tableData = newData;
+            // let newData = that.tableData.concat(res.data.data.list);
+            that.tableData = res.data.data.list;
             that.total_page = res.data.data.total_page;
+            that.total = res.data.data.total;
           }
         })
         .catch(e => {
@@ -1712,9 +1752,10 @@
         }
         getRelationRecommend(p).then(res => {
           if (res.data.code == 0) {
-            let newData = that.tableData.concat(res.data.data.list);
-            that.tableData = newData;
+            // let newData = that.tableData.concat(res.data.data.list);
+            that.tableData = res.data.data.list;
             that.total_page = res.data.data.total_page;
+            that.total = res.data.data.total;
           }
         })
         .catch(e => {
@@ -1726,6 +1767,7 @@
         this.tableData=[];
         this.page = 1;
         this.album_tag = n;
+        console.log(this.album_tag)
         if(this.album_tag == 'document'){
           // 全部文献
           this.getXkfxEsDocument();
@@ -2153,5 +2195,8 @@
     cursor: pointer;
     font-size: 14px;
     display: block;
+  }
+  .pagination-box{
+    padding: 1.5rem 0;
   }
 </style>

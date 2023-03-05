@@ -4,36 +4,6 @@
     <div class="c-box">
 
       <div style="margin-right:1rem;flex:1;">
-        <!-- 筛选模块 开始 -->
-        <!-- <div class="c-filter-box">
-          <div class="c-filter-l">
-            <div class="filter-inputbox">
-              <label>标题:</label>
-              <el-input v-model="filterData.filter_litTitle" placeholder="标题"></el-input>
-            </div>
-            <div class="filter-inputbox">
-              <label>作者:</label>
-              <el-input v-model="filterData.filter_litAuthor" placeholder="作者"></el-input>
-            </div>
-            <div class="filter-inputbox">
-              <label>所属期刊:</label>
-              <el-input v-model="filterData.filter_litJournal" placeholder="所属期刊"></el-input>
-            </div>
-            <div class="input-area">
-              <label>时间范围:</label>
-              <div class="input-column">
-                <input v-model="filterData.minYear" placeholder="年" placeholder-style=" color: red;" />
-                <span>~</span>
-                <input v-model="filterData.maxYear"  placeholder="年"/>
-              </div>
-            </div> 
-          </div>
-          <div class="filter-btnbox">
-            <div @click="clickReset">重置</div>
-            <div class="filter-btn2" @click="clickScreening">筛选</div>
-          </div>
-        </div> -->
-        <!-- 筛选模块 结束 -->
         <!-- 中间文献列表模块 开始 -->
         <div class="c-list-box">
           <div class="list-title">
@@ -50,7 +20,7 @@
           <div class="list-itembox" ref="get">
             <!-- ===  单条列表 开始 ===  -->
             <div class="list-item" v-for="(item,index) in listData" :key="index">
-              <a href="javascript:0;" @click.stop="goToDetails(item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
+              <a href="javascript:0;" @click.stop="clickListItem(index,item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
                 <div class="listitems-b">
                   <div class="list-item-title" :title="item.title" v-html="item.title"></div>
                   <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
@@ -178,15 +148,6 @@
         total_page:0, // 总页数
         total: 0, // 总条数
         listData:[], // 文献列表
-        filterData:{  // 筛选模块数据
-          filter_litTitle:'', // 文献标题
-          filter_litAuthor:'', // 第一作者
-          filter_litJournal:'', // 所属期刊
-          minInput:'', // 影响指数
-          maxInput:'', // 影响指数
-          minYear:'',  // 时间范围
-          maxYear:'', // 时间范围
-        },
         sortData:[
           {name:'时间',order_field:'year',order:'desc',is_type:true},
           {name:'相关度',order_field:'_score',order:'desc',is_type:false},
@@ -241,65 +202,6 @@
       // 点击展开、收起
       clickShow(s){
         this.shoow_status = !s;
-      },
-      // 点击重置
-      
-      clickReset(){
-        this.filterData.filter_litTitle = '';
-        this.filterData.filter_litAuthor = '';
-        this.filterData.filter_litJournal = '';
-        this.filterData.minInput = '';
-        this.filterData.maxInput = '';
-        this.filterData.minYear = '';  // 时间范围
-        this.filterData.maxYear = ''; // 时间范围
-        this.search_type = 'many';
-      },
-      // 点击中间左侧筛选
-      clickScreening(){
-        let that = this;
-        let advancedCondition = that.advancedCondition;
-        let filterData = that.filterData;
-        if( filterData.filter_litTitle == '' && filterData.filter_litAuthor == '' && filterData.filter_litJournal =='' 
-          && filterData.minYear == '' && filterData.maxYear == ''  ){
-            that.$message.error('请填写内容！');
-            return
-        }
-        if(filterData.filter_litTitle){
-          advancedCondition.push({
-            select_field: 'title',
-            field_value: filterData.filter_litTitle,
-            select_type: 'match',
-            select_condition: 'and',
-          })
-        }
-        if(filterData.filter_litAuthor){
-
-          advancedCondition.push({
-            select_field: 'author',
-            field_value: filterData.filter_litAuthor,
-            select_type: 'match',
-            select_condition: 'and',
-          })
-          
-        }
-        if(filterData.filter_litJournal){
-          advancedCondition.push({
-            select_field: 'album',
-            field_value: filterData.filter_litJournal,
-            select_type: 'match',
-            select_condition: 'and',
-          })
-        }
-        if(filterData.minYear || filterData.maxYear){
-          advancedCondition.push({
-            select_field: 'year',
-            field_value: (that.filterData.minYear?that.filterData.minYear:'1900') + ',' + (that.filterData.maxYear?that.filterData.maxYear:'2300'),
-            select_type: 'match',
-            select_condition: 'and',
-          })
-        }
-        that.current_page = 1;
-        that.literatureDocSearch('crosswise');
       },
       //点击收藏
       clickCollection(i,md,c,t){
@@ -428,14 +330,17 @@
 
 
       // 点击列表
-      goToDetails(i,u){
+      clickListItem(i,p,u){
         let that = this;
-        let periodical_md5 = i;
+        let index = i;
+        let listData = that.listData;
+        listData[index].click_count += 1;
+        that.listData = listData;
+        let periodical_md5 = p;
         let uniq_id = u;
-        // this.$emit('setsickNess', '');
-        this.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
+        that.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
         // 新页面打开
-        this.$router.push({  //核心语句
+        that.$router.push({  //核心语句
           path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             periodical_md5,
@@ -472,7 +377,7 @@
         //   advancedCondition[0].select_condition = '';
         // }
         advancedCondition[0].select_condition = '';
-        let year = that.filterData.minYear == ''?'': (that.filterData.minYear) + ',' + (that.filterData.maxYear);
+        let year = '';
         let sele_order= '';
         let sele_order_field= '';
 
