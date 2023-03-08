@@ -230,8 +230,8 @@
         </div>
 
         <div class="demo-block-control" style="left: 0px;" @click="clickMore"  v-if="total_page > 1">
-          <!-- <i class="el-icon-caret-bottom"></i>
-          <span>加载更多...</span> -->
+          <i class="el-icon-caret-bottom"></i>
+          <span>加载更多...</span>
           <!-- <div class="pagination-box">
             <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
             :total="total"
@@ -253,7 +253,7 @@
 <script>
   import { getAnalysisDetail,getRelationRecommend } from "@/api/data";
   export default {
-    inject: ['setsickNess'],
+    // inject: ['setsickNess'],
     name: 'literatureAuthor',
     data() {
       return {
@@ -317,6 +317,17 @@
         let author = n;
         let organization = m;
         that.page = 1;
+        that.accTitleTab=1;
+        that.author = ''; // 学者姓名
+        that.organization = ''; // 相关机构organization
+        that.infoDetail= {};
+        that.authorList = [];  // 合作学者
+        that.tableData = [];
+        that.album_tag = 'highest'; // newest: 最新文献；highest ： 最高文献
+        that.acc_tab ='1';
+        that.total_page=0;
+
+
         that.author = author;
         that.organization = organization;
         that.getDetail();
@@ -357,6 +368,8 @@
               message: res.data.msg
             });
           }
+          that.acc_tab = '1';
+          that.accTitleTab = 1;
           // 发文趋势
           that.getLineChart('eachartsTrends',that.infoDetail.post_trend);
 
