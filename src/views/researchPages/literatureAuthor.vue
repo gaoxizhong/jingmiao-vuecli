@@ -282,6 +282,28 @@
       this.getDetail();
       // 相关文献
       this.getRelationRecommend();
+    },
+    
+    //监听函数
+    watch: { //监听路由变化（返回上一步还是当前页但是请求参数不同是刷新页面请求）
+      '$route' () {
+        console.log('watch')
+        this.page = 1;
+        this.accTitleTab=1;
+        this.author = ''; // 学者姓名
+        this.organization = ''; // 相关机构organization
+        this.infoDetail= {};
+        this.authorList = [];  // 合作学者
+        this.tableData = [];
+        this.album_tag = 'highest'; // newest: 最新文献；highest ： 最高文献
+        this.acc_tab ='1';
+        this.total_page=0;
+        this.author = this.$route.query.author;
+        this.organization = this.$route.query.organization;
+        this.getDetail();
+        // 相关文献
+        this.getRelationRecommend();
+      }
 
     },
     methods: {
@@ -314,32 +336,19 @@
       },
       clickCoAuthor(n,m){
         let that = this;
-        let author = n;
-        let organization = m;
-        that.page = 1;
-        that.accTitleTab=1;
-        that.author = ''; // 学者姓名
-        that.organization = ''; // 相关机构organization
-        that.infoDetail= {};
-        that.authorList = [];  // 合作学者
-        that.tableData = [];
-        that.album_tag = 'highest'; // newest: 最新文献；highest ： 最高文献
-        that.acc_tab ='1';
-        that.total_page=0;
+        that.author = n;
+        that.organization = m;
+        // that.getDetail();
+        // that.getRelationRecommend();
 
-
-        that.author = author;
-        that.organization = organization;
-        that.getDetail();
-        that.getRelationRecommend();
-        // that.$emit('setsickNess', '');
-        // that.$router.push({
-        //     path:'/literatureAuthor',
-        //     query:{     
-        //       author: author,
-        //       organization: organization,
-        //     }
-        //   })
+        that.$emit('setsickNess', '');
+        that.$router.push({
+            path:'/literatureAuthor',
+            query:{     
+              author:that.author,
+              organization:that.organization,
+            }
+          })
  
       },
       // 获取作者详情
