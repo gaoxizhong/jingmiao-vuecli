@@ -55,24 +55,6 @@
             <!-- 右侧数据信息 结束 -->
 
           </div>
-          <!-- 发文篇数数据 开始 -->
-          <!-- <div class="classNumber-box">
-            <div class="classNumber-eacharts-box" id="class_eacharts" :style="{width: '35.75rem', height: '8.35rem'}"></div>
-            <div class="classNumber-numbox">
-              <div class="classNumber-numbox-t">总计</div>
-              <div class="classNumber-numbox-n">299篇</div>
-            </div>
-          </div> -->
-          <!-- 发文篇数数据 结束 -->
-
-          <!-- <div class="effectmap_line_wr" style="overflow: visible;">
-            <div id="ach_map_wrapper" class="line_map_wrapper">
-              <div class="line_map_container" id="ach_map_container"></div>
-            </div>
-            <div id="cited_map_wrapper" class="line_map_wrapper">
-              <div class="line_map_container" id="cited_map_container"></div>
-            </div>
-          </div> -->
 
         </div>
         <!-- 合作学者列表 -->
@@ -98,14 +80,7 @@
         <div class="classbox-l">
           <span>详细分析</span>
         </div>
-        <!-- <a href="javascript:0;" class="classbox-r">
-          <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
-          <span>查看更多</span>
-        </a> -->
       </div>
-      <!-- <div class="topics-chartbox">
-        <div id="topics-chart"></div>
-      </div> -->
       <!-- tab展示 开始 -->
       <div class="accordion-box">
         <div class="acc-leftbox">
@@ -183,13 +158,8 @@
       <!-- 相关推荐 开始-->
       <div class="icon-classbox">
         <div class="classbox-l">
-          <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
           <span>相关推荐</span>
         </div>
-        <!-- <a href="javascript:0;" class="classbox-r">
-          <img src="../../assets/image/researchPages/icon-hyh.png" alt="" />
-          <span>查看更多</span>
-        </a> -->
       </div>
 
       <div class="suggestion-box">
@@ -229,16 +199,12 @@
           </el-table>
         </div>
 
-        <div class="demo-block-control" style="left: 0px;" @click="clickMore"  v-if="total_page > 1">
-          <i class="el-icon-caret-bottom"></i>
-          <span>加载更多...</span>
-          <!-- <div class="pagination-box">
-            <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
-            :total="total"
-            :page-size="pageSize"
-            :current-page='current_page'>
-            </el-pagination>
-          </div> -->
+        <div class="pagination-box">
+          <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+          :total="total"
+          :page-size="pageSize"
+          :current-page='page'>
+          </el-pagination>
         </div>
       </div>
       <!-- 相关推荐 结束-->
@@ -266,6 +232,8 @@
         album_tag:'highest', // newest: 最新文献；highest ： 最高文献
         acc_tab:'1',
         page: 1,
+        pageSize:10,
+        total:0,
         total_page:0,
       };
     },
@@ -307,26 +275,15 @@
 
     },
     methods: {
+      // 点击分页
       handleCurrentChange(val) {
         let that = this;
-        that.current_page = Number(val);
-        that.literatureDocSearch();
+        that.page = Number(val);
+        // 获取相关文献
+       that.getRelationRecommend();
       },
       clickAccTab(a){
         this.accTitleTab = a;
-      },
-      //点击加载更多
-      clickMore(){
-        let that = this;
-        if( that.page >= that.total_page){
-          that.$message({
-            message:'暂无更多数据!',
-          })
-          return
-        }
-        that.page = that.page+1;
-        // 获取相关文献
-       that.getRelationRecommend();
       },
       // 返回上一步
       fanhui_btn(){
@@ -744,9 +701,11 @@
         }
         getRelationRecommend(p).then(res => {
           if (res.data.code == 0) {
-            let newData = that.tableData.concat(res.data.data.list);
+            let newData = res.data.data.list;
             that.tableData = newData;
             that.total_page = res.data.data.total_page;
+            that.total = res.data.data.total;
+
           }
         })
         .catch(e => {
@@ -1217,5 +1176,8 @@
     transition: .3s;
     display: inline-block;
     padding-left: 4px;
+  }
+  .pagination-box{
+    padding: 1.5rem 0;
   }
 </style>

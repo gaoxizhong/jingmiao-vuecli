@@ -216,9 +216,9 @@ const getForceRelation_eacharts = (d,i,t) =>{
             itemSize: 16,
             right:-4,
             top: -4,
-            feature: {
-              saveAsImage: {}  // 导出图片
-            }
+            // feature: {
+            //   saveAsImage: {}  // 导出图片
+            // }
           },
           label: {
             normal: {

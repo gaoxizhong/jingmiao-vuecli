@@ -137,9 +137,12 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="demo-block-control" style="left: 0px;" @click="clickMore"  v-if="total_page > 1">
-        <i class="el-icon-caret-bottom"></i>
-        <span>加载更多...</span>
+      <div class="pagination-box">
+        <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+        :total="total_num"
+        :page-size="pageSize"
+        :current-page='page'>
+        </el-pagination>
       </div>
     </div>
     <!-- 相关推荐 结束-->
@@ -168,6 +171,8 @@
         infoDetail:{},
         album_tag:'highest', // newest: 最新文献；highest ： 最高文献
         tableData: [],
+        total_num:0, // 总条数
+        pageSize: 10,
         page:1,
         total_page:0,
         unique_val:'',
@@ -194,16 +199,11 @@
       clickAccTab(a){
         this.accTitleTab = a;
       },
-      //点击加载更多
-      clickMore(){
+
+      // 点击分页
+      handleCurrentChange(val) {
         let that = this;
-        if( that.page >= that.total_page){
-          that.$message({
-            title:'暂无更多数据!',
-          })
-          return
-        }
-        that.page = that.page+1;
+        that.page = Number(val);
         // 获取相关文献
        that.getRelationRecommend();
       },
@@ -596,9 +596,10 @@
         }
         getRelationRecommend(p).then(res => {
           if (res.data.code == 0) {
-            let newData = that.tableData.concat(res.data.data.list);
+            let newData = res.data.data.list;
             that.tableData = newData;
             that.total_page = res.data.data.total_page;
+            that.total_num = res.data.data.total;
           }
         })
         .catch(e => {
@@ -610,6 +611,7 @@
       clicksuggestion(n){
         this.tableData=[];
         this.album_tag = n;
+        this.page = 1,
         this.getRelationRecommend();
       },
        // 相关推荐点击列表
@@ -866,5 +868,7 @@
     display: inline-block;
     padding-left: 4px;
   }
-
+  .pagination-box{
+    padding: 1.5rem 0;
+  }
 </style>

@@ -101,6 +101,7 @@
           <div class="icon-classbox">
             <div class="classbox-l">
               <span>关联研究</span>
+              <span class="span-search" title="放大查看" @click.stop="clickXyEacharts"><i class="el-icon-zoom-in"></i></span>
             </div>
           </div>
           <div class="eacharts-ch-box AssociationStudy">
@@ -123,8 +124,23 @@
       </div>
       <!-- 右侧文献可视化分析模块 结束 -->
     </div>
-  </div>
 
+
+    <!-- 点击图谱弹窗 -->
+    <div class="casePop-mask" v-show="is_casePop"></div>
+    <div class="casePop-module-box" v-show="is_casePop">
+      <div class="close-box" @click="click_close">
+        <i class="el-icon-circle-close"></i>
+      </div>
+      <div class="main-box">
+        <!-- main 右侧图谱 -->
+        <div class="main-box-left">
+          <div class="atlas-box" id='atlas'></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
 </template>
 <script>
@@ -139,6 +155,7 @@
     },
     data(){
       return {
+        is_casePop:false,
         language: window.localStorage.getItem('language'),
         uid: window.localStorage.getItem('uid'),
         search_type: 'many', // single、普通 many、高级
@@ -168,6 +185,16 @@
        this.literatureDocSearch();
     },
     methods:{
+      // 查看图谱-- 点击放大
+      clickXyEacharts(){
+        let that = this;
+        that.is_casePop = true;
+        that.getForceRelation_pop(this.associationStudy,'atlas',this);
+      },
+    // 点击图谱弹窗关闭按钮
+      click_close() {
+        this.is_casePop = false;
+      },
       // 中英文按钮
       clickLanguage(n){
         let that = this;
@@ -495,6 +522,150 @@
       getRelatedScholars_eacharts(){
         this.getForceFloating_eacharts(this.authorsList,'RelatedScholars',this);
       },
+      //
+      // 关联研究弹窗
+      getForceRelation_pop(d,i,t){
+        let taht = t;
+        let id = i;
+        let newData = d;
+        let myChart = taht.$echarts.init(document.getElementById(id));
+        var mWidth = $("#atlas").width();  // 获取父节点宽高
+        var mHeight = $("#atlas").height();
+        myChart.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
+        var baseName = newData.search;
+        let k = [];
+        newData.keyword.forEach(ele =>{
+          if(ele != baseName){
+            k.push(ele)
+          }
+        })
+        
+        var chartData = {};
+        k.forEach(ele =>{
+          chartData[ele] = [];
+        })
+        var datas = [
+          {
+            name: baseName || "",
+            draggable: true,
+          },
+        ];
+        var lines = [];
+        var categoryIdx = 0;
+        var keyIndex = 0;
+        var dataIndex = 0;
+        $.each(chartData, function (key, values) {
+          keyIndex = dataIndex;
+          datas.push({ name: key, category: categoryIdx, draggable: true });
+          keyIndex++;
+          dataIndex++;
+          lines.push({  // 关系连线
+            source: 0,
+            target: keyIndex,
+            value: "",
+          });
+          $(values).each(function (idx, val) {
+            datas.push({ name: val, category: categoryIdx, draggable: true });
+            dataIndex++;
+            lines.push({
+              source: keyIndex,
+              target: dataIndex,
+              value: "",
+            });
+          });
+          categoryIdx++;
+        });
+        var option = {
+          title: {
+            text: "",
+          },
+          tooltip: {},
+          animationDurationUpdate: 1500,
+          toolbox: {
+            show: true,
+            itemSize: 16,
+            right:-4,
+            top: -4,
+            feature: {
+              saveAsImage: {}  // 导出图片
+            }
+          },
+          label: {
+            normal: {
+              show: true,
+              textStyle: {
+                fontSize: 12,
+              },
+            },
+          },
+          series: [
+            {
+              type: "graph",
+              layout: "force", //采用力引导布局
+              symbolSize: 45,  // 球大小
+              legendHoverLink: true, //启用图例 hover 时的联动高亮。
+              focusNodeAdjacency: true, //在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点。
+              roam: true,
+              label: {
+                normal: {
+                  show: true,
+                  position: "inside",
+                  textStyle: {
+                    fontSize: 12,
+                  },
+                },
+              },
+              force: {
+                repulsion: 400,
+              },
+              edgeSymbolSize: [4, 50],
+              edgeLabel: {
+                normal: {
+                  show: true,
+                  textStyle: {
+                    fontSize: 10,
+                  },
+                  formatter: "{c}",
+                },
+              },
+              categories: [
+                {
+                  itemStyle: {
+                    normal: {
+                      color: "#BB8FCE",
+                    },
+                  },
+                },
+                {
+                  itemStyle: {
+                    normal: {
+                      color: "#0099FF",
+                    },
+                  },
+                },
+                {
+                  itemStyle: {
+                    normal: {
+                      color: "#5DADE2",
+                    },
+                  },
+                },
+              ],
+              data: datas,
+              links: lines,
+              lineStyle: {
+                normal: {
+                  opacity: 0.9,
+                  width: 1,
+                  curveness: 0,
+                },
+              },
+            },
+          ],
+        };
+
+        myChart.setOption(option);
+      },
       // 力导图 --- 浮点气泡图-- 相关作者
       getForceFloating_eacharts(d,i,t){
         let that = t;
@@ -510,6 +681,7 @@
           }
         })
         let myChart = that.$echarts.init(document.getElementById(id));
+
         let option = {
           toolbox: {
             show: true,
@@ -980,11 +1152,13 @@
     justify-content: space-between;
   }
   .classbox-l{
+    width: 100%;
     height: auto;
     font-size: 16px;
     color: #000;
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
   .classbox-l>img{
     width: 0.3rem;
@@ -1054,5 +1228,87 @@
     font-size: 15px;
     padding: 2px 10px;
     cursor: pointer;
+  }
+  /* ========================  图谱弹窗 =========================== */
+
+  .casePop-mask{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    background: #00000080;
+  }
+  .casePop-module-box {
+    width: 70%;
+    max-width: 800px;
+    height: 88%;
+    max-height: 560px;
+    background: #fff;
+    border-radius: 6px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+    padding: 10px;
+  }
+  .results_block {
+    border-bottom: 1px solid #ececec;
+    padding: 10px 20px;
+    font-size: 12px;
+    line-height: 24px;
+    color: #666;
+    display: block;
+  }
+  .results_name {
+    float: left;
+    width: 100%;
+    padding-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+  }
+  .clear {
+    clear: both;
+  }
+  .results_time {
+    width: 80px;
+    float: right;
+    text-align: right;
+  }
+  .results_infor{
+    text-align: left;
+  }
+  .close-box {
+    position: absolute;
+    top: -20px;
+    right: -15px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #000000;
+  }
+  .main-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+  .main-box-left {
+    padding: 10px;
+    width: 100%;
+    height:100%;
+  }
+  .atlas-box {
+    width: 760px;
+    height:500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
