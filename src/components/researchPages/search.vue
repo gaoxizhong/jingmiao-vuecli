@@ -189,7 +189,9 @@
       clickXyEacharts(){
         let that = this;
         that.is_casePop = true;
-        that.getForceRelation_pop(this.associationStudy,'atlas',this);
+        setTimeout( ()=>{
+          that.getForceRelation_pop(this.associationStudy,'atlas',this);
+        },100)
       },
     // 点击图谱弹窗关闭按钮
       click_close() {
@@ -531,6 +533,8 @@
         let myChart = taht.$echarts.init(document.getElementById(id));
         var mWidth = $("#atlas").width();  // 获取父节点宽高
         var mHeight = $("#atlas").height();
+        console.log(mWidth)
+        console.log(mHeight)
         myChart.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         var baseName = newData.search;
         let k = [];
@@ -1241,10 +1245,10 @@
     background: #00000080;
   }
   .casePop-module-box {
-    width: 70%;
-    max-width: 800px;
-    height: 88%;
-    max-height: 560px;
+    width: 72%;
+    max-width: 840px;
+    height: 90%;
+    max-height: 580px;
     background: #fff;
     border-radius: 6px;
     position: fixed;
@@ -1305,8 +1309,8 @@
     height:100%;
   }
   .atlas-box {
-    width: 760px;
-    height:500px;
+    width: 100%;
+    height:100%;
     display: flex;
     align-items: center;
     justify-content: center;
