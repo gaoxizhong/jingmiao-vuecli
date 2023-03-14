@@ -245,7 +245,7 @@
       <div class="suggestion-titlebox">
         <div :class="album_tag == 'newest'?'active':''" @click="clicksuggestion('newest')">最新发布</div>
         <div :class="album_tag == 'highest'?'active':''"  @click="clicksuggestion('highest')">最高被引用</div>
-        <div :class="album_tag == 'document'?'active':''" @click="clicksuggestion('document')">全部文献</div>
+        <div :class="album_tag == 'document'?'active':''" @click="clicksuggestion('document','1')">全部文献</div>
       </div>
       <div v-if="tableData.length > 0">
         <div class="suggestion-tabbox">
@@ -356,7 +356,7 @@
         hotList:[],
         is_symptomSearch: false,
         symptomSearch_data:[], // 普通输入框模糊匹配弹窗列表数据
-
+        sug:'', //有值表示点击的下面全部文献
       }
     },
     
@@ -694,6 +694,7 @@
         let that = this;
         that.acc_tab = i;
         that.acc_tag = '';
+        that.sug = '';
         that.tagInfo = {};
         if(i == '1'){
           // 发文趋势
@@ -1708,26 +1709,32 @@
       getXkfxEsDocument(){
         let that = this;
         let arr = [];
-        if( !that.acc_tag || that.acc_tag == ''){
-          return
-        }
-        if(that.acc_tag == 'relevant_scholars'){
-          arr.push(that.tagInfo[0].key)
-        }else{
-          if(that.tagInfo){
-            arr.push(that.tagInfo[0].key);
-            arr.push(that.tagInfo[1].key)
+        let sug = this.sug;
+        if(!sug || sug == ''){
+          if( !that.acc_tag || that.acc_tag == ''){
+           return
+          }
+          if(that.acc_tag == 'relevant_scholars'){
+            arr.push(that.tagInfo[0].key)
+          }else{
+            if(that.tagInfo){
+              arr.push(that.tagInfo[0].key);
+              arr.push(that.tagInfo[1].key)
+            }
           }
         }
+
         // that.tagInfo.forEach((ele,index) =>{
         //   if(index == 0 || index == 1){
         //     arr.push(ele.key)
         //   }
         // })
         let p = {
-          values: arr.join(','),
           page: that.page,
-          tag: that.acc_tag,
+        }
+        if(!sug || sug == ''){
+          p.values =  arr.join(',');
+          p.tag = that.acc_tag;
         }
         getXkfxEsDocument(p).then(res => {
           if (res.data.code == 0) {
@@ -1763,17 +1770,19 @@
         });
       },
       // 点击相关文献tab
-      clicksuggestion(n){
-        this.tableData=[];
-        this.page = 1;
-        this.album_tag = n;
-        console.log(this.album_tag)
-        if(this.album_tag == 'document'){
+      clicksuggestion(n,s){
+        let that = this;
+        that.tableData=[];
+        that.page = 1;
+        that.album_tag = n;
+        that.sug = s;
+        console.log(that.album_tag)
+        if(that.album_tag == 'document'){
           // 全部文献
-          this.getXkfxEsDocument();
+          that.getXkfxEsDocument();
         }else{
           //最高被引用-- 最新发布
-          this.getRelationRecommend();
+          that.getRelationRecommend();
         }
       },
       // 相关推荐点击列表
