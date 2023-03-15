@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import {getQuestion} from '@/api/data'
+import {getQuestionAnswer,getCutApi} from '@/api/data'
 export default {
   name: 'QAhome',
   data(){
@@ -151,9 +151,9 @@ export default {
         time: that.curTime
       })
       let pearms = {
-        question:input_textarea
+        sen:input_textarea
       }
-      getQuestion(pearms).then(res =>{
+      getQuestionAnswer(pearms).then(res =>{
         if(res.data.code == 0){
           that.input_textarea = '';
           let QAList = that.QAList;

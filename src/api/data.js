@@ -1,6 +1,6 @@
 import axios from './axios'
 import webServicesAxios from './webServicesAxios'
-
+import questionAnswer from './questionAnswer'
 // 提交注册信息
 export const RegisterUserInfo = (params) =>{
     return axios.request({
@@ -655,4 +655,19 @@ export const DrumpServices_ZK = (params) =>{
 }
 
 // ======================== webServicesAxios  第三方接口 以上===========================================
-
+// 问答接口
+export const getQuestionAnswer = (params) =>{
+  return questionAnswer.request({
+    url:'/info',
+    method: 'get',
+    data: params
+  })
+}
+// 问答分词接口接口
+export const getCutApi = (params) =>{
+  return questionAnswer.request({
+    url:'/cut_api',
+    method: 'get',
+    data: params
+  })
+}

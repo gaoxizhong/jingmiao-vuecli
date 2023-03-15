@@ -58,6 +58,16 @@ module.exports = {
             pathRewrite: {
                 '^/api': ''
             }
+        },
+        '/qa': {
+          // 此处的写法，目的是为了 将 /api 替换成 域名
+          target: 'http://121.43.229.91:9000',
+          // 允许跨域
+          changeOrigin: true,
+          ws: true,
+          pathRewrite: {
+              '^/qa': ''
+          }
         }
       //   '/pdf': {
       //     target: 'https://repair.qdy0707.top/file/',

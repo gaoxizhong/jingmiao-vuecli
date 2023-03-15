@@ -55,7 +55,10 @@ const routes = [
     path: '/QAhome',
     name: 'QAhome',
     component: QAhome,
-    meta:{requireAuth:true}
+    meta:{
+      title:'智能问答',
+      requireAuth:true
+    }
   },
   // {
   //   path:'/Main',
