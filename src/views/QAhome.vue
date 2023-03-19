@@ -16,6 +16,9 @@
               <div class="msg-content-and-after">
                 <div class="msg-content">
                   <p>{{item.text}}</p>
+                  <div v-if="item.type == 1 && item.button_list.length != 0" class="msg-btnlist-box">
+                    <span v-for="(items,idx) in item.button_list" :key="idx" @click="clickButtonList(item.question,items.field_name,items.filed_comment)">{{items.filed_comment}}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -61,7 +64,7 @@
 </template>
 
 <script>
-import {getQuestionAnswer,getCutApi} from '@/api/data'
+import {getQuestionAnswer} from '@/api/data'
 export default {
   name: 'QAhome',
   data(){
@@ -70,6 +73,9 @@ export default {
       textarea: '',
       is_kefu:1,  // 1为客服 msg-recv， 2为用户  msg-send
       input_textarea:'',
+      field_name:'',// 点击的按钮名的类型
+      filed_comment:'', // 点击按钮名名称
+      question:'',
       curTime:'',
       QAList:[],
       popular_problem:[
@@ -97,12 +103,13 @@ export default {
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
-    this.getCurrentTime();
      this.QAList.push({
       type:1,
       text:'您好，这里是智能机器人客服，很高兴为您服务',
+      button_list:[],
+      question:'',
       name:'智能客服',
-      time: this.curTime
+      time: this.getCurrentTime()
     })
   },
   mounted(){
@@ -122,9 +129,7 @@ export default {
         var second = this.zeroFill(date.getSeconds());//秒
 
         //当前时间
-        var curTime = date.getFullYear() + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
-         this.curTime = curTime;
-         console.log(curTime)
+        return date.getFullYear() + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
     },
 
     /**
@@ -137,27 +142,41 @@ export default {
             return i;
         }
     },
+    // 点击发送
     onSendClcik(){
       let that = this;
-      let input_textarea = that.input_textarea;
+      let input_textarea = that.filed_comment?that.filed_comment:that.input_textarea;
       if(input_textarea == ''){
         return
       }
-      that.getCurrentTime();
       that.QAList.push({
         type:2,
         text: input_textarea,
         name:'',
-        time: that.curTime
+        time: that.getCurrentTime()
       })
       let pearms = {
-        sen:input_textarea
+        question: that.question?that.question:input_textarea
+      }
+      if(that.field_name != ''){
+        pearms.field = that.field_name
       }
       getQuestionAnswer(pearms).then(res =>{
         if(res.data.code == 0){
           that.input_textarea = '';
+          that.field_name = '';
+          that.filed_comment = '';
           let QAList = that.QAList;
-          QAList.push(res.data.data.answer);
+          QAList.push({
+            type:1,
+            text: res.data.data.answer,
+            button_list: res.data.data.button_list,
+            question:res.data.data.question,
+            name:'智能客服',
+            time: that.getCurrentTime()
+          })
+
+          QAList.push();
           that.QAList = QAList;
           // 选中ref
           that.$refs.msg_end.scrollIntoView({
@@ -174,7 +193,15 @@ export default {
       let that = this;
       this.input_textarea = text;
       that.onSendClcik();
-    }
+    },
+    // 点击问题列表按钮
+    clickButtonList(q,n,c){
+      let that = this;
+      that.field_name = n;
+      that.filed_comment = c;
+      that.question = q;
+      that.onSendClcik();
+    },
   },
 }
 </script>
@@ -490,6 +517,26 @@ dd, dl, dt, li, ol, ul {
 
 .el-textarea__inner{
   border: none !important;
+}
+.msg-btnlist-box{
+  margin-top: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #e9e9e9;
+  display: flex;
+  flex-wrap: wrap;
+}
+.msg-btnlist-box>span{
+  font-size: 12px;
+  padding: 5px 16px;
+  background: rgb(93, 124, 182);
+  color: #fff;
+  border-radius: 4px;
+  margin: 5px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 </style>
 

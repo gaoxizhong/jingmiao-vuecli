@@ -9,10 +9,5 @@ export default {
         webServicesUrl:'/api',
         // webServices生产环境
         webServicesUrl_pro:'http://49.233.2.47:9000',
-        // 智能问答开发环境
-        questionAnswerUrl:'/qa',
-        // 智能问答生产环境
-        questionAnswerUrl_pro:'http://121.43.229.91:9000',
-
     }
 }
