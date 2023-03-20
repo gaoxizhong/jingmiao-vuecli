@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="center-box">
-      <div id="header" class="header clearfix">智能机器人问答</div>
+      <div id="header" class="header clearfix">{{loading?'对方正在输入...':'智能机器人问答'}}</div>
 
       <div id="content" class="scrollbar" style="bottom: 136px; right: 300px; width: auto;">
         <dl class="messages" style="margin-bottom: 12px;">
@@ -47,13 +47,13 @@
         <div class="ui-editor clearfix">
           <div class="textbox">
             <textarea name="" v-model="input_textarea" rows="4" placeholder="您好！很高兴为您服务。请描述您的问题"></textarea>
-            <div class="btn-send"
+            <el-button class="btn-send" :loading="loading"
              id="btnSend"
              :style="{'color': input_textarea != ''?'#fff':'#00000040','background-color': input_textarea !=''?'#5d7cb6':'#f5f5f5','border-color': input_textarea !=''?'#5d7cb6':'#f5f5f5', 'cursor': 'default'}"
               @click="onSendClcik"
             >
               <span>发送</span>
-            </div>
+            </el-button>
           </div>
 
         </div>
@@ -69,6 +69,7 @@ export default {
   name: 'QAhome',
   data(){
     return{
+      loading: false,
       viewHeight:'',
       textarea: '',
       is_kefu:1,  // 1为客服 msg-recv， 2为用户  msg-send
@@ -161,11 +162,13 @@ export default {
       if(that.field_name != ''){
         pearms.field = that.field_name
       }
+      that.loading = true;
       getQuestionAnswer(pearms).then(res =>{
         if(res.data.code == 0){
           that.input_textarea = '';
           that.field_name = '';
           that.filed_comment = '';
+          that.question = '';
           let QAList = that.QAList;
           QAList.push({
             type:1,
@@ -178,20 +181,24 @@ export default {
 
           QAList.push();
           that.QAList = QAList;
-          // 选中ref
-          that.$refs.msg_end.scrollIntoView({
-            behavior: "smooth",  // 平滑过渡
-            block:    "end"  // 上边框与视窗顶部平齐。默认值
-          });
-
+          setTimeout(()=>{
+            that.$refs.msg_end.scrollIntoView({
+              behavior: "smooth",  // 平滑过渡
+              block:    "end"  // 上边框与视窗顶部平齐。默认值
+            });
+          },100)
+          that.loading = false;
         }
+      }).catch(e =>{
+        that.loading = false;
       })
     },
     // 点击热门问题
     wentiClick(t){
       let text = t;
       let that = this;
-      this.input_textarea = text;
+      that.input_textarea = text;
+      that.question = '';
       that.onSendClcik();
     },
     // 点击问题列表按钮
