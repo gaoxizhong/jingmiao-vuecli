@@ -1097,7 +1097,7 @@
 		background-color: #Fff;
 		top: 3.6rem;
     right: 0;
-		z-index: 999;
+		z-index: 99;
     margin-top: 0;
     box-shadow:none;
     box-shadow: 0px 4px 9px 0px rgba(227,227,227,0.5);
@@ -1732,6 +1732,7 @@
   }
   .advTime-span{
     padding: 0 20px;
+    font-size: 14px;
   }
   .advTime-yearBox{
     width: 180px;

@@ -14,7 +14,7 @@ const getLine_eacharts = (d,i,t) =>{
         let option = {
           backgroundColor: "#fff",
           grid: {  // 控制图标在模块内距离边框的距离，不设置会自动居中
-            left: 0,
+            left: 12,
             top: 20,
             bottom: 0,
             right: 4,
@@ -35,8 +35,8 @@ const getLine_eacharts = (d,i,t) =>{
           toolbox: {
             show: true,
             itemSize: 16,
-            right:-4,
-            top: -4,
+            right:14,
+            top: -10,
             feature: {
               saveAsImage: {}  // 导出图片
             }

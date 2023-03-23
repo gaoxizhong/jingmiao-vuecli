@@ -416,7 +416,7 @@
           toolbox: {
             show: true,
             itemSize: 16,
-            right:15,
+            right:18,
             top: 10,
             feature: {
               saveAsImage: {}  // 导出图片
@@ -451,9 +451,9 @@
                   else {return value}
                 },
                 color: "#999",
-                fontSize: '0.7rem',
+                fontSize: '12px',
                 interval: 0, // 设置斜切
-                rotate: 20, // 设置斜切
+                rotate: 22, // 设置斜切
               },
             },
           ],
@@ -469,7 +469,7 @@
               axisLabel: { // y轴数字字体
                 show: true,
                 color: "#D2D2D2",
-                fontSize: '0.7rem',
+                fontSize: '12px',
               },
               splitLine: { // y轴每级横线样式
                 show: true,
@@ -584,7 +584,7 @@
            toolbox: {
             show: true,
             itemSize: 16,
-            right:14,
+            right:18,
             top: 10,
             feature: {
               saveAsImage: {}  // 导出图片
@@ -603,7 +603,7 @@
             axisLabel: {
               textStyle: {
                 color: "#999",
-                fontSize: '0.7rem',
+                fontSize: '12px',
               },
             },
             axisTick: {
@@ -621,7 +621,7 @@
             axisLabel: {
               textStyle: {
                 color: "#999",
-                fontSize: '0.7rem',
+                fontSize: '12px',
               },
             },
             splitLine: {

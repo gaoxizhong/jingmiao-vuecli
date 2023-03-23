@@ -1294,7 +1294,7 @@
           toolbox: {
             show: true,
             itemSize: 16,
-            right:15,
+            right:18,
             top: 10,
             feature: {
               saveAsImage: {}  // 导出图片
@@ -1451,7 +1451,7 @@
           toolbox: {
             show: true,
             itemSize: 16,
-            right:15,
+            right:18,
             top: 10,
             feature: {
               saveAsImage: {}  // 导出图片
@@ -1616,7 +1616,7 @@
           toolbox: {
             show: true,
             itemSize: 16,
-            right:15,
+            right:18,
             top: 10,
             feature: {
               saveAsImage: {}  // 导出图片

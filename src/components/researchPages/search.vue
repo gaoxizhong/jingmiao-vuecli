@@ -588,7 +588,7 @@
           toolbox: {
             show: true,
             itemSize: 16,
-            right:-4,
+            right:20,
             top: -4,
             feature: {
               saveAsImage: {}  // 导出图片
@@ -690,7 +690,7 @@
           toolbox: {
             show: true,
             itemSize: 16,
-            right:0,
+            right:20,
             top: 0,
             feature: {
               saveAsImage: {}  // 导出图片
