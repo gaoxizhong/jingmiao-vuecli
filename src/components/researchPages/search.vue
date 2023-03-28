@@ -399,13 +399,19 @@
         let language = that.language;
         let headerInput= that.headerInput; // 普通搜索内容
         let date= that.date; // 高级时间范围
-        let advancedCondition= that.advancedCondition; // 高级 选择数据
-        // if(advancedCondition.length >= 2){
-        //   advancedCondition[0].select_condition = advancedCondition[1].select_condition;
+        let chartList= that.advancedCondition; // 高级 选择数据
+        chartList[0].select_condition = '';
+        let newArr = [];
+        chartList.forEach(ele =>{
+          if(ele.field_value){
+            newArr.push(ele)
+          }
+        })
+        // if(newArr.length >= 2){
+        //   newArr[0].select_condition = newArr[1].select_condition;
         // }else{
-        //   advancedCondition[0].select_condition = '';
+        //   newArr[0].select_condition = '';
         // }
-        advancedCondition[0].select_condition = '';
         let year = '';
         let sele_order= '';
         let sele_order_field= '';
@@ -422,7 +428,7 @@
           uid: that.uid,
           search_type : n == 'crosswise'?'crosswise':'many',
           search_tag: tag,  // 1 普通 2高级
-          condition : advancedCondition,
+          condition : newArr,
           year,
           order_field: sele_order_field,
           order: sele_order,
@@ -441,12 +447,14 @@
         literatureDocSearch(params).then(res => {
           loading.close();
           if (res.data.code == 0) {
+            let listData = res.data.data.data;
             let total_page = res.data.data.total_page; // 总页数
             let total = res.data.data.total;// 总条数
-            let listData = res.data.data.data;
             that.total_page = total_page;
             that.total = total;
             that.listData = listData;
+            let list  = JSON.stringify(listData);
+            that.$emit('setlistData','2');
             let keywordInfo = res.data.data.keyword;
             that.keywordInfo = keywordInfo;
             if( keywordInfo.keyword_desc.length >= 350 ){
@@ -475,6 +483,7 @@
 
             that.$emit("getliteratureHistory", '');
           } else {
+            that.$emit('setlistData','1');
             that.$message.error({
               message: res.data.msg
             });
@@ -482,6 +491,7 @@
 
         })
         .catch(e => {
+          that.$emit('setlistData','1');
           loading.close();
           console.log(e);
           that.$message.error({

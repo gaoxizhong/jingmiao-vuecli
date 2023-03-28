@@ -293,7 +293,7 @@
       <Popular v-on='$listeners' @setsickNess="setsickNess"/>
     </div>
     <div v-if="is_pop == 2">
-      <Search v-on='$listeners' @setReset="setReset" @getliteratureHistory="getliteratureHistory" :tag="titleTag" :headerInput="headerInput"  :date="date" :advancedCondition="advancedCondition" v-if="is_view"/>
+      <Search v-on='$listeners' @setlistData="setlistData" @setReset="setReset" @getliteratureHistory="getliteratureHistory" :tag="titleTag" :headerInput="headerInput"  :date="date" :advancedCondition="advancedCondition" v-if="is_view"/>
     </div>
     <!-- 列表推荐 结束 -->
 
@@ -367,6 +367,7 @@
         listData:[], // 推荐列表
          // 高级检索选项
         advancedOptions:[],
+        setlist: '1',
         pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -558,6 +559,11 @@
         if(newarr){
           
         }
+      },
+      setlistData(e){
+        let that = this;
+        that.setlist = e;
+        console.log(that.setlist)
       },
       // 高级检索时间
       advUpdateStatisticYear(e){
@@ -844,7 +850,16 @@
       // 普通检索
       headerInputClick(){
         let that = this;
-        let headerInput = this.headerInput;
+        let headerInput = that.headerInput;
+        let is_pop = that.is_pop;
+        let setlist = that.setlist;
+        console.log(setlist)
+        if(is_pop == 2 && setlist == '1'){
+          window.localStorage.setItem("retrievalArr", '');
+          that.is_pop = '1';
+          that.setsickNess();
+          return
+        }
         if(!headerInput){
           this.$message.error({
             message: '检索不能为空！'
