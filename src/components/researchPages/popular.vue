@@ -23,13 +23,13 @@
                 <!-- <span style="font-size: 0.7rem;color: #333;">{{item.first_time}}年</span> -->
               </div>
             </div>
-            <div class="list-item-z">
+            <div class="list-item-z" v-if="item.author_list">
               <label class="zuozhe-box">作者：</label>
               <div class="tap-top-span">
                 <a href="javascript:0;" v-for="(items,idx) in item.author_list" :key="idx" @click.stop="goToauthor(items,item.title)">{{items}}</a>
               </div>
             </div>
-            <div class="list-item-z">
+            <div class="list-item-z" v-if="item.keyword_list">
               <label class="zuozhe-box">关键词：</label>
               <div class="tap-top-span">
                 <a href="javascript:0;" v-for="(items,idx) in item.keyword_list" :key="idx" @click.stop="">{{items}}</a>

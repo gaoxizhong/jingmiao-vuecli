@@ -28,8 +28,10 @@
                 <div class="advTime-yearBox">
                   <el-date-picker 
                     :append-to-body="popperAppend"
+                    clearable
                     v-model="startYear"
-                    format="yyyy"
+                    @change="changeStartYear"
+                    format="yyyy 年"
                     value-format="yyyy"
                     type="year"
                     placeholder="开始时间">
@@ -39,8 +41,10 @@
                 <div class="advTime-yearBox">
                   <el-date-picker
                     :append-to-body="popperAppend"
+                    clearable
                     v-model="endYear"
-                    format="yyyy"
+                    @change="changeEndYear"
+                    format="yyyy 年"
                     value-format="yyyy"
                     type="year"
                     placeholder="结束时间">
@@ -193,7 +197,8 @@
                       <el-date-picker 
                         :append-to-body="popperAppend"
                         v-model="advStartYear"
-                        format="yyyy"
+                        @change="changeadvStartYear"
+                        format="yyyy 年"
                         value-format="yyyy"
                         type="year"
                         placeholder="选择年">
@@ -204,7 +209,9 @@
                       <el-date-picker
                         :append-to-body="popperAppend"
                         v-model="advEndYear"
-                        format="yyyy"
+                        @change="changeadvEndYear"
+
+                        format="yyyy 年"
                         value-format="yyyy"
                         type="year"
                         placeholder="选择年">
@@ -227,21 +234,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- <div class="shijian-tbox">
-              <div class="shijian-l">发表时间:</div>
-              <div class="shijian-selbox">
-                <el-date-picker
-                  v-model="value2"
-                  type="datetimerange"
-                  :picker-options="pickerOptions"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  align="right">
-                </el-date-picker>
-              </div>
-            </div> -->
       
           </div>
         </div>
@@ -368,49 +360,6 @@
          // 高级检索选项
         advancedOptions:[],
         setlist: '1',
-        pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近半年',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一年',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
         value2: '',
         historyList:[], // 高级历史检索
         date: '', // 选中的时间
@@ -503,6 +452,52 @@
           }
           
         });
+      },
+        // 普通检索 -- 开始年份大于结束年份，调换
+      changeStartYear(val) {
+        if(this.endYear){
+          if (Number(this.startYear) > Number(this.endYear)) {
+            this.startYear = this.endYear;
+            this.endYear = val;
+          }
+        }else{
+          this.startYear = val;
+        }
+        
+      },
+      changeEndYear(val) {
+        if(this.startYear){
+          if (Number(this.startYear) > Number(this.endYear)) {
+            this.endYear = this.startYear;
+            this.startYear = val;
+          }
+        }else{
+          this.endYear = val;
+        }
+        
+      },
+      // 高级检索 -- 开始年份大于结束年份，调换
+      changeadvStartYear(val) {
+        if(this.advEndYear){
+          if (Number(this.advStartYear) > Number(this.advEndYear)) {
+            this.advStartYear = this.advEndYear;
+            this.advEndYear = val;
+          }
+        }else{
+          this.advStartYear = val;
+        }
+        
+      },
+      changeadvEndYear(val) {
+        if(this.advStartYear){
+          if (Number(this.advStartYear) > Number(this.advEndYear)) {
+            this.advEndYear = this.advStartYear;
+            this.advStartYear = val;
+          }
+        }else{
+          this.advEndYear = val;
+        }
+        
       },
       // 返回上一步
       fanhui_btn(){
@@ -1767,9 +1762,12 @@
     padding: 0 10px;
   }
   .advTime-yearBox /deep/ .el-input__icon{
-    display: none;
     line-height: 32px !important;
   }
+  .advTime-yearBox /deep/ .el-input__icon.el-icon-date{
+    display: none;
+  }
+  
   .advTime-yearBox /deep/ .el-year-table td.today .cell{
     color: #3664D9;
   }
