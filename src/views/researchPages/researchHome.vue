@@ -10,7 +10,7 @@
         <div class="headerTitle-box">
           <div class="headerTitle-home"  @click="clickLoge"><i class="el-icon-s-home"></i>首页</div>
           <div class="r-content" v-if="phone">
-            <img src="../../assets/image/researchPages/img-user.png" :title="phone"  class="user-img"/>
+            <img src="../../assets/image/researchPages/img-user.png" title="个人中心" class="user-img" @click="goToUserCenter"/>
             <a href="javascript:0;" class="r-toLogin" @click="toLogin">退出</a>
           </div>
 
@@ -126,6 +126,9 @@
       }
     },
     methods:{
+      goToUserCenter(){
+        this.$router.push({name: 'userCenter'});
+      },
       //监听到当前路由状态并激活当前菜单
       setCurrentRoute() {
         this.activeIndex = this.$route.path;    
@@ -147,6 +150,7 @@
       // 点击头部退出
       toLogin(){
         window.localStorage.setItem("retrievalArr", '');
+        window.localStorage.setItem('token','');
         this.$router.push({name: 'Login'});
       },
       // 折叠面板

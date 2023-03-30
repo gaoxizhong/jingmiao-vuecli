@@ -47,7 +47,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'Login',
     component: Login
   },
@@ -59,6 +59,127 @@ const routes = [
       title:'智能问答',
       requireAuth:true
     }
+  },
+  {
+    path: '/',
+    name: 'Main',
+    component: () => import('@/App'),
+    redirect: 'SearchPages',
+    children: [
+      {
+        path: 'SearchPages',
+        name : 'SearchPages',
+        component: SearchPages,
+      },
+      {
+        path: '/VideoDetails',
+        name: 'VideoDetails',
+        component: VideoDetails,
+        meta:{requireAuth:true}
+      },
+      {
+        path: '/inquiryResultPage',
+        name: 'inquiryResultPage',
+        component: () => import('@/views/inquiryResultPage'),
+        meta: {
+          title:'问诊结果',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      { 
+        path: '/WesternMedicineCdss',
+        name: 'WesternMedicineCdss',
+        component: () => import('@/views/WesternMedicineCdss'),
+        meta: {
+          title:'西医CDSS',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      {
+        path:'/FrontPage',
+        name: 'FrontPage',
+        component: FrontPage,
+      },
+      {
+        path: '/RepositoryPage',
+        name : 'RepositoryPage',
+        component: RepositoryPage,
+      },
+      {
+        path: '/NewDetails',
+        name : 'NewDetails',
+        component: NewDetails,
+      },
+      {
+        path: '/departmentDisasePages',
+        name : 'departmentDisasePages',
+        component: departmentDisasePages,
+      },
+      {
+        path: '/DocumentGuidePages',
+        name : 'DocumentGuidePages',
+        component: DocumentGuidePages,
+      },
+      {
+        path: '/litgDetails',
+        name : 'litgDetails',
+        component: litgDetails,
+      },
+      {
+        path: '/authorDetails',
+        name : 'authorDetails',
+        component: authorDetails,
+      },
+      {
+        path: '/ImagesList',
+        name : 'ImagesList',
+        component: ImagesList,
+      },
+      {
+        path: '/ImagesListDetails',
+        name : 'ImagesListDetails',
+        component: ImagesListDetails,
+      },
+      {
+        path: '/CaseLibrary',
+        name : 'CaseLibrary',
+        component: CaseLibrary,
+      },
+      {
+        path: '/intelGuide',
+        name : 'intelGuide',
+        component: intelGuide,
+      },
+      {
+        path: '/department',
+        name : 'department',
+        component: department,
+      },
+      {
+        path: '/structureCopy',
+        name : 'structureCopy',
+        component: structureCopy,
+      },
+      {
+        path: '/drugTarget',
+        name : 'drugTarget',
+        component: drugTarget,
+      },
+      {
+        path: '/brainMap',
+        name : 'brainMap',
+        component: brainMap,
+      },
+      {
+        path: '/guideDetails',
+        name : 'guideDetails',
+        component: guideDetails,
+      },
+    ]
   },
   // {
   //   path:'/Main',
@@ -127,119 +248,7 @@ const routes = [
   //       },
   //   ]
   // },
-  {
-    path: '/VideoDetails',
-    name: 'VideoDetails',
-    component: VideoDetails,
-    meta:{requireAuth:true}
-  },
-  {
-    path: '/inquiryResultPage',
-    name: 'inquiryResultPage',
-    component: () => import('@/views/inquiryResultPage'),
-    meta: {
-      title:'问诊结果',
-      keepAlive: true,
-      scollTopPosition: 0,
-      requireAuth:true
-    }
-  },
-  { 
-    path: '/WesternMedicineCdss',
-    name: 'WesternMedicineCdss',
-    component: () => import('@/views/WesternMedicineCdss'),
-    meta: {
-      title:'西医CDSS',
-      keepAlive: true,
-      scollTopPosition: 0,
-      requireAuth:true
-    }
-  },
-  {
-    path:'/FrontPage',
-    name: 'FrontPage',
-    component: FrontPage,
-  },
-  {
-    path: '/RepositoryPage',
-    name : 'RepositoryPage',
-    component: RepositoryPage,
-  },
-  {
-    path: '/NewDetails',
-    name : 'NewDetails',
-    component: NewDetails,
-  },
-  {
-    path: '/SearchPages',
-    name : 'SearchPages',
-    component: SearchPages,
-  },
-  {
-    path: '/departmentDisasePages',
-    name : 'departmentDisasePages',
-    component: departmentDisasePages,
-  },
-  {
-    path: '/DocumentGuidePages',
-    name : 'DocumentGuidePages',
-    component: DocumentGuidePages,
-  },
-  {
-    path: '/litgDetails',
-    name : 'litgDetails',
-    component: litgDetails,
-  },
-  {
-    path: '/authorDetails',
-    name : 'authorDetails',
-    component: authorDetails,
-  },
-  {
-    path: '/ImagesList',
-    name : 'ImagesList',
-    component: ImagesList,
-  },
-  {
-    path: '/ImagesListDetails',
-    name : 'ImagesListDetails',
-    component: ImagesListDetails,
-  },
-  {
-    path: '/CaseLibrary',
-    name : 'CaseLibrary',
-    component: CaseLibrary,
-  },
-  {
-    path: '/intelGuide',
-    name : 'intelGuide',
-    component: intelGuide,
-  },
-  {
-    path: '/department',
-    name : 'department',
-    component: department,
-  },
-  {
-    path: '/structureCopy',
-    name : 'structureCopy',
-    component: structureCopy,
-  },
-  {
-    path: '/drugTarget',
-    name : 'drugTarget',
-    component: drugTarget,
-  },
-  {
-    path: '/brainMap',
-    name : 'brainMap',
-    component: brainMap,
-  },
-  {
-    path: '/guideDetails',
-    name : 'guideDetails',
-    component: guideDetails,
-  },
+
   {  // 科研灵感界面
     path: '/researchHome',
     name : 'researchHome',
@@ -355,20 +364,56 @@ const routes = [
           requireAuth:true,
         }
       },
+      { 
+        path: '/user-center', //  --- 个人中心
+        name: 'userCenter',
+        component: () => import('@/views/researchPages/userCenter'),
+        meta: {
+          title: '个人中心',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
     ]
   },
 
 ]
 
 // 页面刷新时，重新赋值token
-if (localStorage.getItem('token')) {
-  store.dispatch("setToken",localStorage.getItem('token'));
+if (window.localStorage.getItem('token')) {
+  store.dispatch("setToken",window.localStorage.getItem('token'));
 }
 
 const router = new VueRouter({
   // mode: 'history',
   // base: process.env.BASE_URL,
   routes
+})
+const whiteList = ['/login']; // 添加路由白名单
+//路由判断
+router.beforeEach(async (to, from, next) => {
+  const token = window.localStorage.getItem('token');
+  // 页面刷新时，重新赋值token
+  if(token){
+    store.dispatch("setToken",token);
+    next();
+  }else{
+    if (whiteList.indexOf(to.path) !== -1) {
+      // 在白名单内直接放行
+      next();
+    } else {
+      // 其他没有访问权限的页面将被重定向到登录页面。
+      next(`/login?redirect=${to.path}`);
+    }
+  }
+
+  if(to.path == from.path ){
+    // 让 列表页 即不缓存，刷新
+    to.meta.keepAlive = false; 
+  }
+  next()
+
 })
 // console.log(process.env.BASE_URL)
 router.afterEach((to) => {

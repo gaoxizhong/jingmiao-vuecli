@@ -623,6 +623,14 @@ export const getSetLanguage = (params) =>{
     data: params
   })
 }
+//个人中心
+export const getProfile = (params) =>{
+  return axios.request({
+    url:'/profile',
+    method: 'post',
+    data: params
+  })
+}
 // =================  科研探索api  ↑ ==================
 
 

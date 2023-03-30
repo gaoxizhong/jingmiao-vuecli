@@ -39,8 +39,8 @@ class HttpRequst {
         instanse.interceptors.request.use(function (config) {
             // 在发送请求之前做些什么
             // 设置统一的header
-            if(localStorage.getItem('token')){
-              config.headers.token = localStorage.getItem('token')
+            if(window.localStorage.getItem('token')){
+              config.headers.token = window.localStorage.getItem('token')
             }
             console.log('请求拦截器');
             return config;

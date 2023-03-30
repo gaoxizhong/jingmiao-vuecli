@@ -1,103 +1,104 @@
 <template>
-<div :style="`height:${viewHeight}px;`">
-  <div :style="login_bgurl" class="page-box">
-    <div v-if="isLoginModule">
-      <div :class="is_sign?'right-panel-active':'' " class="container" id="container" >
-        <!-- 注册 -->
-        <div class="form-container sign-up-container">
-          <form @submit.prevent="RegisterUserInfo" autocomplete="off">
-            <h1>创建新账号</h1>
-            <span style="margin-top:4px;">请使用您的手机号进行注册</span>
-            <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入单位名称"></el-input>
-            <el-input type="text" v-model="newuser.department" name="department" placeholder="请输入部门"></el-input>
-            <el-input type="text" v-model="newuser.username" name="username" placeholder="请输入用户名"></el-input>
-            <el-input type="email" v-model="newuser.email" name="email" placeholder="请输入邮箱"></el-input>
-            <el-input v-model="newuser.phone" name="phone" placeholder="请输入手机号"></el-input>
-            <div class="input-box">
-              <el-input class="input" maxlength="4" placeholder="验证码" v-model="newuser.code" name="code"/>
-              <div class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="click_code(1)">{{zc_statusMsg}}</div>
-            </div>
-            <el-input type="password" v-model="newuser.password" name="password" placeholder="请输入密码"></el-input>
-            <button type="submit">注册</button>
-          </form>
-        </div>
-        <!-- 注册 -->
-        <!-- 登录 -->
-        <div class="form-container sign-in-container">
-          <form @submit.prevent="LoginUserInfo" autocomplete="off">
-            <h1 v-if="is_yzmSign">验证码登录</h1>
-            <h1 v-else>密码登录</h1>
-            <span style="margin-top:6px;">{{is_yzmSign?"使用您的手机号验证登录":"使用您的账号登录"}}</span>
-            <el-input v-model="user.phone" type="tel" name="phone" placeholder="请输入手机号"></el-input>
-            <div class="input-box" v-if="is_yzmSign">
-              <el-input class="input" maxlength="4" placeholder="验证码" v-model="user.code" name="code"/>
-              <div class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="click_code(2)">{{dl_statusMsg}}</div>
-            </div>
-            <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"  v-else></el-input>
-            <div class="sign-a-div">
-              <a href="javascript:0;">如没有账号，请先注册</a>
-              <a href="javascript:0;" class="sign-a-wjmm" @click.stop="goToForgetModule"  v-if="!is_yzmSign">忘记密码</a>
-            </div>
-            <button type="submit">登录</button>
-            <!-- 其他登录方式 -->
-            <section class="login-other">
-              <p class="login-other-title">其他登录方式</p>
-              <ul class="login-other-container">
-                <a  href="javascript:0;" class="login-other-item" @click.stop='clickTel' v-if="!is_yzmSign">
-                  <img src="../assets/image/i-tel.png" title="验证码登录" class="login-other-item--btn" />
-                  <p class="login-other-item--name">验证码登录</p>
-                </a>
-                <a href="javascript:0;" class="login-other-item" @click.stop='clickSso' v-if="is_yzmSign">
-                  <img src="../assets/image/i-sso.png" title="密码登录" class="login-other-item--btn" />
-                  <p class="login-other-item--name">密码登录</p>
-                </a>
-              </ul>
-            </section>
-          </form>
+  <div :style="`height:${viewHeight}px;`">
+    <div :style="login_bgurl" class="page-box">
+      <div v-if="isLoginModule">
+        <div :class="is_sign?'right-panel-active':'' " class="container" id="container" >
+          <!-- 注册 -->
+          <div class="form-container sign-up-container">
+            <form @submit.prevent="RegisterUserInfo" autocomplete="off">
+              <h1>创建新账号</h1>
+              <span style="margin-top:4px;">请使用您的手机号进行注册</span>
+              <el-input type="text" v-model="newuser.company_name" name="company_name" placeholder="请输入单位名称"></el-input>
+              <el-input type="text" v-model="newuser.department" name="department" placeholder="请输入部门"></el-input>
+              <el-input type="text" v-model="newuser.username" name="username" placeholder="请输入用户名"></el-input>
+              <el-input type="email" v-model="newuser.email" name="email" placeholder="请输入邮箱"></el-input>
+              <el-input v-model="newuser.phone" name="phone" placeholder="请输入手机号"></el-input>
+              <div class="input-box">
+                <el-input class="input" maxlength="4" placeholder="验证码" v-model="newuser.code" name="code"/>
+                <div class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="click_code(1)">{{zc_statusMsg}}</div>
+              </div>
+              <el-input type="password" v-model="newuser.password" name="password" placeholder="请输入密码"></el-input>
+              <button type="submit">注册</button>
+            </form>
+          </div>
+          <!-- 注册 -->
+          <!-- 登录 -->
+          <div class="form-container sign-in-container">
+            <form @submit.prevent="LoginUserInfo" autocomplete="off">
+              <h1 v-if="is_yzmSign">验证码登录</h1>
+              <h1 v-else>密码登录</h1>
+              <span style="margin-top:6px;">{{is_yzmSign?"使用您的手机号验证登录":"使用您的账号登录"}}</span>
+              <el-input v-model="user.phone" type="tel" name="phone" placeholder="请输入手机号"></el-input>
+              <div class="input-box" v-if="is_yzmSign">
+                <el-input class="input" maxlength="4" placeholder="验证码" v-model="user.code" name="code"/>
+                <div class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="click_code(2)">{{dl_statusMsg}}</div>
+              </div>
+              <el-input type="password" v-model="user.password" name="password" placeholder="请输入密码"  v-else></el-input>
+              <div class="sign-a-div">
+                <a href="javascript:0;">如没有账号，请先注册</a>
+                <a href="javascript:0;" class="sign-a-wjmm" @click.stop="goToForgetModule"  v-if="!is_yzmSign">忘记密码</a>
+              </div>
+              <button type="submit">登录</button>
+              <!-- 其他登录方式 -->
+              <section class="login-other">
+                <p class="login-other-title">其他登录方式</p>
+                <ul class="login-other-container">
+                  <a  href="javascript:0;" class="login-other-item" @click.stop='clickTel' v-if="!is_yzmSign">
+                    <img src="../assets/image/i-tel.png" title="验证码登录" class="login-other-item--btn" />
+                    <p class="login-other-item--name">验证码登录</p>
+                  </a>
+                  <a href="javascript:0;" class="login-other-item" @click.stop='clickSso' v-if="is_yzmSign">
+                    <img src="../assets/image/i-sso.png" title="密码登录" class="login-other-item--btn" />
+                    <p class="login-other-item--name">密码登录</p>
+                  </a>
+                </ul>
+              </section>
+            </form>
 
 
 
-        </div>
-        <!-- 登录 -->
+          </div>
+          <!-- 登录 -->
 
-        <div class="overlay-container">
-          <div class="overlay">
-            <div class="overlay-panel overlay-left">
-              <h1>欢迎回来！</h1>
-              <p>请使用您的个人信息登录</p>
-              <button class="ghost" id="signIn"  @click="signIn()">登录</button>
-            </div>
-            <div class="overlay-panel overlay-right">
-              <h1>菁苗健康</h1>
-              <p>输入您的个人详细信息进行注册</p>
-              <button class="ghost" id="signUp" @click="signUp()">注册</button>
+          <div class="overlay-container">
+            <div class="overlay">
+              <div class="overlay-panel overlay-left">
+                <h1>欢迎回来！</h1>
+                <p>请使用您的个人信息登录</p>
+                <button class="ghost" id="signIn"  @click="signIn()">登录</button>
+              </div>
+              <div class="overlay-panel overlay-right">
+                <h1>菁苗健康</h1>
+                <p>输入您的个人详细信息进行注册</p>
+                <button class="ghost" id="signUp" @click="signUp()">注册</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <div class="auth-modal-box">
-        <div class="auth-form">
-          <div class="panel">
-            <div class="reset-password-box">
-              <h1 class="title">邮箱重置密码</h1>
-              <div class="input-group">
-                <div class="input-box dropdown-box">
-                  <input class="input" type="email" placeholder="请输入邮箱" v-model="loginPhoneOrEmail"  name="loginPhoneOrEmail" />
+      <div v-else>
+        <div class="auth-modal-box">
+          <div class="auth-form">
+            <div class="panel">
+              <div class="reset-password-box">
+                <h1 class="title">邮箱重置密码</h1>
+                <div class="input-group">
+                  <div class="input-box dropdown-box">
+                    <input class="input" type="email" placeholder="请输入邮箱" v-model="loginPhoneOrEmail"  name="loginPhoneOrEmail" />
+                  </div>
+                  <div class="input-box">
+                    <input class="input" maxlength="4" placeholder="验证码" v-model="registerSmsCode" name="registerSmsCode"/>
+                    <button class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="clickVcode">{{statusMsg}}</button>
+                  </div>
+                  <div class="input-box">
+                    <input class="input" type="password" maxlength="64" placeholder="请输入新密码" v-model="loginPassword" name="loginPassword"/>
+                  </div>
                 </div>
-                <div class="input-box">
-                  <input class="input" maxlength="4" placeholder="验证码" v-model="registerSmsCode" name="registerSmsCode"/>
-                  <button class="send-vcode-btn" :style="{'color': isDisable?'#ababab':'#007fff'}" :disabled="isDisable" @click.stop="clickVcode">{{statusMsg}}</button>
+                <button class="btn" @click.stop="clickRevise">修改</button>
+                <div class="prompt-box">
+                  <span></span>
+                  <span class="right clickable" @click="clickable">账密登录</span>
                 </div>
-                <div class="input-box">
-                  <input class="input" type="password" maxlength="64" placeholder="请输入新密码" v-model="loginPassword" name="loginPassword"/>
-                </div>
-              </div>
-              <button class="btn" @click.stop="clickRevise">修改</button>
-              <div class="prompt-box">
-                <span></span>
-                <span class="right clickable" @click="clickable">账密登录</span>
               </div>
             </div>
           </div>
@@ -105,7 +106,6 @@
       </div>
     </div>
   </div>
-</div>
 
 </template>
 
@@ -142,7 +142,15 @@ export default {
       zc_statusMsg:'获取验证码',
       dl_statusMsg: '获取验证码',
       is_yzmSign: false, // 验证码登录状态
+      redirect: undefined,
     }
+  },
+  watch: {
+    $route: {
+      handler: function (route) {
+        this.redirect = route.query && route.query.redirect;
+      },
+    },
   },
   mounted(){ // 可以当做初始化后加载，只加载一次
   },
@@ -449,37 +457,25 @@ export default {
               // commit：同步操作，数据提交至 mutations ，可用于读取用户信息写到缓存里
               // 存储token到ls
               const token = data.token;
-              // window.localStorage.setItem('setToken',token);
-                that.$store.dispatch("setToken",token);
+              window.localStorage.setItem('token',token);
+              that.$store.dispatch("setToken",token);
               // .dispatch 执行异步操作,数据提交至 actions
-              if (that.$store.state.token) {
                 window.localStorage.setItem('setUser',data.phone);
                 window.localStorage.setItem('uid',data.uid);
                 window.localStorage.setItem('retrievalArr','');
                 that.$store.dispatch("setUser",data.phone);
                 that.$store.dispatch("setIsAuthenticated",true);
-
-                let stateurl = that.stateurl;
-                if(stateurl){
-                  that.$router.push({path:decodeURIComponent(stateurl)});
-                }else{
-                  // that.$router.push('/Main');
-                  // that.$router.push('/FrontPage'); 
-
-                  // that.$router.replace({  
-                  //   path:'/FrontPage',  
-                  //   query:{          
-                  //   is_norouter:1,
-                  //   }
-                  // })
-                  that.getNavList();
+                // that.$router.push(that.redirect || '/');
+                if (that.$store.state.token) {
+                  let stateurl = that.stateurl;
+                  if(stateurl){
+                    that.$router.push({path:decodeURIComponent(stateurl)});
+                  }else{
+                    that.getNavList();
+                  }
+                } else {
+                  this.$router.push('/');
                 }
-              } else {
-
-              this.$router.push('/');
-
-              }
-
 
             }
           });

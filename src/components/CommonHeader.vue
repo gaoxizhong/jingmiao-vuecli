@@ -329,6 +329,7 @@ export default {
   },
   methods:{
     toLogin(){
+      window.localStorage.setItem('token','')
       this.$router.push({name: 'Login'});
     },
 
