@@ -50,7 +50,7 @@
             <div class="one_info clearfix" v-if="infoDetail.author_list">
               <label>作者：</label>
               <p>
-                <span v-for="(items,idx) in infoDetail.author_list" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
+                <span v-for="(items,idx) in infoDetail.author_list" :key="idx" @click.stop="goToauthor(items,infoDetail.title)">{{items}}</span>
               </p>
             </div>
             <div class="one_info clearfix" v-if="infoDetail.album">
@@ -125,7 +125,7 @@
                   <div class="list-item-z">
                     <label class="zuozhe-box">作者：</label>
                     <div class="tap-top-span">
-                      <a href="javascript:0;" v-for="(items,idx) in item.author_list" :key="idx" @click.stop="goToauthor(items)">{{items}}</a>
+                      <a href="javascript:0;" v-for="(items,idx) in item.author_list" :key="idx" @click.stop="goToauthor(items,item.title)">{{items}}</a>
                     </div>
                   </div>
                 </a>
@@ -195,7 +195,7 @@
             </div>
           </div>
           <div class="xgxz-listbox">
-            <a href="javascript:0;" v-for="(item,index) in infoDetail.author_list" :key="index" @click.stop="goToauthor(item)">{{item}}</a>
+            <a href="javascript:0;" v-for="(item,index) in infoDetail.author_list" :key="index" @click.stop="goToauthor(item,infoDetail.title)">{{item}}</a>
           </div>
 
         </div>
@@ -459,11 +459,12 @@
         })
       },
       // 点击作者
-      goToauthor(n){
+      goToauthor(n,t){
         let that = this;
         let name = n;
         let p = {
           author: name,
+          title: t,
           tag:'',
         }
         getTitleOrganization(p).then(res =>{

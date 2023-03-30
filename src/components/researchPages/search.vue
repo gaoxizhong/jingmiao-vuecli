@@ -35,7 +35,7 @@
                 <div class="list-item-z">
                   <label class="zuozhe-box" >作者：</label>
                   <div class="tap-top-span">
-                    <a href="javascript:0;" v-for="(items,idx) in item.author_list" :key="idx" @click.stop="goToauthor(items)" v-html="items"></a>
+                    <a href="javascript:0;" v-for="(items,idx) in item.author_list" :key="idx" @click.stop="goToauthor(items,item.title)" v-html="items"></a>
                   </div>
                 </div>
                 <div class="list-item-z">
@@ -323,11 +323,12 @@
         that.literatureDocSearch();
       },
       // 点击作者
-      goToauthor(n){
+      goToauthor(n,t){
         let that = this;
         let name = n;
         let p = {
           author: name,
+          title: t,
           tag:'',
         }
         getTitleOrganization(p).then(res =>{

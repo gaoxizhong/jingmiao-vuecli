@@ -70,7 +70,7 @@
             <div class="one_info clearfix" v-if="infoDetail.author_list">
               <label>作者：</label>
               <p>
-                <span v-for="(items,idx) in infoDetail.author_list" :key="idx" @click.stop="goToauthor(items)">{{items}}</span>
+                <span v-for="(items,idx) in infoDetail.author_list" :key="idx" @click.stop="goToauthor(items,infoDetail.title)">{{items}}</span>
               </p>
             </div>
             <div class="one_info clearfix" v-if="infoDetail.cn_name">
@@ -307,11 +307,12 @@
       },
 
       // 点击作者
-      goToauthor(n){
+      goToauthor(n,t){
         let that = this;
         let name = n;
         let p = {
           author: name,
+          title: t,
           tag:'',
         }
         getTitleOrganization(p).then(res =>{

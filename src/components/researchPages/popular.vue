@@ -261,11 +261,12 @@
         })
       },
       // 点击作者
-      goToauthor(n){
+      goToauthor(n,t){
         let that = this;
         let name = n;
         let p = {
           author: name,
+          title: t
         }
         getTitleOrganization(p).then(res =>{
           if(res.data.code == 0){
