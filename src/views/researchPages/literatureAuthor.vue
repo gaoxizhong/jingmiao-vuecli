@@ -177,7 +177,10 @@
             <el-table-column prop="author" label="作者" width="180">
               <template slot-scope="scope">
                 <p>
-                  <span v-for="(item,index) in scope.row.author_list" :key="index" v-html="item"></span>
+                  <span v-for="(item,index) in scope.row.author_list" :key="index" >
+                    <span v-html="item"></span>
+                    <span v-if="index != (scope.row.author_list.length - 1)">;</span>
+                  </span>
                 </p>
               </template>
             </el-table-column>
@@ -400,7 +403,7 @@
         topics_eacharts.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         let option = {
           grid: {
-            left: 20,
+            left: 48,
             top: 40,
             bottom: 0,
             right: 20,
@@ -435,7 +438,7 @@
 
                 formatter:function(value) { //X轴的内容
                   var ret = ""; //拼接加\n返回的类目项
-                  var max = 10;  //每行显示的文字字数
+                  var max = 8;  //每行显示的文字字数
                   var val = value.length;  //X轴内容的文字字数
                   var rowN = Math.ceil(val / max);  //需要换的行数
                   if(rowN > 1){ //判断 如果字数大于2就换行
@@ -451,9 +454,9 @@
                   else {return value}
                 },
                 color: "#999",
-                fontSize: '12px',
-                interval: 0, // 设置斜切
-                rotate: 22, // 设置斜切
+                fontSize: '0.65rem',
+                interval: 0, // 设置间隔显示数
+                rotate: 16, // 设置斜切
               },
             },
           ],

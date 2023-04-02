@@ -412,6 +412,9 @@ router.beforeEach(async (to, from, next) => {
     // 让 列表页 即不缓存，刷新
     to.meta.keepAlive = false; 
   }
+  if(to.path == '/popularLiterature' && from.path == '/user-center' ){
+    to.meta.keepAlive = false; 
+  }
   next()
 
 })

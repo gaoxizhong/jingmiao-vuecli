@@ -164,9 +164,10 @@
         // console.log(key, keyPath);
       },
       setsickNess(){
-        this.is_view = false;
+        this.is_view = false
         this.$nextTick(() => {
           this.is_view = true
+        console.log(this.is_view)
         })
         console.log(this.is_view)
       },

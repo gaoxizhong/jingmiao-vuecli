@@ -369,11 +369,26 @@
       }
     },
     created(){
+      let that = this;
       // 获取历史记录
-      this.getliteratureHistory();
-      let is_p = this.$route.query.is_p;
-      let author = this.$route.query.author;
-      let keyword = this.$route.query.keyword;
+      that.getliteratureHistory();
+      let is_p = that.$route.query.is_p;
+      let author = that.$route.query.author;
+      let keyword = that.$route.query.keyword;
+      if(that.$route.query.userHistory){
+        let userHistory =  JSON.parse(that.$route.query.userHistory);
+        console.log(userHistory)
+        if(userHistory.headerInput){
+          that.headerInput = userHistory.headerInput;
+          that.titleTag = 1;
+        }else{
+          that.titleTag = 2;
+        }
+        that.advancedCondition = userHistory.advancedCondition;
+        that.advancedOptions = userHistory.advancedCondition.slice();
+        that.is_pop = '2';
+        that.setsickNess();
+      }
       if(is_p && author){
         let advancedCondition = [];
         advancedCondition.push({
@@ -382,10 +397,10 @@
           select_type: 'match',
           select_condition: '',
         })
-        this.headerInput = author;
-        this.advancedCondition = advancedCondition;
-        this.is_pop = '2';
-        this.setsickNess();
+        that.headerInput = author;
+        that.advancedCondition = advancedCondition;
+        that.is_pop = '2';
+        that.setsickNess();
       }
       if(keyword){
         let advancedCondition = [];
@@ -395,10 +410,10 @@
           select_type: 'match',
           select_condition: '',
         })
-        this.headerInput = keyword;
-        this.advancedCondition = advancedCondition;
-        this.is_pop = '2';
-        this.setsickNess();
+        that.headerInput = keyword;
+        that.advancedCondition = advancedCondition;
+        that.is_pop = '2';
+        that.setsickNess();
       }
 
     },
@@ -1057,7 +1072,6 @@
         that.is_pop = '2';
         that.is_ls = false;
         that.setsickNess();
-        return
       },
       setsickNess(e){
         let that = this;
