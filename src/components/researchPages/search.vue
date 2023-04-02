@@ -32,13 +32,13 @@
                     <a href="javascript:0;" @click.stop="" v-html="item.album"></a>
                   </div>
                 </div>
-                <div class="list-item-z">
+                <div class="list-item-z" v-if="item.author_list">
                   <label class="zuozhe-box" >作者：</label>
                   <div class="tap-top-span">
                     <a href="javascript:0;" v-for="(items,idx) in item.author_list" :key="idx" @click.stop="goToauthor(items,item.title)" v-html="items"></a>
                   </div>
                 </div>
-                <div class="list-item-z">
+                <div class="list-item-z" v-if="item.keyword_list">
                   <label class="zuozhe-box">关键词：</label>
                   <div class="tap-top-span">
                     <a href="javascript:0;" v-for="(items,idx) in item.keyword_list" :key="idx" @click.stop="" v-html="items"></a>
