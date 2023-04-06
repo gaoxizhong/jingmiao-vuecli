@@ -179,6 +179,15 @@ const routes = [
         name : 'guideDetails',
         component: guideDetails,
       },
+      { path: '/VideoHome',
+        name: 'VideoHome',
+        component: () => import('@/views/VideoHome'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
     ]
   },
   // {

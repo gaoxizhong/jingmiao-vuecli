@@ -1,12 +1,11 @@
 <template>
    <div class="content-box">
+    <!-- 头部开始 -->
+    <el-header>
+      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
+    </el-header>
+    <!-- 头部结束 -->
      <div class="inside-content-box" id="inside-content-box">
-       <div>
-         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item>视频</el-breadcrumb-item>
-          <el-breadcrumb-item>列表</el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
       <el-row>
         <el-col :span="12" :offset="5">
           <div class="el-input-box">
@@ -16,13 +15,13 @@
           </div>
         </el-col>
       </el-row>
-      <el-row style="padding-top:20px;">
+      <el-row style="padding: 20px 120px 10px 120px;">
           <div class="main_left2">
             <el-col :xs="24" :sm="12" :md="8" :lg="6" class="col-box" v-for="(item,index) in getListInfo" :key="index">
               <li>
                 <a href="javascript:0;" :title="item.title" @click="gotoVideo(item.video_url,item.id)">
                   <!-- <img :src="item.cover_img" alt="" /> -->
-                  <div style="width:100%;height:160px;">
+                  <div style="width:100%;height:240px;">
                     <video :src="item.video_url" style="object-fit: fill;" width="100%" height="100%" ></video>
                   </div>
                   <div class="list_title">
@@ -53,6 +52,9 @@
    </div>
 </template>
 <style scoped>
+  .inside-content-box{
+    padding-top: 20px;
+  }
   .gengduo{
     font-size: 14px;
     font-family: Source Han Sans CN;
@@ -129,13 +131,23 @@
   font-size:12px;
   color: #a9a9a9;
 }
+.pagination-box{
+  padding: 20px 0;
+}
 </style>
 <script>
+import CommonHeader from "../components/CommonHeader";
+
 import { getVideoList } from '@/api/data'
   export default {
-    inject: ['setsickNess'],
+    name: 'VideoHome',
+    components: {
+      CommonHeader,
+    },
     data() {
       return {
+        is_search:true,
+        tag_pages:'',
         search:'',
         title:'',
         getListInfo:[],
@@ -151,8 +163,11 @@ import { getVideoList } from '@/api/data'
       console.log('active')
     },
     created(){
-        console.log('created')
-        this.getHomeRightList();
+      console.log('created')
+      this.tag_pages = this.$route.query.tag_pages;
+      this.tag = this.$route.query.tag_pages;
+      this.id = Number(this.$route.query.id);
+      this.getHomeRightList();
     },
     mounted(){
     },

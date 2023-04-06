@@ -290,6 +290,7 @@ export default {
         {id:7,name:'疾病图像库',path:'/ImagesList',tag_pages:'jbtxk'},
         // {id:8,name:'疾病病例库',path:'/CaseLibrary',tag_pages:'jbblk'},
         {id:6,name:'智能问答',path:'/QAhome',tag_pages:'znwd'},
+        {id:8,name:'视频',path:'/VideoHome',tag_pages:'sp'},
 
       ];
       this.nav_id = Number(this.id);
