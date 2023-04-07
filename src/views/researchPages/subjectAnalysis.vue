@@ -1268,9 +1268,9 @@
         topics_eacharts.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         let option = {
           grid: {
-            left: 50,
+            left: 52,
             top: 40,
-            bottom: 0,
+            bottom: 28,
             right: 20,
             containLabel: true,
           },
@@ -1330,7 +1330,7 @@
                   else {return value}
                 },
                 color: "#999",
-                fontSize: '0.65rem',
+                fontSize: '12px',
                 interval: 0, // 设置斜切
                 rotate: 16, // 设置斜切
               },

@@ -269,9 +269,9 @@
         topics_eacharts.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         let option = {
           grid: {
-            left: 20,
+            left: 30,
             top: 40,
-            bottom: 0,
+            bottom: 28,
             right: 10,
             containLabel: true,
           },
@@ -303,6 +303,7 @@
               axisLabel: {
 
                 formatter:function(value) { //X轴的内容
+                  return value
                   var ret = ""; //拼接加\n返回的类目项
                   var max = 10;  //每行显示的文字字数
                   var val = value.length;  //X轴内容的文字字数
@@ -320,9 +321,9 @@
                   else {return value}
                 },
                 color: "#999",
-                fontSize: '0.7rem',
+                fontSize: '12px',
                 interval: 0, // 设置斜切
-                rotate: 20, // 设置斜切
+                rotate: 14, // 设置斜切
               },
             },
           ],

@@ -329,7 +329,9 @@
         getAnalysisDetail(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            that.infoDetail = res.data.data;
+            let infoDetail = res.data.data;
+            infoDetail.co_organization_list = infoDetail.co_organization_list.splice(0,15)
+            that.infoDetail = infoDetail;
             document.title = res.data.data.author;
             that.authorList = res.data.data.co_author_list;
           } else {
@@ -403,9 +405,9 @@
         topics_eacharts.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         let option = {
           grid: {
-            left: 48,
+            left: 52,
             top: 40,
-            bottom: 0,
+            bottom: 28,
             right: 20,
             containLabel: true,
           },
@@ -437,6 +439,7 @@
               axisLabel: {
 
                 formatter:function(value) { //X轴的内容
+                  return value
                   var ret = ""; //拼接加\n返回的类目项
                   var max = 8;  //每行显示的文字字数
                   var val = value.length;  //X轴内容的文字字数
@@ -454,7 +457,7 @@
                   else {return value}
                 },
                 color: "#999",
-                fontSize: '0.65rem',
+                fontSize: '12px',
                 interval: 0, // 设置间隔显示数
                 rotate: 16, // 设置斜切
               },
