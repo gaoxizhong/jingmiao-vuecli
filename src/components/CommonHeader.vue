@@ -283,7 +283,6 @@ export default {
       let headerNavItems = [
         {id:1,name:'西医知识库',path:'/SearchPages',tag_pages:'xyzsk'},
         {id:2,name:'中医知识库',path:'/SearchPages',tag_pages:'zyzsk'},
-        // {id:3,name:'科研探索',path:'/DocumentGuidePages',tag_pages:'Document'},
         {id:3,name:'科研探索',path:'/popularLiterature',tag_pages:'Document'},
         // {id:4,name:'指南',path:'/DocumentGuidePages',tag_pages:'Guide'},
         {id:5,name:'西医CDSS',path:'/WesternMedicineCdss',tag_pages:'xycdss'},
@@ -291,7 +290,8 @@ export default {
         // {id:8,name:'疾病病例库',path:'/CaseLibrary',tag_pages:'jbblk'},
         {id:6,name:'智能问答',path:'/QAhome',tag_pages:'znwd'},
         {id:8,name:'视频',path:'/VideoHome',tag_pages:'sp'},
-
+        {id:9,name:'文字翻译',path:'/textTranslation',tag_pages:'wzfy'},
+        {id:10,name:'文档翻译',path:'/fileTranslation',tag_pages:'wdfy'},
       ];
       this.nav_id = Number(this.id);
       this.contentItems = headerNavItems;

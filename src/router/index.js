@@ -99,6 +99,28 @@ const routes = [
           requireAuth:true
         }
       },
+      { 
+        path: '/textTranslation',
+        name: 'textTranslation',
+        component: () => import('@/views/textTranslation'),
+        meta: {
+          title:'文字翻译',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      { 
+        path: '/fileTranslation',
+        name: 'fileTranslation',
+        component: () => import('@/views/fileTranslation'),
+        meta: {
+          title:'文档翻译',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
       {
         path:'/FrontPage',
         name: 'FrontPage',
