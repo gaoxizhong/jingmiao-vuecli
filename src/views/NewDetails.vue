@@ -10,8 +10,8 @@
     <!-- 主题开始 -->
     <el-main :style="main_bg">
       <div class="pagecontent-box">
-        <!-- 西医展示 开始 -->
-        <div class="yp-position-box" v-if="tag_pages == 'xyzsk' ">
+
+        <div class="yp-position-box">
           <div class="col-left-title">
             <p :title="name">{{ name?name:'暂无' }}</p>
             <a href="javascript:0;" class="cjyp-table-tr-r" style="font-weight: 100;font-size:13px;" @click.stop="clickXyEacharts(name)">
@@ -56,137 +56,7 @@
           </div>
 
         </div>
-        <!-- 西医展示 结束 -->
-        <!-- 中医展示 开始 -->
-        <div v-else>
-          <!-- 疾病属性分类展示模块开始 -->
-          <div class="diseaseAttributes-box">
-            <div class="diseaseAttributes-title">
-              <span>{{name}} -- <span style="color:#FA6400;font-size:15px;">{{properties_name?properties_name:'无'}}</span></span>
-              <!-- <a href="javascript:0;" class="cktp-span" @click="clickCktp" v-if="tag == 'Disease' || tag == 'SickNess' || tag == 'zySickNess' ">查看图谱</a> -->
-            </div>
-            <!-- 属性模块展示开始 -->
-            <div class="dabutes-c-box">
-              <div class="dabutes-centent-box" ref="rampage">
-                <div class="dabutes-items-box" ref="rampageChild">
-                  <!-- 属性项 -->
-                  <div class="chapter" v-for="(item,index) in dabutes" :key="index">
-                    <div class="chapter-title">{{item.name}}</div>
-                    <div class="chapter-li-box" v-if="item.DiseaseCategoryProperties.length > 0">
-                      <a href="javascript:0;" class="chapter-li-a" :class="(li_index == index && a_idx == idx) ? 'chapterA-active' :'' "
-                      v-for="(items,idx) in item.DiseaseCategoryProperties" 
-                      :key="idx" 
-                      @click="clickDiseaseCategoryProperties(index,idx,item.name,items.property_ch_name,items.property_zh_name)"
-                      >{{items.property_zh_name}}</a>
-                    </div>
-                  </div>
-                  <!-- 属性项 -->
 
-                </div>
-              </div>
-            </div>
-            <!-- 属性模块展示结束 -->
-          </div>
-          <!-- 疾病属性分类展示模块结束 -->
-          <!-- 属性值内容模块开始 -->
-          <div class="attributeValue-box">
-            <div class="diseaseAttributes-box">
-              <!-- 标题开始 -->
-              <div class="diseaseAttributes-title">
-                <span style="color:#FA6400;font-size:15px;">{{properties_name?properties_name:"无"}}</span>
-              </div>
-              <!-- 标题结束 -->
-
-              <!-- 内容详情板块开始 -->
-              <div class="infoDetail-box">
-                <!-- 普通数据展示开始 -->
-                <div class="infoDetail-centent-box" v-if="data_type == 'single' ">
-                  <div style="text-align:left;white-space:pre-line;font-size:15px;" v-html="infoDetail_text?infoDetail_text:'暂无数据...' "></div>
-                </div>
-                <!-- 普通数据展示结束 -->
-                <!-- 指南数据展示开始 -->
-                <div class="infoDetail-centent-box" style="padding:10px 20px;" v-if="data_type == 'many' ">
-                  <div class="results_cont">
-                    <div class="guide_text" v-for="(item,index) in guide_list" :key="index">
-                      <div class="text_title_box">
-                        <h1 class="text_title" :title="item.title_trans">{{item.title_trans?item.title_trans:'无'}}</h1>
-                        <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
-                      </div>
-                      <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
-                        <div class="one_info clearfix">
-                          <label>发布日期：</label>
-                          <p>{{item.publish_time?item.publish_time:'无'}}</p>
-                        </div>
-                        <div class="one_info clearfix">
-                          <label>英文标题：</label>
-                          <p>{{item.title?item.title:'无'}}</p>
-                        </div>
-                        <div class="one_info clearfix">
-                          <label>制定者：</label>
-                          <p style="color:#20C3A7;">{{item.author?item.author:'无'}}</p>
-                        </div>
-                        <!-- <div class="one_info clearfix">
-                          <label>出处：</label>
-                          <p>无</p>
-                        </div> -->
-                        <div class="one_info clearfix">
-                          <label>中文摘要：</label>
-                          <div id="all_content">
-                            <p>{{item.abstract_trans?item.abstract_trans:'无'}}</p>
-                          </div>
-                        </div>
-                        <div class="one_info clearfix" style="margin-top:4px;">
-                          <label>英文摘要：</label>
-                          <div id="all_content">
-                            <p>{{item.abstract?item.abstract:'无'}}</p>
-                          </div>
-                        </div>
-                        <div class="asub-box">
-                          <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" :class="item.full_text_url?'zaixian':'no-zaixian'"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
-                          <a :href="item.guide_file?item.guide_file:'javascript:0;'" :class="item.guide_file?'zaixian':'no-zaixian'" :target="item.guide_file?'_blank':''" @click.stop="goToyuedu($event,item.guide_file)"><i class="el-icon-reading"></i>pdf在线阅读</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- 指南数据展示结束 -->
-
-                <!-- CT影像图展示开始 -->
-                <div class="infoDetail-centent-box content-box1"  v-if="data_type == 'image' ">
-                  <div class="listItems-div" v-if="infoDetail_image">
-                    <a href="javascript:0;" title="" class="listItems-n-div" @click="goToDetails(img_name)">
-                      <img :src="infoDetail_image" alt="" class="lower-img"/>
-                      <div class="lower-content">
-                        <!-- <div class="title">
-                          <h6>水电费楼上的</h6>
-                        </div> -->
-                        <!-- <div class="sj-sx-box">
-                          <span>{{item.attribute?item.attribute:''}}</span>
-                          <span style="font-size:12px;color:#8b8989;">{{item.publish_time?item.publish_time:'暂无发布时间'}}</span>
-                        </div> -->
-                      </div>
-                    </a>
-                  </div>
-                  <div style="text-align:left;white-space:pre-line;font-size:15px;" v-else>暂无数据...</div>
-                </div>
-                <!--CT影像图展示结束 -->
-
-
-
-                <!-- 参考文献详情开始 -->
-                <!-- <references></references> -->
-                <!-- 参考文献详情结束 -->
-              </div>
-              
-
-              <!-- 内容详情板块结束 -->
-
-            </div>
-          </div>
-
-          <!-- 属性值内容模块结束 -->
-        </div>
-        <!-- 中医展示 结束 -->
       </div>
     </el-main>
     <!-- 主题结束 -->
@@ -223,7 +93,7 @@
   // import DetailsMask from '../components/WesternMedicineCdss/DetailsMask';
   import References from "../components/References"; // 文献指南
   import BScroll  from "better-scroll";
-  import { getNewBaseDetail,getNewDetail,getPropertyDetail } from "@/api/data"
+  import { getZskNewDetail,getNewBaseDetail,getNewDetail,getPropertyDetail } from "@/api/data"
   export default {
     // provide(){
     //   return {
@@ -308,11 +178,12 @@
       this.kgid = this.$route.query.kgid?this.$route.query.kgid:'';
       this.id = Number(this.$route.query.id);
       document.title = this.name;
-      if(this.tag_pages == 'xyzsk'){
-        this.getNewBaseDetail();
-      }else{
-        this.getNewDetail();
-      }
+      // if(this.tag_pages == 'xyzsk'){
+      //   this.getNewBaseDetail();
+      // }else{
+      //   this.getNewDetail();
+      // }
+      this.getNewBaseDetail();
     },
 
     methods: {
@@ -351,9 +222,14 @@
         let params = {
           tag: that.tag,
           name: that.name,
-          type: ''
         };
-        getNewBaseDetail(params).then(res =>{
+        if(that.tag_pages == 'xyzsk'){
+          params.type = '';
+        }
+        if(that.tag_pages == 'zyzsk'){
+          params.type = 'zh';
+        }
+        getZskNewDetail(params).then(res =>{
           if(res.data.code == 0){
             let getinfo = res.data.data;
             that.name = getinfo.name.text;

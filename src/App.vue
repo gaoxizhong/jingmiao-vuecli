@@ -5,7 +5,7 @@
 </template>
 
 <style lang="scss">
-
+$inputBackgroundDefaultColor: #fff; 
 *{
   padding: 0;
   margin: 0;

@@ -1,10 +1,11 @@
 export default {
     title:'admin',
     baseURL: {
-        //主站
-        // dev: 'https://jm.jiankangche.cn/jmjk/',
-        //测试
+      
+        //主站 -- 测试环境
         dev: 'http://182.43.12.243:8981/jmjk/',
+        //主站 -- 正式环境
+        pro: 'https://jm.jiankangche.cn/jmjk/',
         
         // webServices开发环境
         webServicesUrl:'/api',

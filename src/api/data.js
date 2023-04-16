@@ -369,6 +369,14 @@ export const getNewClinicalTrial = (params) =>{
     data: params
   })
 }
+export const getZskNewDetail = (params) =>{
+  return axios.request({
+    url:'/new/detail',
+    method: 'post',
+    data: params
+  })
+}
+
 // =================  h5页面方法 ==================
 export const getConfig = (params) =>{  
   return axios.request({
