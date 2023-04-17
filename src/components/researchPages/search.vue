@@ -109,6 +109,19 @@
           </div>
         </div>
         <!-- 关联研究 结束 -->
+        <!-- 词云 开始 -->
+        <div class="eacharts-itemsbox">
+          <div class="icon-classbox">
+            <div class="classbox-l">
+              <span>热词云</span>
+              <!-- <span class="span-search" title="放大查看" @click.stop=""><i class="el-icon-zoom-in"></i></span> -->
+            </div>
+          </div>
+          <div class="eacharts-ch-box wordCloud">
+            <div id="wordCloud" style="width: 100%;height:100%;"></div>
+          </div>
+        </div>
+        <!-- 关联研究 结束 -->
         <!-- 相关学者 开始 -->
         <div class="eacharts-itemsbox">
           <div class="icon-classbox">
@@ -145,7 +158,7 @@
 </template>
 <script>
   import { literatureDocSearch,clickCollection,getTitleOrganization,getSetLanguage } from "../../api/data";
-  import { getLine_eacharts,getForceRelation_eacharts } from "../../assets/js/getEcharts";
+  import { getLine_eacharts,getForceRelation_eacharts,getWordCloud_eacharts } from "../../assets/js/getEcharts";
   export default {
     props:{
       tag: Number, // 请求数据时 1、普通 2、高级
@@ -479,6 +492,8 @@
             that.getResearchTrends_eacharts();
             // 关联研究
             that.getAssociationStudy_eacharts();
+            // 热词云
+            that.getWordCloud_eacharts();
             // 相关学者
             that.getRelatedScholars_eacharts();
 
@@ -530,6 +545,10 @@
        // 关联研究
       getAssociationStudy_eacharts(){
         getForceRelation_eacharts(this.associationStudy,'AssociationStudy',this);
+      },
+      // 热词云
+      getWordCloud_eacharts(){
+        getWordCloud_eacharts(this.associationStudy,'wordCloud',this);
       },
       // 相关学者
       getRelatedScholars_eacharts(){
@@ -1230,7 +1249,7 @@
   .eacharts-ch-box.ResearchTrends{
     height: 12rem;
   }
-  .eacharts-ch-box.AssociationStudy,.eacharts-ch-box.RelatedScholars{
+  .eacharts-ch-box.AssociationStudy,.eacharts-ch-box.RelatedScholars,.eacharts-ch-box.wordCloud{
     height: 20rem;
   }
   /* ================= 右侧文献可视化分析模块 ↑ ======================= */

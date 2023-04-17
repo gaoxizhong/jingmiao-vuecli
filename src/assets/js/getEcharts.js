@@ -297,6 +297,97 @@ const getForceRelation_eacharts = (d,i,t) =>{
 
         myChart.setOption(option);
       }
+    // 热词云
+const getWordCloud_eacharts = (d,i,t) =>{
+  let taht = t;
+  let id = i;
+  let newData = d;
+  let myChart = taht.$echarts.init(document.getElementById(id));
+  console.log(newData)
+  var option = {
+      backgroundColor: "#fff",
+      tooltip: {
+        show: true,
+      },
+      grid: {  // 控制图标在模块内距离边框的距离，不设置会自动居中
+        left: 12,
+        top: 20,
+        bottom: 0,
+        right: 4,
+        containLabel: true,
+      },
+      toolbox: {
+        show: true,
+        itemSize: 16,
+        right:14,
+        top: 0,
+        feature: {
+          saveAsImage: {}  // 导出图片
+        }
+      },
+      series: [
+        {
+          type: "wordCloud",
+          left: 10,                  // X轴偏移量
+          top: 20,                   // Y轴偏移量
+          width: '94%',               // canvas宽度大小
+          height: '90%',               // canvas高度大小
+          sizeRange: [12, 36],        //  词典字体大小范围配置
+          rotationRange: [-45, 90],       // 词典字体旋转角度配置，默认不旋转
+          //shape: 'circle',
+          textPadding: 0,
+          autoSize: {
+            enable: true,
+            minSize: 6,
+          },
+          textStyle: {            // 词典样式配置
+            fontFamily: 'sans-serif',
+            color: () => {              // 颜色可以用一个函数来返回字符串，这里是随机色
+              // 颜色随机渐变
+              let colors = ['#86D4FF', '#FF8F6C', '#2CF263', '#9FA8F7', '#1274FF', '#E6613D', '#FFC629', '#FFAB2E', '#F78289', '#FF6C96', '#45BFD4', '#4E31FF', '#31FBFB','#86D4FF',  '#BF8AFD', '#FFF500', '#DE58FF',  '#72ED7C', '#0BEEB8','#931CFF',  '#3D25F2', '#F995C8', '#FBE9B4',  '#FF4AB6']
+              return colors[parseInt(Math.random() * 10)]
+            },
+            emphasis: {
+              shadowBlur: 10,
+              shadowColor: "#333",
+            },
+          },
+           // 渲染词典数据
+          data: [
+            {
+              value: '50',          // 词典大小配置
+              name: 'iPhone 13',     // 词典名称配置
+              textStyle: {          // 单独配置某个词典样式
+              shadowBlur: 4,
+              shadowOffsetY: 14,
+              color: '#BDBEFA'
+             }
+          },
+          ],
+        },
+      ],
+    };
+  
+  var baseName = newData.search;
+  var datas = [];
+  datas.push({
+    name: baseName,
+    value: 0
+  })
+  newData.keyword.forEach(ele =>{
+    if(ele != baseName){
+      datas.push({
+        name: ele,
+        value: parseInt(Math.random() * 10)
+      })
+    }
+  })
+  
+  option.series[0].data = datas;
+
+
+  myChart.setOption(option);
+}
 // 力导图 --- 浮点气泡图-- 相关作者
 const getForceFloating_eacharts = (d,i,t) =>{
         let that = t;
@@ -391,4 +482,4 @@ const getForceFloating_eacharts = (d,i,t) =>{
           })
         });
       }
-export {getLine_eacharts,getForceRelation_eacharts,getForceFloating_eacharts}
+export {getLine_eacharts,getForceRelation_eacharts,getForceFloating_eacharts,getWordCloud_eacharts}
