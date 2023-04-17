@@ -165,7 +165,7 @@ const getForceRelation_eacharts = (d,i,t) =>{
         var baseName = newData.search;
         let k = [];
         newData.keyword.forEach(ele =>{
-          if(ele != baseName){
+          if(ele.name != baseName){
             k.push(ele)
           }
         })
@@ -177,6 +177,7 @@ const getForceRelation_eacharts = (d,i,t) =>{
         var datas = [
           {
             name: baseName || "",
+            value:'',
             draggable: true,
           },
         ];

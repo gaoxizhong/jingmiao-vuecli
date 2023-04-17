@@ -12,7 +12,12 @@
         <div class="fileBox">
           <div class="upload-drag-container">
             <el-upload drag ref="upload" action="none" multiple :file-list="fileList">
-             
+              <div class="upload-drag-content">
+                <div class="content-left">
+                  
+                </div>
+                <div class="content-right"></div>
+              </div>
             </el-upload>
           </div>
         </div>
@@ -137,6 +142,27 @@ import Vue from 'vue';
     background-color: transparent;
     width: 100%;
     height: 100%;
+  }
+  .fileBox >>> .upload-drag-content{
+    padding: 30px;
+    height: 100%;
+    font-size: 12px;
+    text-align: left;
+    cursor: default;
+  }
+  .fileBox >>> .upload-drag-container .upload-drag-content .content-left, .fileBox >>> .upload-drag-container .upload-drag-content .content-right {
+    display: inline-block;
+  }
+  .fileBox >>> .upload-drag-container .upload-drag-content .content-left {
+    width: 30%;
+    height: 100%;
+    vertical-align: top;
+  }
+  .fileBox >>> .upload-drag-container .upload-drag-content .content-right {
+    width: 70%;
+    height: 100%;
+    vertical-align: top;
+    text-align: center;
   }
 </style>
 <style>
