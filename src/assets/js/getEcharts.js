@@ -164,20 +164,25 @@ const getForceRelation_eacharts = (d,i,t) =>{
 
         var baseName = newData.search;
         let k = [];
+        let e = {};
         newData.keyword.forEach(ele =>{
+
           if(ele.name != baseName){
             k.push(ele)
+          }else{
+            e = ele
           }
         })
         
         var chartData = {};
         k.forEach(ele =>{
-          chartData[ele] = [];
+          chartData[ele.name] = ele.value;
         })
+        console.log(chartData)
         var datas = [
           {
-            name: baseName || "",
-            value:'',
+            name: e.name || "",
+            value:e.value,
             draggable: true,
           },
         ];
@@ -187,22 +192,13 @@ const getForceRelation_eacharts = (d,i,t) =>{
         var dataIndex = 0;
         $.each(chartData, function (key, values) {
           keyIndex = dataIndex;
-          datas.push({ name: key, category: categoryIdx, draggable: true });
+          datas.push({ name: key,value:values, category: categoryIdx, draggable: true });
           keyIndex++;
           dataIndex++;
           lines.push({  // 关系连线
             source: 0,
             target: keyIndex,
             value: "",
-          });
-          $(values).each(function (idx, val) {
-            datas.push({ name: val, category: categoryIdx, draggable: true });
-            dataIndex++;
-            lines.push({
-              source: keyIndex,
-              target: dataIndex,
-              value: "",
-            });
           });
           categoryIdx++;
         });
@@ -369,21 +365,7 @@ const getWordCloud_eacharts = (d,i,t) =>{
       ],
     };
   
-  var baseName = newData.search;
-  var datas = [];
-  datas.push({
-    name: baseName,
-    value: 0
-  })
-  newData.keyword.forEach(ele =>{
-    if(ele != baseName){
-      datas.push({
-        name: ele,
-        value: parseInt(Math.random() * 10)
-      })
-    }
-  })
-  
+  var datas = newData.keyword;
   option.series[0].data = datas;
 
 

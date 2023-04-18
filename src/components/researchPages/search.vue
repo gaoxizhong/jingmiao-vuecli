@@ -490,10 +490,11 @@
             
             // 研究趋势
             that.getResearchTrends_eacharts();
-            // 关联研究
-            that.getAssociationStudy_eacharts();
             // 热词云
             that.getWordCloud_eacharts();
+            // 关联研究
+            that.getAssociationStudy_eacharts();
+
             // 相关学者
             that.getRelatedScholars_eacharts();
 
@@ -568,19 +569,24 @@
         myChart.resize({width:mWidth, height:mHeight});  // 动态设置容器宽高
         var baseName = newData.search;
         let k = [];
+        let e = {};
         newData.keyword.forEach(ele =>{
-          if(ele != baseName){
+          if(ele.name != baseName){
             k.push(ele)
+          }else{
+            e = ele
           }
         })
         
         var chartData = {};
         k.forEach(ele =>{
-          chartData[ele] = [];
+          chartData[ele.name] = ele.value;
         })
+        console.log(chartData)
         var datas = [
           {
-            name: baseName || "",
+            name: e.name || "",
+            value:e.value,
             draggable: true,
           },
         ];
@@ -590,22 +596,13 @@
         var dataIndex = 0;
         $.each(chartData, function (key, values) {
           keyIndex = dataIndex;
-          datas.push({ name: key, category: categoryIdx, draggable: true });
+          datas.push({ name: key,value:values, category: categoryIdx, draggable: true });
           keyIndex++;
           dataIndex++;
           lines.push({  // 关系连线
             source: 0,
             target: keyIndex,
             value: "",
-          });
-          $(values).each(function (idx, val) {
-            datas.push({ name: val, category: categoryIdx, draggable: true });
-            dataIndex++;
-            lines.push({
-              source: keyIndex,
-              target: dataIndex,
-              value: "",
-            });
           });
           categoryIdx++;
         });
