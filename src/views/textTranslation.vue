@@ -3,7 +3,7 @@
 
     <!-- 头部开始 -->
     <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
+      <CommonHeader :id="`${id}`" :tag_pages="tag_pages"></CommonHeader>
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
@@ -41,8 +41,8 @@
         </div>
         <!-- 条件选择模块 结束 -->
 
-        <!-- 翻译输入模块 开始 -->
-        <div class="page-content">
+          
+          <!-- 翻译输入模块 开始 -->
           <div class="text-box">
             <div class="left">
               <div class="input-wrap" :class="is_f?'input-wrap-active':''">
@@ -73,10 +73,26 @@
               </div>
             </div>
           </div>
-        </div>
-        <!-- 翻译输入模块 开始 -->
+          <!-- 翻译输入模块 结束 -->
 
-
+          <!-- 翻译记录 开始 -->
+          <div class="left">
+            <div class="transHistory">
+              <div class="transHistoryHeader">
+                <div class="historyHeaderLeft">
+                  <img src="../assets/image/icon-history.png" alt="" />
+                  <span>翻译记录</span>
+                </div>
+                <div class="history-clear-box" @click.stop="clickHistoryClear">清空</div>
+              </div>
+              <div class="historyList thinscrollbar">
+                <div v-for="(item,index) in historyList" :key="index" class="transHistoryTag">
+                  <span class="tof">{{ item.title }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 翻译记录 结束 -->
 
       </div>
     </el-main>
@@ -124,6 +140,7 @@ import Vue from 'vue';
         is_f: false,
         textarea: '',
         show_textarea:'', // 翻译结果展示
+        historyList:[{title:'头痛'},{title:'脑袋疼'}], // 历史记录
       }
     },
     mounted(){
@@ -146,6 +163,10 @@ import Vue from 'vue';
         this.$nextTick(() => {
           this.is_show = true
         })
+      },
+      // 点击清空
+      clickHistoryClear(){
+        this.historyList = [];
       },
       clickFocus(){
         this.is_f = true;
@@ -368,6 +389,70 @@ import Vue from 'vue';
     font-size: 20px;
     display: inline-block;
     vertical-align: middle;
+  }
+  .transHistory {
+    margin-top: 20px;
+    width: 100%;
+    min-height: 140px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: #f8f8fb;
+  }
+  .transHistoryHeader {
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .historyHeaderLeft {
+    letter-spacing: 3px;
+    display: flex;
+    align-items: center;
+  }
+  .historyHeaderLeft img{
+    width: 16px;
+    height: 16px;
+  }
+  .historyHeaderLeft span{
+    padding-left: 12px;
+  }
+  .historyList {
+    text-align: left;
+    max-height: 222px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .history-clear-box{
+    cursor: pointer;
+  }
+  .transHistoryTag {
+    display: inline-block;
+    max-width: calc(100% - 20px);
+    height: 26px;
+    font-size: 12px;
+    padding: 0 16px;
+    line-height: 26px;
+    position: relative;
+    background: #fff;
+    border-radius: 3px;
+    margin-right: 20px;
+    margin-top: 6px;
+    cursor: pointer;
+  }
+  .tof {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+    overflow: hidden;
+  }
+
+  .transHistoryTag .tof {
+    width: 100%;
+    display: block;
   }
 </style>
 <style>

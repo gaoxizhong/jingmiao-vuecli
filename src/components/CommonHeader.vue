@@ -281,7 +281,7 @@ export default {
   },
   created(){
       let headerNavItems = [
-        // {id:9,name:'文字翻译',path:'/textTranslation',tag_pages:'wzfy'},
+        {id:9,name:'文字翻译',path:'/textTranslation',tag_pages:'wzfy'},
         // {id:10,name:'文档翻译',path:'/fileTranslation',tag_pages:'wdfy'},
         {id:1,name:'西医知识库',path:'/SearchPages',tag_pages:'xyzsk'},
         {id:2,name:'中医知识库',path:'/SearchPages',tag_pages:'zyzsk'},
