@@ -14,12 +14,56 @@
             <el-upload drag ref="upload" action="none" multiple :file-list="fileList">
               <div class="upload-drag-content">
                 <div class="content-left">
-                  
+                  <div class="upload-icon"></div>
+                  <div class="type-tip">
+                    <span>支持格式</span>
+                  </div>
                 </div>
-                <div class="content-right"></div>
+                <div class="content-right">
+                  <div class="no-file-upload">
+                    <span class="file-upload-tip">将文件拖拽到此处上传</span>
+                  </div>
+                  <div class="upload-trigger">
+                    <span class="upload-tip-letter-or">或</span>
+                    <span class="upload-trigger-button">选择文件</span>
+                  </div>
+                  <!-- <div class="upload-tip"></div> -->
+                </div>
               </div>
             </el-upload>
           </div>
+
+          <!-- 条件选择模块 开始 -->
+          <div class="option-wrap">
+            <div class="option-left">
+              <div class="option-left-l">
+                <el-select v-model="value_1" placeholder="请选择">
+                  <el-option
+                    v-for="item in options_1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+              <!-- <div class="option-right-select">
+                <el-select v-model="value_2" placeholder="请选择">
+                  <el-option
+                    v-for="item in options_2"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </div> -->
+
+              <div class="option-right-btn">
+                <el-button type="button">立即翻译</el-button>
+              </div>
+            </div>
+
+          </div>
+          <!-- 条件选择模块 结束 -->
         </div>
 
       </div>
@@ -55,6 +99,18 @@ import Vue from 'vue';
         is_search:0,
         ////  以下文档翻译数据
         fileList: [],
+        options_1:[ {value: 1,label: '中文 > 英文'}, {value: 2,label: '英文 > 中文'} ],
+        value_1:'',
+        options_2:[
+          {value: 1,label: '医学-通用'},
+          {value: 2,label: '医学-药物警戒'},
+          {value: 3,label: '医学-医疗器械'},
+          {value: 4,label: '医学-CMC'},
+          {value: 5,label: '医学-临床'},
+          {value: 6,label: '医学-非临床'},
+          {value: 7,label: '医学-法规'}
+         ],
+        value_2:'',
       }
     },
     mounted(){
@@ -163,6 +219,74 @@ import Vue from 'vue';
     height: 100%;
     vertical-align: top;
     text-align: center;
+  }
+  .fileBox >>> .upload-drag-container .upload-drag-content .content-left .upload-icon {
+    margin: 0 auto;
+    width: 70px;
+    height: 70px;
+    background: url(../assets/image/icon_file_upload.svg) no-repeat;
+    background-size: 70px 70px;
+  }
+  .fileBox >>> .upload-drag-container .upload-drag-content .content-left .type-tip {
+    margin: 0 auto;
+    width: 70px;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .fileBox >>> .upload-drag-container .upload-drag-content .content-right .no-file-upload .file-upload-tip {
+    font-size: 16px;
+  }
+  .fileBox >>> .upload-drag-container .upload-drag-content .content-right .upload-trigger {
+    font-size: 14px;
+    line-height: 50px;
+  }
+  .fileBox >>> .upload-drag-container .upload-drag-content .content-right .upload-trigger .upload-tip-letter-or {
+    display: inline-block;
+    margin: 0 15px;
+  }
+  .fileBox >>> .upload-drag-container .upload-drag-content .content-right .upload-trigger .upload-trigger-button {
+    display: inline-block;
+    padding: 0 10px;
+    border: 2px solid #54bdbd;
+    border-radius: 13px;
+    text-align: center;
+    line-height: 31px;
+    cursor: pointer;
+  }
+  .option-wrap {
+    width: 100%;
+    height: 42px;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+  }
+  .option-left {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-right: 5px;
+    float: left;
+  }
+  .option-left-l{
+    width: 165px;
+    float: left;
+    margin-right: 30px;
+    box-sizing: border-box;
+  }
+  .option-right-select{
+    float: left;
+    margin-right: 6px;
+    width: 165px;
+    box-sizing: border-box;
+  }
+  .option-right-btn{
+    float: left;
+    margin-left: 20px;
+    box-sizing: border-box;
+  }
+  .option-right-btn button.el-button--button {
+    color: #fff;
+    background-color: #008c68;
+    border-color: #008c68;
   }
 </style>
 <style>
