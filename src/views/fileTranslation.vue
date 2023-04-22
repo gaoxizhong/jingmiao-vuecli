@@ -9,6 +9,7 @@
     <!-- 主题开始 -->
     <el-main>
       <div class="pagecontent-box">
+
         <div class="fileBox">
           <div class="upload-drag-container">
             <el-upload drag ref="upload" action="none" multiple :file-list="fileList">
@@ -65,6 +66,22 @@
           </div>
           <!-- 条件选择模块 结束 -->
         </div>
+        <!-- 历史记录 开始 -->
+        <div class="filelist">
+          <div class="listhead">
+            <div class="filedomain">文档类型</div>
+            <div class="filename tof">
+              <div>文件名称</div>
+            </div>
+            <div class="filelang">语言方向</div>
+            <div class="filedomain">翻译领域</div>
+            <div class="filestatus">翻译状态</div>
+            <div class="filemanage">操作</div>
+          </div>
+          <div class="listbox thinscrollbar"></div>
+          <div class="morelink"></div>
+        </div>
+        <!-- 历史记录 结束 -->
 
       </div>
     </el-main>
@@ -287,6 +304,61 @@ import Vue from 'vue';
     color: #fff;
     background-color: #008c68;
     border-color: #008c68;
+  }
+  /* 历史记录 */
+  .filelist {
+    width: 800px;
+    padding: 40px 10px 10px;
+    background: #fff;
+    min-height: 200px;
+    border: 1px solid #ccc;
+    margin: 10px auto 65px;
+  }
+  .fileli, .listhead {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #ececec;
+    padding: 0 15px;
+    color: #7f7f7f;
+    text-align: left;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  .listhead {
+    text-align: center;
+  }
+  .listbox {
+    min-height: 160px;
+  }
+  .morelink {
+    height: 20px;
+    margin-top: 10px;
+    line-height: 20px;
+    text-align: right;
+  }
+  .filedomain, .filelang, .filemanage, .filename, .filestatus {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    margin-right: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 40px;
+  }
+  .filelang {
+    word-break: break-word;
+  }
+  .filemanage {
+    margin-right: 0;
+    overflow: hidden;
   }
 </style>
 <style>
