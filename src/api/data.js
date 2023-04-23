@@ -678,3 +678,12 @@ export const getQuestionAnswer = (params) =>{
     data: params
   })
 }
+
+// 文字翻译
+export const getTranslate = (params) =>{
+  return axios.request({
+    url:'/translate',
+    method: 'post',
+    data: params
+  })
+}

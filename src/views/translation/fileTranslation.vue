@@ -95,8 +95,8 @@
 </template>
 
 <script>
-  import CommonHeader from "../components/CommonHeader";
-  import CommonFooter from "../components/CommonFooter";
+  import CommonHeader from "../../components/CommonHeader";
+  import CommonFooter from "../../components/CommonFooter";
   import {  } from "@/api/data"
 import Vue from 'vue';
   export default {
@@ -183,7 +183,7 @@ import Vue from 'vue';
     position: relative;
     margin: 0 auto;
     margin-bottom: 30px;
-    width: 540px;
+    width: 630px;
     height: 160px;
     border: 1px solid transparent;
     border-radius: 5px;
@@ -241,7 +241,7 @@ import Vue from 'vue';
     margin: 0 auto;
     width: 70px;
     height: 70px;
-    background: url(../assets/image/icon_file_upload.svg) no-repeat;
+    background: url(../../assets/image/icon_file_upload.svg) no-repeat;
     background-size: 70px 70px;
   }
   .fileBox >>> .upload-drag-container .upload-drag-content .content-left .type-tip {
@@ -276,6 +276,7 @@ import Vue from 'vue';
     height: 42px;
     margin-bottom: 30px;
     box-sizing: border-box;
+    padding: 0 60px;
   }
   .option-left {
     -webkit-box-sizing: border-box;
@@ -284,7 +285,7 @@ import Vue from 'vue';
     float: left;
   }
   .option-left-l{
-    width: 165px;
+    width: 210px;
     float: left;
     margin-right: 30px;
     box-sizing: border-box;

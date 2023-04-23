@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :style="`main-height:${viewHeight}px;`" >
+  <div id="app" :style="`height:100%;`" >
     <router-view v-if="isRouterAlive" @setsickNess="reload"/>
   </div>
 </template>

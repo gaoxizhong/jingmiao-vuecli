@@ -102,7 +102,7 @@ const routes = [
       { 
         path: '/textTranslation',
         name: 'textTranslation',
-        component: () => import('@/views/textTranslation'),
+        component: () => import('@/views/translation/textTranslation.vue'),
         meta: {
           title:'文字翻译',
           keepAlive: true,
@@ -113,7 +113,7 @@ const routes = [
       { 
         path: '/fileTranslation',
         name: 'fileTranslation',
-        component: () => import('@/views/fileTranslation'),
+        component: () => import('@/views/translation/fileTranslation.vue'),
         meta: {
           title:'文档翻译',
           keepAlive: true,

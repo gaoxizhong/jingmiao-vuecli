@@ -246,8 +246,15 @@
   }
   .el-main{
     background: #FAFBFF;
-    padding: 4.6rem 16px 16px 216px;
+    padding: 3.6rem 0px 16px 216px;
     box-sizing: border-box;
+    overflow: hidden;
+  }
+  .pages-b{
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 1rem 16px 0 0;
   }
   .l-content{
     width: auto;

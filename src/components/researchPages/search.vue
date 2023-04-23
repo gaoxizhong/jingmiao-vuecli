@@ -338,7 +338,7 @@
       // 点击作者
       goToauthor(n,t){
         let that = this;
-        let name = n;
+        let name = n.replace(/<font\s*[^>]*>(.*?)<\/font>/ig,"$1"); // 过滤标签
         let p = {
           author: name,
           title: t,

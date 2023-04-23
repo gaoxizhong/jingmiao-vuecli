@@ -34,7 +34,7 @@
             </div> -->
 
             <div class="option-right-btn">
-              <el-button type="button">立即翻译</el-button>
+              <el-button type="button" @click="clickGetTranslate">立即翻译</el-button>
             </div>
           </div>
 
@@ -80,7 +80,7 @@
             <div class="transHistory">
               <div class="transHistoryHeader">
                 <div class="historyHeaderLeft">
-                  <img src="../assets/image/icon-history.png" alt="" />
+                  <img src="../../assets/image/icon-history.png" alt="" />
                   <span>翻译记录</span>
                 </div>
                 <div class="history-clear-box" @click.stop="clickHistoryClear">清空</div>
@@ -106,9 +106,9 @@
 </template>
 
 <script>
-  import CommonHeader from "../components/CommonHeader";
-  import CommonFooter from "../components/CommonFooter";
-  import {  } from "@/api/data"
+  import CommonHeader from "../../components/CommonHeader";
+  import CommonFooter from "../../components/CommonFooter";
+  import { getTranslate } from "@/api/data"
 import Vue from 'vue';
   export default {
     name: 'textTranslation',
@@ -125,7 +125,7 @@ import Vue from 'vue';
         tag_pages:'',
         id: 0,
         ////  以下文字翻译数据
-        options_1:[ {value: 1,label: '中文 > 英文'}, {value: 2,label: '英文 > 中文'} ],
+        options_1:[ {value:"zh",label: '中文 > 英文'}, {value: "en",label: '英文 > 中文'} ],
         value_1:'',
         options_2:[
           {value: 1,label: '医学-通用'},
@@ -140,7 +140,7 @@ import Vue from 'vue';
         is_f: false,
         textarea: '',
         show_textarea:'', // 翻译结果展示
-        historyList:[{title:'头痛'},{title:'脑袋疼'}], // 历史记录
+        historyList:[], // 历史记录
       }
     },
     mounted(){
@@ -177,6 +177,32 @@ import Vue from 'vue';
       clickClear(){
         this.textarea = '';
       },
+
+      // 点击立即翻译
+      clickGetTranslate(){
+        let that = this;
+        let p = {
+          source: that.value_1,
+          target: that.value_1 == 'zh' ? 'en' : 'zh',
+          text: that.textarea
+        }
+        const loading = this.$loading({
+          lock: true,
+          text: "正在翻译...",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.1)",
+          target: document.querySelector("body")
+        });
+        getTranslate(p).then( res =>{
+          loading.close();
+          if(res.data.code == 0){
+            that.show_textarea = res.data.data.translate_result_text
+          }
+        }).catch( e =>{
+          loading.close();
+          console.log(e)
+        })
+      }
     },
   }
 </script>
@@ -205,7 +231,7 @@ import Vue from 'vue';
     float: left;
   }
   .option-left-l{
-    width: 165px;
+    width: 210px;
     float: left;
     margin-right: 30px;
     box-sizing: border-box;
@@ -213,7 +239,7 @@ import Vue from 'vue';
   .option-right-select{
     float: left;
     margin-right: 6px;
-    width: 165px;
+    width: 210px;
     box-sizing: border-box;
   }
   .option-right-btn{

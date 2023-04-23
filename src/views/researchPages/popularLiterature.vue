@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-b">
+  <div class="pages-b" ref="pagesb">
     <!-- 头部检索模块 开始 -->
     <div class="literature-titlebox" :class="searchBarFixed?'searchBarFixed':''" id="searchBar">
        <!-- 返回按钮 -->
@@ -447,6 +447,22 @@
       // this.$refs.advStatisticPicker.setYear( '', '');
       // ======== 发表时间 展示数据 默认10年  ↑ ==========
     },
+    computed: {
+      pagesb() {
+        return this.$refs.pagesb;
+      }
+    },
+    mounted() {
+    this.$nextTick(() => {
+      // //监听这个dom的scroll事件
+      // this.elMain.onscroll = () => {
+      //   console.log("on scroll");
+      //   this.handleScroll();
+      // };
+      //监听这个dom的scroll事件
+      this.pagesb.addEventListener("scroll", this.handleScroll);
+    });
+  },
     methods:{
       addEventListenerClick(){
         document.addEventListener("click", (e) => {
@@ -467,6 +483,30 @@
           }
           
         });
+      },
+      // 监听滚动
+      handleScroll () {
+        console.log(1)
+        //获取dom滚动距离
+        const scrollTop = this.pagesb.scrollTop;
+        //获取可视区高度
+        const offsetHeight = this.pagesb.offsetHeight;
+        //获取滚动条总高度
+        const scrollHeight = this.pagesb.scrollHeight;
+        var offsetTop = document.querySelector('#searchBar').offsetTop;
+        if (scrollTop > offsetTop) {
+          this.searchBarFixed = true
+        } else {
+          this.searchBarFixed = false
+        }
+        // ========================= 之前监听的window =================================
+        // var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        // var offsetTop = document.querySelector('#searchBar').offsetTop;
+        // if (scrollTop > offsetTop) {
+        //   this.searchBarFixed = true
+        // } else {
+        //   this.searchBarFixed = false
+        // }
       },
         // 普通检索 -- 开始年份大于结束年份，调换
       changeStartYear(val) {
@@ -589,16 +629,7 @@
         this.startYear = e.startYear;
         this.endYear = e.endYear;
       },
-      // 监听滚动
-      handleScroll () {
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-        var offsetTop = document.querySelector('#searchBar').offsetTop;
-        if (scrollTop > offsetTop) {
-          this.searchBarFixed = true
-        } else {
-          this.searchBarFixed = false
-        }
-      },
+
       clickkeyTab(){
         this.is_keyTab = !this.is_keyTab;
       },
@@ -1104,9 +1135,7 @@
   .inputbox{
     position: relative;
   }
-  .pages-b{
-    width: 100%
-  }
+
   .literature-titlebox{
     width: 100%;
     /* min-height: 144px; */
