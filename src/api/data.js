@@ -687,3 +687,19 @@ export const getTranslate = (params) =>{
     data: params
   })
 }
+// 文字翻译 -- 记录
+export const getTranslateHistory = (params) =>{
+  return axios.request({
+    url:'/translate-history',
+    method: 'post',
+    data: params
+  })
+}
+// 文字翻译 -- 清除记录
+export const translateClearHistory = (params) =>{
+  return axios.request({
+    url:'/clear-history',
+    method: 'post',
+    data: params
+  })
+}

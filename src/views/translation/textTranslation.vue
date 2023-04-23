@@ -13,7 +13,7 @@
         <div class="option-wrap">
           <div class="option-left">
             <div class="option-left-l">
-              <el-select v-model="value_1" placeholder="请选择">
+              <el-select v-model="value_1" placeholder="自动检测">
                 <el-option
                   v-for="item in options_1"
                   :key="item.value"
@@ -34,7 +34,7 @@
             </div> -->
 
             <div class="option-right-btn">
-              <el-button type="button" @click="clickGetTranslate">立即翻译</el-button>
+              <el-button :disabled=" textarea ? false : true " type="primary" @click="clickGetTranslate">立即翻译</el-button>
             </div>
           </div>
 
@@ -47,7 +47,7 @@
             <div class="left">
               <div class="input-wrap" :class="is_f?'input-wrap-active':''">
                 <div class="input">
-                  <textarea name="textarea" id="" cols="30" rows="10" v-model="textarea" @focus="clickFocus" @blur="clickBlur" class="textarea"></textarea>
+                  <textarea name="textarea" id="" cols="30" rows="10" v-model="textarea" @input="getTextareaInput" @focus="clickFocus" @blur="clickBlur" class="textarea"></textarea>
                   <div class="input-span"></div>
                   <div class="text-area-clear" v-if="textarea">
                     <div class="clear-icon"><i class="el-icon-close" @click.stop="clickClear"></i></div>
@@ -66,7 +66,7 @@
                     <div class="inner-rate"></div>
                     <div class="inner-ckeck">
                       <div class="inner-ckeck-num">{{ show_textarea.length }} 字符</div>
-                      <i data-clipboard-text="" class="el-tooltip el-icon-document ai-icon item"></i>
+                      <i data-clipboard-text="" class="el-tooltip el-icon-document ai-icon item" @click="handleCopy(show_textarea)"></i>
                     </div>
                   </div>
                 </div>
@@ -87,12 +87,18 @@
               </div>
               <div class="historyList thinscrollbar">
                 <div v-for="(item,index) in historyList" :key="index" class="transHistoryTag">
-                  <span class="tof">{{ item.title }}</span>
+                  <span class="tof" @click="clickTof(item.text)">{{ item.text }}</span>
                 </div>
+              </div>
+              <div class="move-box">
+                <span @click="clickMove">加载更多</span>
               </div>
             </div>
           </div>
           <!-- 翻译记录 结束 -->
+          <!-- 客服 开始 -->
+          <!-- <rightsupport></rightsupport> -->
+          <!-- 客服 结束 -->
 
       </div>
     </el-main>
@@ -108,13 +114,14 @@
 <script>
   import CommonHeader from "../../components/CommonHeader";
   import CommonFooter from "../../components/CommonFooter";
-  import { getTranslate } from "@/api/data"
-import Vue from 'vue';
+  // import rightsupport from "../../components/rightsupport";
+  import { getTranslate,getTranslateHistory,translateClearHistory } from "@/api/data"
   export default {
     name: 'textTranslation',
     components: {
       CommonHeader,
       CommonFooter,
+      // rightsupport
     },
     data(){
       return {
@@ -124,6 +131,7 @@ import Vue from 'vue';
         main_bg:{},
         tag_pages:'',
         id: 0,
+        uid:'',
         ////  以下文字翻译数据
         options_1:[ {value:"zh",label: '中文 > 英文'}, {value: "en",label: '英文 > 中文'} ],
         value_1:'',
@@ -141,6 +149,7 @@ import Vue from 'vue';
         textarea: '',
         show_textarea:'', // 翻译结果展示
         historyList:[], // 历史记录
+        page: 1,
       }
     },
     mounted(){
@@ -152,10 +161,87 @@ import Vue from 'vue';
       this.tag_pages = this.$route.query.tag_pages;
       this.tag = this.$route.query.tag_pages;
       this.id = Number(this.$route.query.id);
+      this.uid = window.localStorage.getItem('uid');
+      // 获取历史记录
+      this.getTranslateHistory();
     },
 
     methods: {
-
+      // 点击历史记录
+      clickTof(t){
+        this.textarea = t;
+        this.getTextareaInput();
+      },
+      // 点击加载更多
+      clickMove(){
+        this.page = this.page+1;
+        this.getTranslateHistory();
+      },
+      // 获取历史记录
+      getTranslateHistory(){
+        let that = this;
+        let p = {
+          page: that.page,
+          pagesize: 20,
+          uid: that.uid,
+        }
+        getTranslateHistory(p).then( res =>{
+          if(res.data.code == 0){
+            that.historyList = that.historyList.concat(res.data.data);
+          }
+        }).catch( e =>{
+          console.log(e)
+        })
+      },
+      // 监听输入框输入
+      getTextareaInput(){
+        if(!this.textarea){
+          this.value_1 = '';
+        }else{
+          this.getlanguage(this.textarea);
+        }
+      },
+      // 自动检验 中英文 
+      getlanguage(n){
+        var pattern = new RegExp("[\u4E00-\u9FA5]+");
+        var pattern2 = new RegExp("[A-Za-z]+");
+        var str = n;
+        if(pattern.test(str)){
+          this.value_1 = 'zh';
+          return
+        }
+        //验证是否是英文
+        if(pattern2.test(str)){
+          this.value_1 = 'en';
+          return
+        }
+      },
+      // 点击复制
+      handleCopy(n){
+          //创建一个input框
+        if(!n){
+          return
+        }
+        const input = document.createElement("input");
+        //将指定的DOM节点添加到body的末尾
+        document.body.appendChild(input);
+        //设置input框的value值为直播地址
+        input.setAttribute("value", n);
+        //选取文本域中的内容
+        input.select();
+        //copy的意思是拷贝当前选中内容到剪贴板
+        //document.execCommand（）方法操纵可编辑内容区域的元素
+        //返回值为一个Boolean，如果是 false 则表示操作不被支持或未被启用
+        if (document.execCommand("copy")) {
+          document.execCommand("copy");
+        }
+        //删除这个节点
+        document.body.removeChild(input);
+        this.$message.success({
+          message:'复制成功',
+          duration: 1500,
+        })
+      },
       setsickNess(){
         this.is_show = false;
         // 在组件移除后，重新渲染组件
@@ -166,7 +252,16 @@ import Vue from 'vue';
       },
       // 点击清空
       clickHistoryClear(){
-        this.historyList = [];
+        let that = this;
+        translateClearHistory({
+          uid: that.uid
+        }).then( res =>{
+          if(res.data.code == 0){
+            this.historyList = [];
+          }
+        }).catch( e =>{
+          console.log(e)
+        })
       },
       clickFocus(){
         this.is_f = true;
@@ -184,7 +279,8 @@ import Vue from 'vue';
         let p = {
           source: that.value_1,
           target: that.value_1 == 'zh' ? 'en' : 'zh',
-          text: that.textarea
+          text: that.textarea,
+          uid: that.uid,
         }
         const loading = this.$loading({
           lock: true,
@@ -196,7 +292,11 @@ import Vue from 'vue';
         getTranslate(p).then( res =>{
           loading.close();
           if(res.data.code == 0){
-            that.show_textarea = res.data.data.translate_result_text
+            that.show_textarea = res.data.data.translate_result_text;
+            that.page = 1;
+            that.historyList = [];
+            // 获取历史记录
+            that.getTranslateHistory();
           }
         }).catch( e =>{
           loading.close();
@@ -236,6 +336,16 @@ import Vue from 'vue';
     margin-right: 30px;
     box-sizing: border-box;
   }
+  .option-wrap >>> .el-select .el-input.is-focus .el-input__inner{
+    border-color:#54bdbd;
+  }
+  .option-wrap >>> .el-select .el-input__inner:focus {
+    border-color: #54bdbd;
+  }
+  .el-select-dropdown__item.selected {
+    color: #54bdbd;
+    font-weight: 700;
+  }
   .option-right-select{
     float: left;
     margin-right: 6px;
@@ -247,10 +357,13 @@ import Vue from 'vue';
     margin-left: 20px;
     box-sizing: border-box;
   }
-  .option-right-btn button.el-button--button {
+  .option-right-btn button.el-button--primary {
     color: #fff;
-    background-color: #008c68;
-    border-color: #008c68;
+    background: #54bdbd;
+    border: #54bdbd;
+  }
+  .option-right-btn button.el-button--primary:focus, .option-right-btn button.el-button--primary:hover{
+    opacity: 0.8;
   }
   .page-content{
     width: 100%;
@@ -348,7 +461,7 @@ import Vue from 'vue';
     font-size: 14px;
   }
   .input-wrap-active{
-    border-color: #008c68;
+    border-color: #54bdbd;
     transition: all 0.5s;
   }
   .show-wrap{
@@ -424,6 +537,9 @@ import Vue from 'vue';
     border-radius: 5px;
     padding: 10px 20px;
     background-color: #f8f8fb;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .transHistoryHeader {
     height: 30px;
@@ -479,6 +595,18 @@ import Vue from 'vue';
   .transHistoryTag .tof {
     width: 100%;
     display: block;
+  }
+  .move-box{
+    width: 100%;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .move-box span{
+    font-size: 14px;
+    color: #54bdbd;
+    cursor: pointer;
   }
 </style>
 <style>

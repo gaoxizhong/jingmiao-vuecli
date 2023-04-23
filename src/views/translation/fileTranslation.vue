@@ -98,7 +98,6 @@
   import CommonHeader from "../../components/CommonHeader";
   import CommonFooter from "../../components/CommonFooter";
   import {  } from "@/api/data"
-import Vue from 'vue';
   export default {
     name: 'textTranslation',
     components: {
@@ -303,8 +302,8 @@ import Vue from 'vue';
   }
   .option-right-btn button.el-button--button {
     color: #fff;
-    background-color: #008c68;
-    border-color: #008c68;
+    background-color: #54bdbd;
+    border-color: #54bdbd;
   }
   /* 历史记录 */
   .filelist {
