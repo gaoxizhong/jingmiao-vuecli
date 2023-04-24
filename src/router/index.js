@@ -61,6 +61,16 @@ const routes = [
     }
   },
   {
+    path: '/newQAhome',
+    name: 'newQAhome',
+    component: () => import('@/views/newQAhome'),
+    meta:{
+      title:'智能问答',
+      requireAuth:true,
+      keepAlive: true,
+    }
+  },
+  {
     path: '/',
     name: 'Main',
     component: () => import('@/App'),
