@@ -703,3 +703,19 @@ export const translateClearHistory = (params) =>{
     data: params
   })
 }
+// 智能问答 -- 热门问题列表
+export const getQuestionList = (params) =>{
+  return axios.request({
+    url:'/question-list',
+    method: 'post',
+    data: params
+  })
+}
+// 智能问答 -- 孕妇问题接口
+export const getQuestionDetail = (params) =>{
+  return axios.request({
+    url:'/question-detail',
+    method: 'post',
+    data: params
+  })
+}

@@ -5,10 +5,9 @@ import config from './config'
 import store from '../store'
 import router from '../router'
 
-// 设置配置 根据开发和生产环境不一样
-const baseURL = process.env.NODE_ENV === 'development'? config.baseURL.dev : config.baseURL.pro;
-
-// const baseURL = config.baseURL.dev;
+// 设置配置 根据开发和生产环境不一样  ==================   测试环境: dev 正式：pro 
+// const baseURL = process.env.NODE_ENV === 'development'? config.baseURL.dev : config.baseURL.pro;
+const baseURL = config.baseURL.pro;
 
 class HttpRequst {
 
