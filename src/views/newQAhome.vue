@@ -312,6 +312,7 @@
         let showMessage = { // 页面展示的我的提问
           isme:true,
           content: originMessage,
+          button_list:[],
           show_time:false,
           time: this.getCurrentTime(),
         }
@@ -361,6 +362,7 @@
         that.msgList.push({
           isme: false,
           content: '',
+          button_list:[],
           result: [],
           name:'智能助手',
           time: this.getCurrentTime(),

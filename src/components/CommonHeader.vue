@@ -343,13 +343,7 @@ export default {
       let name = n;
       let path = p;
       let tag_pages = t;
-      if(path == '/WesternMedicineCdss' || path == '/QAhome'){
-        // 新页面打开
-        let newUrl = this.$router.resolve({
-          path,
-        });
-        window.open(newUrl.href, "_blank");
-      }else if(path == '/popularLiterature'){
+      if(path == '/popularLiterature'){
         this.$router.push({
           path,
         });
