@@ -1,5 +1,5 @@
 <template>
-  <el-container :style="`height:${viewHeight}px;`">
+  <el-container>
     <el-container class="min-box">
       <!-- 左侧导航 开始 -->
       <el-aside width="auto">
@@ -460,7 +460,7 @@
     color: rgb(20, 184, 166);
     cursor: pointer;
     text-align: left;
-    padding-left: 14px;
+    padding-left: 20px;
   }
   .aside-ul-box>li.wenti-ul-li:hover{
     color: #ff0000;
@@ -712,7 +712,7 @@
   .msg-btnlist-box>span{
     font-size: 14px;
     padding: 5px 16px;
-    background: rgb(93, 124, 182);
+    background: rgb(20 184 166);
     color: #fff;
     border-radius: 4px;
     margin: 5px;
@@ -721,6 +721,9 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+  }
+  .msg-btnlist-box>span:hover{
+    opacity: 0.8;
   }
   @media screen and (min-width: 768px){
     .msg .msg-content {

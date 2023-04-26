@@ -97,7 +97,7 @@
           </div>
           <!-- 翻译记录 结束 -->
           <!-- 客服 开始 -->
-          <!-- <rightsupport></rightsupport> -->
+          <rightsupport></rightsupport>
           <!-- 客服 结束 -->
 
       </div>
@@ -114,14 +114,14 @@
 <script>
   import CommonHeader from "../../components/CommonHeader";
   import CommonFooter from "../../components/CommonFooter";
-  // import rightsupport from "../../components/rightsupport";
+  import rightsupport from "../../components/rightsupport";
   import { getTranslate,getTranslateHistory,translateClearHistory } from "@/api/data"
   export default {
     name: 'textTranslation',
     components: {
       CommonHeader,
       CommonFooter,
-      // rightsupport
+      rightsupport
     },
     data(){
       return {
