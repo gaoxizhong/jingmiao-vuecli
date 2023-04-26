@@ -29,16 +29,12 @@
                   <div class="msg-content-and-after">
                     <div class="msg-content">
                       <div v-html="item.content"></div>
-                      <template v-if="!is_y">
-                        <div v-if=" !item.isme && item.button_list.length != 0" class="msg-btnlist-box">
-                          <span v-for="(items,idx) in item.button_list" :key="idx" @click="clickButtonList(item.question,items.field_name,items.filed_comment)">{{items.filed_comment}}</span>
-                        </div>
-                      </template>
-                      <template v-else>
                         <div v-if=" !item.isme && item.result.length != 0" class="msg-btnlist-box">
                           <span v-for="(items,idx) in item.result" :key="idx" @click="click_y_ButtonList(item,items)">{{items}}</span>
                         </div>
-                      </template>
+                        <div v-if=" !item.isme && item.button_list.length != 0" class="msg-btnlist-box">
+                          <span v-for="(items,idx) in item.button_list" :key="idx" @click="clickButtonList(item.question,items.field_name,items.filed_comment)">{{items.filed_comment}}</span>
+                        </div>
                     </div>
                     
                   </div>
@@ -57,7 +53,7 @@
                 </div>
                 <el-button class="btn-send" :loading="loading" id="btnSend"
                   :style="{'color': originMessage != ''?'#fff':'#00000040','background-color': originMessage !=''?'rgb(20 184 166)':'#f5f5f5','border-color': originMessage !=''?'rgb(20 184 166)':'#f5f5f5'}"
-                  @click="onSendClcik"
+                  @click="onSendClcik()"
                 >
                   <span>发送</span>
                 </el-button>
@@ -129,6 +125,7 @@
         y_originMessage:'', // 左侧列表点击选中的 孕妇问题
         y_id:'', // 左侧列表点击选中的 孕妇问题id
         y_info: null,
+        type:'', 
       }
     },
     mounted(){
@@ -188,6 +185,7 @@
             return i;
         }
       },
+      
       // 获取左侧热门列表
       getQuestionList(){
         let that = this;
@@ -208,13 +206,192 @@
         let that = this;
         that.is_y = true;
         that.y_originMessage = info.question;
-        that.y_id = info.id;
-        that.getQuestionDetail();
-        // that.originMessage = text;
-        // that.question = '';
-        // that.onSendClcik();
+        let y_id = info.id;
+        // that.getQuestionDetail();
+        that.originMessage = info.question;
+        that.question = '';
+        that.onSendClcik(y_id);
       },
-      //左侧列表点击选中的 孕妇问题
+ 
+
+      // 点击 孕妇问题问答结果 返回的按钮
+      click_y_ButtonList(a,b){
+        let that = this;
+        that.originMessage = b;
+        // that.getQuestionDetail();
+        this.onSendClcik(a.info.id,a);
+      },
+
+
+      // 回车键点击
+      searchEnterFun(e){
+        var keyCode = window.event?e.keyCode:e.which;
+        if(keyCode == 13){
+          this.onSendClcik();
+        }
+      },
+      // 点击问题列表按钮
+      clickButtonList(q,n,c){
+        let that = this;
+        that.question = q;  // 提问的疾病名
+        that.field_name = n;  // 点击的属性类型
+        that.filed_comment = c; //  点击的属性名称
+        that.onSendClcik();
+      },
+
+      // 点击发送
+      onSendClcik(yid,yinfo){
+        let that = this;
+        let originMessage = that.filed_comment?that.filed_comment:that.originMessage;
+        if(originMessage == ''){
+          return
+        }
+        let pearms = {
+          question: that.question?that.question:originMessage
+        }
+        if(yid){
+          pearms.id = yid?yid:''
+        }
+        if(yinfo){
+          pearms.value = originMessage;
+          pearms.select_field = yinfo.info.next_field_info.field_name;
+          pearms.current_field = yinfo.info.current_field;
+        }
+
+        if(that.field_name != ''){
+          pearms.comment = that.filed_comment,
+          pearms.field = that.field_name
+        }
+
+        let showMessage = { // 页面展示的我的提问
+          isme:true,
+          content: originMessage,
+          button_list:[],
+          show_time:false,
+          time: this.getCurrentTime(),
+        }
+        that.msgList.push(showMessage);
+        that.scrollBottom(); // 页面滚动到底部
+        that.loading = true;
+        // that.getchantGPT(originMessage);
+        // return
+        getQuestionAnswer(pearms).then(res =>{
+          if(res.data.code == 0){
+            that.originMessage = '';
+            that.field_name = '';
+            that.filed_comment = '';
+            that.question = '';
+
+            that.type = res.data.data.type;
+
+            if( that.type == 'stage' ){  // 左侧孕妇相关问题
+
+              let showMessage = { // 页面展示的结果
+                isme:false,
+                content:`请选择点击 【 ${res.data.data.comment} 】 选项：`,
+                info: res.data.data,
+                result: res.data.data.result,
+                button_list: [],
+                time: this.getCurrentTime(),
+              }
+              that.msgList.push(showMessage);
+              console.log(that.msgList)
+            }
+            if( that.type == 'disease' ){  // 提问普通疾病
+
+              let showMessage = { // 页面展示的我的提问
+                isme:false,
+                result:[],
+                content:res.data.data.answer,
+                button_list: res.data.data.button_list,
+                question:res.data.data.question,
+                time: this.getCurrentTime(),
+              }
+              that.msgList.push(showMessage);
+            }
+            if( that.type == 'chatgpt' ){ // 请求chatgpt 接口
+
+              that.getchantGPT(res.data.data.question)
+            }
+
+            setTimeout(()=>{
+              that.scrollBottom(); // 页面滚动到底部
+            },100)
+            that.loading = false;
+          }
+        }).catch(e =>{
+          that.loading = false;
+        })
+      },
+
+      
+      //  sse 请求chantGPT 接口
+      async getchantGPT(text){
+        let that = this;
+        // 调用方法获取用户剩余次数
+      
+        let is_retun = that.is_retun;
+        if(!is_retun){
+          return
+        }
+        that.is_retun = false;
+        let showMessage = { // 页面展示的结果
+          isme: false,
+          content: '',
+          button_list:[],
+          result: [],
+          name:'智能助手',
+          time: this.getCurrentTime(),
+          }
+        that.msgList.push(showMessage);
+        // SSE接收 如果跨越 添加第二个参数 { withCredentials: true }
+
+        that.source = new EventSource(`http://18.221.12.198:5001/chatstream?content=${text}`,{ withCredentials: true });
+        console.log(that.source);
+        // sse 连接开启时回调函数
+        that.source.onopen = function (event) {
+          console.log("链接成功！");
+        }
+        // 消息监听，event 是后端返回的数据
+        that.source.onmessage = function (event) {
+          // const json = parase(event);
+          console.log('onmessage')
+          that.msgList[that.msgList.length - 1].content += event.data.replaceAll("\n","<br>");
+          that.scrollBottom(); // 页面滚动到底部
+        }
+        // 监听 error 事件，后端超时没有传输数据时触发
+          that.source.onerror = function (event) {
+          console.log("退出链接！");
+          that.source.close();
+          that.is_retun = true;
+          that.loading = false;
+          that.originMessage = '';
+          that.field_name = '';
+          that.filed_comment = '';
+          that.question = '';
+        }
+        
+      },
+      //滚动到底部
+      scrollBottom(){
+        var that=this;
+        this.$nextTick(function(){
+            var container = that.$refs.scrollbar;
+            //获取滚动条总高度
+            var scrollHeight = container.scrollHeight;
+            container.scrollTop = scrollHeight;
+        });
+      },
+
+
+
+
+
+
+
+
+
+      //左侧列表点击选中的 孕妇问题  ====== 目前无用的
       getQuestionDetail(){
         let that = this;
         let pearms = {
@@ -259,153 +436,7 @@
           // that.getchantGPT(that.y_originMessage)
         })
       },
-      // 孕妇问题点击结果问答内按钮
-      click_y_ButtonList(a,b){
-        let that = this;
-        that.y_info = a;
-        that.y_originMessage = b;
-        that.getQuestionDetail();
-      },
-      
 
-
-
-
-
-
-
-
-
-
-
-      // 回车键点击
-      searchEnterFun(e){
-        var keyCode = window.event?e.keyCode:e.which;
-        if(keyCode == 13){
-          this.onSendClcik();
-        }
-      },
-      // 点击问题列表按钮
-      clickButtonList(q,n,c){
-        let that = this;
-        that.field_name = n;
-        that.filed_comment = c;
-        that.question = q;
-        that.onSendClcik();
-      },
-
-      // 点击发送
-      onSendClcik(){
-        let that = this;
-        that.y_info = null;
-        let originMessage = that.filed_comment?that.filed_comment:that.originMessage;
-        if(originMessage == ''){
-          return
-        }
-        let pearms = {
-          question: that.question?that.question:originMessage
-        }
-        if(that.field_name != ''){
-          pearms.field = that.field_name
-        }
-
-        let showMessage = { // 页面展示的我的提问
-          isme:true,
-          content: originMessage,
-          button_list:[],
-          show_time:false,
-          time: this.getCurrentTime(),
-        }
-        that.msgList.push(showMessage);
-        that.scrollBottom(); // 页面滚动到底部
-        
-        that.loading = true;
-        that.getchantGPT(originMessage);
-        return
-        getQuestionAnswer(pearms).then(res =>{
-          if(res.data.code == 0){
-            that.originMessage = '';
-            that.field_name = '';
-            that.filed_comment = '';
-            that.question = '';
-            let showMessage = { // 页面展示的我的提问
-                isme:false,
-                content:res.data.data.answer,
-                button_list: res.data.data.button_list,
-                question:res.data.data.question,
-                time: this.getCurrentTime(),
-              }
-            that.msgList.push(showMessage);
-            setTimeout(()=>{
-              that.scrollBottom(); // 页面滚动到底部
-            },100)
-            that.loading = false;
-          }else{
-            that.getchantGPT(originMessage)
-          }
-        }).catch(e =>{
-          that.loading = false;
-        })
-      },
-
-      
-      //  sse 请求chantGPT 接口
-      async getchantGPT(text){
-        let that = this;
-        // 调用方法获取用户剩余次数
-      
-        let is_retun = that.is_retun;
-        if(!is_retun){
-          return
-        }
-        that.is_retun = false;
-        that.msgList.push({
-          isme: false,
-          content: '',
-          button_list:[],
-          result: [],
-          name:'智能助手',
-          time: this.getCurrentTime(),
-        });
-        // SSE接收 如果跨越 添加第二个参数 { withCredentials: true }
-
-        that.source = new EventSource(`http://18.221.12.198:5001/chatstream?content=${text}`,{ withCredentials: true });
-        console.log(that.source);
-        // sse 连接开启时回调函数
-        that.source.onopen = function (event) {
-          console.log("链接成功！");
-        }
-        // 消息监听，event 是后端返回的数据
-        that.source.onmessage = function (event) {
-          console.log(event)
-          // const json = parase(event);
-          console.log('onmessage')
-          that.msgList[that.msgList.length - 1].content += event.data.replaceAll("\n","<br>");
-          that.scrollBottom(); // 页面滚动到底部
-        }
-        // 监听 error 事件，后端超时没有传输数据时触发
-          that.source.onerror = function (event) {
-          console.log("退出链接！");
-          that.source.close();
-          that.is_retun = true;
-          that.loading = false;
-          that.originMessage = '';
-          that.field_name = '';
-          that.filed_comment = '';
-          that.question = '';
-        }
-        
-      },
-      //滚动到底部
-      scrollBottom(){
-        var that=this;
-        this.$nextTick(function(){
-            var container = that.$refs.scrollbar;
-            //获取滚动条总高度
-            var scrollHeight = container.scrollHeight;
-            container.scrollTop = scrollHeight;
-        });
-      },
    
     },
   }
@@ -488,7 +519,18 @@
   .scrollbar {
     overflow: auto;
   }
-
+/* ==============  滚动条样式   ==================== */
+  .scrollbar::-webkit-scrollbar { 
+    width:8px; 
+    height:10px; 
+    background-color:#dfdbdb; 
+  }
+  /* 滚动条上的滚动滑块. */
+  .scrollbar::-webkit-scrollbar-thumb { 
+    background-color:#27afa1; 
+    border-radius: 50px;
+  }
+/* ==============  滚动条样式   ==================== */
   #content, #footer {
     padding: 12px 16px;
     width: 100%;
