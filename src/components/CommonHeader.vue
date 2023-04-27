@@ -1,13 +1,11 @@
 <template>
   <div>
-    <header>
+    <div class="navheader-box">
       <el-row class="content-box">
         <el-col :span="24" class="content-col-box">
           <div class="l-content">
             <div class="l-content-title">菁苗健康</div>
-            <!-- <span class="l-content-title-span">{{tag_name}}</span> -->
           </div>
-
           <div class="r-content" v-if="phone">
             <div class="position-relative ms-2 dropdown">
               <a href="javascript:0;">
@@ -15,53 +13,48 @@
               </a>
             </div>
             <div class="s-top-userset-menu c-floating-box c-font-normal" v-if="is_userset">
-              <!-- <a href="javascript:;" class="user-menu-item">帐号设置</a> -->
               <a href="javascript:;" class="user-menu-item" @click="toLogin">退出登录</a>
             </div>
 
           </div>
         </el-col>
       </el-row>
-    </header>
+    </div>
     <!-- 导航分类模块 -->
     <div class="nav-center-box">
-
       <div class="navitems-box">
 
-        <el-menu
-          :default-active="activeIndex"
-          router
-          unique-opened
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-          background-color="#008c68"
-          text-color="#c0eae7"
-          active-text-color="#fff"
-          active-background-color="#007658"
-          >
-          <el-menu-item index="/textTranslation" target="_blank">文字翻译</el-menu-item>
-          <el-menu-item index="/xyzskPages">西医知识库</el-menu-item>
-          <el-menu-item index="/zyzskPages">中医知识库</el-menu-item>
-          <el-menu-item index="/popularLiterature">科研探索</el-menu-item>
-          <el-menu-item index="/newQAhome">智能问答</el-menu-item>
-
-          <el-submenu index="">
-            <template slot="title">更多</template>
-            <el-menu-item index="/WesternMedicineCdss">西医CDSS</el-menu-item>
-            <el-menu-item index="/ImagesList">疾病图像库</el-menu-item>
-            <el-menu-item index="/VideoHome">视频</el-menu-item>
-            <el-menu-item index=""><a class="item-a" href="http://121.36.94.218:8000/zh" target="_blank">标注平台前端</a></el-menu-item>
-            <el-menu-item index=""><a class="item-a" href="http://121.36.94.218:8000/admin/login/?next=/admin/" target="_blank">标注平台后端</a></el-menu-item>
-            <el-menu-item index=""><a class="item-a" href="http://121.36.94.218:10090/disease/ner/predict?sentence=" target="_blank">病历结构化</a></el-menu-item>
-          </el-submenu>
-
-        </el-menu>
-
-        <!-- <div class="navitems" :class=" item.id === nav_id?'navitems-active':'' " v-for="(item,index) in contentItems" :key="index">
-          <a href="javascript:0;" @click="clickItem_2(item.id,item.name,item.path,item.tag_pages)">{{item.name}}</a>
-        </div> -->
-
+        <div class="navitems" :class="active_id == '1'?'navitems-active':'' ">
+          <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/textTranslation?active_id=1')">文字翻译</a>
+        </div>
+        <div class="navitems" :class="active_id == '2'?'navitems-active':'' ">
+          <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/xyzskPages?active_id=2')">西医知识库</a>
+        </div>
+        <div class="navitems" :class="active_id == '3'?'navitems-active':'' ">
+          <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/zyzskPages?active_id=3')">中医知识库</a>
+        </div>
+        <div class="navitems" :class="active_id == '4'?'navitems-active':'' ">
+          <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/popularLiterature?active_id=4')">科研探索</a>
+        </div>
+        <div class="navitems" :class="active_id == '5'?'navitems-active':'' ">
+          <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/newQAhome?active_id=5')">智能问答</a>
+        </div>
+        <div class="navitems" :class="(active_id == '7' || active_id == '8' || active_id == '9')?'navitems-active':'' ">
+          <el-dropdown  @command="handleCommand">
+            <a href="javascript:0;" class="navitems-a el-dropdown-link">
+              更多<i class="el-icon-arrow-down el-icon--right"></i>
+            </a>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :class="active_id == '6'?'navitems-active':'' " command="/WesternMedicineCdss?active_id=6">西医CDSS</el-dropdown-item>
+              <el-dropdown-item :class="active_id == '7'?'navitems-active':'' " command="/ImagesList?active_id=7">疾病图像库</el-dropdown-item>
+              <el-dropdown-item :class="active_id == '8'?'navitems-active':'' " command="/VideoHome?active_id=8">视频</el-dropdown-item>
+              <a class="el-dropdown-menu__item" href="http://121.36.94.218:8000/zh" target="_blank">标注平台前端</a>
+              <a class="el-dropdown-menu__item" href="http://121.36.94.218:8000/admin/login/?next=/admin/" target="_blank">标注平台后端</a>
+              <a class="el-dropdown-menu__item" href="http://121.36.94.218:10090/disease/ner/predict?sentence=" target="_blank">病历结构化</a>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <!-- <a href="javascript:0;" @click="clickNavItem('/newQAhome?active_id=9')">更多</a> -->
+        </div>
       </div>
     </div>
     <!-- 导航分类模块 -->
@@ -73,22 +66,20 @@
 
 <script>
 export default {
-  props:{
-    tag_pages: String,
-    is_norouter: Number,
-    id: String
-  },
   data() {
     return {
       phone:'',
-      contentItems:[],
-      nav_id: '',
       is_userset: false,
-      activeIndex:'/xyzskPages',
-
+      active_id:'2'
+      
     }
   },
   created(){
+    let activeIndex = this.$route.query.active_id;
+    if(activeIndex){
+      this.active_id = activeIndex;
+    }
+    // this.setCurrentRoute();
     // ============================================
     // 在页面加载时读取sessionStorage里的状态信息
     // 在页面刷新时将vuex里的信息保存到sessionStorage里
@@ -115,18 +106,31 @@ export default {
     let phone = window.localStorage.getItem('setUser');
     this.phone = phone;
   },
-  watch: {
-    $route() {
-      this.setCurrentRoute();
-    }
-  },
+  // watch: {
+  //   $route() {
+  //     this.setCurrentRoute();
+  //   }
+  // },
   methods:{
     //监听到当前路由状态并激活当前菜单
-    setCurrentRoute() {
-      this.activeIndex = this.$route.path;    
-    },
-    handleSelect(key, keyPath) {
-      this.$emit('clickNav','');
+    // setCurrentRoute() {
+    //   this.activeIndex = this.$route.path;    
+    // },
+    // handleSelect(key, keyPath) {
+    //   console.log(key)
+    //   console.log(keyPath)
+    //   this.$emit('clickNav','');
+    //   let newUrl = this.$router.resolve({
+    //       path: keyPath[0],
+    //     });
+    //   window.open(newUrl.href, "_blank");
+    // },
+    clickNavItem(p){
+      let path = p;
+      let newUrl = this.$router.resolve({
+          path,
+        });
+        window.open(newUrl.href, "_blank");
     },
     toLogin(){
       window.localStorage.setItem('token','')
@@ -223,7 +227,7 @@ export default {
     -moz-box-shadow: 0 2px 10px 0 rgba(0,0,0,.15);
     -o-box-shadow: 0 2px 10px 0 rgba(0,0,0,.15);
     border-radius: 6px;
-    *border: 1px solid #d7d9e0;
+    border: 1px solid #d7d9e0;
   }
   .s-top-userset-menu a {
     display: block;
@@ -263,6 +267,9 @@ export default {
   }
   header{
     width:100%;
+  }
+  .navheader-box{
+    width: 100%;
     height: 60px;
     display: flex;
     justify-content: center;
@@ -385,9 +392,7 @@ export default {
   border: none;
 }
 
-.item-a{
-  color: #c0eae7;
-}
+
 
 .navitems{
   flex: 1;
@@ -406,8 +411,11 @@ export default {
   top:0;
 
 }
-
-.navitems>a{
+.navitems .el-dropdown{
+  width: 100%;
+  height: 100%;
+}
+.navitems a.navitems-a{
    display: flex;
   justify-content: center;
   align-items: center;
@@ -421,6 +429,15 @@ export default {
 .navitems.navitems-active>a{
   color:#fff;
 }
+.el-dropdown-menu__item{
+  border-bottom:1px solid #c0eae760;
+  display: block;
+  padding: 0 40px;
+}
+ .el-dropdown-menu__item:focus,.el-dropdown-menu__item:not(.is-disabled):hover{
+  background: #0f7e60;
+  color:#fff;
+}
 .position-relative {
     position: relative!important;
 }
@@ -428,6 +445,14 @@ export default {
   width: 36px;
   height: 36px;
   border-radius: 50%!important;
+}
+.item-a{
+  display: inline-block;
+  width: 100%;
+  height: 36px;
+  text-align: center;
+  line-height: 36px;
+  color: #333;
 }
 /* 媒体查询 */
 @media only screen and (max-width: 1366px){
@@ -458,3 +483,4 @@ export default {
   }
 }
 </style>
+

@@ -81,6 +81,7 @@ new Vue({
   router,
   data: function(){
     return {
+      activeIndex: '2',
       main_bg:{    // 内容页背景图
         backgroundImage:'url(' + require('./assets/image/home/icon_bjt.png') + ')',
         backgroundRepeat:'no-repeat',

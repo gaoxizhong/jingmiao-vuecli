@@ -95,13 +95,16 @@ export default {
   mounted(){
   },
   created(){
-    let activeIndex = this.$route.path;    
-    if(activeIndex == '/xyzskPages'){
+    let activeIndex = this.$route.query.active_id; 
+    if(activeIndex) {
+      if(activeIndex == '2'){
         this.tag_pages = 'xyzsk';
       }
-      if(activeIndex == '/zyzskPages'){
+      if(activeIndex == '3'){
         this.tag_pages = 'zyzsk';
       }
+    }
+    
     // 获取分类项
     this.getExistLabels();
   },

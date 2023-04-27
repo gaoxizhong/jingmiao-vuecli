@@ -109,7 +109,7 @@
         sickNess1:[],
         main_bg:{},
         tag_pages:'',
-        id: 0,
+        activeIndex: '',
         uid:'',
         ////  以下文字翻译数据
         options_1:[ {value:"zh",label: '中文 > 英文'}, {value: "en",label: '英文 > 中文'} ],
@@ -137,9 +137,7 @@
     created(){
       let getViewportSize = this.$getViewportSize();
       this.viewWidth = getViewportSize.width;
-      this.tag_pages = this.$route.query.tag_pages;
-      this.tag = this.$route.query.tag_pages;
-      this.id = Number(this.$route.query.id);
+      this.activeIndex = this.$route.query.active_id;
       this.uid = window.localStorage.getItem('uid');
       // 获取历史记录
       this.getTranslateHistory();

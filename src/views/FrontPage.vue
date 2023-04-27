@@ -4,7 +4,7 @@
 
     <!-- 头部开始 -->
     <el-header>
-      <CommonHeader @clickNav="setsickNess"></CommonHeader>
+      <CommonHeader @clickNav="setsickNess" ref="CommonHeader"></CommonHeader>
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
@@ -39,21 +39,23 @@ export default {
     return {
       viewHeight:0,
       viewWidth:'',
-      sickNess1:[],
       is_view: true,
       main_bg:{},
-      is_norouter: 0
     }
   },
   mounted(){
-    let that = this;
   },
   created(){
+
     let getViewportSize = this.$getViewportSize();
     this.viewHeight = getViewportSize.height;
     this.viewWidth = getViewportSize.width;
-    this.is_norouter = this.$route.query.is_norouter;
     this.main_bg = this.$root.main_bg;
+
+    let activeIndex = this.$route.query.active_id;
+    if(activeIndex){
+      this.active_id = activeIndex;
+    }
   },
 
   methods: {
@@ -68,9 +70,6 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-    /* 媒体查询 */
-  @media only screen and (max-width: 1366px){
- 
-  }
+<style scoped>
+
 </style>
