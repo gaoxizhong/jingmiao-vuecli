@@ -1,10 +1,5 @@
 <template>
    <div class="content-box">
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
      <div class="inside-content-box" id="inside-content-box">
       <el-row>
         <el-col :span="12" :offset="5">
@@ -136,14 +131,10 @@
 }
 </style>
 <script>
-import CommonHeader from "../components/CommonHeader";
 
 import { getVideoList } from '@/api/data'
   export default {
     name: 'VideoHome',
-    components: {
-      CommonHeader,
-    },
     data() {
       return {
         is_search:true,

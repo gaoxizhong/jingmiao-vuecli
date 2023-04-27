@@ -1,47 +1,31 @@
 <template>
-  <el-container>
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <div class="info-box">
-          <div class="info-box1">
-            <div class="info-box2">
-              <div class="infoDetail-title">{{infoDetail.name}}</div>
-              <div class="tap-top-span">
-                <span>{{infoDetail.organization?infoDetail.organization:''}}</span>
-              </div>
-              <div class="info-box3">
-                <div class="info-box3-title">作者关注领域</div>
-                <div class="info-box3-text icon-info-keys">
-                    <span v-for="(keys,index) in infoDetail.focusField" :key="index">{{keys}}</span>
-                </div>
-              </div>
-              <!-- 参考文献 -->
-              <div class="daohang-box">
-                <div class="daohang-tags">
-                  <a href="javascript:0;" class="active">作者文献</a>
-                </div>
-                <div class="tagspane-box">
-                  <a v-for="(auts,index) in infoDetail.authorDocument" :key="index" class="auts-box" @click="clickAuts(auts)">[{{index+1}}]{{auts}}</a>
-                </div>
-              </div>
+  <div class="pagecontent-box">
+    <div class="info-box">
+      <div class="info-box1">
+        <div class="info-box2">
+          <div class="infoDetail-title">{{infoDetail.name}}</div>
+          <div class="tap-top-span">
+            <span>{{infoDetail.organization?infoDetail.organization:''}}</span>
+          </div>
+          <div class="info-box3">
+            <div class="info-box3-title">作者关注领域</div>
+            <div class="info-box3-text icon-info-keys">
+                <span v-for="(keys,index) in infoDetail.focusField" :key="index">{{keys}}</span>
+            </div>
+          </div>
+          <!-- 参考文献 -->
+          <div class="daohang-box">
+            <div class="daohang-tags">
+              <a href="javascript:0;" class="active">作者文献</a>
+            </div>
+            <div class="tagspane-box">
+              <a v-for="(auts,index) in infoDetail.authorDocument" :key="index" class="auts-box" @click="clickAuts(auts)">[{{index+1}}]{{auts}}</a>
             </div>
           </div>
         </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+    </div>
+  </div>
 </template>
 <style scoped>
   .pagecontent-box{
@@ -178,14 +162,8 @@
 }
 </style>
 <script>
-import CommonHeader from "../components/CommonHeader";
-import CommonFooter from "../components/CommonFooter";
 import { getAuthorDetail } from "@/api/data";
 export default {
-  components: {
-    CommonHeader,
-    CommonFooter,
-  },
   data() {
     return {
       viewHeight: "",

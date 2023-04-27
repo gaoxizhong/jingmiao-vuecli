@@ -1,78 +1,62 @@
 <template>
-  <el-container>
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <div class="inside-content-box" id="inside-content-box">
-          <!-- 搜索框模块开始 -->
-         <div class="classinput-box">
-           <div class="header-input-box">
-            <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-              <el-button slot="append" @click="getImagesLabels">搜索</el-button>
-            </el-input>
-           </div>
-           <div class="classinfo-box">
-              <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname('',100)">全部</a>
-              <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" @click="clickTagname(item.key,index)">{{item.value}}</a>
-           </div>
-          </div>
-         <!-- 搜索框模块结束 -->
-
-
-          <div class="content-box1">
-            
-            <div class="listItems-div" v-for="(item,index) in getListInfo" :key="index">
-              <a href="javascript:0;" :title="item.abstract_trans" class="listItems-n-div" @click.stop="goToDetails(item.img_name)">
-                <span class="span-search" title="放大查看" @click.stop="clickZoom(item.image)"><i class="el-icon-zoom-in"></i></span>
-                <img :src="item.image" alt="" class="lower-img"/>
-                <div class="lower-content">
-                  <div class="title">
-                    <h6 :class="{ cool: !showFull[index].status }">{{item.abstract_trans}}</h6>
-                  </div>
-                  <div class="full_box">
-                    <a href="javascript:0;" class='full_txt' @click.stop='openFulltxt(index)' v-if='item.abstract_trans.length > 35'>{{!showFull[index].status?'展开':'收起'}}</a>
-                  </div>
-                  <p style="font-size:12px;text-align:left;color:#8b8989;">所属疾病：<span style="font-size:12px;color:#20C3A7;">{{item.keyword_cn}}</span></p>
-                  <div class="sj-sx-box">
-                    <span style="color:#fa6400;">{{item.type_zh?item.type_zh:''}}</span>
-                    <span style="color:#8b8989;">{{item.publish_time?item.publish_time:'暂无发布时间'}}</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-          </div>
-          <!-- 分页展示 -->
-          <div class="pagination-box">
-            <!-- <el-pagination
-            background
-            @current-change="handleCurrentChange"
-            layout=" prev, pager, next"
-            :total="count"
-            :page-size="pageSize"
-            :current-page='current_page'>
-            </el-pagination> -->
-            <div class="el-pagination is-background">
-              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
-              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
-              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
-              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
-            </div>
-          </div>
+  <div class="pagecontent-box">
+    <div class="inside-content-box" id="inside-content-box">
+      <!-- 搜索框模块开始 -->
+      <div class="classinput-box">
+        <div class="header-input-box">
+        <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+          <el-button slot="append" @click="getImagesLabels">搜索</el-button>
+        </el-input>
+        </div>
+        <div class="classinfo-box">
+          <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname('',100)">全部</a>
+          <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" @click="clickTagname(item.key,index)">{{item.value}}</a>
         </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
+      <!-- 搜索框模块结束 -->
+
+
+      <div class="content-box1">
+        
+        <div class="listItems-div" v-for="(item,index) in getListInfo" :key="index">
+          <a href="javascript:0;" :title="item.abstract_trans" class="listItems-n-div" @click.stop="goToDetails(item.img_name)">
+            <span class="span-search" title="放大查看" @click.stop="clickZoom(item.image)"><i class="el-icon-zoom-in"></i></span>
+            <img :src="item.image" alt="" class="lower-img"/>
+            <div class="lower-content">
+              <div class="title">
+                <h6 :class="{ cool: !showFull[index].status }">{{item.abstract_trans}}</h6>
+              </div>
+              <div class="full_box">
+                <a href="javascript:0;" class='full_txt' @click.stop='openFulltxt(index)' v-if='item.abstract_trans.length > 35'>{{!showFull[index].status?'展开':'收起'}}</a>
+              </div>
+              <p style="font-size:12px;text-align:left;color:#8b8989;">所属疾病：<span style="font-size:12px;color:#20C3A7;">{{item.keyword_cn}}</span></p>
+              <div class="sj-sx-box">
+                <span style="color:#fa6400;">{{item.type_zh?item.type_zh:''}}</span>
+                <span style="color:#8b8989;">{{item.publish_time?item.publish_time:'暂无发布时间'}}</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+      <!-- 分页展示 -->
+      <div class="pagination-box">
+        <!-- <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        layout=" prev, pager, next"
+        :total="count"
+        :page-size="pageSize"
+        :current-page='current_page'>
+        </el-pagination> -->
+        <div class="el-pagination is-background">
+          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
+          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
+          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
+          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
+        </div>
+      </div>
+    </div>
     <!-- 图片弹窗 -->
     <div class="viewer-container" v-if="show_checkedImg" @click.stop="clickClose"></div>
     <div class="viewer-canvas" v-if="show_checkedImg">
@@ -81,19 +65,17 @@
         <i class="el-icon-close"></i>
       </div>
     </div>
-  </el-container>
+  </div>
+<!-- 主题结束 -->
+
+
 </template>
 
 <script>
-  import CommonHeader from "../components/CommonHeader";
-  import CommonFooter from "../components/CommonFooter";
   import { getImagesList,getImagesLabels } from "@/api/data"
   export default {
     name: 'ImagesList',
-    components: {
-      CommonHeader,
-      CommonFooter,
-    },
+
     data(){
       return {
         viewHeight:'',

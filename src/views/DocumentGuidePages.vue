@@ -1,153 +1,132 @@
 <template>
-  <el-container>
-
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <div class="inside-content-box" id="inside-content-box">
-        <!-- 搜索框模块开始 -->
-          <div class="classinput-box">
-            <div class="header-input-box">
-              <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-                <el-button slot="append" @click="getInputBtn">搜索</el-button>
-              </el-input>
-            </div>
+  <div class="pagecontent-box">
+    <div class="inside-content-box" id="inside-content-box">
+    <!-- 搜索框模块开始 -->
+      <div class="classinput-box">
+        <div class="header-input-box">
+          <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+            <el-button slot="append" @click="getInputBtn">搜索</el-button>
+          </el-input>
+        </div>
+      </div>
+      <!-- 搜索框模块结束 -->
+      <div class="content-box1">
+        <div class="content-box1-left">
+          <div class="title-info-box">
+            <a href="javascript:0;" class="title-info-box-1" @click="orderClick()">
+              <span style="margin-right:4px;">按年份排序</span>
+              <i class="el-icon-sort" style="color:#5578F0;"></i>
+            </a>
           </div>
-         <!-- 搜索框模块结束 -->
-          <div class="content-box1">
-            <div class="content-box1-left">
-              <div class="title-info-box">
-                <a href="javascript:0;" class="title-info-box-1" @click="orderClick()">
-                  <span style="margin-right:4px;">按年份排序</span>
-                  <i class="el-icon-sort" style="color:#5578F0;"></i>
-                </a>
-              </div>
-              <div href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
-                <!-- 文献 -->
-                <div v-if="tag == 'Document'">
-                  <div class="item-title">{{item.title}}</div>
-                  <div class="tag-top-box" v-if="item.author && item.author.length > 0">
-                    <div class="zuozhe-box" style="width:auto;padding-right:8px;">作者:</div>
-                    <div class="tap-top-span">
-                      <a href="javascript:0;" v-for="(items,index) in item.author" @click.stop="goToauthor(items.kgid)" :key="index">{{items.name?items.name:''}}</a>
-                    </div>
-                  </div>
-                  <div class="item-center-box show-box" :class="{ cool: !showFull[index].status }"><span>摘要:</span> {{item.abstract}}</div>
-                  <div class="full_box">
-                    <a href="javascript:0;" class='full_txt' @click.stop='openFulltxt(index)' v-if='item.abstract.length > 100'>{{!showFull[index].status?'展开':'收起'}}</a>
-                  </div>
-                  <div class="key-box" v-if="item.keyword && item.keyword.length > 0">
-                    <div class="zuozhe-box">关键词:</div>
-                    <div class="keyspan-box">
-                      <span :class="{active: idx == 0 }" v-for="(keys,idx) in item.keyword" :key="idx">{{keys}}</span>
-                    </div>
-                  </div>
-                  <div class="item-center-box"><span>年份:</span> {{item.year}}</div>
-                  <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian"  :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"  v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
-                </div>
-                <!-- 指南 -->
-                <div class="guide_text" v-else>
-                  <div class="text_title_box">
-                    <h1 class="text_title" :title="item.title">{{item.title?item.title:'无'}}</h1>
-                    <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
-                  </div>
-                  <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
-                    <div class="one_info clearfix">
-                      <label>发布日期：</label>
-                      <p>{{item.year?item.year:'无'}}</p>
-                    </div>
-                    <div class="one_info clearfix">
-                      <label>英文标题：</label>
-                      <p>{{item.enTitle?item.enTitle:'无'}}</p>
-                    </div>
-                    <div class="one_info clearfix">
-                      <label>数据来源：</label>
-                      <p style="color:#20C3A7;">{{item.source?item.source:'无'}}</p>
-                    </div>
-                    <div class="one_info clearfix">
-                      <label>制定者：</label>
-                      <p style="color:#20C3A7;">{{item.constitutor?item.constitutor:'无'}}</p>
-                    </div>
-                    <div class="one_info clearfix">
-                      <label>中文摘要：</label>
-                      <div id="all_content">
-                        <p>{{item.abstract_trans?item.abstract_trans:'无'}}</p>
-                      </div>
-                    </div>
-                    <div class="one_info clearfix" style="margin-top:4px;">
-                      <label>英文摘要：</label>
-                      <div id="all_content">
-                        <p>{{item.abstract?item.abstract:'无'}}</p>
-                      </div>
-                    </div>
-                    <div class="asub-box">
-                      <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" :class="item.full_text_url?'asub-zaixian':'no-zaixian'"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
-                      <a :href="item.onlineRead?item.onlineRead:'javascript:0;'" :class="item.onlineRead?'asub-zaixian':'no-zaixian'" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"><i class="el-icon-reading"></i>pdf在线阅读</a>
-                    </div>
-                  </div>
+          <div href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index" @click="getarticle(item.title)">
+            <!-- 文献 -->
+            <div v-if="tag == 'Document'">
+              <div class="item-title">{{item.title}}</div>
+              <div class="tag-top-box" v-if="item.author && item.author.length > 0">
+                <div class="zuozhe-box" style="width:auto;padding-right:8px;">作者:</div>
+                <div class="tap-top-span">
+                  <a href="javascript:0;" v-for="(items,index) in item.author" @click.stop="goToauthor(items.kgid)" :key="index">{{items.name?items.name:''}}</a>
                 </div>
               </div>
-              <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
+              <div class="item-center-box show-box" :class="{ cool: !showFull[index].status }"><span>摘要:</span> {{item.abstract}}</div>
+              <div class="full_box">
+                <a href="javascript:0;" class='full_txt' @click.stop='openFulltxt(index)' v-if='item.abstract.length > 100'>{{!showFull[index].status?'展开':'收起'}}</a>
+              </div>
+              <div class="key-box" v-if="item.keyword && item.keyword.length > 0">
+                <div class="zuozhe-box">关键词:</div>
+                <div class="keyspan-box">
+                  <span :class="{active: idx == 0 }" v-for="(keys,idx) in item.keyword" :key="idx">{{keys}}</span>
+                </div>
+              </div>
+              <div class="item-center-box"><span>年份:</span> {{item.year}}</div>
+              <a :href="item.onlineRead?item.onlineRead:'javascript:0;'"  class="zaixian"  :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"  v-if="item.onlineRead"><i class="el-icon-reading"></i>在线阅读</a>
             </div>
-            <div  class="content-box1-right" v-if="tag == 'Document'">
-              <div>
-                <div class="bubble-box">
-                  <d3Bubble :data='data1' v-if="is_show && data1.nodes.length > 0" @getData="bubble_click" />
-                  <el-empty description="暂无数据..." v-if='!data1.nodes || data1.nodes.length <= 0'></el-empty>
+            <!-- 指南 -->
+            <div class="guide_text" v-else>
+              <div class="text_title_box">
+                <h1 class="text_title" :title="item.title">{{item.title?item.title:'无'}}</h1>
+                <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
+              </div>
+              <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
+                <div class="one_info clearfix">
+                  <label>发布日期：</label>
+                  <p>{{item.year?item.year:'无'}}</p>
                 </div>
-                <div class="atlas-box">
-                  <d3Atlas
-                    :data="data"
-                    :labels="labels"
-                    :linkTypes="linkTypes"
-                    :width="cdssWidth"
-                    :height="cdssHeight"
-                    v-if="data.nodes.length > 0"
-                  />
-                  <el-empty description="暂无数据..." v-if='!data.nodes || data.nodes.length <= 0'></el-empty>
+                <div class="one_info clearfix">
+                  <label>英文标题：</label>
+                  <p>{{item.enTitle?item.enTitle:'无'}}</p>
+                </div>
+                <div class="one_info clearfix">
+                  <label>数据来源：</label>
+                  <p style="color:#20C3A7;">{{item.source?item.source:'无'}}</p>
+                </div>
+                <div class="one_info clearfix">
+                  <label>制定者：</label>
+                  <p style="color:#20C3A7;">{{item.constitutor?item.constitutor:'无'}}</p>
+                </div>
+                <div class="one_info clearfix">
+                  <label>中文摘要：</label>
+                  <div id="all_content">
+                    <p>{{item.abstract_trans?item.abstract_trans:'无'}}</p>
+                  </div>
+                </div>
+                <div class="one_info clearfix" style="margin-top:4px;">
+                  <label>英文摘要：</label>
+                  <div id="all_content">
+                    <p>{{item.abstract?item.abstract:'无'}}</p>
+                  </div>
+                </div>
+                <div class="asub-box">
+                  <a :href="item.full_text_url?item.full_text_url:'javascript:0;'" :target="item.full_text_url?'_blank':''" :class="item.full_text_url?'asub-zaixian':'no-zaixian'"  @click.stop="goTofullText($event,item.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
+                  <a :href="item.onlineRead?item.onlineRead:'javascript:0;'" :class="item.onlineRead?'asub-zaixian':'no-zaixian'" :target="item.onlineRead?'_blank':''" @click.stop="goToyuedu($event,item.onlineRead)"><i class="el-icon-reading"></i>pdf在线阅读</a>
                 </div>
               </div>
             </div>
           </div>
-          <!-- 分页展示 -->
-          <div class="pagination-box">
-            <el-pagination
-            background
-            @current-change="handleCurrentChange"
-            layout="total, prev, pager, next"
-            :total="count"
-            :page-size="pageSize"
-            :current-page='current_page'>
-            </el-pagination>
+          <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
+        </div>
+        <div  class="content-box1-right" v-if="tag == 'Document'">
+          <div>
+            <div class="bubble-box">
+              <d3Bubble :data='data1' v-if="is_show && data1.nodes.length > 0" @getData="bubble_click" />
+              <el-empty description="暂无数据..." v-if='!data1.nodes || data1.nodes.length <= 0'></el-empty>
+            </div>
+            <div class="atlas-box">
+              <d3Atlas
+                :data="data"
+                :labels="labels"
+                :linkTypes="linkTypes"
+                :width="cdssWidth"
+                :height="cdssHeight"
+                v-if="data.nodes.length > 0"
+              />
+              <el-empty description="暂无数据..." v-if='!data.nodes || data.nodes.length <= 0'></el-empty>
+            </div>
           </div>
         </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+      <!-- 分页展示 -->
+      <div class="pagination-box">
+        <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        layout="total, prev, pager, next"
+        :total="count"
+        :page-size="pageSize"
+        :current-page='current_page'>
+        </el-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-  import CommonHeader from "../components/CommonHeader";
-  import CommonFooter from "../components/CommonFooter";
   import d3Bubble from "../components/d3Bubble";
   import d3Atlas from "../components/d3Atlas";
   import { getLitgSearch,getDochots,getd3Atlas } from "@/api/data"
   export default {
     name: 'RepositoryPage',
     components: {
-      CommonHeader,
-      CommonFooter,
       d3Bubble,
       d3Atlas
     },

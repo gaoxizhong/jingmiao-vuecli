@@ -1,5 +1,5 @@
 <template>
-  <div :style="`height:${viewHeight}px;padding: 20px 20px 10px;`">
+  <div :style="`padding: 20px 20px 10px;background: #fff;`">
     <div class="westernmedicin-content-box" style="height: 100%">
       <!-- 左侧模块 -->
       <div class="grid-leftcontent-box">

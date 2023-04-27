@@ -1,124 +1,91 @@
 <template>
-  <!-- <el-container :style="`height:${viewHeight}px;`"> -->
-  <el-container>
-
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" @sickNess="setsickNess" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-       <div class="search-module-box">
-         <!-- 搜索框模块开始 -->
-         <div class="classinput-box">
-           <div class="header-input-box">
-            <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="input_name" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-              <el-button slot="append" @click="getExistLabels">搜索</el-button>
-            </el-input>
-           </div>
-           <div class="classinfo-box">
-              <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname(all_options,100)">全部</a>
-              <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" @click="clickTagname(item.key,index)">{{item.value}}</a>
-           </div>
-          </div>
-         <!-- 搜索框模块结束 -->
-          <!-- 搜索结果列表部分 -->
-          <!-- 临床试验 -->
-          <template v-if="tag == 'ClinicalTrial'">
-            <div class="paddingSide15">
-              <el-table :data="getListInfo" border stripe style="width: 100%;" >
-                <el-table-column type="index" :index="indexMethod" label="序号" align="center" width="60"></el-table-column>
-                <el-table-column prop="register_number" label="登记号"  width="180">
-                  <template slot-scope="scope">
-                    <a :href="scope.row.file" target="_blank" >{{scope.row.register_number}}</a>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="trystate" label="试验状态" width="100">
-                  <template slot-scope="scope">
-                    <a :href="scope.row.file" target="_blank" >{{scope.row.trystate}}</a>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="drug_name" label="药物名称">
-                  <template slot-scope="scope">
-                    <a :href="scope.row.file" target="_blank" >{{scope.row.drug_name}}</a>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="adaptation_disease" label="适应症">
-                  <template slot-scope="scope">
-                    <a :href="scope.row.file" target="_blank" >{{scope.row.adaptation_disease}}</a>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="experimental_popular_topic" label="试验通俗题目">
-                  <template slot-scope="scope">
-                    <a :href="scope.row.file" target="_blank" >{{scope.row.experimental_popular_topic}}</a>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </template>
-
-          <div class="MedicineTagList-infodiv" v-else>
-            <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway')?'_blank':''" @click="(item.tag == 'ClinicalPathway')?click_file(item.file):click_gotoxq( item.tag,item.name,item.type,item.id )">
-              <span>{{ item.name }}</span>
-              <i>( {{item.description}} )</i>
-            </a>
-            <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
-          </div>
-          <!-- 搜索结果列表部分结束 -->
-          <!-- 分页展示 -->
-          <div class="pagination-box">
-            <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
-            :total="count"
-            :page-size="pageSize"
-            :current-page='page'>
-            </el-pagination>
-          </div>
-       </div>
+  <div class="pagecontent-box">
+    <div class="search-module-box">
+      <!-- 搜索框模块开始 -->
+      <div class="classinput-box">
+        <div class="header-input-box">
+        <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="input_name" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+          <el-button slot="append" @click="getExistLabels">搜索</el-button>
+        </el-input>
+        </div>
+        <div class="classinfo-box">
+          <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname(all_options,100)">全部</a>
+          <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" @click="clickTagname(item.key,index)">{{item.value}}</a>
+        </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+      <!-- 搜索框模块结束 -->
+      <!-- 搜索结果列表部分 -->
+      <!-- 临床试验 -->
+      <template v-if="tag == 'ClinicalTrial'">
+        <div class="paddingSide15">
+          <el-table :data="getListInfo" border stripe style="width: 100%;" >
+            <el-table-column type="index" :index="indexMethod" label="序号" align="center" width="60"></el-table-column>
+            <el-table-column prop="register_number" label="登记号"  width="180">
+              <template slot-scope="scope">
+                <a :href="scope.row.file" target="_blank" >{{scope.row.register_number}}</a>
+              </template>
+            </el-table-column>
+            <el-table-column prop="trystate" label="试验状态" width="100">
+              <template slot-scope="scope">
+                <a :href="scope.row.file" target="_blank" >{{scope.row.trystate}}</a>
+              </template>
+            </el-table-column>
+            <el-table-column prop="drug_name" label="药物名称">
+              <template slot-scope="scope">
+                <a :href="scope.row.file" target="_blank" >{{scope.row.drug_name}}</a>
+              </template>
+            </el-table-column>
+            <el-table-column prop="adaptation_disease" label="适应症">
+              <template slot-scope="scope">
+                <a :href="scope.row.file" target="_blank" >{{scope.row.adaptation_disease}}</a>
+              </template>
+            </el-table-column>
+            <el-table-column prop="experimental_popular_topic" label="试验通俗题目">
+              <template slot-scope="scope">
+                <a :href="scope.row.file" target="_blank" >{{scope.row.experimental_popular_topic}}</a>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </template>
+
+      <div class="MedicineTagList-infodiv" v-else>
+        <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway')?'_blank':''" @click="(item.tag == 'ClinicalPathway')?click_file(item.file):click_gotoxq( item.tag,item.name,item.type,item.id )">
+          <span>{{ item.name }}</span>
+          <i>( {{item.description}} )</i>
+        </a>
+        <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
+      </div>
+      <!-- 搜索结果列表部分结束 -->
+      <!-- 分页展示 -->
+      <div class="pagination-box">
+        <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+        :total="count"
+        :page-size="pageSize"
+        :current-page='page'>
+        </el-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import CommonHeader from "../components/CommonHeader";
-import CommonFooter from "../components/CommonFooter";
 import { getMedicineList,getExistLabels,getNewClinicalTrial } from "@/api/data"
 export default {
-  // provide(){
-  //   return {
-  //     setsickNess: this.setsickNess
-  //   }
-  // },
   name: 'SearchPages',
   components: {
-    CommonHeader,
-    CommonFooter,
-    // Home
+
   },
   data(){
     return {
-      viewHeight:'',
-      viewWidth:'',
-      sickNess1:[],
       is_view: true,
-      main_bg:{},
       tag_pages:'',
-      is_search:0,
       input_name:'',
       options:[],
       all_options:'',   //  全部 tag标识
       cur_tab:100,
       tag:'',
       MedicineIfoList:[], // 搜索结果列表
-      id: 0,
       page: 1,
       getListInfo:[], // 临床试验列表
       pageSize: 10,
@@ -128,25 +95,17 @@ export default {
   mounted(){
   },
   created(){
-    let getViewportSize = this.$getViewportSize();
-    // this.viewHeight = getViewportSize.height -100;
-    this.viewWidth = getViewportSize.width;
-    this.tag_pages = this.$route.query.tag_pages;
-    this.input_name = this.$route.query.input_name;
-    this.is_search = this.$route.query.is_search?true:false;
-    this.main_bg = this.$root.main_bg;  // 背景图
-    this.id = Number(this.$route.query.id);
-    if(this.tag_pages == 'xyzsk'){
-      document.title = '西医知识库--搜索';
-    }
-    if(this.tag_pages == 'zyzsk'){
-      document.title = '中医知识库--搜索';
-    }
+    let activeIndex = this.$route.path;    
+    if(activeIndex == '/xyzskPages'){
+        this.tag_pages = 'xyzsk';
+      }
+      if(activeIndex == '/zyzskPages'){
+        this.tag_pages = 'zyzsk';
+      }
     // 获取分类项
     this.getExistLabels();
   },
-
-  methods: {      
+  methods: {     
     indexMethod(index) {
       return index + 1;
     },
@@ -359,6 +318,7 @@ export default {
     getExistLabels(){
       let that = this;
       let tag_pages = that.tag_pages;
+      console.log(tag_pages)
       let pearms = {
         type:''
       }

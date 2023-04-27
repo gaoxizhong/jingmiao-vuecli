@@ -1,126 +1,105 @@
 <template>
-  <el-container>
-
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages"></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main>
-      <div class="pagecontent-box">
-        <!-- 条件选择模块 开始 -->
-        <div class="option-wrap">
-          <div class="option-left">
-            <div class="option-left-l">
-              <el-select v-model="value_1" placeholder="自动检测">
-                <el-option
-                  v-for="item in options_1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-            <!-- <div class="option-right-select">
-              <el-select v-model="value_2" placeholder="请选择">
-                <el-option
-                  v-for="item in options_2"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </div> -->
-
-            <div class="option-right-btn">
-              <el-button :disabled=" textarea ? false : true " type="primary" @click="clickGetTranslate">立即翻译</el-button>
-            </div>
-          </div>
-
+  <div class="pagecontent-box">
+    <!-- 条件选择模块 开始 -->
+    <div class="option-wrap">
+      <div class="option-left">
+        <div class="option-left-l">
+          <el-select v-model="value_1" placeholder="自动检测">
+            <el-option
+              v-for="item in options_1"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </div>
-        <!-- 条件选择模块 结束 -->
+        <!-- <div class="option-right-select">
+          <el-select v-model="value_2" placeholder="请选择">
+            <el-option
+              v-for="item in options_2"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div> -->
 
-          
-          <!-- 翻译输入模块 开始 -->
-          <div class="text-box">
-            <div class="left">
-              <div class="input-wrap" :class="is_f?'input-wrap-active':''">
-                <div class="input">
-                  <textarea name="textarea" id="" cols="30" rows="10" v-model="textarea" @input="getTextareaInput" @focus="clickFocus" @blur="clickBlur" class="textarea"></textarea>
-                  <div class="input-span"></div>
-                  <div class="text-area-clear" v-if="textarea">
-                    <div class="clear-icon"><i class="el-icon-close" @click.stop="clickClear"></i></div>
-                  </div>
-                  <div class="count-box"><span class="count">{{ textarea.length }}/5000字符</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="right">
-              <div class="show-wrap">
-                <div class="show">
-                  <div id="translated_org" class="inner-text-area">
-                    <span class="inner-text-paragraph-org">{{ show_textarea }}</span>
-                  </div>
-                  <div class="inner-footer">
-                    <div class="inner-rate"></div>
-                    <div class="inner-ckeck">
-                      <div class="inner-ckeck-num">{{ show_textarea.length }} 字符</div>
-                      <i data-clipboard-text="" class="el-tooltip el-icon-document ai-icon item" @click="handleCopy(show_textarea)"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 翻译输入模块 结束 -->
-
-          <!-- 翻译记录 开始 -->
-          <div class="left">
-            <div class="transHistory">
-              <div class="transHistoryHeader">
-                <div class="historyHeaderLeft">
-                  <img src="../../assets/image/icon-history.png" alt="" />
-                  <span>翻译记录</span>
-                </div>
-                <div class="history-clear-box" @click.stop="clickHistoryClear">清空</div>
-              </div>
-              <div class="historyList thinscrollbar">
-                <div v-for="(item,index) in historyList" :key="index" class="transHistoryTag">
-                  <span class="tof" @click="clickTof(item.text)">{{ item.text }}</span>
-                </div>
-              </div>
-              <div class="move-box">
-                <span @click="clickMove">加载更多</span>
-              </div>
-            </div>
-          </div>
-          <!-- 翻译记录 结束 -->
-          <!-- 客服 开始 -->
-          <rightsupport></rightsupport>
-          <!-- 客服 结束 -->
-
+        <div class="option-right-btn">
+          <el-button :disabled=" textarea ? false : true " type="primary" @click="clickGetTranslate">立即翻译</el-button>
+        </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+
+    </div>
+    <!-- 条件选择模块 结束 -->
+
+      
+    <!-- 翻译输入模块 开始 -->
+    <div class="text-box">
+      <div class="left">
+        <div class="input-wrap" :class="is_f?'input-wrap-active':''">
+          <div class="input">
+            <textarea name="textarea" id="" cols="30" rows="10" v-model="textarea" @input="getTextareaInput" @focus="clickFocus" @blur="clickBlur" class="textarea"></textarea>
+            <div class="input-span"></div>
+            <div class="text-area-clear" v-if="textarea">
+              <div class="clear-icon"><i class="el-icon-close" @click.stop="clickClear"></i></div>
+            </div>
+            <div class="count-box"><span class="count">{{ textarea.length }}/5000字符</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="show-wrap">
+          <div class="show">
+            <div id="translated_org" class="inner-text-area">
+              <span class="inner-text-paragraph-org">{{ show_textarea }}</span>
+            </div>
+            <div class="inner-footer">
+              <div class="inner-rate"></div>
+              <div class="inner-ckeck">
+                <div class="inner-ckeck-num">{{ show_textarea.length }} 字符</div>
+                <i data-clipboard-text="" class="el-tooltip el-icon-document ai-icon item" @click="handleCopy(show_textarea)"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 翻译输入模块 结束 -->
+
+    <!-- 翻译记录 开始 -->
+    <div class="left">
+      <div class="transHistory">
+        <div class="transHistoryHeader">
+          <div class="historyHeaderLeft">
+            <img src="../../assets/image/icon-history.png" alt="" />
+            <span>翻译记录</span>
+          </div>
+          <div class="history-clear-box" @click.stop="clickHistoryClear">清空</div>
+        </div>
+        <div class="historyList thinscrollbar">
+          <div v-for="(item,index) in historyList" :key="index" class="transHistoryTag">
+            <span class="tof" @click="clickTof(item.text)">{{ item.text }}</span>
+          </div>
+        </div>
+        <div class="move-box">
+          <span @click="clickMove">加载更多</span>
+        </div>
+      </div>
+    </div>
+    <!-- 翻译记录 结束 -->
+    <!-- 客服 开始 -->
+    <rightsupport></rightsupport>
+    <!-- 客服 结束 -->
+
+    </div>
 </template>
 
 <script>
-  import CommonHeader from "../../components/CommonHeader";
-  import CommonFooter from "../../components/CommonFooter";
   import rightsupport from "../../components/rightsupport";
   import { getTranslate,getTranslateHistory,translateClearHistory } from "@/api/data"
   export default {
     name: 'textTranslation',
     components: {
-      CommonHeader,
-      CommonFooter,
       rightsupport
     },
     data(){

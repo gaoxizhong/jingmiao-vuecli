@@ -1,63 +1,47 @@
 <template>
-  <el-container>
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <div class="info-box">
-          <div class="guide_text">
-            <div class="text_title_box">
-              <h2 class="text_title">{{infoDetail.title?infoDetail.title:'无'}}</h2>
+  <div class="pagecontent-box">
+    <div class="info-box">
+      <div class="guide_text">
+        <div class="text_title_box">
+          <h2 class="text_title">{{infoDetail.title?infoDetail.title:'无'}}</h2>
+        </div>
+        <div class="guide_info_list">
+          <div class="one_info clearfix">
+            <label>英文标题：</label>
+            <p>{{infoDetail.enTitle?infoDetail.enTitle:'无'}}</p>
+          </div>
+          <div class="one_info clearfix">
+            <label>中文摘要：</label>
+            <div id="all_content">
+              <p v-html="infoDetail.abstract_trans?infoDetail.abstract_trans:'无'"></p>
             </div>
-            <div class="guide_info_list">
-              <div class="one_info clearfix">
-                <label>英文标题：</label>
-                <p>{{infoDetail.enTitle?infoDetail.enTitle:'无'}}</p>
-              </div>
-              <div class="one_info clearfix">
-                <label>中文摘要：</label>
-                <div id="all_content">
-                  <p v-html="infoDetail.abstract_trans?infoDetail.abstract_trans:'无'"></p>
-                </div>
-              </div>
-              <div class="one_info clearfix" style="margin-top:4px;">
-                <label>英文摘要：</label>
-                <div id="all_content">
-                  <p v-html="infoDetail.abstract?infoDetail.abstract:'无'"></p>
-                </div>
-              </div>
-              <div class="one_info clearfix">
-                <label>数据来源：</label>
-                <p>{{infoDetail.source?infoDetail.source:'无'}}</p>
-              </div>
-              <div class="one_info clearfix">
-                <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者：</label>
-                <p>{{infoDetail.constitutor?infoDetail.constitutor:'无'}}</p>
-              </div>
-              <div class="one_info clearfix">
-                <label>发布日期：</label>
-                <p>{{infoDetail.year?infoDetail.year:'无'}}</p>
-              </div>
-              <div class="asub-box">
-                <a :href="infoDetail.full_text_url?infoDetail.full_text_url:'javascript:0;'" :target="infoDetail.full_text_url?'_blank':''" :class="infoDetail.full_text_url?'asub-zaixian':'no-zaixian'"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
-                <a :href="infoDetail.onlineRead?infoDetail.onlineRead:'javascript:0;'" :class="infoDetail.onlineRead?'asub-zaixian':'no-zaixian'" :target="infoDetail.onlineRead?'_blank':''" @click.stop="goToyuedu($event,infoDetail.onlineRead)"><i class="el-icon-reading"></i>pdf在线阅读</a>
-              </div>
+          </div>
+          <div class="one_info clearfix" style="margin-top:4px;">
+            <label>英文摘要：</label>
+            <div id="all_content">
+              <p v-html="infoDetail.abstract?infoDetail.abstract:'无'"></p>
             </div>
+          </div>
+          <div class="one_info clearfix">
+            <label>数据来源：</label>
+            <p>{{infoDetail.source?infoDetail.source:'无'}}</p>
+          </div>
+          <div class="one_info clearfix">
+            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者：</label>
+            <p>{{infoDetail.constitutor?infoDetail.constitutor:'无'}}</p>
+          </div>
+          <div class="one_info clearfix">
+            <label>发布日期：</label>
+            <p>{{infoDetail.year?infoDetail.year:'无'}}</p>
+          </div>
+          <div class="asub-box">
+            <a :href="infoDetail.full_text_url?infoDetail.full_text_url:'javascript:0;'" :target="infoDetail.full_text_url?'_blank':''" :class="infoDetail.full_text_url?'asub-zaixian':'no-zaixian'"  @click.stop="goTofullText($event,infoDetail.full_text_url)"><i class="el-icon-reading"></i>原文链接</a>
+            <a :href="infoDetail.onlineRead?infoDetail.onlineRead:'javascript:0;'" :class="infoDetail.onlineRead?'asub-zaixian':'no-zaixian'" :target="infoDetail.onlineRead?'_blank':''" @click.stop="goToyuedu($event,infoDetail.onlineRead)"><i class="el-icon-reading"></i>pdf在线阅读</a>
           </div>
         </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+    </div>
+  </div>
 </template>
 <style scoped>
 .pagecontent-box{

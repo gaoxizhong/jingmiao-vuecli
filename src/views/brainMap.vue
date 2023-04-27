@@ -1,60 +1,36 @@
 <template>
-  <el-container>
-
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg"  v-loading="loading">
-      <div class="pagecontent-box">
-        <div class="inside-content-box" id="inside-content-box">
-        <!-- 搜索框模块开始 -->
-          <div class="classinput-box">
-            <div class="header-input-box">
-              <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-                <el-button slot="append" @click="getInputBtn">搜索</el-button>
-              </el-input>
-            </div>
-          </div>
-         <!-- 搜索框模块结束 -->
-          <div class="content-box1">
-            <div class="content-box1-left">
-              <div href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
-                <superMindmap v-if="showMindMap" :active='active' :data="item" :type="type" @activeChange="activeChange"/>
-              </div>
-              <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
-            </div>
-          </div>
-
-
+  <div class="pagecontent-box">
+    <div class="inside-content-box" id="inside-content-box">
+    <!-- 搜索框模块开始 -->
+      <div class="classinput-box">
+        <div class="header-input-box">
+          <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+            <el-button slot="append" @click="getInputBtn">搜索</el-button>
+          </el-input>
         </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+      <!-- 搜索框模块结束 -->
+      <div class="content-box1">
+        <div class="content-box1-left">
+          <div href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
+            <superMindmap v-if="showMindMap" :active='active' :data="item" :type="type" @activeChange="activeChange"/>
+          </div>
+          <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
 </template>
 
 <script>
-  import CommonHeader from "../components/CommonHeader";
-  import CommonFooter from "../components/CommonFooter";
   // 导入思维导图组件
   import superMindmap from "../components/superMindmap";
 
   import { getGuideMindMapZh } from "@/api/data"
   export default {
     name: 'RepositoryPage',
-    components: {
-      CommonHeader,
-      CommonFooter,
-      superMindmap
-    },
     data(){
       return {
         viewHeight:'',

@@ -1,77 +1,54 @@
 <template>
-  <el-container>
-
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <div class="inside-content-box" id="inside-content-box">
-        <!-- 搜索框模块开始 -->
-          <div class="classinput-box">
-            <div class="header-input-box">
-              <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-                <el-button slot="append" @click="getInputBtn">搜索</el-button>
-              </el-input>
-            </div>
-          </div>
-         <!-- 搜索框模块结束 -->
-          <div class="content-box1">
-            <div class="content-box1-left">
-              <div href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
-                <div class="guide_text">
-                  <div class="text_title_box">
-                    <h1 class="text_title" :title="item.title">{{item.title?item.title:'无'}}</h1>
-                    <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
-                  </div>
-                  <p class="text_titlep">来源：<a :href="item.pdf_link" target="_blank" v-if="item.pdf_link">nccn食管癌诊疗指南2022v2（中文）</a><span style="padding:0 6px;">页码：{{item.page}}</span></p>
-                  <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
-                    <div class="one_info clearfix">
-                      <div id="all_content">
-                        <p v-html="item.content?item.content:'无'"></p>
-                      </div>
-                    </div>
+  <div class="pagecontent-box">
+    <div class="inside-content-box" id="inside-content-box">
+    <!-- 搜索框模块开始 -->
+      <div class="classinput-box">
+        <div class="header-input-box">
+          <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+            <el-button slot="append" @click="getInputBtn">搜索</el-button>
+          </el-input>
+        </div>
+      </div>
+      <!-- 搜索框模块结束 -->
+      <div class="content-box1">
+        <div class="content-box1-left">
+          <div href="javascript:0;" class="grid-content bg-purple-dark" v-for="(item,index) in getListInfo" :key="index">
+            <div class="guide_text">
+              <div class="text_title_box">
+                <h1 class="text_title" :title="item.title">{{item.title?item.title:'无'}}</h1>
+                <a class="text_title_a" href="javascript:0;" @click.stop='openFulltxt(index)'>{{!showFull[index].status?'展开':'收起'}}</a>
+              </div>
+              <p class="text_titlep">来源：<a :href="item.pdf_link" target="_blank" v-if="item.pdf_link">nccn食管癌诊疗指南2022v2（中文）</a><span style="padding:0 6px;">页码：{{item.page}}</span></p>
+              <div class="guide_info_list" :class="{ cool: !showFull[index].status }">
+                <div class="one_info clearfix">
+                  <div id="all_content">
+                    <p v-html="item.content?item.content:'无'"></p>
                   </div>
                 </div>
               </div>
-              <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
             </div>
           </div>
-
-          <!-- 分页展示 -->
-          <div class="pagination-box">
-            <div class="el-pagination is-background">
-              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
-              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
-              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
-              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
-            </div>
-          </div>
+          <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
         </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+
+      <!-- 分页展示 -->
+      <div class="pagination-box">
+        <div class="el-pagination is-background">
+          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
+          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
+          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
+          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-  import CommonHeader from "../components/CommonHeader";
-  import CommonFooter from "../components/CommonFooter";
   import { getStructureList } from "@/api/data"
   export default {
     name: 'RepositoryPage',
-    components: {
-      CommonHeader,
-      CommonFooter,
-    },
     data(){
       return {
         viewHeight:'',

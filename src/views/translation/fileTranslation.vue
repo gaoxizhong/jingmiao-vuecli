@@ -1,109 +1,86 @@
 <template>
-  <el-container>
+  <div class="pagecontent-box">
 
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main>
-      <div class="pagecontent-box">
-
-        <div class="fileBox">
-          <div class="upload-drag-container">
-            <el-upload drag ref="upload" action="none" multiple :file-list="fileList">
-              <div class="upload-drag-content">
-                <div class="content-left">
-                  <div class="upload-icon"></div>
-                  <div class="type-tip">
-                    <span>支持格式</span>
-                  </div>
-                </div>
-                <div class="content-right">
-                  <div class="no-file-upload">
-                    <span class="file-upload-tip">将文件拖拽到此处上传</span>
-                  </div>
-                  <div class="upload-trigger">
-                    <span class="upload-tip-letter-or">或</span>
-                    <span class="upload-trigger-button">选择文件</span>
-                  </div>
-                  <!-- <div class="upload-tip"></div> -->
-                </div>
-              </div>
-            </el-upload>
-          </div>
-
-          <!-- 条件选择模块 开始 -->
-          <div class="option-wrap">
-            <div class="option-left">
-              <div class="option-left-l">
-                <el-select v-model="value_1" placeholder="请选择">
-                  <el-option
-                    v-for="item in options_1"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <!-- <div class="option-right-select">
-                <el-select v-model="value_2" placeholder="请选择">
-                  <el-option
-                    v-for="item in options_2"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div> -->
-
-              <div class="option-right-btn">
-                <el-button type="button">立即翻译</el-button>
-              </div>
+  <div class="fileBox">
+    <div class="upload-drag-container">
+      <el-upload drag ref="upload" action="none" multiple :file-list="fileList">
+        <div class="upload-drag-content">
+          <div class="content-left">
+            <div class="upload-icon"></div>
+            <div class="type-tip">
+              <span>支持格式</span>
             </div>
-
           </div>
-          <!-- 条件选择模块 结束 -->
-        </div>
-        <!-- 历史记录 开始 -->
-        <div class="filelist">
-          <div class="listhead">
-            <div class="filedomain">文档类型</div>
-            <div class="filename tof">
-              <div>文件名称</div>
+          <div class="content-right">
+            <div class="no-file-upload">
+              <span class="file-upload-tip">将文件拖拽到此处上传</span>
             </div>
-            <div class="filelang">语言方向</div>
-            <div class="filedomain">翻译领域</div>
-            <div class="filestatus">翻译状态</div>
-            <div class="filemanage">操作</div>
+            <div class="upload-trigger">
+              <span class="upload-tip-letter-or">或</span>
+              <span class="upload-trigger-button">选择文件</span>
+            </div>
+            <!-- <div class="upload-tip"></div> -->
           </div>
-          <div class="listbox thinscrollbar"></div>
-          <div class="morelink"></div>
         </div>
-        <!-- 历史记录 结束 -->
+      </el-upload>
+    </div>
 
+    <!-- 条件选择模块 开始 -->
+    <div class="option-wrap">
+      <div class="option-left">
+        <div class="option-left-l">
+          <el-select v-model="value_1" placeholder="请选择">
+            <el-option
+              v-for="item in options_1"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <!-- <div class="option-right-select">
+          <el-select v-model="value_2" placeholder="请选择">
+            <el-option
+              v-for="item in options_2"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div> -->
+
+        <div class="option-right-btn">
+          <el-button type="button">立即翻译</el-button>
+        </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+
+    </div>
+    <!-- 条件选择模块 结束 -->
+  </div>
+  <!-- 历史记录 开始 -->
+  <div class="filelist">
+    <div class="listhead">
+      <div class="filedomain">文档类型</div>
+      <div class="filename tof">
+        <div>文件名称</div>
+      </div>
+      <div class="filelang">语言方向</div>
+      <div class="filedomain">翻译领域</div>
+      <div class="filestatus">翻译状态</div>
+      <div class="filemanage">操作</div>
+    </div>
+    <div class="listbox thinscrollbar"></div>
+    <div class="morelink"></div>
+  </div>
+  <!-- 历史记录 结束 -->
+
+  </div>
 </template>
 
 <script>
-  import CommonHeader from "../../components/CommonHeader";
-  import CommonFooter from "../../components/CommonFooter";
   import {  } from "@/api/data"
   export default {
     name: 'textTranslation',
-    components: {
-      CommonHeader,
-      CommonFooter,
-    },
     data(){
       return {
         viewHeight:'',

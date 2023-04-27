@@ -1,95 +1,74 @@
 <template>
-  <!-- <el-container :style="`height:${viewHeight}px;`"> -->
-  <el-container>
-
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" @sickNess="setsickNess"></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-
-        <div class="yp-position-box">
-          <div class="col-left-title">
-            <p :title="name">{{ name?name:'暂无' }}</p>
-            <a href="javascript:0;" class="cjyp-table-tr-r" style="font-weight: 100;font-size:13px;" @click.stop="clickXyEacharts(name)">
-              <i class="el-icon-share" style="color: #2D5AFA; margin-right: 6px"></i>查看图谱
-            </a>
-          </div>
-          <div class="info-box">
-            <div class="yp-position-nbox" :class="is_nofr ?'':'is-nofr'" id="scrollBox">
-              <div class="yp-info-box applications-content">
-                <div class="activi-1">
-                  <div v-for="(item, index) in getinfo" :key="index" class="do-jump">
-                    <div class="item-name">{{ item.name }}</div>
-                    <div class="item-text" v-if="item.tag != '' && item.is_list == 1">
-                      <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
-                      <span class="item-text-a" v-for="(items, index) in item.text" :key="index">{{ items.kgid ? items.name : items }}</span>
-                    </div>
-                    <div class="item-text" style="white-space:pre-line" v-html='item.text ? item.text : "暂无数据"' v-else></div>
+    <div class="pagecontent-box">
+      <div class="yp-position-box">
+        <div class="col-left-title">
+          <p :title="name">{{ name?name:'暂无' }}</p>
+          <a href="javascript:0;" class="cjyp-table-tr-r" style="font-weight: 100;font-size:13px;" @click.stop="clickXyEacharts(name)">
+            <i class="el-icon-share" style="color: #2D5AFA; margin-right: 6px"></i>查看图谱
+          </a>
+        </div>
+        <div class="info-box">
+          <div class="yp-position-nbox" :class="is_nofr ?'':'is-nofr'" id="scrollBox">
+            <div class="yp-info-box applications-content">
+              <div class="activi-1">
+                <div v-for="(item, index) in getinfo" :key="index" class="do-jump">
+                  <div class="item-name">{{ item.name }}</div>
+                  <div class="item-text" v-if="item.tag != '' && item.is_list == 1">
+                    <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
+                    <span class="item-text-a" v-for="(items, index) in item.text" :key="index">{{ items.kgid ? items.name : items }}</span>
                   </div>
+                  <div class="item-text" style="white-space:pre-line" v-html='item.text ? item.text : "暂无数据"' v-else></div>
                 </div>
-                <div v-if="getinfo.length <= 0" style="color: #999;">暂无数据...</div>
               </div>
+              <div v-if="getinfo.length <= 0" style="color: #999;">暂无数据...</div>
             </div>
-            <div class="fr" v-if="is_nofr">
-              <div class="src-components-PushItems-DetailsModal-N686B">
-                <div class="src-components-PushItems-DetailsModal-24j2q">
-                  <div class="src-components-PushItems-DetailsModal-1SgDc">
-                    <div class="src-components-PushItems-DetailsModal-31MMP" v-for="(item, index) in getinfo" :key="item.id" @click="jump(index)">
-                      <div>
-                        <span class="src-components-PushItems-DetailsModal-2NyER" :class="[index===activeMenu?'active':'']">
-                          <div class="src-components-PushItems-DetailsModal-3KPN8">
-                            <img v-if="index===activeMenu" class="src-components-PushItems-DetailsModal-1xqmn" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAKCAYAAAC5Sw6hAAAAb0lEQVQoU2O0nn9xK8P//14MxABGxv+MDAxrWBj44g4kKv5A1sJoPe/Cf2LMQNHEyLiThYEvANkwsgwCGcqIZhjZBqEbRpFBYO8yMc45mqCfSrFBjIyMs48k6qdRZBByOJFtEFUCG90QcMBTK0ECANYqQAtl57OTAAAAAElFTkSuQmCC" alt="" />
-                            <span v-else class="src-components-PushItems-DetailsModal-2Fz4c"></span>
-                          </div>
-                          {{ item.name }}
-                        </span>
-                      </div>
+          </div>
+          <div class="fr" v-if="is_nofr">
+            <div class="src-components-PushItems-DetailsModal-N686B">
+              <div class="src-components-PushItems-DetailsModal-24j2q">
+                <div class="src-components-PushItems-DetailsModal-1SgDc">
+                  <div class="src-components-PushItems-DetailsModal-31MMP" v-for="(item, index) in getinfo" :key="item.id" @click="jump(index)">
+                    <div>
+                      <span class="src-components-PushItems-DetailsModal-2NyER" :class="[index===activeMenu?'active':'']">
+                        <div class="src-components-PushItems-DetailsModal-3KPN8">
+                          <img v-if="index===activeMenu" class="src-components-PushItems-DetailsModal-1xqmn" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAKCAYAAAC5Sw6hAAAAb0lEQVQoU2O0nn9xK8P//14MxABGxv+MDAxrWBj44g4kKv5A1sJoPe/Cf2LMQNHEyLiThYEvANkwsgwCGcqIZhjZBqEbRpFBYO8yMc45mqCfSrFBjIyMs48k6qdRZBByOJFtEFUCG90QcMBTK0ECANYqQAtl57OTAAAAAElFTkSuQmCC" alt="" />
+                          <span v-else class="src-components-PushItems-DetailsModal-2Fz4c"></span>
+                        </div>
+                        {{ item.name }}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
 
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-    <!-- 点击图谱弹窗 -->
-    <div class="casePop-mask" v-show="is_casePop"></div>
-    <div class="casePop-module-box" v-show="is_casePop">
-      <div class="close-box" @click="click_close">
-        <i class="el-icon-circle-close"></i>
-      </div>
-      <div class="main-box">
-        <!-- main 右侧图谱 -->
-        <div class="main-box-left">
-          <div class="main-box-left-t">
-            <div style="font-weight: 600;text-align: left;">
-              <i class="el-icon-share"></i> 疾病图谱
+          <!-- 点击图谱弹窗 -->
+      <div class="casePop-mask" v-show="is_casePop"></div>
+      <div class="casePop-module-box" v-show="is_casePop">
+        <div class="close-box" @click="click_close">
+          <i class="el-icon-circle-close"></i>
+        </div>
+        <div class="main-box">
+          <!-- main 右侧图谱 -->
+          <div class="main-box-left">
+            <div class="main-box-left-t">
+              <div style="font-weight: 600;text-align: left;">
+                <i class="el-icon-share"></i> 疾病图谱
+              </div>
             </div>
+            <div class="atlas-box" id='atlas'></div>
           </div>
-          <div class="atlas-box" id='atlas'></div>
         </div>
       </div>
     </div>
 
-  </el-container>
+
 </template>
 
 <script>
-  import CommonHeader from "../components/CommonHeader";
-  import CommonFooter from "../components/CommonFooter";
   // import DetailsMask from '../components/WesternMedicineCdss/DetailsMask';
   import References from "../components/References"; // 文献指南
   import BScroll  from "better-scroll";
@@ -102,8 +81,6 @@
     // },
     name: 'NewDetails',
     components: {
-      CommonHeader,
-      CommonFooter,
       References,
       // DetailsMask
     },

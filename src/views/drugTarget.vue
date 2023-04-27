@@ -1,131 +1,108 @@
 <template>
-  <el-container>
-
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <div class="inside-content-box" id="inside-content-box">
-        <!-- 搜索框模块开始 -->
-          <div class="classinput-box">
-            <div class="el-input-box el-col">
-              <el-select class="el-select-box" placeholder="请选择" v-model="select" slot="prepend" @change="searchDownChange">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"></el-option>
-              </el-select>
-              <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-                <el-button slot="append" @click="getInputBtn">搜索</el-button>
-              </el-input>
-            </div>
-          </div>
-         <!-- 搜索框模块结束 -->
-
-          <div class="content-box">
-            <div class="paddingSide15" v-if="getListInfo.length > 0">
-              <el-table :data="getListInfo" :height="viewHeight-240" border stripe style="width: 100%;" >
-                <el-table-column fixed prop="medicine" label="药物" width="120">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.medicine}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="target_spot" label="靶点" width="100">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.target_spot}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="mode_action" label="作用机制" width="120">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.mode_action}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="developed_indications" label="在研适应症" width="180">
-                  <template slot-scope="scope">
-                    <p :title="scope.row.developed_indications">{{scope.row.developed_indications}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="medicine_type" label="药物类型" width="120">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.medicine_type}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="no_developed_indications" label="非在研适应症" width="120">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.no_developed_indications}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="therapeutic_area" label="治疗领域" width="120">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.therapeutic_area}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="original_research_agency" label="原研机构" width="120">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.original_research_agency}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="In_research_institutions" label="在研机构" width="180">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.In_research_institutions}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="global_development_peak_state" label="最高研发状态（全球）" width="120">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.global_development_peak_state}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="china_development_peak_state" label="最高研发状态（中国）" width="120">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.global_development_peak_state}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="receive_approval_country" label="获批国家" width="120">
-                  <template slot-scope="scope">
-                    <p>{{scope.row.receive_approval_country}}</p>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-            <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
-          </div>
-
-          <!-- 分页展示 -->
-          <div class="pagination-box">
-            <div class="el-pagination is-background">
-              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
-              <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
-              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
-              <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
-            </div>
-          </div>
+  <div class="pagecontent-box">
+    <div class="inside-content-box" id="inside-content-box">
+    <!-- 搜索框模块开始 -->
+      <div class="classinput-box">
+        <div class="el-input-box el-col">
+          <el-select class="el-select-box" placeholder="请选择" v-model="select" slot="prepend" @change="searchDownChange">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"></el-option>
+          </el-select>
+          <el-input placeholder="请输入内容..." v-model="search" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+            <el-button slot="append" @click="getInputBtn">搜索</el-button>
+          </el-input>
         </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+      <!-- 搜索框模块结束 -->
+
+      <div class="content-box">
+        <div class="paddingSide15" v-if="getListInfo.length > 0">
+          <el-table :data="getListInfo" :height="viewHeight-240" border stripe style="width: 100%;" >
+            <el-table-column fixed prop="medicine" label="药物" width="120">
+              <template slot-scope="scope">
+                <p>{{scope.row.medicine}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="target_spot" label="靶点" width="100">
+              <template slot-scope="scope">
+                <p>{{scope.row.target_spot}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="mode_action" label="作用机制" width="120">
+              <template slot-scope="scope">
+                <p>{{scope.row.mode_action}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="developed_indications" label="在研适应症" width="180">
+              <template slot-scope="scope">
+                <p :title="scope.row.developed_indications">{{scope.row.developed_indications}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="medicine_type" label="药物类型" width="120">
+              <template slot-scope="scope">
+                <p>{{scope.row.medicine_type}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="no_developed_indications" label="非在研适应症" width="120">
+              <template slot-scope="scope">
+                <p>{{scope.row.no_developed_indications}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="therapeutic_area" label="治疗领域" width="120">
+              <template slot-scope="scope">
+                <p>{{scope.row.therapeutic_area}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="original_research_agency" label="原研机构" width="120">
+              <template slot-scope="scope">
+                <p>{{scope.row.original_research_agency}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="In_research_institutions" label="在研机构" width="180">
+              <template slot-scope="scope">
+                <p>{{scope.row.In_research_institutions}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="global_development_peak_state" label="最高研发状态（全球）" width="120">
+              <template slot-scope="scope">
+                <p>{{scope.row.global_development_peak_state}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="china_development_peak_state" label="最高研发状态（中国）" width="120">
+              <template slot-scope="scope">
+                <p>{{scope.row.global_development_peak_state}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="receive_approval_country" label="获批国家" width="120">
+              <template slot-scope="scope">
+                <p>{{scope.row.receive_approval_country}}</p>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <el-empty description="暂无数据"  v-if='!getListInfo || getListInfo.length == 0'></el-empty>
+      </div>
+
+      <!-- 分页展示 -->
+      <div class="pagination-box">
+        <div class="el-pagination is-background">
+          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(1)">首页</button>
+          <button type="button" :disabled="current_page == 1?true:false" class="btn-prev" @click="handleCurrentChange(current_page-1)">上一页</button>
+          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(current_page+1)">下一页</button>
+          <button type="button" :disabled="total_page == current_page?true:false" class="btn-prev" @click="handleCurrentChange(total_page)">末页</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-  import CommonHeader from "../components/CommonHeader";
-  import CommonFooter from "../components/CommonFooter";
   import { getDrugTargetList } from "@/api/data"
   export default {
     name: 'RepositoryPage',
-    components: {
-      CommonHeader,
-      CommonFooter,
-    },
     data(){
       return {
         viewHeight:'',

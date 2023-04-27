@@ -1,73 +1,57 @@
 <template>
-  <el-container>
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" :is_search='is_search'></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <div class="info-box">
-          <div class="info-box1">
-            <div class="info-box2">
-              <div class="infoDetail-title">{{infoDetail.title}}</div>
-              <div class="tap-top-span">
-                <a href="javascript:0;" v-for="(items,index) in infoDetail.author" :key="index" @click.prevent="goToauthor(items.kgid)">{{items.name?items.name:''}}</a>
+  <div class="pagecontent-box">
+    <div class="info-box">
+      <div class="info-box1">
+        <div class="info-box2">
+          <div class="infoDetail-title">{{infoDetail.title}}</div>
+          <div class="tap-top-span">
+            <a href="javascript:0;" v-for="(items,index) in infoDetail.author" :key="index" @click.prevent="goToauthor(items.kgid)">{{items.name?items.name:''}}</a>
+          </div>
+          <div class="info-box3">
+            <div>
+              <div class="info-box3-title">摘要:</div>
+              <div class="info-box3-text">{{ infoDetail.abstract }}</div>
+            </div>
+            <div style="padding:2px 0;" v-if="infoDetail.keyword?infoDetail.keyword.length > 0:''">
+              <div class="info-box3-title">关键词:</div>
+              <div class="info-box3-text icon-info-keys">
+                <span v-for="(keys,index) in infoDetail.keyword" :key="index">{{keys}}</span>
               </div>
-              <div class="info-box3">
-                <div>
-                  <div class="info-box3-title">摘要:</div>
-                  <div class="info-box3-text">{{ infoDetail.abstract }}</div>
-                </div>
-                <div style="padding:2px 0;" v-if="infoDetail.keyword?infoDetail.keyword.length > 0:''">
-                  <div class="info-box3-title">关键词:</div>
-                  <div class="info-box3-text icon-info-keys">
-                    <span v-for="(keys,index) in infoDetail.keyword" :key="index">{{keys}}</span>
-                  </div>
-                </div>
-                <div>
-                  <div class="info-box3-title">期刊:</div>
-                  <div class="info-box3-text">{{ infoDetail.publishMagazine }}</div>
-                </div>
-              </div>
-              <!-- 参考文献 -->
-              <div class="daohang-box">
-                <div class="daohang-tags">
-                  <a href="javascript:0;" :class="!tagspane?'active':''" @click="clickSpan(1)">参考文献</a>
-                  <a href="javascript:0;" :class="tagspane?'active':''" @click="clickSpan(2)">引证文献</a>
-                </div>
-                <div class="tagspane-box" v-if="!tagspane">
-                  <div v-if="infoDetail.similarDocument && infoDetail.similarDocument.length != 0">
-                    <a href="javascript:0;" v-for="(auts,index) in infoDetail.similarDocument.titles" :key="index" class="auts1-box" @click="clickAuts(auts)">
-                      [{{index+1}}]{{auts}}
-                    </a>
-                  </div>
-                  <div v-else>暂无信息...</div>
-                </div>
-                <div class="tagspane-box" v-if="tagspane">
-                  <div v-if="infoDetail.citationDocument && infoDetail.citationDocument.length != 0">
-                    <a href="javascript:0;" v-for="(auts2,idx) in infoDetail.citationDocument.titles" :key="idx" class="auts2-box" @click="clickAuts(auts2)">
-                      [{{idx+1}}]{{auts2}}
-                    </a>
-                  </div>
-                  <div v-else>暂无信息...</div>
-                </div>
-              </div>
-
-
+            </div>
+            <div>
+              <div class="info-box3-title">期刊:</div>
+              <div class="info-box3-text">{{ infoDetail.publishMagazine }}</div>
             </div>
           </div>
+          <!-- 参考文献 -->
+          <div class="daohang-box">
+            <div class="daohang-tags">
+              <a href="javascript:0;" :class="!tagspane?'active':''" @click="clickSpan(1)">参考文献</a>
+              <a href="javascript:0;" :class="tagspane?'active':''" @click="clickSpan(2)">引证文献</a>
+            </div>
+            <div class="tagspane-box" v-if="!tagspane">
+              <div v-if="infoDetail.similarDocument && infoDetail.similarDocument.length != 0">
+                <a href="javascript:0;" v-for="(auts,index) in infoDetail.similarDocument.titles" :key="index" class="auts1-box" @click="clickAuts(auts)">
+                  [{{index+1}}]{{auts}}
+                </a>
+              </div>
+              <div v-else>暂无信息...</div>
+            </div>
+            <div class="tagspane-box" v-if="tagspane">
+              <div v-if="infoDetail.citationDocument && infoDetail.citationDocument.length != 0">
+                <a href="javascript:0;" v-for="(auts2,idx) in infoDetail.citationDocument.titles" :key="idx" class="auts2-box" @click="clickAuts(auts2)">
+                  [{{idx+1}}]{{auts2}}
+                </a>
+              </div>
+              <div v-else>暂无信息...</div>
+            </div>
+          </div>
+
+
         </div>
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+    </div>
+  </div>
 </template>
 <style scoped>
   .pagecontent-box{
@@ -237,14 +221,8 @@
 </style>
 
 <script>
-import CommonHeader from "../components/CommonHeader";
-import CommonFooter from "../components/CommonFooter";
 import { getDocDetail } from "@/api/data";
 export default {
-  components: {
-    CommonHeader,
-    CommonFooter,
-  },
   data() {
     return {
       viewHeight: "",

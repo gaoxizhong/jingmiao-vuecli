@@ -4,15 +4,15 @@
 
     <!-- 头部开始 -->
     <el-header>
-      <CommonHeader :is_norouter="is_norouter" @sickNess="setsickNess"></CommonHeader>
+      <CommonHeader @clickNav="setsickNess"></CommonHeader>
     </el-header>
     <!-- 头部结束 -->
     <!-- 主题开始 -->
     <el-main :style="main_bg">
       <keep-alive v-if="is_view">
-        <router-view v-if="$route.meta.keepAlive"></router-view>
+        <router-view v-if="$route.meta.keepAlive" @sickNess="setsickNess"></router-view>
       </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive"/>
+      <router-view v-if="!$route.meta.keepAlive" @sickNess="setsickNess"/>
     </el-main>
     <!-- 主题结束 -->
     <!-- 底部开始 -->
@@ -29,11 +29,6 @@ import CommonFooter from "../components/CommonFooter";
 // import Home from "../components/Home";
 
 export default {
-  provide(){
-    return {
-      setsickNess: this.setsickNess
-    }
-  },
   name: 'FrontPage',
   components: {
     CommonHeader,

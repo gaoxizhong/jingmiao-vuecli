@@ -1,68 +1,38 @@
 <template>
-  <!-- <el-container :style="`height:${viewHeight}px;`"> -->
-  <el-container>
-
-    <!-- 头部开始 -->
-    <el-header>
-      <CommonHeader :id="`${id}`" :tag_pages="tag_pages" @sickNess="setsickNess"></CommonHeader>
-    </el-header>
-    <!-- 头部结束 -->
-    <!-- 主题开始 -->
-    <el-main :style="main_bg">
-      <div class="pagecontent-box">
-        <!-- 筛选模块开始 -->
-        <div class="section-filter-box-common">
-          <div class="section-filter-box-label">筛选</div>
-          <!-- 字母按钮模块开始 -->
-          <div class="section-filter-box-wrap normal">
-            <div class="tag-button" :class=" letter_index == index?'active':'' "
-              v-for="(item,index) in firstLetterList" 
-              :key="index" @click="clickLetterList(index,item)">{{item}}
-            </div>
-          </div>
-          <!-- 字母按钮模块结束 -->
+  <div class="pagecontent-box">
+    <!-- 筛选模块开始 -->
+    <div class="section-filter-box-common">
+      <div class="section-filter-box-label">筛选</div>
+      <!-- 字母按钮模块开始 -->
+      <div class="section-filter-box-wrap normal">
+        <div class="tag-button" :class=" letter_index == index?'active':'' "
+          v-for="(item,index) in firstLetterList" 
+          :key="index" @click="clickLetterList(index,item)">{{item}}
         </div>
-        <!-- 筛选模块结束 -->
-
-        <!-- 筛选结果列表开始 -->
-        <div class="filterBrowseContent-box">
-          <div class="filterBrowse-title">{{name}}</div>
-          <div class="filterBrowse-items-centent">
-            <a href="javascript:0;"  class="filterBrowse-items-box" v-for="(item,index) in letterSearchList" :key="index" @click="clickDiseases(item)">
-              <i class="el-icon-d-arrow-right"></i>
-              <span style="padding-left:10px;">{{item}}</span>
-            </a>
-          </div>
-        </div>
-        <!-- 筛选结果列表结束 -->
-
       </div>
-    </el-main>
-    <!-- 主题结束 -->
-    <!-- 底部开始 -->
-    <el-footer>
-      <CommonFooter></CommonFooter>
-    </el-footer>
-    <!-- 底部结束 -->
-  </el-container>
+      <!-- 字母按钮模块结束 -->
+    </div>
+    <!-- 筛选模块结束 -->
+
+    <!-- 筛选结果列表开始 -->
+    <div class="filterBrowseContent-box">
+      <div class="filterBrowse-title">{{name}}</div>
+      <div class="filterBrowse-items-centent">
+        <a href="javascript:0;"  class="filterBrowse-items-box" v-for="(item,index) in letterSearchList" :key="index" @click="clickDiseases(item)">
+          <i class="el-icon-d-arrow-right"></i>
+          <span style="padding-left:10px;">{{item}}</span>
+        </a>
+      </div>
+    </div>
+    <!-- 筛选结果列表结束 -->
+
+  </div>
 </template>
 
 <script>
-  import CommonHeader from "../components/CommonHeader";
-  import CommonFooter from "../components/CommonFooter";
   import {getFirstLetterList,getLetterSearch} from "@/api/data"
   export default {
-    // provide(){
-    //   return {
-    //     setsickNess: this.setsickNess
-    //   }
-    // },
     name: 'departmentDisasePages',
-    components: {
-      CommonHeader,
-      CommonFooter,
-      // Home
-    },
     data(){
       return {
         viewHeight:'',

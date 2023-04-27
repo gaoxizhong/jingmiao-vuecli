@@ -7,13 +7,8 @@ import store from '../store/index'
 import Login from '../views/login.vue'
 import QAhome from '../views/QAhome.vue'
 import VideoDetails from '../views/VideoDetails.vue'
-import inquiryResultPage from '../views/inquiryResultPage.vue'
-import FrontPage from '../views/FrontPage.vue'  // 首页
-import RepositoryPage from '../views/RepositoryPage.vue'     // 知识库页
-import XyRepositoryPage from '../views/XyRepositoryPage.vue'     // 西医知识库页
-import ZyRepositoryPage from '../views/ZyRepositoryPage.vue'     // 中医知识库页
+// import FrontPage from '../views/FrontPage.vue'  // 首页
 import NewDetails from '../views/NewDetails.vue'     // 知识库疾病详情页
-import SearchPages from '../views/SearchPages.vue'  // 知识库疾病搜索页
 import departmentDisasePages from '../views/departmentDisasePages.vue'  //  科室疾病页面
 import DocumentGuidePages from '../views/DocumentGuidePages.vue'  //  指南文献页面
 import litgDetails from '../views/litgDetails.vue'  //  文献详情页面
@@ -72,31 +67,35 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Main',
-    component: () => import('@/App'),
-    redirect: 'SearchPages',
+    name: 'FrontPage',
+    component: () => import('@/views/FrontPage'),
+    redirect: '/xyzskPages',
     children: [
       {
-        path: 'SearchPages',
-        name : 'SearchPages',
-        component: SearchPages,
+        path: '/xyzskPages',
+        name : 'xyzskPages',
+        component: () => import('@/views/SearchPages'),
+        meta:{
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      {
+        path: '/zyzskPages',
+        name : 'zyzskPages',
+        component: () => import('@/views/SearchPages'),
+        meta:{
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
       },
       {
         path: '/VideoDetails',
         name: 'VideoDetails',
         component: VideoDetails,
         meta:{requireAuth:true}
-      },
-      {
-        path: '/inquiryResultPage',
-        name: 'inquiryResultPage',
-        component: () => import('@/views/inquiryResultPage'),
-        meta: {
-          title:'问诊结果',
-          keepAlive: true,
-          scollTopPosition: 0,
-          requireAuth:true
-        }
       },
       { 
         path: '/WesternMedicineCdss',
@@ -131,16 +130,7 @@ const routes = [
           requireAuth:true
         }
       },
-      {
-        path:'/FrontPage',
-        name: 'FrontPage',
-        component: FrontPage,
-      },
-      {
-        path: '/RepositoryPage',
-        name : 'RepositoryPage',
-        component: RepositoryPage,
-      },
+ 
       {
         path: '/NewDetails',
         name : 'NewDetails',
@@ -449,10 +439,6 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  if(to.path == from.path ){
-    // 让 列表页 即不缓存，刷新
-    to.meta.keepAlive = false; 
-  }
   if(to.path == '/popularLiterature' && from.path == '/user-center' ){
     to.meta.keepAlive = false; 
   }
@@ -471,7 +457,7 @@ router.afterEach((to) => {
 })
 
 router.beforeEach(async(to, from, next) => {
-  // to要进入的目标路由,到哪去from离开的路由
+  // to要进入的目标路由;from离开的路由
   //判断是否需要缓存
   if(to.path == from.path ){
     // 让 列表页 即不缓存，刷新
@@ -481,13 +467,13 @@ router.beforeEach(async(to, from, next) => {
 })
 
 // router.beforeEach(async(to, from, next) => {
-//   // to要进入的目标路由,到哪去from离开的路由
+//   // to要进入的目标路由from离开的路由
 //   //判断是否需要缓存
 //   if(to.path == 'text' && from.path =='/orderInfo'){
-//     // 让 列表页 缓存，即不刷新
+//     // 让 列表页 缓存 = 不刷新
 //     to.meta.keepAlive = true;  
 //   }else {
-//      // 让 列表页 即不缓存，刷新
+//      // 让 列表页 即不缓存 = 刷新
 //     to.meta.keepAlive = false; 
 //   }
 //   next()
