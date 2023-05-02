@@ -45,6 +45,7 @@
               更多<i class="el-icon-arrow-down el-icon--right"></i>
             </a>
             <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :class="active_id == '9'?'navitems-active':'' " command="/knowledgeQAhome?active_id=9">人力资源问答</el-dropdown-item>
               <el-dropdown-item :class="active_id == '6'?'navitems-active':'' " command="/WesternMedicineCdss?active_id=6">西医CDSS</el-dropdown-item>
               <el-dropdown-item :class="active_id == '7'?'navitems-active':'' " command="/ImagesList?active_id=7">疾病图像库</el-dropdown-item>
               <el-dropdown-item :class="active_id == '8'?'navitems-active':'' " command="/VideoHome?active_id=8">视频</el-dropdown-item>
@@ -125,6 +126,9 @@ export default {
     //     });
     //   window.open(newUrl.href, "_blank");
     // },
+    handleCommand(command) {
+      this.clickNavItem(command);
+    },
     clickNavItem(p){
       let path = p;
       let newUrl = this.$router.resolve({
@@ -140,56 +144,7 @@ export default {
     clickUserset(){
       this.is_userset = !this.is_userset;
     },
-    clickItem_2(i,n,p,t){
-      let id = i;
-      let name = n;
-      let path = p;
-      let tag_pages = t;
-      if(path == '/popularLiterature'){
-        this.$router.push({
-          path,
-        });
-      }else{
-        // this.nav_id = id;
-        // this.tag_name = name;
-        this.$emit('sickNess');
-        // this.$router.replace({
-        //   path,  
-        //   query:{
-        //     id,
-        //     tag_pages,
-        //   }
-        // })
-       let newUrl = this.$router.resolve({
-          path,
-          query:{
-            id,
-            tag_pages,
-          }
-        });
-        window.open(newUrl.href, "_blank");
-      }
-    },
 
-
-
-
-
-    headerInputClick(){
-      let tag_pages = this.tag_pages;
-      let id = this.nav_id;
-      let input_name = this.headerInput;
-      // 新页面打开
-      let newUrl = this.$router.resolve({
-        path: '/SearchPages',
-        query:{
-          input_name,
-          tag_pages,
-          id
-        }
-      });
-      window.open(newUrl.href, "_blank");
-    },
     // 点击LOGO
     // clickLogo(){
     //   let newUrl = this.$router.resolve({
@@ -198,13 +153,7 @@ export default {
     //   });
     //   window.open(newUrl.href, "_blank");
     // }
-    // 回车键点击
-    searchEnterFun(e){
-      var keyCode = window.event?e.keyCode:e.which;
-      if(keyCode == 13){
-        this.headerInputClick();
-      }
-    },
+
   }
 }
 </script>

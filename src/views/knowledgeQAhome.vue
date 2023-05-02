@@ -29,11 +29,8 @@
                   <div class="msg-content-and-after">
                     <div class="msg-content">
                       <div v-html="item.content"></div>
-                        <div v-if=" !item.isme && item.result.length != 0" class="msg-btnlist-box">
-                          <span v-for="(items,idx) in item.result" :key="idx" @click="click_y_ButtonList(item,items)">{{items}}</span>
-                        </div>
                         <div v-if=" !item.isme && item.button_list.length != 0" class="msg-btnlist-box">
-                          <span v-for="(items,idx) in item.button_list" :key="idx" @click="clickButtonList(item.question,items.field_name,items.filed_comment)">{{items.filed_comment}}</span>
+                          <span v-for="(items,idx) in item.button_list" :key="idx" @click="clickButtonList(items)">{{ items.question?items.question:(item.is_y?items.sub_question:items.category_name) }}</span>
                         </div>
                     </div>
                     
@@ -53,7 +50,7 @@
                 </div>
                 <el-button class="btn-send" :loading="loading" id="btnSend"
                   :style="{'color': originMessage != ''?'#fff':'#00000040','background-color': originMessage !=''?'rgb(20 184 166)':'#f5f5f5','border-color': originMessage !=''?'rgb(20 184 166)':'#f5f5f5'}"
-                  @click="onSendClcik()"
+                  @click="clickOriginMessage()"
                 >
                   <span>发送</span>
                 </el-button>
@@ -72,10 +69,10 @@
 </template>
 
 <script>
-  import { getQuestionAnswer,getQuestionList,getQuestionDetail } from '@/api/data'
+  import { getQwAnswer,getHotQuestionList } from '@/api/data'
 
   export default {
-    name: 'newQAhome',
+    name: 'knowledgeQAhome',
     components: {
       
     },
@@ -86,26 +83,7 @@
         phone: '',
         viewHeight:'',
         viewWidth:'',
-        popular_problem:[
-          {id:1,text:'糖尿病的病因是什么'},
-          {id:2,text:'糖尿病应该怎么预防'},
-          {id:3,text:'糖尿病应该如何治疗'},
-          {id:4,text:'痛风的病因是什么'},
-          {id:5,text:'痛风应该如何预防'},
-          {id:6,text:'高血压病人应该吃啥'},
-          {id:7,text:'高血压应该怎么预防'},
-          {id:8,text:'高血压应该怎么治疗'},
-          {id:9,text:'高血压病人应该怎么护理'},
-          {id:10,text:'糖尿病人应该怎么护理'},
-          {id:11,text:'我经常失眠怎么办'},
-          {id:12,text:'我经常失眠，应该怎么调理'},
-          {id:13,text:'我这么年轻就得了肥胖症怎么办'},
-          {id:14,text:'得了痛风病怎么护理'},
-          {id:15,text:'面瘫是由于什么原因引起的'},
-          {id:16,text:'咽炎应该吃啥调理'},
-          {id:17,text:'肺纤维化的病因是啥'},
-        ],
-        questionList: [], // 孕妇热门问题
+        questionList: [], // 左侧热门问题
         message:[], // 累计对话记录
         msgList: [], // 对话列表
         originMessage: '',
@@ -121,9 +99,12 @@
         historyList:[],
         promptVisible: false,
         is_retun: true,
-        is_y: false, // true、是点击左侧孕妇问题 false、正常疾病提问
-        y_originMessage:'', // 左侧列表点击选中的 孕妇问题
-        y_id:'', // 左侧列表点击选中的 孕妇问题id
+        is_y: false, // true、是点击左侧热门问题 false、正常疾病提问
+        question_id:'', // 左侧列表点击选中的 热门问题id
+        sub_question_id :'', // 左侧列表返回的选项按钮子问题id
+        pid_as_value:'',  // 是否是搜索返回的数据
+        pid:'',  // 搜索返回的数据id
+        category_id:'', // 搜索返回的数据按钮列表id
         y_info: null,
         type:'', 
       }
@@ -141,11 +122,11 @@
       that.viewHeight = getViewportSize.height;
       that.viewWidth = getViewportSize.width;
       // 获取左侧热门列表
-      that.getQuestionList();
+      that.getHotQuestionList();
       this.msgList.push({
         isme: false,
+        is_y: that.is_y,
         button_list:[],
-        result: [],
         content:'你好,我是智能助手,请问有什么问题可以帮助您?',
         name:'智能助手',
         time: this.getCurrentTime(),
@@ -188,9 +169,9 @@
       },
       
       // 获取左侧热门列表
-      getQuestionList(){
+      getHotQuestionList(){
         let that = this;
-        getQuestionList({
+        getHotQuestionList({
           page: that.page,
         }).then(res =>{
           if(res.data.code == 0){
@@ -206,68 +187,90 @@
         let info = i;
         let that = this;
         that.is_y = true;
-        that.y_originMessage = info.question;
-        let y_id = info.id;
-        // that.getQuestionDetail();
+        that.is_sub_question = '';
+        that.question_id = info.id;
         that.originMessage = info.question;
-        that.question = '';
-        that.onSendClcik(y_id);
+        that.onSendClcik();
       },
- 
-
-      // 点击 孕妇问题问答结果 返回的按钮
-      click_y_ButtonList(a,b){
-        let that = this;
-        that.originMessage = b;
-        // that.getQuestionDetail();
-        this.onSendClcik(a.info.id,a);
+      
+      // input框输入点击
+      clickOriginMessage(){
+        this.is_y = false;
+        this.question_id = ''; // 左侧列表点击选中的 热门问题id
+        this.sub_question_id = ''; // 左侧列表返回的选项按钮子问题id
+        this.pid_as_value = ''; // 是否是搜索返回的数据
+        this.pid = '';  // 搜索返回的数据id
+        this.category_id = ''; // 搜索返回的数据按钮列表id
+        this.onSendClcik();
       },
-
 
       // 回车键点击
       searchEnterFun(e){
         var keyCode = window.event?e.keyCode:e.which;
         if(keyCode == 13){
-          this.onSendClcik();
+          this.clickOriginMessage();
         }
       },
       // 点击问题列表按钮
-      clickButtonList(q,n,c){
+      clickButtonList(i){
         let that = this;
-        that.question = q;  // 提问的疾病名
-        that.field_name = n;  // 点击的属性类型
-        that.filed_comment = c; //  点击的属性名称
+        let item = i;
+        if(item.question){
+          that.is_y = true;
+          that.is_sub_question = '';
+          that.question_id = item.id;
+          that.originMessage = item.question;
+        }else{
+          if(that.is_y){
+            that.originMessage = item.sub_question;
+            that.is_sub_question = item.is_sub_question;
+            that.question_id = item.sub_question_id;
+          }else{
+            that.originMessage = item.category_name;
+            that.pid = item.pid;
+            that.category_id = item.category_id;
+            that.pid_as_value = item.pid_as_value;
+          }
+        }
+
         that.onSendClcik();
       },
 
       // 点击发送
-      onSendClcik(yid,yinfo){
+      onSendClcik(){
         let that = this;
-        let originMessage = that.filed_comment?that.filed_comment:that.originMessage;
+        let originMessage = that.originMessage;
         if(originMessage == ''){
           return
         }
         let pearms = {
-          question: that.question?that.question:originMessage,
           phone: that.phone,
         }
-        if(yid){
-          pearms.id = yid?yid:''
-        }
-        if(yinfo){
-          pearms.value = originMessage;
-          pearms.select_field = yinfo.info.next_field_info.field_name;
-          pearms.current_field = yinfo.info.current_field;
-        }
+        if(that.is_y){
+          if(that.question_id){
+            pearms.question_id = that.question_id;
+          }
+          if(that.is_sub_question){
+            // 是子问题
+            pearms.is_sub_question = that.is_sub_question;
+          }
+        }else{
 
-        if(that.field_name != ''){
-          pearms.comment = that.filed_comment,
-          pearms.field = that.field_name
+          if(that.pid_as_value ){
+            pearms.pid_as_value = that.pid_as_value;
+            pearms.pid = that.pid;
+            pearms.category_id = that.category_id;
+          }else{
+            // 是输入框输入提问
+            pearms.search = that.originMessage;
+          }
+
         }
 
         let showMessage = { // 页面展示的我的提问
           isme:true,
           content: originMessage,
+          is_y: that.is_y,
           button_list:[],
           show_time:false,
           time: this.getCurrentTime(),
@@ -277,103 +280,56 @@
         that.loading = true;
         // that.getchantGPT(originMessage);
         // return
-        getQuestionAnswer(pearms).then(res =>{
+        getQwAnswer(pearms).then(res =>{
           if(res.data.code == 0){
             that.originMessage = '';
-            that.field_name = '';
-            that.filed_comment = '';
             that.question = '';
-
-            that.type = res.data.data.type;
-
-            if( that.type == 'stage' ){  // 左侧孕妇相关问题
+            if(that.is_y){
+              if( res.data.data[0].answer ){  // 直接展示
+                let showMessage = { // 页面展示的我的提问
+                  isme:false,
+                  is_y: that.is_y,
+                  content:res.data.data[0].answer,
+                  button_list: [],
+                  time: this.getCurrentTime(),
+                }
+                that.msgList.push(showMessage);
+              }else{
 
               let showMessage = { // 页面展示的结果
-                isme:false,
-                content:`请选择点击 【 ${res.data.data.comment} 】 选项：`,
-                info: res.data.data,
-                result: res.data.data.result,
-                button_list: [],
-                time: this.getCurrentTime(),
+                  isme:false,
+                  is_y: that.is_y,
+                  content:`请选择点击选项：`,
+                  button_list: res.data.data,
+                  time: this.getCurrentTime(),
+                }
+                that.msgList.push(showMessage);
               }
-              that.msgList.push(showMessage);
-              console.log(that.msgList)
-            }
-            if( that.type == 'disease' ){  // 提问普通疾病
-
-              let showMessage = { // 页面展示的我的提问
+            }else{
+              let showMessage = { // 页面展示的结果
                 isme:false,
-                result:[],
-                content:res.data.data.answer,
-                button_list: res.data.data.button_list,
-                question:res.data.data.question,
+                is_y: that.is_y,
+                content:`请选择点击选项：`,
+                button_list: res.data.data,
                 time: this.getCurrentTime(),
               }
               that.msgList.push(showMessage);
             }
-            if( that.type == 'chatgpt' ){ // 请求chatgpt 接口
-
-              that.getchantGPT(res.data.data.question)
-            }
-
+            
             setTimeout(()=>{
               that.scrollBottom(); // 页面滚动到底部
             },100)
-            that.loading = false;
           }
+          that.loading = false;
         }).catch(e =>{
+          that.$message.error({
+            message: e
+          });
           that.loading = false;
         })
       },
 
-      
-      //  sse 请求chantGPT 接口
-      async getchantGPT(text){
-        let that = this;
-        // 调用方法获取用户剩余次数
-      
-        let is_retun = that.is_retun;
-        if(!is_retun){
-          return
-        }
-        that.is_retun = false;
-        let showMessage = { // 页面展示的结果
-          isme: false,
-          content: '',
-          button_list:[],
-          result: [],
-          name:'智能助手',
-          time: this.getCurrentTime(),
-          }
-        that.msgList.push(showMessage);
-        // SSE接收 如果跨越 添加第二个参数 { withCredentials: true }
-
-        that.source = new EventSource(`http://18.221.12.198:5001/chatstream?content=${text}`,{ withCredentials: true });
-        console.log(that.source);
-        // sse 连接开启时回调函数
-        that.source.onopen = function (event) {
-          console.log("链接成功！");
-        }
-        // 消息监听，event 是后端返回的数据
-        that.source.onmessage = function (event) {
-          // const json = parase(event);
-          console.log('onmessage')
-          that.msgList[that.msgList.length - 1].content += event.data.replaceAll("\n","<br>");
-          that.scrollBottom(); // 页面滚动到底部
-        }
-        // 监听 error 事件，后端超时没有传输数据时触发
-          that.source.onerror = function (event) {
-          console.log("退出链接！");
-          that.source.close();
-          that.is_retun = true;
-          that.loading = false;
-          that.originMessage = '';
-          that.field_name = '';
-          that.filed_comment = '';
-          that.question = '';
-        }
-        
-      },
+   
       //滚动到底部
       scrollBottom(){
         var that=this;
@@ -385,59 +341,6 @@
         });
       },
 
-
-
-
-
-
-
-
-
-      //左侧列表点击选中的 孕妇问题  ====== 目前无用的
-      getQuestionDetail(){
-        let that = this;
-        let pearms = {
-          id: that.y_id,
-          // value: that.y_originMessage,
-        }
-        let y_info = that.y_info;
-        if(y_info){
-          pearms.value = that.y_originMessage;
-          pearms.select_field = that.y_info.info.next_field_info.field_name;
-          pearms.current_field = that.y_info.info.current_field;
-        }
-        let showMessage = { // 页面展示的我的提问
-          isme:true,
-          content: that.y_originMessage,
-          show_time:false,
-          time: this.getCurrentTime(),
-        }
-        that.msgList.push(showMessage);
-        that.scrollBottom(); // 页面滚动到底部
-        that.loading = true;
-        getQuestionDetail(pearms).then(res =>{
-          that.loading = false;
-          if(res.data.code == 0){
-            let showMessage = { // 页面展示的结果
-                isme:false,
-                content:`请选择点击 【 ${res.data.data.comment} 】 选项：`,
-                info: res.data.data,
-                result: res.data.data.result,
-                button_list: [],
-                time: this.getCurrentTime(),
-              }
-            that.msgList.push(showMessage);
-            setTimeout(()=>{
-              that.scrollBottom(); // 页面滚动到底部
-            },100)
-          }else if(res.data.code == 1001 ){
-            that.getchantGPT(that.y_originMessage)
-          }
-        }).catch(e =>{
-          that.loading = false;
-          // that.getchantGPT(that.y_originMessage)
-        })
-      },
 
    
     },

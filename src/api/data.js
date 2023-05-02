@@ -678,7 +678,22 @@ export const getQuestionAnswer = (params) =>{
     data: params
   })
 }
-
+// 知识问答左侧列表接口
+export const getHotQuestionList = (params) =>{
+  return axios.request({
+    url:'/qw-hot-question',
+    method: 'post',
+    data: params
+  })
+}
+// 知识问答提问接口
+export const getQwAnswer = (params) =>{
+  return axios.request({
+    url:'/qw-answer',
+    method: 'post',
+    data: params
+  })
+}
 // 文字翻译
 export const getTranslate = (params) =>{
   return axios.request({

@@ -66,6 +66,16 @@ const routes = [
     }
   },
   {
+    path: '/knowledgeQAhome',
+    name: 'knowledgeQAhome',
+    component: () => import('@/views/knowledgeQAhome'),
+    meta:{
+      title:'知识问答',
+      requireAuth:true,
+      keepAlive: true,
+    }
+  },
+  {
     path: '/',
     name: 'FrontPage',
     component: () => import('@/views/FrontPage'),
