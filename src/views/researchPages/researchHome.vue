@@ -3,20 +3,18 @@
   <el-container>
     <!-- 头部 开始  -->
     <el-header>
-      <header>
-        <div class="l-content">
-          <img src="../../assets/image/researchPages/logo.png" alt=""  @click="clickLoge"/>
-        </div>
-        <div class="headerTitle-box">
-          <div class="headerTitle-home"  @click="clickLoge"><i class="el-icon-s-home"></i>首页</div>
-          <div class="r-content" v-if="phone">
-            <img src="../../assets/image/researchPages/img-user.png" title="个人中心" class="user-img" @click="goToUserCenter"/>
-            <a href="javascript:0;" class="r-toLogin" @click="toLogin">退出</a>
-          </div>
-
+      <div class="l-content">
+        <!-- <img src="../../assets/image/researchPages/logo.png" alt=""  @click="clickLoge"/> -->
+        <!-- <div class="l-content-title"  @click="clickLoge">菁苗健康</div> -->
+      </div>
+      <div class="headerTitle-box">
+        <div class="headerTitle-home"  @click="clickLoge"><i class="el-icon-s-home"></i>首页</div>
+        <div class="r-content" v-if="phone">
+          <img src="../../assets/image/researchPages/img-user.png" title="个人中心" class="user-img" @click="goToUserCenter"/>
+          <a href="javascript:0;" class="r-toLogin" @click="toLogin">退出</a>
         </div>
 
-      </header>
+      </div>
     </el-header>
     <!-- 头部 结束  -->
     <el-container>
@@ -182,11 +180,11 @@
 </script>
 <style scoped>
 .headerTitle-box{
-  width: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 60px;
+  padding-left: 1rem;
 }
 .headerTitle-home{
   display: flex;
@@ -206,20 +204,17 @@
   }
   .el-header{
     width: 100%;
+    height: 3.6rem !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 999;
-  }
-
-  header{
-    width:100%;
-    height: 3.6rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1.4rem;
+    padding: 0 1.5rem 0 0 !important;
     box-sizing: border-box;
+
   }
   .el-aside{
     height: 100%;
@@ -257,17 +252,31 @@
     padding: 1rem 16px 0 0;
   }
   .l-content{
-    width: auto;
+    width: 200px;
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
   .l-content>img{
     width: auto;
-    height: 2.3rem;
+    height: 2rem;
     display: inline-block;
   }
 
+  .l-content>.l-content-title{
+    font-size:1.7rem;
+    padding-left:10px;
+    color:#3664D9;
+    font-weight:600;
+    font-family: '宋体';
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .r-content{
     width: auto;
     height: 100%;

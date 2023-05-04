@@ -466,16 +466,12 @@ export default {
                 that.$store.dispatch("setUser",data.phone);
                 that.$store.dispatch("setIsAuthenticated",true);
                 // that.$router.push(that.redirect || '/');
-                if (that.$store.state.token) {
-                  let stateurl = that.stateurl;
+                let stateurl = that.stateurl;
                   if(stateurl){
                     that.$router.push({path:decodeURIComponent(stateurl)});
                   }else{
-                    that.getNavList();
+                    that.$router.push('/');
                   }
-                } else {
-                  this.$router.push('/');
-                }
 
             }
           });
