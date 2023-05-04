@@ -72,13 +72,13 @@
       
     </div>
     <!-- 学者列表模块 结束 -->
-      <!-- <div class="pagination-box">
-        <el-pagination background @current-change="clickExchange" layout="total, prev, pager, next"
+      <div class="pagination-box" v-if="is_page">
+        <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
         :total="count"
         :page-size="pageSize"
-        :current-page='current_page'>
+        :current-page='page'>
         </el-pagination>
-      </div> -->
+      </div>
   </div>
 
 </template>
@@ -101,14 +101,16 @@
         is_titleTab:'1',
         headerAuthor:'', // 学者名、
         headerOrganization:'', // 机构名
-        count:0, // 总条数
-        pageSize: 10,
-        current_page: 1,
+        count:0, // 检索的数据总条数
+        page: 1, // 检索分页页数
+        pageSize: 12,
+        current_page: 1, // 换一批分页
         option_page: 1, //机构下拉框分页
         total_optionpage: 1, // 机构下拉框分页总页数
         scholarList:[], // 列表数据
         optionsList:[], // 机构分类
         o_list:[],// 机构分类
+        is_page: false
       }
     },
     created(){
@@ -120,12 +122,22 @@
       // 点击换一批
       clickExchange(){
         let that = this;
+        that.is_page = false;
         that.current_page = that.current_page+1;
         that.getAuthorIndex();
+      },
+      // 点击分页功能
+      handleCurrentChange(val) {
+        let that = this;
+        that.page = Number(val);
+        that.headerInputClick();
+        // 回到顶部的方法。
+         window.scrollTo(0,0);
       },
       // 普通搜索
       headerInputClick(){
         let that = this;
+        that.current_page= 1;
         let headerAuthor = that.headerAuthor; // 学者名、
         let headerOrganization = that.headerOrganization; // 机构数
         // if(headerAuthor == '' || headerOrganization == ''){
@@ -136,7 +148,8 @@
           author: headerAuthor,
           org: headerOrganization,
           tag:'',
-          page: 1,
+          page: that.page,
+          pageSize: that.pageSize
         }
         const loading = that.$loading({
           lock: true,
@@ -148,9 +161,10 @@
         getAnalysisSearch(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            that.current_page= 1;
+            that.is_page = true;
             that.scholarList= []; // 列表数据
-            that.scholarList = res.data.data;
+            that.scholarList = res.data.data.data;
+            that.count = res.data.data.total;
           } else {
             that.$message.error({
               message: res.data.msg
@@ -532,5 +546,8 @@
   }
   .optionPageDiv:hover{
     background: #DBEAFF;
+  }
+  .pagination-box{
+    margin-top: 10px;
   }
 </style>

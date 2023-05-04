@@ -249,6 +249,8 @@
         if(that.is_y){
           if(that.question_id){
             pearms.question_id = that.question_id;
+            pearms.question = that.originMessage;
+
           }
           if(that.is_sub_question){
             // 是子问题
@@ -376,9 +378,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 68px;
+    height: 54px;
     font-size: 18px;
     box-sizing: border-box;
+    border-bottom: 1px solid #f1f1f1;
+    
   }
   .aside-ul-box{
     width: 280px;
@@ -391,6 +395,10 @@
     margin: 0;
     padding-left: 0;
     background-color: #fff;
+    flex: 1;
+    overflow: auto;
+    padding-right: 10px;
+    padding-bottom: 12px;
   }
   .aside-ul-box>li.wenti-ul-li{
     margin: 5px 0;
@@ -432,6 +440,18 @@
   }
   /* 滚动条上的滚动滑块. */
   .scrollbar::-webkit-scrollbar-thumb { 
+    background-color:#27afa1; 
+    border-radius: 50px;
+  }
+
+  /* 左侧列表滚动条 */
+  .aside-ul-box::-webkit-scrollbar { 
+    width:8px; 
+    height:10px; 
+    background-color:#dfdbdb; 
+  }
+  /* 滚动条上的滚动滑块. */
+  .aside-ul-box::-webkit-scrollbar-thumb { 
     background-color:#27afa1; 
     border-radius: 50px;
   }
