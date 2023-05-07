@@ -333,6 +333,7 @@
         symptomSearch_data:[], // 普通输入框模糊匹配弹窗列表数据
         options_0:[{label:'AND',value:'and'},{label:'OR',value:'or'},{label:'NOT',value:'not'}],
         options_1:[
+          {label:'主题',value:'theme'},
           {label:'标题',value:'title'},
           {label:'作者',value:'author'},
           {label:'摘要',value:'abstract'},
@@ -913,7 +914,7 @@
         if(checkOrdList.length > 0){
           checkOrdList.forEach(ele =>{
             advancedCondition.push({
-              select_field: 'title',
+              select_field: 'theme',
               field_value: ele,
               select_type: 'match',
               select_condition: '',
@@ -921,7 +922,7 @@
           })
         }else{
           advancedCondition.push({
-            select_field: 'title',
+            select_field: 'theme',
             field_value: headerInput,
             select_type: 'match',
             select_condition: '',
@@ -1007,7 +1008,7 @@
             options_2: that.options_2,
             field_value:'',
             select_condition:'',
-            select_field:'title',
+            select_field:'theme',
             select_type:'match',
           },
           {
@@ -1016,9 +1017,10 @@
             options_2: that.options_2,
             field_value:'',
             select_condition:'and',
-            select_field:'keyword',
+            select_field:'title',
             select_type:'match',
           }
+          
         ];
         that.value2 = '';
         that.date= ''; // 选中的时间
