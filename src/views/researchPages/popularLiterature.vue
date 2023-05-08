@@ -19,6 +19,12 @@
         <div class="headerInpuBox" v-show="titleTag == 1">
           <div class="header-input-box">
             <div class="option-box">
+              <div class="advancedOptions-l">
+                <el-select class="validate validate-1" placeholder="请选择" :popper-append-to-body="popperAppend" v-model="p_select_value" slot="prepend" @change="selectnChange">
+                  <el-option key="theme" label="主题" value="theme"></el-option>
+                  <el-option key="title" label="标题" value="title"></el-option>
+                </el-select>
+              </div>
               <div class="header-input-selectord" ref="sordInput">
                 <el-input placeholder="输入关键词" v-model="headerInput" clearable class="input-with-select" @input="getInputBtn" @focus="ordInputFocus" @blur="ordInputBlur" @keydown.enter.native="searchEnterFun($event)">
                 </el-input>
@@ -367,6 +373,7 @@
         advancedCondition:[], // 选中的检索选项
         title_text:'',
         author_text:'',
+        p_select_value:'',
       }
     },
     created(){
@@ -896,6 +903,8 @@
         let is_pop = that.is_pop;
         let setlist = that.setlist;
         console.log(setlist)
+
+        let p_select_value = that.p_select_value;
         if(is_pop == 2 && setlist == '1'){
           window.localStorage.setItem("retrievalArr", '');
           that.is_pop = '1';
@@ -908,13 +917,19 @@
           });
           return
         }
+        if(!p_select_value){
+          this.$message.error({
+            message: '请选择检索类型!'
+          });
+          return
+        }
         let advancedCondition = [];
         let checkOrdList = that.checkOrdList;
 
         if(checkOrdList.length > 0){
           checkOrdList.forEach(ele =>{
             advancedCondition.push({
-              select_field: 'theme',
+              select_field: p_select_value,
               field_value: ele,
               select_type: 'match',
               select_condition: '',
@@ -922,7 +937,7 @@
           })
         }else{
           advancedCondition.push({
-            select_field: 'theme',
+            select_field: p_select_value,
             field_value: headerInput,
             select_type: 'match',
             select_condition: '',
@@ -1506,6 +1521,9 @@
     justify-content: center;
     cursor: pointer;
     transform: scale(1.4);
+  }
+  .advancedOptions-l /deep/ .el-select .el-input.is-focus .el-input__inner{
+    border-color:#DCDFE6;
   }
   .jiaorjian-box>span:hover{
     color: #3664D9;
