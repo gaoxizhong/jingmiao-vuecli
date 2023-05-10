@@ -145,7 +145,7 @@
         is_view: true,
         is_titleTab:'1',
         total:0, // 总条数
-        pageSize: 10,
+        pageSize: 25,
         current_page: 1,
         total_page:0, // 总页数
         listData:[], // 推荐列表

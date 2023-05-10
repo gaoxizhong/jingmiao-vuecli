@@ -300,11 +300,15 @@ const getWordCloud_eacharts = (d,i,t) =>{
   let id = i;
   let newData = d;
   let myChart = taht.$echarts.init(document.getElementById(id));
-  console.log(newData)
   var option = {
       backgroundColor: "#fff",
-      tooltip: {
+      tooltip: { // 鼠标浮动展示框样式
         show: true,
+        borderWidth: 1,
+        formatter: function (params, ticket, callback) {
+          var tipString = '<p style="text-align: left;">' + params.data.n_name + "——"+ params.data.value + '</p>';
+          return tipString;
+        }
       },
       grid: {  // 控制图标在模块内距离边框的距离，不设置会自动居中
         left: 12,
@@ -352,7 +356,7 @@ const getWordCloud_eacharts = (d,i,t) =>{
            // 渲染词典数据
           data: [
             {
-              value: '50',          // 词典大小配置
+              value: '12',          // 词典大小配置
               name: 'iPhone 13',     // 词典名称配置
               textStyle: {          // 单独配置某个词典样式
               shadowBlur: 4,
@@ -366,7 +370,16 @@ const getWordCloud_eacharts = (d,i,t) =>{
     };
   
   var datas = newData.keyword;
-  option.series[0].data = datas;
+  var n_d = [];
+  datas.forEach( ele=>{
+    n_d.push({
+      n_name: ele.name,
+      name: ele.name.length > 10 ? (ele.name.slice(0,10)+ '...'): ele.name,
+      value:  ele.value,
+    })
+  })
+  console.log(n_d)
+  option.series[0].data = n_d;
 
 
   myChart.setOption(option);
