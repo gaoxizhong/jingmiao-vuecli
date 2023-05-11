@@ -169,7 +169,6 @@
     data(){
       return {
         is_casePop:false,
-        language: window.localStorage.getItem('language'),
         uid: window.localStorage.getItem('uid'),
         search_type: 'many', // single、普通 many、高级
         is_s:false,
@@ -209,37 +208,6 @@
     // 点击图谱弹窗关闭按钮
       click_close() {
         this.is_casePop = false;
-      },
-      // 中英文按钮
-      clickLanguage(n){
-        let that = this;
-        let p = {
-          language: n
-        }
-        that.infoDetail = {};
-        that.$emit("setReset", '');
-        getSetLanguage(p).then(res => {
-          if (res.data.code == 0) {
-            that.language = res.data.data.language;
-            window.localStorage.setItem('language',res.data.data.language);
-            // setTimeout(()=>{
-            //   that.literatureDocSearch();
-            // },100)
-            
-          } else {
-            that.$message.error({
-              message: res.data.msg
-            });
-          }
-
-        })
-        .catch(e => {
-          loading.close();
-          console.log(e);
-          that.$message.error({
-            message: e
-          });
-        });
       },
       // 点击展开、收起
       clickShow(s){
@@ -402,15 +370,10 @@
       clicktitleTab(n){
         this.is_titleTab = n;
       },
-      // 中英切换
-      getSetLanguage(){
-
-      },
       // 获取页面数据--- 搜索
       literatureDocSearch(n){
         let that = this;
         let tag = that.tag;
-        let language = that.language;
         let headerInput= that.headerInput; // 普通搜索内容
         let date= that.date; // 高级时间范围
         let chartList= that.advancedCondition; // 高级 选择数据
@@ -511,9 +474,9 @@
           that.$emit('setlistData','1');
           loading.close();
           console.log(e);
-          that.$message.error({
-            message: e
-          });
+          // that.$message.error({
+          //   message: e
+          // });
         });
       },
 

@@ -494,7 +494,6 @@
       },
       // 监听滚动
       handleScroll () {
-        console.log(1)
         //获取dom滚动距离
         const scrollTop = this.pagesb.scrollTop;
         //获取可视区高度
@@ -908,6 +907,8 @@
         if(is_pop == 2 && setlist == '1'){
           window.localStorage.setItem("retrievalArr", '');
           that.is_pop = '1';
+          that.p_select_value = '';
+          that.headerInput = '';
           that.setsickNess();
           return
         }
@@ -965,19 +966,6 @@
         that.is_pop = '2';
         that.setsickNess();
         return
-        let retrievalArr = window.localStorage.getItem('retrievalArr')?window.localStorage.getItem('retrievalArr') : [];
-        if(retrievalArr.length== 0){
-          let a1 = retrievalArr.concat(that.advancedCondition)
-          window.localStorage.setItem('retrievalArr',JSON.stringify(a1));
-        }else{
-          let aa = JSON.parse(retrievalArr);
-          let a2 = aa.concat(that.advancedCondition);
-          window.localStorage.setItem('retrievalArr',JSON.stringify(a2));
-        }
-        console.log(window.localStorage.getItem('retrievalArr'))
-        // 储存 ↑
-        that.is_pop = '2';
-        that.setsickNess();
       },
 
       // 普通检索 回车键点击
