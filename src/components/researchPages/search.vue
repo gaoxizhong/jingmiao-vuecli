@@ -172,7 +172,7 @@
         uid: window.localStorage.getItem('uid'),
         search_type: 'many', // single、普通 many、高级
         is_s:false,
-        pageSize: 10,
+        pageSize: 25,
         current_page: 1,
         total_page:0, // 总页数
         total: 0, // 总条数
