@@ -373,7 +373,7 @@
         advancedCondition:[], // 选中的检索选项
         title_text:'',
         author_text:'',
-        p_select_value:'',
+        p_select_value:'theme',
       }
     },
     created(){
@@ -907,7 +907,7 @@
         if(is_pop == 2 && setlist == '1'){
           window.localStorage.setItem("retrievalArr", '');
           that.is_pop = '1';
-          that.p_select_value = '';
+          that.p_select_value = 'theme';
           that.headerInput = '';
           that.setsickNess();
           return
