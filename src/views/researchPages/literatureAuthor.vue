@@ -700,7 +700,8 @@
       getRelationRecommend(){
         let that = this;
         let p = {
-          value: that.author,
+          // value: that.author,
+          value: that.organization,
           page: that.page,
           tag: 'author',
           type: that.album_tag,
@@ -715,7 +716,6 @@
           }
         })
         .catch(e => {
-          loading.close();
           console.log(e);
         });
       },
