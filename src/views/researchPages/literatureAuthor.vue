@@ -700,8 +700,8 @@
       getRelationRecommend(){
         let that = this;
         let p = {
-          // value: that.author,
-          value: that.organization,
+          value: that.author,
+          org: that.organization,
           page: that.page,
           tag: 'author',
           type: that.album_tag,
