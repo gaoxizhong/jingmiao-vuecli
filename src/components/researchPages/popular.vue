@@ -491,6 +491,8 @@
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    word-break: break-word; 
+
   }
   .listitems-b span{
     color: #999;
@@ -506,6 +508,8 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     margin-top: 0.4rem;
+    word-break: break-word; 
+
   }
   .list-itembox .list-item .list-item-text{
     font-size: 14px;
@@ -518,6 +522,7 @@
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    word-break: break-word; 
   }
   .list-itembox .list-item .list-item-z{
     margin-top: 8px;
@@ -710,6 +715,8 @@
     color: #000;
     text-align: left;
     margin: 0.7rem 0;
+    word-break: break-word; 
+
   }
   .popular-listbox>a:hover{
     color: #3664D9;

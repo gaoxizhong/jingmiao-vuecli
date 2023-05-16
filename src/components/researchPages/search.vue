@@ -3,7 +3,7 @@
 
     <div class="c-box">
 
-      <div style="margin-right:1rem;flex:1;">
+      <div style="margin-right:1rem;flex: 1;">
         <!-- 中间文献列表模块 开始 -->
         <div class="c-list-box">
           <div class="list-title">
@@ -25,7 +25,9 @@
                   <div class="list-item-title" :title="item.title" v-html="item.title"></div>
                   <span>发表于: <span style="padding-left: 0.1rem;">{{item.year}}</span></span>
                 </div>
-                <div class="list-item-text" v-html=" item.abstract?item.abstract:'暂无' "></div>
+                <div class="list-item-text">
+                  <div v-html=" item.abstract?item.abstract:'暂无' "></div>
+                </div>
                 <div class="list-item-z" v-if="item.album">
                   <label class="zuozhe-box">期刊：</label>
                   <div class="tap-top-span">
@@ -928,11 +930,10 @@
     color: #3664D9;
   }
   .c-list-box{
-    flex: 1;
+    width: 100%;
     background: #fff;
     box-shadow: 0px 2px 9px 0px rgb(227 227 227 / 50%);
     border-radius: 6px;
-    margin-top: 0.5rem;
   }
 
   .c-eacharts-box{
@@ -1018,6 +1019,8 @@
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    word-break: break-word; 
+
   }
   .list-itembox .list-item .list-item-subt{
     font-size: 14px;
@@ -1028,6 +1031,8 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     margin-top: 0.4rem;
+    word-break: break-word; 
+
   }
   .listitems-b span{
     color: #999;
@@ -1035,16 +1040,22 @@
     font-size: 12px;
   }
   .list-itembox .list-item .list-item-text{
+    width: 100%;
     font-size: 14px;
     font-weight: 400;
     color: #000;
     line-height: 20px;
     margin-top: 8px;
+    display: flex;
+  }
+  .list-itembox .list-item .list-item-text>div{
+    flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    word-break: break-word; 
   }
   .list-itembox .list-item .list-item-z{
     margin-top: 8px;
@@ -1176,6 +1187,8 @@
     display: -webkit-box;
     -webkit-line-clamp: 8;
     -webkit-box-orient: vertical;
+    word-break: break-word; 
+
     /* height: 10rem;
     overflow: hidden; */
   }

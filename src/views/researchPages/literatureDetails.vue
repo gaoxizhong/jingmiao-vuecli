@@ -665,6 +665,7 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     line-height: 20px;
+    word-break: break-word; 
   }
   .one_info p span{
     display: inline-block;
@@ -848,6 +849,7 @@
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    word-break: break-word; 
   }
   .list-itembox .list-item .list-item-z{
     margin-top: 8px;
@@ -865,6 +867,7 @@
   .list-item .list-item-z .tap-top-span{
     display: flex;
     align-items: center;
+    word-break: break-word; 
   }
   .list-item .list-item-z .tap-top-span>a{
     font-size: 14px;
