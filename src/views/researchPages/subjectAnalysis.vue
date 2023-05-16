@@ -343,7 +343,7 @@
         value:'', // 搜索疾病名称
         tableData: [],
         page:1,
-        pageSize: 10,
+        pageSize: 25,
         total:0, // 总条数
         total_page: 0, // 总页数
         newest_result: [],

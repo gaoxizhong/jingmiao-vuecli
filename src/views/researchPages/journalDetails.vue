@@ -172,7 +172,7 @@
         album_tag:'highest', // newest: 最新文献；highest ： 最高文献
         tableData: [],
         total_num:0, // 总条数
-        pageSize: 10,
+        pageSize: 25,
         page:1,
         total_page:0,
         unique_val:'',

@@ -235,7 +235,7 @@
         album_tag:'highest', // newest: 最新文献；highest ： 最高文献
         acc_tab:'1',
         page: 1,
-        pageSize:10,
+        pageSize:25,
         total:0,
         total_page:0,
       };
