@@ -14,6 +14,15 @@
       <!-- 左侧模块 开始-->
       <div class="content-left">
         <div class="myFavorite-seach-box">
+          <el-select class="validate" v-model="headerOrganization" placeholder="请选择标签名称" clearable slot="prepend">
+            <el-option
+              v-for="(item,index) in tag_list"
+              :key="index"
+              :label="item"
+              :value="item"></el-option>
+          </el-select>
+        </div>
+        <div class="myFavorite-seach-box" style="margin-top: 10px;">
           <el-input placeholder="输入标题" v-model="headerInput" class="input-with-select">
             <el-button slot="append" @click="headerInputClick">搜索</el-button>
           </el-input>
@@ -21,8 +30,14 @@
         <div class="content-left-1">
           <div :class="sel_tab == index ?'active':'' " v-for="(item,index) in myCollectionList" :key='index' @click="getDetail(index,item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
             <p class="left-items-t">{{item.title}}</p>
-            <p class="left-items-m">{{item.subject}}</p>
+            <!-- <p class="left-items-m">{{item.subject}}</p> -->
             <p class="left-items-b">点击量：{{item.click_count?item.click_count:0}}</p>
+            <div class="label-box">
+              <div class="label-item">
+                <span v-for="(items,idx) in item.tags" :key="idx">{{ items }}</span>
+              </div>
+              <img src="../../assets/image/researchPages/24gf-tags3.png" title="点击设置标签" @click.stop="clickmyFavoriteLabelBtn(index,item)"/>
+            </div>
           </div>
         </div>
       </div>
@@ -106,6 +121,10 @@
               <label>年、卷(期):</label>
               <p>{{infoDetail.year}}</p>
             </div>
+            <!-- <div class="one_info clearfix">
+              <label>标签:</label>
+              <p>{{infoDetail.year}}</p>
+            </div> -->
             <div class="asub-box">
               <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection"><i :class="infoDetail.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>{{infoDetail.is_collection == 2 ? '收藏' :'取消收藏'}}</a>
               <a :href="infoDetail.pdf_url?infoDetail.pdf_url:'javascript:0;'" class="asub-zaixian" :target="infoDetail.periodical_url?'_blank':''" @click.stop="goToyuedu($event,infoDetail.pdf_url)" v-if="infoDetail.pdf_url"><i class="el-icon-reading"></i>原文链接</a>            
@@ -119,13 +138,32 @@
       <!-- 右侧 结束-->
     </div>
     <!-- 内容 结束 -->
-
+    <el-dialog title="文献标签" :visible.sync="dialogLabel">
+      <div class="labelList-box" v-for="(item,index) in dialogLabelList" :key="index"> 
+        <el-form>
+          <el-form-item label="标签名" :label-width="formLabelWidth">
+            <el-input autocomplete="off" placeholder="请填写标签名" v-model="item.name" :label-width="formLabelWidth"></el-input>
+          </el-form-item>
+        </el-form>
+        <div class="label-add-box">
+          <img src="../../assets/image/researchPages/label-add.png" alt="" @click="clickLabelAdd"/>
+          <img src="../../assets/image/researchPages/label-del.png" alt="" @click="clickLabelDel(index)" v-if="index != 0"/>
+        </div>
+       
+      </div>
+     
+      <div class="label-tips">每篇文章最多可添加三个标签！</div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogLabel = false">取 消</el-button>
+        <el-button type="primary" @click="clickDetermine" style="background: #3664D9;border-color:#3664D9;">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 
 </template>
 
 <script>
-  import { literatureDetails,getMyCollection,clickCollection,getTitleOrganization } from "@/api/data";
+  import { literatureDetails,getMyCollection,clickCollection,getTitleOrganization,collectionAddTags } from "@/api/data";
   export default {
     // inject: ['setsickNess'],
     name: 'myFavorite',
@@ -142,7 +180,13 @@
         sel_tab: 0,
         activeName:'xglw',
         headerInput:'',
-
+        dialogLabel: false, // 标签弹窗
+        formLabelWidth: '100px',
+        dialogLabelList:[{name:''}],
+        sel_collection_info: {},
+        tag_list:[],
+        headerOrganization:'',
+        item_num: 0,
       };
     },
     created() {
@@ -157,6 +201,74 @@
       this.getMyCollection();
     },
     methods: {
+      dataFilter(val){
+        this.headerOrganization = val; //给绑定值赋值
+        if (val) {
+          //val存在筛选数组
+          this.tag_list = this.o_list.filter((i) => {
+            let index = -1,
+              reflag = true
+ 
+            // 逐字对比筛选
+            let valArr = val.split(''),
+              len = valArr.length
+            loop: for (let k = 0; k < len; k++) {
+              if (i.label.indexOf(valArr[k]) <= index) {
+                reflag = false
+                break loop
+              }
+              index = i.label.indexOf(valArr[k]) //赋筛选的字在i中的索引
+            }
+ 
+            return reflag
+          })
+        } else {
+          //val不存在还原数组
+          this.tag_list= this.o_list
+        }
+      },
+      clickmyFavoriteLabelBtn(n,i){
+        this.sel_collection_info = i;
+        this.item_num = n;
+        let tags = i.tags;
+        if(tags.length > 0){
+          let t = [];
+
+          tags.forEach( ele =>{
+            t.push({
+              name: ele
+            })
+          })
+          this.dialogLabelList = t;
+        }else{
+          this.dialogLabelList = [{name:''}];
+
+        }
+        this.dialogLabel = true;
+      },
+      clickLabelAdd(){
+        let dialogLabelList = this.dialogLabelList;
+        if(dialogLabelList.length >= 3){
+          this.$message.error({
+            message: '最多可添加三个标签!'
+          });
+          return
+        }
+        dialogLabelList.push({
+          name: ''
+        })
+
+      },
+      clickLabelDel(i){
+        let index = i;
+        if(index == 0){
+           return
+        }
+        let dialogLabelList = this.dialogLabelList;
+        dialogLabelList.splice(index,1);
+        this.dialogLabelList = dialogLabelList;
+
+      },
       goToPopularLiterature(){
         this.$emit('setsickNess', '');
         this.$router.push('/popularLiterature');
@@ -164,13 +276,50 @@
       // 检索
       headerInputClick(){
         let headerInput = this.headerInput;
-        if(!headerInput){
-          this.$message.error({
-            message: '检索不能为空!'
-          });
-          return
-        }
+        // if(!headerInput){
+        //   this.$message.error({
+        //     message: '检索不能为空!'
+        //   });
+        //   return
+        // }
         this.getMyCollection();
+      },
+      // 点击标签弹窗确定
+      clickDetermine(){
+        let that = this;
+        let myCollectionList = that.myCollectionList;
+        let sel_collection_info = that.sel_collection_info;
+        let dialogLabelList = this.dialogLabelList;
+        let num = that.item_num;
+        let tags = [];
+        dialogLabelList.forEach( ele =>{
+          if(ele.name){
+            tags.push(ele.name)
+          }
+        })
+        let pearms ={
+          uid: that.uid,
+          md5: sel_collection_info.periodical_md5,
+          tags,
+        }
+        console.log(pearms)
+        collectionAddTags(pearms).then(res => {
+          if (res.data.code == 0) {
+            that.$message.success({
+              message: res.data.msg
+            });
+            that.dialogLabel = false;
+            myCollectionList[num].tags = pearms.tags;
+            that.myCollectionList = myCollectionList;
+          } else {
+            this.$message.error({
+              message: res.data.msg
+            });
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
       },
       //点击收藏
       clickCollection(){
@@ -233,6 +382,9 @@
         if(that.headerInput){
           pearms.search = that.headerInput
         }
+        if(that.headerOrganization){
+          pearms.tag = that.headerOrganization
+        }
         const loading = this.$loading({
           lock: true,
           text: "Loading",
@@ -245,6 +397,7 @@
           if (res.data.code == 0) {
             that.myCollectionList = res.data.data.data;
             that.total_page = res.data.data.total_page;
+            that.tag_list = res.data.data.tag_list;
             let sel_tab = that.sel_tab;
             // 点击收藏列表获取详情
             that.getDetail(sel_tab,res.data.data.data[sel_tab].periodical_md5?res.data.data.data[sel_tab].periodical_md5:'',res.data.data.data[sel_tab].uniq_id?res.data.data.data[sel_tab].uniq_id:'');
@@ -397,16 +550,43 @@
   }
   .content-left-1>div{
     width: 100%;
-    height: 6rem;
+    height: auto;
     border-radius: 6px;
     margin-bottom: 0.8rem;
     background: #fff;
     box-shadow: 0px 2px 6px 0px rgba(183,183,183,0.5);
-    padding: 1rem 1.2rem 1.2rem 1.2rem;
+    padding: 1rem 0.6rem;
     cursor: pointer;
+  }
+  .content-left-1>div .label-box{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+  }
+  .content-left-1>div .label-box img{
+    width: 17px;
+    height: 17px;
+  }
+  .content-left-1>div .label-box .label-item{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-right: 8px;
   }
   .content-left-1>div:hover,.content-left-1>div.active{
     background: #ecf5ff79;
+  }
+  .content-left-1>div .label-box .label-item span{
+    font-size: 12px;
+    color: #409EFF;
+    background-color: #ecf5ff;
+    border-color: #d9ecff;
+    display: inline-block;
+    padding: 8px 12px;
+    margin-right: 10px;
+    border-radius: 6px;
   }
   .left-items-t{
     text-align: left;
@@ -705,13 +885,15 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
     border-radius: 6px;
   }
   .myFavorite-seach-box >>> .el-input__inner{
     border: 1px solid #E3E3E3;
     height: 32px;
     font-size: 14px;
+  }
+  .myFavorite-seach-box >>> .el-input__icon{
+    line-height: 32px;
   }
   .myFavorite-seach-box >>> .el-button{ 
     background: #3664D9;
@@ -756,5 +938,44 @@
   }
   .fh-box>span{
     margin-left: 0.3rem;
+  }
+  .pages-b /deep/ .el-dialog__header{
+    text-align: left;
+  }
+  .labelList-box{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .labelList-box /deep/ .el-form{
+    width: 60%;
+  }
+  .pages-b /deep/ .el-form-item{
+    width: 100%;
+    margin: 0;
+
+  }
+  .label-tips{
+    width: 100%;
+    font-size: 12px;
+    color: #ff0000;
+    text-align: left;
+    padding-left: 100px;
+  }
+  .label-add-box{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+  }
+  .label-add-box>img{
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .labelList-box /deep/ .el-input.is-active .el-input__inner, .labelList-box /deep/ .el-input__inner:focus{
+    border-color: #3664D9;
   }
 </style>

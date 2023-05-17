@@ -639,6 +639,14 @@ export const getProfile = (params) =>{
     data: params
   })
 }
+// 文献收藏添加标签
+export const collectionAddTags = (params) =>{
+  return axios.request({
+    url:'/es-collection-tags',
+    method: 'post',
+    data: params
+  })
+}
 // =================  科研探索api  ↑ ==================
 
 

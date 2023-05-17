@@ -70,7 +70,7 @@ const getLine_eacharts = (d,i,t) =>{
               },
               color: "#999",
               fontSize: '0.7rem',
-              interval: 0, // 设置斜切
+              interval: 1, // 设置斜切
               rotate: 40 // 设置斜切
             },
             axisTick: {
@@ -134,7 +134,7 @@ const getLine_eacharts = (d,i,t) =>{
               itemStyle: { // 圆球及连线样式样式
                 normal: {
                   color: "#3664D9",
-                  shadowBlur: 40,
+                  shadowBlur: 0,
                   label: { // 节点上的字体展示
                     show: false,
                     position: "top",

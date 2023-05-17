@@ -5,7 +5,7 @@
        <!-- 返回按钮 -->
        <div class="fh-box" style="z-index:10000;" @click="fanhui_btn()" v-if="retrievalArr">
           <i class="el-icon-back"></i>
-          <span>返回检索</span>
+          <span>返回上次检索</span>
         </div>
           <!-- 返回按钮 -->
       <div class="titlebox-tab">

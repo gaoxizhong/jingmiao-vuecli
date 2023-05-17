@@ -1,8 +1,16 @@
 <template>
   <div>
-
+    <!-- <div class="eacharts-itemsbo" style="width: 100%;">
+      <div class="icon-classbox">
+        <div class="classbox-l">
+          <span>研究趋势</span>
+        </div>
+      </div>
+      <div class="eacharts-ch-box ResearchTrends">
+        <div id="ResearchTrends" style="width: 100%;height:100%;"></div>
+      </div>
+    </div> -->
     <div class="c-box">
-
       <div style="margin-right:1rem;flex: 1;">
         <!-- 中间文献列表模块 开始 -->
         <div class="c-list-box">
