@@ -277,6 +277,11 @@
 
 
 <style scoped>
+  .el-main{
+    padding-top: 4.5rem;
+    padding-right: 1rem;
+    overflow: auto;
+  }
   .center-box{
     width: 100%;
     height: 100%;
@@ -296,7 +301,6 @@
     padding: 0.2rem 1rem;
     transition: 0.5s;
     text-align: left;
-    min-height: 19rem;
   }
   .row-bg .el-col{
     padding: 0.5rem;

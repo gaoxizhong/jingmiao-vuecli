@@ -365,7 +365,7 @@
       // ========  时间范围 展示数据 默认10年  ↓ ============
       let now = new Date();
       let year = now.getFullYear();
-      let s_year = Number(year - 10);
+      let s_year = Number(year - 100);
       this.endYear = year;
       this.startYear = s_year;
       let s_num = Date.parse(s_year);
