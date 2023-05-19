@@ -16,7 +16,7 @@
         <div class="myFavorite-seach-box">
           <el-select class="validate" v-model="headerOrganization" placeholder="请选择标签名称" clearable slot="prepend">
             <el-option
-              v-for="(item,index) in tag_list"
+              v-for="(item,index) in tags_list"
               :key="index"
               :label="item"
               :value="item"></el-option>
@@ -184,7 +184,7 @@
         formLabelWidth: '100px',
         dialogLabelList:[{name:''}],
         sel_collection_info: {},
-        tag_list:[],
+        tags_list:[],
         headerOrganization:'',
         item_num: 0,
       };
@@ -205,7 +205,7 @@
         this.headerOrganization = val; //给绑定值赋值
         if (val) {
           //val存在筛选数组
-          this.tag_list = this.o_list.filter((i) => {
+          this.tags_list = this.o_list.filter((i) => {
             let index = -1,
               reflag = true
  
@@ -224,7 +224,7 @@
           })
         } else {
           //val不存在还原数组
-          this.tag_list= this.o_list
+          this.tags_list= this.o_list
         }
       },
       clickmyFavoriteLabelBtn(n,i){
@@ -396,12 +396,18 @@
         getMyCollection(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            that.myCollectionList = res.data.data.data;
-            that.total_page = res.data.data.total_page;
-            that.tag_list = res.data.data.tag_list;
+            // that.myCollectionList = res.data.data.list;
+            // that.total_page = res.data.data.total_page;
+            let myCollectionList = res.data.data.list;
+            myCollectionList.forEach( ele =>{
+              ele.tags = ele.tags? ele.tags.split(','): []
+            })
+            that.tags_list = res.data.data.tags_list;
+            that.myCollectionList = myCollectionList;
+
             let sel_tab = that.sel_tab;
             // 点击收藏列表获取详情
-            that.getDetail(sel_tab,res.data.data.data[sel_tab]);
+            that.getDetail(sel_tab,that.myCollectionList[sel_tab]);
           } else {
             this.$message.error({
               message: res.data.msg
@@ -425,7 +431,7 @@
       // 点击收藏列表获取详情
       getDetail(i,info) {
         let that = this;
-
+        console.log(info)
         let uid = that.uid;
         that.sel_tab = i;
         let pearms = {
