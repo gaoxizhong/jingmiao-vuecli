@@ -167,7 +167,7 @@
 
 </template>
 <script>
-  import { literatureDocSearch,clickCollection,getTitleOrganization,getSetLanguage } from "../../api/data";
+  import { literatureDocSearch,clickCollection,getTitleOrganization } from "../../api/research/researchData";
   import { getLine_eacharts,getForceRelation_eacharts,getWordCloud_eacharts } from "../../assets/js/getEcharts";
   export default {
     props:{

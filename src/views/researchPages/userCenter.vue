@@ -84,7 +84,7 @@
 
 
 <script>
-  import { getProfile,getMyCollection,getliteratureHistory,clearHistory } from '@/api/data'
+  import { getProfile,getMyCollection,getliteratureHistory,clearHistory } from '../../api/research/researchData'
   export default {
     name: 'userCenter',
     data(){

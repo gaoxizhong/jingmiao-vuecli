@@ -163,7 +163,7 @@
 </template>
 
 <script>
-  import { literatureDetails,getMyCollection,clickCollection,getTitleOrganization,collectionAddTags } from "@/api/data";
+  import { literatureDetails,getMyCollection,clickCollection,getTitleOrganization,collectionAddTags } from "../../api/research/researchData";
   export default {
     // inject: ['setsickNess'],
     name: 'myFavorite',

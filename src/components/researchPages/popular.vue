@@ -136,7 +136,7 @@
 
 </template>
 <script>
-  import { getEsIndex,clickCollection,getSymptom,getRandomDoc,getTitleOrganization } from "../../api/data";  
+  import { getEsIndex,clickCollection,getRandomDoc,getTitleOrganization } from "../../api/research/researchData";  
   export default {
     data(){
       return {

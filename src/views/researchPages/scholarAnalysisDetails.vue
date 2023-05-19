@@ -81,7 +81,7 @@
 
 </template>
 <script>
-  import { getEsIndex } from "../../api/data";
+  import { getEsIndex } from "../../api/research/researchData";
   export default {
     provide(){
       return {

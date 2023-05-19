@@ -109,7 +109,7 @@
 
 </template>
 <script>
-  import { getOrganizationDetail } from "../../api/data";
+  import { getOrganizationDetail } from "../../api/research/researchData";
   export default {
     provide(){
       return {

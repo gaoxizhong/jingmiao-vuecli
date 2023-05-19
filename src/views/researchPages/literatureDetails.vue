@@ -233,7 +233,7 @@
 </template>
 
 <script>
-  import { literatureDetails,getdocRecommend,clickCollection,getTitleOrganization } from "@/api/data";
+  import { literatureDetails,getdocRecommend,clickCollection,getTitleOrganization } from "../../api/research/researchData";
   export default {
     // inject: ['setsickNess'],
     name: 'literatureDetails',

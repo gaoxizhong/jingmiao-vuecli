@@ -127,7 +127,7 @@
 
 </template>
 <script>
-  import { journalAnalysisIndex } from "../../api/data";
+  import { journalAnalysisIndex } from "../../api/research/researchData";
   export default {
     provide(){
       return {

@@ -83,7 +83,7 @@
 
 </template>
 <script>
-  import { getAuthorIndex,getAnalysisSearch,getAuthorOrganization } from "../../api/data";
+  import { getAuthorIndex,getAnalysisSearch,getAuthorOrganization } from "../../api/research/researchData";
   export default {
     provide(){
       return {

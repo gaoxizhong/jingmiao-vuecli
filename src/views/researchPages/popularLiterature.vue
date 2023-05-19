@@ -304,7 +304,7 @@
   import Search from '../../components/researchPages/search.vue';
   // import yearPicker from '../../components/researchPages/yearPicker.vue';
   import time from "../../assets/js/time";
-  import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease,getAuthorOrganization  } from "../../api/data";
+  import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease,getAuthorOrganization  } from "../../api/research/researchData";
   export default {
     name: 'popularLiterature',
     components: {

@@ -306,7 +306,7 @@
 
 </template>
 <script>
-  import { getXkfxDiseases,getClassBrowseList,getRelationRecommend,getDepartmentIndex,getXkfxEsDocument } from "../../api/data";
+  import { getXkfxDiseases,getClassBrowseList,getRelationRecommend,getDepartmentIndex,getXkfxEsDocument } from "../../api/research/researchData";
   import yearPicker from '../../components/researchPages/yearPicker.vue';
 
   export default {
