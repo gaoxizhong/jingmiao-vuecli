@@ -57,7 +57,7 @@
               </a>
               <div class="item-btn-box">
                 <div class="asub-box">
-                  <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection(index,item.periodical_md5,item.is_collection,item.title)"><i :class="item.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>{{item.is_collection == 2 ? '收藏' :'取消收藏'}}</a>
+                  <a href="javascript:0;" class="asub-zaixian"  @click.stop="clickCollection(index,item.is_collection,item.title,item.uniq_id)"><i :class="item.is_collection == 2 ?'el-icon-star-off':'el-icon-star-on'"></i>{{item.is_collection == 2 ? '收藏' :'取消收藏'}}</a>
                   <a :href="item.periodical_url" target="_blank" class="asub-zaixian" v-if="item.periodical_url"><i class="el-icon-reading"></i>原文链接</a>
                 </div>
 
@@ -224,14 +224,14 @@
         this.shoow_status = !s;
       },
       //点击收藏
-      clickCollection(i,md,c,t){
+      clickCollection(i,c,t,u){
         let that = this;
         let index = i;
         let uid = that.uid;
-        let md5 = md;
         let col = c;
         let tag = '';
         let title = t;
+        let uniq_id = u;
         if(col == 1){
           // 1、已收藏  2、未收藏
           tag = 'cancelCollection';
@@ -247,7 +247,7 @@
         that.is_return = false;
         let p = {
           uid,
-          md5,
+          md5: uniq_id,
           tag,
           title
         }

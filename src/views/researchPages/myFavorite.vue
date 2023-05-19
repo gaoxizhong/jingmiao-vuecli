@@ -28,7 +28,7 @@
           </el-input>
         </div>
         <div class="content-left-1">
-          <div :class="sel_tab == index ?'active':'' " v-for="(item,index) in myCollectionList" :key='index' @click="getDetail(index,item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
+          <div :class="sel_tab == index ?'active':'' " v-for="(item,index) in myCollectionList" :key='index' @click="getDetail(index,item)">
             <p class="left-items-t">{{item.title}}</p>
             <!-- <p class="left-items-m">{{item.subject}}</p> -->
             <p class="left-items-b">点击量：{{item.click_count?item.click_count:0}}</p>
@@ -299,7 +299,7 @@
         })
         let pearms ={
           uid: that.uid,
-          md5: sel_collection_info.periodical_md5,
+          md5: sel_collection_info.uniq_id,
           tags,
         }
         console.log(pearms)
@@ -325,7 +325,7 @@
       clickCollection(){
         let that = this;
         let uid = that.uid;
-        let md5 = that.infoDetail.periodical_md5;
+        let uniq_id = that.infoDetail.uniq_id;
         let col = that.infoDetail.is_collection;
         let tag = '';
         let title = that.infoDetail.title;
@@ -339,7 +339,7 @@
         }
         let p = {
           uid,
-          md5,
+          md5: uniq_id,
           tag,
           title
         }
@@ -378,6 +378,7 @@
         let pearms = {
           uid,
           page,
+          pageSize: 1000
         };
         if(that.headerInput){
           pearms.search = that.headerInput
@@ -400,7 +401,7 @@
             that.tag_list = res.data.data.tag_list;
             let sel_tab = that.sel_tab;
             // 点击收藏列表获取详情
-            that.getDetail(sel_tab,res.data.data.data[sel_tab].periodical_md5?res.data.data.data[sel_tab].periodical_md5:'',res.data.data.data[sel_tab].uniq_id?res.data.data.data[sel_tab].uniq_id:'');
+            that.getDetail(sel_tab,res.data.data.data[sel_tab]);
           } else {
             this.$message.error({
               message: res.data.msg
@@ -422,14 +423,14 @@
         }
       },
       // 点击收藏列表获取详情
-      getDetail(i,d,u) {
+      getDetail(i,info) {
         let that = this;
-        console.log(i)
+
         let uid = that.uid;
         that.sel_tab = i;
         let pearms = {
-          periodical_md5:d,
-          uniq_id:u,
+          periodical_md5:info.periodical_md5?info.periodical_md5:'',
+          uniq_id:info.uniq_id?info.uniq_id:'',
           uid
         };
         const loading = this.$loading({
