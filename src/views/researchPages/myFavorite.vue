@@ -432,13 +432,8 @@
       getDetail(i,info) {
         let that = this;
         console.log(info)
-        let uid = that.uid;
         that.sel_tab = i;
-        let pearms = {
-          periodical_md5:info.periodical_md5?info.periodical_md5:'',
-          uniq_id:info.uniq_id?info.uniq_id:'',
-          uid
-        };
+       
         const loading = this.$loading({
           lock: true,
           text: "Loading",
@@ -446,7 +441,20 @@
           background: "rgba(0, 0, 0, 0.1)",
           target: document.querySelector("body")
         });
+        setTimeout(() =>{
+          that.infoDetail = info;
+          loading.close();
+          // 回到顶部的方法。
+          window.scrollTo(0,0);
+        },1000)
+        return
         that.infoDetail = {};
+        let uid = that.uid;
+        let pearms = {
+          periodical_md5:info.periodical_md5?info.periodical_md5:'',
+          uniq_id:info.uniq_id?info.uniq_id:'',
+          uid
+        };
         literatureDetails(pearms).then(res => {
           loading.close();
           // 回到顶部的方法。

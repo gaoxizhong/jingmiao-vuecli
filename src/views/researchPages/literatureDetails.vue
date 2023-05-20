@@ -280,10 +280,10 @@
       clickCollection(){
         let that = this;
         let uid = that.uid;
-        let md5 = that.infoDetail.periodical_md5;
         let col = that.infoDetail.is_collection;
         let tag = '';
         let title = that.infoDetail.title;
+        let uniq_id = that.infoDetail.uniq_id;
         if(col == 1){
           // 1、已收藏  2、未收藏
           tag = 'cancelCollection';
@@ -299,7 +299,7 @@
         that.is_return = false;
         let p = {
           uid,
-          md5,
+          md5: uniq_id,
           tag,
           title
         }

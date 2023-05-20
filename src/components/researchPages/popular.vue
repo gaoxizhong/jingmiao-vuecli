@@ -140,7 +140,7 @@
   export default {
     data(){
       return {
-        uid:'',
+        uid: window.localStorage.getItem('uid'),
         is_s:false,
         is_view: true,
         is_titleTab:'1',
