@@ -140,7 +140,17 @@ const routes = [
           requireAuth:true
         }
       },
- 
+      { 
+        path: '/chatPDF',
+        name: 'chatPDF',
+        component: () => import('@/views/chatPDF.vue'),
+        meta: {
+          title:'chatPDF',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
       {
         path: '/NewDetails',
         name : 'NewDetails',

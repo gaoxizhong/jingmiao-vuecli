@@ -79,7 +79,7 @@ export default {
   data(){
     return {
       is_view: true,
-      tag_pages:'',
+      tag_pages:'xyzsk',
       input_name:'',
       options:[],
       all_options:'',   //  全部 tag标识
