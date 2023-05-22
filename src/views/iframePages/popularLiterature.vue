@@ -64,7 +64,7 @@
             
             
             <div class="tabslist">
-              <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我收藏的</span>
+              <span class="tabslist-span1" @click="goToMyFavorite('/my_Favorite')">我收藏的</span>
               <span class="tabslist-span2" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
             </div>
             <!-- 弹窗 开始-->
@@ -234,7 +234,7 @@
                   </div>
               
                   <div class="tabslist">
-                    <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我收藏的</span>
+                    <span class="tabslist-span1" @click="goToMyFavorite('/my_Favorite')">我收藏的</span>
                     <span class="tabslist-span2" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
                   </div>
                 </div>
@@ -300,8 +300,8 @@
 </template>
 <script>
 
-  import Popular from '../../components/researchPages/popular.vue';
-  import Search from '../../components/researchPages/search.vue';
+  import Popular from '../../components/iframePages/popular.vue';
+  import Search from '../../components/iframePages/search.vue';
   import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease,getAuthorOrganization  } from "../../api/research/researchData";
   export default {
     name: 'popLiterature',
@@ -1138,7 +1138,7 @@
   .literature-titlebox.searchBarFixed{
     position: fixed;
 		background-color: #Fff;
-		top: 3.6rem;
+		top: 0;
     right: 0;
 		z-index: 99;
     margin-top: 0;

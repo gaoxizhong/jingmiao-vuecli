@@ -232,74 +232,6 @@ const routes = [
       },
     ]
   },
-  // {
-  //   path:'/Main',
-  //   name:'Main',
-  //   component: Main,
-  //   children: [
-  //       { path: '/Home',
-  //         name: 'home',
-  //         component: () => import('@/views/Home'),
-  //           meta: {
-  //             keepAlive: true,
-  //             scollTopPosition: 0,
-  //             requireAuth:true
-  //           }
-  //       },
-  //       { path: '/zyHome',
-  //         name: 'zyHome',
-  //         component: () => import('@/views/zyHome'),
-  //         meta: {
-  //           keepAlive: true,
-  //           scollTopPosition: 0,
-  //           requireAuth:true
-  //         }
-  //       },
-  //       { path: '/litgHome',
-  //         name: 'litgHome',
-  //         component: () => import('@/views/litgHome'),
-  //         meta: {
-  //           keepAlive: true,
-  //           scollTopPosition: 0,
-  //           requireAuth:true
-  //         }
-  //       },
-  //       { path: '/Details',
-  //         name: 'Details',
-  //         component: () => import('@/views/Details'),
-  //         meta: {
-  //           keepAlive: true,
-  //           scollTopPosition: 0,
-  //           requireAuth:true
-  //         }
-  //       },
-  //       { path: '/LcsyHome',
-  //         name: 'LcsyHome',
-  //         component: () => import('@/views/LcsyHome'),
-  //         meta: {
-  //           keepAlive: true,
-  //           scollTopPosition: 0,
-  //           requireAuth:true
-  //         }
-  //       },
-  //       { path: '/LcsyDetails',
-  //         name: 'LcsyDetails',
-  //         component: () => import('@/views/LcsyDetails'),
-  //         meta:{requireAuth:true}
-
-  //       },
-  //       { path: '/VideoHome',
-  //         name: 'VideoHome',
-  //         component: () => import('@/views/VideoHome'),
-  //         meta: {
-  //           keepAlive: true,
-  //           scollTopPosition: 0,
-  //           requireAuth:true
-  //         }
-  //       },
-  //   ]
-  // },
-
   {  // 科研灵感界面
     path: '/researchHome',
     name : 'researchHome',
@@ -476,33 +408,20 @@ const routes = [
           requireAuth:true,
         }
       },
-
-
-
-
-
-
-
-
-
-
-
-
       { 
-        path: '/myFavorite', //  --- 我收藏的
-        name: 'myFavorite',
-        component: () => import('@/views/researchPages/myFavorite'),
+        path: '/my_favorite', //  --- 我收藏的
+        name: 'my_favorite',
+        component: () => import('@/views/iframePages/myFavorite'),
         meta: {
           keepAlive: false,
           scollTopPosition: 0,
           requireAuth:true
         }
       },
-
       { 
-        path: '/scholarAnalysis', //  --- 学者分析首页
-        name: 'scholarAnalysis',
-        component: () => import('@/views/researchPages/scholarAnalysis'),
+        path: '/schAnalysis', //  --- 学者分析首页
+        name: 'schAnalysis',
+        component: () => import('@/views/iframePages/scholarAnalysis'),
         meta: {
           keepAlive: true,
           scollTopPosition: 0,
@@ -510,9 +429,9 @@ const routes = [
         }
       },
       { 
-        path: '/scholarAnalysisDetails', //  --- 学者分析详情页
-        name: 'scholarAnalysisDetails',
-        component: () => import('@/views/researchPages/scholarAnalysisDetails'),
+        path: '/schDetails', //  --- 学者分析详情页
+        name: 'schDetails',
+        component: () => import('@/views/iframePages/scholarAnalysisDetails'),
         meta: {
           keepAlive: false,
           scollTopPosition: 0,
@@ -520,9 +439,9 @@ const routes = [
         }
       },
       { 
-        path: '/subjectAnalysis', //  --- 学科分析首页
-        name: 'subjectAnalysis',
-        component: () => import('@/views/researchPages/subjectAnalysis'),
+        path: '/subAnalysis', //  --- 学科分析首页
+        name: 'subAnalysis',
+        component: () => import('@/views/iframePages/subjectAnalysis'),
         meta: {
           keepAlive: true,
           scollTopPosition: 0,
@@ -530,9 +449,9 @@ const routes = [
         }
       },
       { 
-        path: '/journalAnalysis', //  --- 期刊分析首页
-        name: 'journalAnalysis',
-        component: () => import('@/views/researchPages/journalAnalysis'),
+        path: '/jouAnalysis', //  --- 期刊分析首页
+        name: 'jouAnalysis',
+        component: () => import('@/views/iframePages/journalAnalysis'),
         meta: {
           keepAlive: true,
           scollTopPosition: 0,
@@ -540,9 +459,9 @@ const routes = [
         }
       },
       { 
-        path: '/journalDetails', //  --- 期刊分析详情页
-        name: 'journalDetails',
-        component: () => import('@/views/researchPages/journalDetails'),
+        path: '/jouDetails', //  --- 期刊分析详情页
+        name: 'jouDetails',
+        component: () => import('@/views/iframePages/journalDetails'),
         meta: {
           keepAlive: false,
           scollTopPosition: 0,
@@ -550,9 +469,9 @@ const routes = [
         }
       },
       { 
-        path: '/useTutorial', //  --- 使用教程
-        name: 'useTutorial',
-        component: () => import('@/views/researchPages/useTutorial'),
+        path: '/use_Tutorial', //  --- 使用教程
+        name: 'use_Tutorial',
+        component: () => import('@/views/iframePages/useTutorial'),
         meta: {
           keepAlive: true,
           scollTopPosition: 0,
@@ -560,17 +479,6 @@ const routes = [
         }
       },
 
-      { 
-        path: '/user-center', //  --- 个人中心
-        name: 'userCenter',
-        component: () => import('@/views/researchPages/userCenter'),
-        meta: {
-          title: '个人中心',
-          keepAlive: true,
-          scollTopPosition: 0,
-          requireAuth:true,
-        }
-      },
     ]
   },
 ]

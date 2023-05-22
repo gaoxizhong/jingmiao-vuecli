@@ -40,7 +40,6 @@
       let getViewportSize = that.$getViewportSize();
       that.viewHeight = getViewportSize.height;
       that.viewWidth = getViewportSize.width;
-      that.setCurrentRoute();
     },
     methods:{
       // 接收子组件方法
@@ -89,54 +88,17 @@
   .el-container{
     overflow: hidden;
   }
-  .el-header{
-    width: 100%;
-    height: 3.6rem !important;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    padding: 0 1.5rem 0 0 !important;
-    box-sizing: border-box;
 
-  }
-  .el-aside{
-    height: 100%;
-    overflow-X: hidden;
-    position: fixed;
-    top: 3.65rem;
-    left: 0;
-    z-index: 1999;
-  }
-  .el-aside >>> .el-submenu .el-submenu__title{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    height:40px;
-    line-height:40px;
-    font-size: 14px !important;
-    border-bottom: 1px solid #e9e9e94f;
-  }
-  .el-aside >>> .el-submenu .el-submenu__title:hover{
-    background: #DBEAFF;
-  }
-  .el-aside >>> .el-submenu .el-submenu__title span{
-    padding-left: 0.5rem;
-  }
   .el-main{
     background: #FAFBFF;
-    padding: 3.6rem 0px 16px 216px;
+    padding: 0;
     box-sizing: border-box;
-    overflow: hidden;
   }
   .pages-b{
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    padding: 1rem 16px 0 0;
+    padding: 1rem 16px;
   }
   .l-content{
     width: 200px;

@@ -450,7 +450,7 @@
         let uniq_id = u;
         this.$emit('setsickNess','');
         this.$router.push({  //核心语句
-          path:'/literatureDetails',   //跳转的路径
+          path:'/litDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             periodical_md5,
             uniq_id
@@ -477,7 +477,7 @@
             }
             that.$emit('setsickNess','');
             that.$router.push({
-              path:'/literatureAuthor', 
+              path:'/litAuthor', 
               query:{     
                 author: name,
                 organization: res.data.data.org,

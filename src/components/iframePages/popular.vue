@@ -432,7 +432,8 @@
     justify-content: space-between;
   }
   .listbox-left{
-    width: 56.5rem;
+    /* width: 56.5rem; */
+    flex: 1;
     height: auto;
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
@@ -601,7 +602,7 @@
     margin-right: 0;
   }
   .listbox-right{
-    flex:1;
+    width: 25rem;
     padding-left: 1rem;
   }
 
