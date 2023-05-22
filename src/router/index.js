@@ -429,6 +429,150 @@ const routes = [
     ]
   },
 
+
+  //iframeHome 内嵌本站单独科研系统页面
+  {  // 科研灵感界面
+    path: '/iframeHome',
+    name : 'iframeHome',
+    component: () => import('@/views/iframePages/iframeHome'),
+    children:[
+      { 
+        path: '/popLiterature', // 文献默认页面 --- 热门推荐
+        name: 'popLiterature',
+        component: () => import('@/views/iframePages/popularLiterature'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      { 
+        path: '/litDetails', // 文献默认页面 --- 文献详情页
+        name: 'litDetails',
+        component: () => import('@/views/iframePages/literatureDetails'),
+        meta: {
+          keepAlive: false, // 刷新不缓存
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      { 
+        path: '/litAuthor', //  --- 作者详情页
+        name: 'litAuthor',
+        component: () => import('@/views/iframePages/literatureAuthor'),
+        meta: {
+          keepAlive: false,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/insAnalysis', //  --- 机构分析首页
+        name: 'insAnalysis',
+        component: () => import('@/views/iframePages/institutionalAnalysis'),
+        meta: {
+          keepAlive: false,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+
+
+
+
+
+
+
+
+
+
+
+
+      { 
+        path: '/myFavorite', //  --- 我收藏的
+        name: 'myFavorite',
+        component: () => import('@/views/researchPages/myFavorite'),
+        meta: {
+          keepAlive: false,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+
+      { 
+        path: '/scholarAnalysis', //  --- 学者分析首页
+        name: 'scholarAnalysis',
+        component: () => import('@/views/researchPages/scholarAnalysis'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/scholarAnalysisDetails', //  --- 学者分析详情页
+        name: 'scholarAnalysisDetails',
+        component: () => import('@/views/researchPages/scholarAnalysisDetails'),
+        meta: {
+          keepAlive: false,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/subjectAnalysis', //  --- 学科分析首页
+        name: 'subjectAnalysis',
+        component: () => import('@/views/researchPages/subjectAnalysis'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/journalAnalysis', //  --- 期刊分析首页
+        name: 'journalAnalysis',
+        component: () => import('@/views/researchPages/journalAnalysis'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/journalDetails', //  --- 期刊分析详情页
+        name: 'journalDetails',
+        component: () => import('@/views/researchPages/journalDetails'),
+        meta: {
+          keepAlive: false,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+      { 
+        path: '/useTutorial', //  --- 使用教程
+        name: 'useTutorial',
+        component: () => import('@/views/researchPages/useTutorial'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+
+      { 
+        path: '/user-center', //  --- 个人中心
+        name: 'userCenter',
+        component: () => import('@/views/researchPages/userCenter'),
+        meta: {
+          title: '个人中心',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true,
+        }
+      },
+    ]
+  },
 ]
 
 // 页面刷新时，重新赋值token
@@ -444,20 +588,20 @@ const router = new VueRouter({
 const whiteList = ['/login']; // 添加路由白名单
 //路由判断
 router.beforeEach(async (to, from, next) => {
-  const token = window.localStorage.getItem('token');
-  // 页面刷新时，重新赋值token
-  if(token){
-    store.dispatch("setToken",token);
-    next();
-  }else{
-    if (whiteList.indexOf(to.path) !== -1) {
-      // 在白名单内直接放行
-      next();
-    } else {
-      // 其他没有访问权限的页面将被重定向到登录页面。
-      next(`/login?redirect=${to.path}`);
-    }
-  }
+  // const token = window.localStorage.getItem('token');
+  // // 页面刷新时，重新赋值token
+  // if(token){
+  //   store.dispatch("setToken",token);
+  //   next();
+  // }else{
+  //   if (whiteList.indexOf(to.path) !== -1) {
+  //     // 在白名单内直接放行
+  //     next();
+  //   } else {
+  //     // 其他没有访问权限的页面将被重定向到登录页面。
+  //     next(`/login?redirect=${to.path}`);
+  //   }
+  // }
 
   if(to.path == '/popularLiterature' && from.path == '/user-center' ){
     to.meta.keepAlive = false; 
