@@ -39,15 +39,16 @@
         <div class="navitems" :class="active_id == '5'?'navitems-active':'' ">
           <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/newQAhome?active_id=5')">智能问答</a>
         </div>
-        <!-- <div class="navitems" :class="active_id == '10'?'navitems-active':'' ">
+        <!-- <div class="navitems" :class="active_id == '11'?'navitems-active':'' ">
           <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/chatPDF?active_id=10')">chatPDF</a>
         </div> -->
-        <div class="navitems" :class="(active_id == '6' || active_id == '7' || active_id == '8' || active_id == '9')?'navitems-active':'' ">
+        <div class="navitems" :class="(active_id == '6' || active_id == '7' || active_id == '8' || active_id == '9'  || active_id == '10')?'navitems-active':'' ">
           <el-dropdown  @command="handleCommand">
             <a href="javascript:0;" class="navitems-a el-dropdown-link">
               更多<i class="el-icon-arrow-down el-icon--right"></i>
             </a>
             <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :class="active_id == '10'?'navitems-active':'' " command="/ocrPages?active_id=10">心理健康识别</el-dropdown-item>
               <el-dropdown-item :class="active_id == '9'?'navitems-active':'' " command="/knowledgeQAhome?active_id=9">人力资源问答</el-dropdown-item>
               <el-dropdown-item :class="active_id == '6'?'navitems-active':'' " command="/WesternMedicineCdss?active_id=6">西医CDSS</el-dropdown-item>
               <el-dropdown-item :class="active_id == '7'?'navitems-active':'' " command="/ImagesList?active_id=7">疾病图像库</el-dropdown-item>

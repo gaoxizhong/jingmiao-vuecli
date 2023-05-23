@@ -221,12 +221,24 @@ const routes = [
         name : 'guideDetails',
         component: guideDetails,
       },
-      { path: '/VideoHome',
+      {
+        path: '/VideoHome',
         name: 'VideoHome',
         component: () => import('@/views/VideoHome'),
         meta: {
           keepAlive: true,
           scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      {
+        path: '/ocrPages',
+        name: 'ocrPages',
+        component: () => import('@/views/ocrPages'),
+        meta: {
+          keepAlive: true,
+          scollTopPosition: 0,
+          title:'心理健康识别',
           requireAuth:true
         }
       },
