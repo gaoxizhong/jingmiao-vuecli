@@ -17,8 +17,25 @@
         </div>
       </el-upload>
     </div>
-   
     <!-- 文件上传模块 结束 -->
+
+    <!-- 历史记录 开始 -->
+    <div class="pdf-upload-history">
+      <div class="history-i-title">
+        <div class="title flex-1">历史（0）</div>
+        <div class="f-qx-box"></div>
+      </div>
+      <div class="list">
+        <div class="pdf-history-item" v-for="(item,index) in historyList" :key="index">
+          <div class="ant-dropdown-trigger action-btn">123</div>
+          <div class="cover-container pointer-events-none">
+            <img src="../assets/image/c4452524a19945e2ea3563390dfea2e2.svg" alt="" class="cover"/>
+          </div>
+          <div class="name">ACT翻译API(全) .pdf</div>
+        </div>
+      </div>
+    </div>
+    <!-- 历史记录 结束 -->
 
   </div>
 </template>
@@ -37,6 +54,7 @@
         activeIndex: '',
         uid:'',
         fileList: [],
+        historyList:[{},{}]
       }
     },
     mounted(){
@@ -54,6 +72,9 @@
   }
 </script>
 <style scoped>
+  .flex-1 {
+    flex: 1;
+  }
   .el-container{
     background: #fff;
     height: 100%;
@@ -170,6 +191,111 @@
     line-height: 31px;
     cursor: pointer;
   }
+  .pdf-upload-history {
+    display: flex;
+    flex-direction: column;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    width: stretch;
+    max-width: 1218px;
+    margin-top: 56px;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 -5px 20px rgb(0 0 0 / 4%);
+  }
+  .history-i-title{
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    text-align: left;
+  }
+  .history-i-title .title{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 18px;
+  }
+  .f-qx-box{
+    display: flex;
+    align-items: center;
+    padding-left: 14px;
+    width: auto;
+  }
+  .list{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .list .pdf-history-item{
+    width: 136px;
+    height: 180px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    padding: 24px 12px 0;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.5s;
+  }
+  .pointer-events-none {
+    pointer-events: none;
+  }
+  .pdf-history-item .cover-container {
+    width: 88px;
+    height: 100px;
+    position: relative;
+    margin: 0 auto;
+  }
+  .pdf-history-item .cover-container .cover{
+    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+  .pdf-history-item .name {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    color: #333;
+    font-size: 14px;
+    line-height: 16px;
+    margin-top: 12px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .pdf-history-item .action-btn {
+    display: flex;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 1;
+    justify-content: space-evenly;
+    opacity: 0;
+    color: rgb(115, 115, 115);
+    font-size: 20px;
+    background-color: #f8f8f8;
+    transition: all 0.5s;
+    border-radius: 4px;
+  }
+  .pdf-history-item:hover{
+    border-color: #e5e7eb;
+  }
+  .pdf-history-item:hover .action-btn{
+    opacity: 1;
+    z-index: 100;
+  }
+
 </style>
 <style>
   @media only screen and (max-width: 1390px){
