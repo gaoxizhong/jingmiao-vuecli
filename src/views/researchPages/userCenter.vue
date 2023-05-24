@@ -1,84 +1,87 @@
 <template>
-  <div class="center-box">
-    <el-row :gutter="10" class="row-bg" type="flex">
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-        <div class="grid-content">
-          <div class="userinfo-title">个人信息</div>
-          <div class="userinfo-imgName">
-            <img src="../../assets/image/researchPages/img-user.png" alt="" />
-            <span>{{ userInfo.username }}</span>
-          </div>
-          <div class="num-box">
-            <div>{{userInfo.phone}}</div>
-            <div>创建时间： {{userInfo.create_time}}</div>
-          </div>
-          <div class="footer-box">
-            <span @click="toLogin">退出</span>
-          </div>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-        <div class="grid-content">
-          <div class="userinfo-title">账号设置</div>
-          <div class="grid-content-item"></div>
-          <div class="grid-content-item">邮箱：<span>{{userInfo.email}}</span></div>
-          <div class="grid-content-item">单位名称：<span>{{userInfo.company_name}}</span></div>
-          <div class="grid-content-item">部门：<span>{{userInfo.department}}</span></div>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-        <div class="grid-content" id="myCollectionList">
-          <div class="userinfo-title">我的收藏</div>
-          <div class="content-left-1">
-            <p  v-for="(item,index) in myCollectionList" :key='index' :title="item.title" @click="clickListItem(index,item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
-              {{item.title}}
-            </p >
-          </div>
-          <div class="pagination-box">
-            <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
-            :total="total"
-            :page-size="pageSize"
-            :current-page='page'>
-            </el-pagination>
-          </div>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-        <div class="grid-content">
-          <div class="userinfo-title">检索历史</div>
-            <div class="sh-tabscont">
-              <el-table :data="historyList"  height="400" stripe style="width: 100%">
-                <el-table-column prop="search_desc" label="检索式" align="left" width="">
-                  <template slot-scope="scope">
-                    <p @click="clickhistoryList(scope.row)" title="点击检索" class="tbale-title">{{scope.row.search_desc}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="search_doc_count" label="检索类型" align="center" width="80">
-                  <template slot-scope="scope">
-                    <p @click="clickhistoryList(scope.row)" title="" style="cursor: pointer;">{{scope.row.tag == 1?'快速检索':'高级检索'}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="search_doc_count" label="检索结果" align="center" width="80">
-                  <template slot-scope="scope">
-                    <p @click="clickhistoryList(scope.row)" title="点击检索" style="cursor: pointer;">{{scope.row.search_doc_count}}条</p>
-                  </template>''
-                </el-table-column>
-                <el-table-column prop="search_time" label="检索时间" width="80">
-                  <template slot-scope="scope">
-                    <p @click="clickhistoryList(scope.row)" title="点击检索" style="cursor: pointer;">{{scope.row.search_time}}</p>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作" width="70">
-                  <template slot-scope="scope">
-                    <p class="tbale-p" @click="clickClear(scope.row)">清除</p>
-                  </template>
-                </el-table-column>
-              </el-table>
+  <div class="pages-b">
+    <div class="center-box">
+      <el-row :gutter="10" class="row-bg" type="flex">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <div class="grid-content">
+            <div class="userinfo-title">个人信息</div>
+            <div class="userinfo-imgName">
+              <img src="../../assets/image/researchPages/img-user.png" alt="" />
+              <span>{{ userInfo.username }}</span>
             </div>
-        </div>
-      </el-col>
-    </el-row>
+            <div class="num-box">
+              <div>{{userInfo.phone}}</div>
+              <div>创建时间： {{userInfo.create_time}}</div>
+            </div>
+            <div class="footer-box">
+              <span @click="toLogin">退出</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <div class="grid-content">
+            <div class="userinfo-title">账号设置</div>
+            <div class="grid-content-item"></div>
+            <div class="grid-content-item">邮箱：<span>{{userInfo.email}}</span></div>
+            <div class="grid-content-item">单位名称：<span>{{userInfo.company_name}}</span></div>
+            <div class="grid-content-item">部门：<span>{{userInfo.department}}</span></div>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <div class="grid-content" id="myCollectionList">
+            <div class="userinfo-title">我的收藏</div>
+            <div class="content-left-1">
+              <p  v-for="(item,index) in myCollectionList" :key='index' :title="item.title" @click="clickListItem(index,item.periodical_md5?item.periodical_md5:'',item.uniq_id?item.uniq_id:'')">
+                {{item.title}}
+              </p >
+            </div>
+            <!-- <div class="pagination-box">
+              <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+              :total="total"
+              :page-size="pageSize"
+              :current-page='page'>
+              </el-pagination>
+            </div> -->
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+          <div class="grid-content">
+            <div class="userinfo-title">检索历史</div>
+              <div class="sh-tabscont">
+                <el-table :data="historyList"  height="400" stripe style="width: 100%">
+                  <el-table-column prop="search_desc" label="检索式" align="left" width="">
+                    <template slot-scope="scope">
+                      <p @click="clickhistoryList(scope.row)" title="点击检索" class="tbale-title">{{scope.row.search_desc}}</p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="search_doc_count" label="检索类型" align="center" width="80">
+                    <template slot-scope="scope">
+                      <p @click="clickhistoryList(scope.row)" title="" style="cursor: pointer;">{{scope.row.tag == 1?'快速检索':'高级检索'}}</p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="search_doc_count" label="检索结果" align="center" width="80">
+                    <template slot-scope="scope">
+                      <p @click="clickhistoryList(scope.row)" title="点击检索" style="cursor: pointer;">{{scope.row.search_doc_count}}条</p>
+                    </template>''
+                  </el-table-column>
+                  <el-table-column prop="search_time" label="检索时间" width="80">
+                    <template slot-scope="scope">
+                      <p @click="clickhistoryList(scope.row)" title="点击检索" style="cursor: pointer;">{{scope.row.search_time}}</p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="操作" width="70">
+                    <template slot-scope="scope">
+                      <p class="tbale-p" @click="clickClear(scope.row)">清除</p>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
   </div>
+
 
 </template>
 
@@ -168,9 +171,10 @@
         getMyCollection(pearms).then(res => {
           loading.close();
           if (res.data.code == 0) {
-            that.myCollectionList = res.data.data.data;
-            that.total_page = res.data.data.total_page;
-            that.total = res.data.data.total;
+            let myCollectionList = res.data.data.list;
+            that.myCollectionList = myCollectionList;
+            // that.total_page = res.data.data.total_page;
+            // that.total = res.data.data.total;
           } else {
             this.$message.error({
               message: res.data.msg
@@ -280,11 +284,11 @@
   .el-main{
     padding-top: 4.5rem;
     padding-right: 1rem;
-    overflow: auto;
+    overflow: auto !important;
   }
   .center-box{
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     box-sizing: border-box;
     flex: 1;
     border-radius: 6px;
@@ -292,7 +296,6 @@
     position: relative;
     z-index: auto;
     background: #fff;
-    box-shadow: 0 0 10px 0 rgb(54 89 124 / 25%);
     padding: 1rem;
   }
   .grid-content{

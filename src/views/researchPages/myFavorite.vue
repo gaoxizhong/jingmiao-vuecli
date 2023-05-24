@@ -311,6 +311,14 @@
             that.dialogLabel = false;
             myCollectionList[num].tags = pearms.tags;
             that.myCollectionList = myCollectionList;
+            getMyCollection({
+              uid: that.uid,
+              page: 1,
+            }).then(res => {
+              if (res.data.code == 0) {
+                that.tags_list = res.data.data.tags_list;
+              }
+            });
           } else {
             this.$message.error({
               message: res.data.msg
