@@ -154,8 +154,13 @@
           <!-- 参考文献 -->
           <div v-if="activeName == 'ckwx'">
             <div class="list-itembox">
-              <div class="list-item" v-for="(item,index) in infoDetail.references" :key="index">{{item}}</div>
-              <el-empty description="暂无数据..." v-if="infoDetail.references.length == 0"></el-empty>
+              <template v-if="infoDetail.references">
+                <div class="list-item" v-for="(item,index) in infoDetail.references" :key="index">{{item}}</div>
+              </template>
+              <template v-if="infoDetail.reference">
+                <div class="list-item" v-for="(item,index) in infoDetail.reference" :key="index">{{item}}</div>
+              </template>
+              <el-empty description="暂无数据..." v-if="!infoDetail.references && !infoDetail.reference"></el-empty>
             </div>
           </div>
         </div>  
@@ -437,6 +442,7 @@
       handleClick(tab) {
         let that = this;
         that.activeName = tab;
+        console.log(tab)
         that.page = 1;
         that.docRecommendList = [];
         if(that.activeName == 'xglw'){
@@ -801,6 +807,8 @@
     padding: 0.5rem 1rem;
     border-bottom: 1px solid #e6e6e66b;
     text-align: left;
+    font-size: 16px;
+    word-break: break-word;
   }
   .list-itembox .list-item:hover{
     background: #2B77BD0a;
