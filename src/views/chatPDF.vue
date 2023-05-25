@@ -27,7 +27,21 @@
       </div>
       <div class="list">
         <div class="pdf-history-item" v-for="(item,index) in historyList" :key="index">
-          <div class="ant-dropdown-trigger action-btn">123</div>
+          <div class="ant-dropdown-trigger action-btn">
+            <el-popover placement="bottom-start" width="150" trigger="click">
+              <div class="popover-divbox">
+                <div>
+                  <i class="el-icon-chat-dot-round"></i>
+                  <span style="padding-left: 10px;">聊天</span>
+                </div>
+                <div>
+                  <i class="el-icon-delete"></i>
+                  <span style="padding-left: 10px;">删除</span>
+                </div>
+              </div>
+              <img src="../assets/image/icon-move.png" alt="" slot="reference"/>
+            </el-popover>
+          </div>
           <div class="cover-container pointer-events-none">
             <img src="../assets/image/c4452524a19945e2ea3563390dfea2e2.svg" alt="" class="cover"/>
           </div>
@@ -198,6 +212,7 @@
     width: -moz-available;
     width: stretch;
     max-width: 1218px;
+    margin: 0 auto;
     margin-top: 56px;
     padding: 24px;
     background-color: #fff;
@@ -288,6 +303,29 @@
     transition: all 0.5s;
     border-radius: 4px;
   }
+  .action-btn img{
+    width: 100%;
+    height: 100%;
+  }
+  .popover-divbox>div{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ececee;
+    cursor: pointer;
+    padding-bottom: 10px;
+  }
+  .popover-divbox>div:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+    padding-top: 10px;
+
+  }
+
+  
+  .action-btn:hover{
+    background-color: #d1d1d1;
+  } 
   .pdf-history-item:hover{
     border-color: #e5e7eb;
   }
