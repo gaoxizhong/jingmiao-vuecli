@@ -30,7 +30,10 @@
 
   import { getGuideMindMapZh } from "@/api/data"
   export default {
-    name: 'RepositoryPage',
+    name: 'brainMap',
+    components:{
+      superMindmap
+    },
     data(){
       return {
         viewHeight:'',

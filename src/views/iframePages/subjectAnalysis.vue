@@ -1988,7 +1988,8 @@
     margin-top: 1rem;
   }
   .statisticalOverview-box>div.overview-items{
-    width: 19.5rem;
+    /* width: 19.5rem; */
+    flex: 1;
     height: 17rem;
     padding: 1.2rem 1rem;
     background: #fff;

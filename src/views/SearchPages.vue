@@ -151,6 +151,7 @@ export default {
     handleCurrentChange(val) {
       let that = this;
       that.page = val;
+      let tag = that.tag;
       if(tag == 'ClinicalTrial'){
         that.getNewClinicalTrial();
       }else{
