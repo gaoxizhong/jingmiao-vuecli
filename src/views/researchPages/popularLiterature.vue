@@ -23,6 +23,7 @@
                 <el-select class="validate validate-1" placeholder="请选择" :popper-append-to-body="popperAppend" v-model="p_select_value" slot="prepend" @change="selectnChange">
                   <el-option key="theme" label="主题" value="theme"></el-option>
                   <el-option key="title" label="标题" value="title"></el-option>
+                  <el-option key="author" label="作者" value="author"></el-option>
                 </el-select>
               </div>
               <div class="header-input-selectord" ref="sordInput">
@@ -405,6 +406,7 @@
           select_type: 'match',
           select_condition: '',
         })
+        that.p_select_value = 'author';
         that.headerInput = author;
         that.advancedCondition = advancedCondition;
         that.is_pop = '2';
@@ -1055,7 +1057,7 @@
         arr.forEach((ele,index) =>{
           newArr.splice(select_index + index,0,{
             field_value: advancedOptions[select_index].field_name ? advancedOptions[select_index].field_name:ele,
-            select_condition:select_index == 0?'':'or',
+            select_condition:select_index == 0?'':advancedOptions[select_index].select_condition,
             select_field:advancedOptions[select_index].select_field,
             select_type:'match',
           })

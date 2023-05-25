@@ -140,41 +140,48 @@
         that.current_page= 1;
         let headerAuthor = that.headerAuthor; // 学者名、
         let headerOrganization = that.headerOrganization; // 机构数
-        // if(headerAuthor == '' || headerOrganization == ''){
-        //   that.$message.error('请先填写内容!');
-        //   return
-        // }
-        let pearms = {
-          author: headerAuthor,
-          org: headerOrganization,
-          tag:'',
-          page: that.page,
-          pageSize: that.pageSize
-        }
-        const loading = that.$loading({
-          lock: true,
-          text: "Loading",
-          spinner: "el-icon-loading",
-          background: "rgba(0, 0, 0, 0.1)",
-          target: document.querySelector("body")
-        });
-        getAnalysisSearch(pearms).then(res => {
-          loading.close();
-          if (res.data.code == 0) {
-            that.is_page = true;
-            that.scholarList= []; // 列表数据
-            that.scholarList = res.data.data.data;
-            that.count = res.data.data.total;
-          } else {
-            that.$message.error({
-              message: res.data.msg
-            });
+        if(headerAuthor == '' & headerOrganization == ''){
+          that.is_page = false;
+          that.current_page = 1;
+          that.getAuthorIndex();
+        }else{
+
+          let pearms = {
+            author: headerAuthor,
+            org: headerOrganization,
+            tag:'',
+            page: that.page,
+            pageSize: that.pageSize
           }
-        })
-        .catch(e => {
-          loading.close();
-          console.log(e);
-        });
+          const loading = that.$loading({
+            lock: true,
+            text: "Loading",
+            spinner: "el-icon-loading",
+            background: "rgba(0, 0, 0, 0.1)",
+            target: document.querySelector("body")
+          });
+          getAnalysisSearch(pearms).then(res => {
+            loading.close();
+            if (res.data.code == 0) {
+              that.is_page = true;
+              that.scholarList= []; // 列表数据
+              that.scholarList = res.data.data.data;
+              that.count = res.data.data.total;
+            } else {
+              that.$message.error({
+                message: res.data.msg
+              });
+            }
+          })
+          .catch(e => {
+            loading.close();
+            console.log(e);
+          });
+
+        }
+        
+       
+    
       },
       // 普通搜索 回车键点击
       searchEnterFun(e){
