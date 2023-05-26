@@ -18,6 +18,7 @@
       </el-upload>
     </div>
     <!-- 文件上传模块 结束 -->
+    <!-- <div class="analyzing-area"></div> -->
 
     <!-- 历史记录 开始 -->
     <div class="pdf-upload-history">
@@ -39,11 +40,11 @@
                   <span style="padding-left: 10px;">删除</span>
                 </div>
               </div>
-              <img src="../assets/image/icon-move.png" alt="" slot="reference"/>
+              <img src="../../assets/image/icon-move.png" alt="" slot="reference"/>
             </el-popover>
           </div>
           <div class="cover-container pointer-events-none">
-            <img src="../assets/image/c4452524a19945e2ea3563390dfea2e2.svg" alt="" class="cover"/>
+            <img src="../../assets/image/c4452524a19945e2ea3563390dfea2e2.svg" alt="" class="cover"/>
           </div>
           <div class="name">ACT翻译API(全) .pdf</div>
         </div>
@@ -118,13 +119,12 @@
     margin: 0 auto;
     margin-top: 20px;
     margin-bottom: 30px;
-    width: 66%;
-    height: 260px;
+    max-width: 770px;
+    height: 300px;
     border: 1px solid transparent;
-    border-radius: 5px;
-    background: -webkit-gradient(linear,left top,left bottom,from(#f8fdfd),to(#f8fdfd)) padding-box,repeating-linear-gradient(-45deg,#3db6b5,#3db6b5 0.5em,#fff 0,#fff 0.75em);
-    background: linear-gradient(#f8fdfd,#f8fdfd) padding-box,repeating-linear-gradient(-45deg,#3db6b5,#3db6b5 0.5em,#fff 0,#fff 0.75em);
     cursor: pointer;
+    border: 2px dashed #666;
+    border-radius: 8px;
   }
   .upload-drag-container>div{
     width: 100%;
@@ -175,7 +175,7 @@
     margin: 0 auto;
     width: 70px;
     height: 70px;
-    background: url(../assets/image/file-pdf.png) no-repeat;
+    background: url(../../assets/image/file-pdf.png) no-repeat;
     background-size: 70px 70px;
   }
   .upload-drag-container >>> .upload-drag-content .content-left .type-tip {

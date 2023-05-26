@@ -140,17 +140,6 @@ const routes = [
           requireAuth:true
         }
       },
-      { 
-        path: '/chatPDF',
-        name: 'chatPDF',
-        component: () => import('@/views/chatPDF.vue'),
-        meta: {
-          title:'chatPDF',
-          keepAlive: true,
-          scollTopPosition: 0,
-          requireAuth:true
-        }
-      },
       {
         path: '/NewDetails',
         name : 'NewDetails',
@@ -242,6 +231,37 @@ const routes = [
           requireAuth:true
         }
       },
+    ]
+  },
+  {     // chatPDF界面
+    path: '/chatPDF-home',
+    name: 'chatPDFHome',
+    component: () => import('@/views/chatPDF/chatPDF-home.vue'),
+    children:[
+      { 
+        path: '/chatPDF', // chatPDF --- chatPDF 文件上传也
+        name: 'chatPDF',
+        component: () => import('@/views/chatPDF/chatPDF.vue'),
+        meta: {
+          title:'chatPDF',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      { 
+        path: '/chatPDF-chat', // chatPDF --- chatPDF 文件上传也
+        name: 'chatPDFChat',
+        component: () => import('@/views/chatPDF/chatPDF-chat.vue'),
+        meta: {
+          title:'chatPDF-chat',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+
+      
     ]
   },
   {  // 科研灵感界面
