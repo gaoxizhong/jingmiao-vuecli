@@ -143,7 +143,7 @@
 
   }
   .el-main{
-    background: #FAFBFF;
+    background: #fafafa;
     padding: 3.6rem 20px 20px 20px;
     box-sizing: border-box;
   }
