@@ -167,17 +167,11 @@
   }
 
   .l-content>.l-content-title{
-    font-size:1.7rem;
-    padding-left:10px;
-    color:#3664D9;
-    font-weight:600;
+    font-size: 34px;
+    padding-left: 10px;
+    color: #00C792;
+    font-weight: 600;
     font-family: '宋体';
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .r-content{
     width: auto;

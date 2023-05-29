@@ -31,7 +31,7 @@
           <div class="ant-dropdown-trigger action-btn">
             <el-popover placement="bottom-start" width="150" trigger="click">
               <div class="popover-divbox">
-                <div>
+                <div @click="clickItemChatBtn">
                   <i class="el-icon-chat-dot-round"></i>
                   <span style="padding-left: 10px;">聊天</span>
                 </div>
@@ -82,7 +82,17 @@
     },
 
     methods: {
+      // 点击历史记录列表 聊天按钮
+      clickItemChatBtn(){
+        this.$router.push({ 
+          path:'/chatPDF-chat', 
+          // query:{          
+          //   name:this.name_1,
+          // }
+        })
 
+
+      }
     },
   }
 </script>

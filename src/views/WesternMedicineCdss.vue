@@ -466,13 +466,13 @@
                   病案首页质控
                 </h1>
                 <!-- 病案首页质控列表 -->
-                <div class="basyzkdiv-box" v-if="basyzk_list.length > 0">
+                <!-- <div class="basyzkdiv-box" v-if="basyzk_list.length > 0">
                   <div class="src-components-PushItems-RecommendInspect-1-s8y">提示：</div>
                   <div class="basyzkdiv-items-box">
                     <span v-for="(item, index) in basyzk_list" :key="index">{{ item }}</span>
                   </div>
-                </div>
-                <div style="padding: 6px 0 6px 15px" v-else>暂无</div>
+                </div> -->
+                <div style="padding: 6px 0 6px 15px">暂无</div>
                 <!-- 病案首页质控列表结束 -->
               </div>
               <!-- 病案首页质控模块结束 -->
