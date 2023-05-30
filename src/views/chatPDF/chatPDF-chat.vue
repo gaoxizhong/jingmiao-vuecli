@@ -10,8 +10,29 @@
         <div class="l-header-tips" v-if="!isColl">收起侧边栏</div>
       </div>
 
-
-
+      <div class="container">
+        <div style="padding: 0 12px;">
+          <button type="button" class="coll-item">
+            <span v-if="!isColl">添加新的 PDF</span>
+            <span class="component-icon  add" v-else>+</span>
+          </button>
+        </div>
+      </div>
+      <div class="pdf-l-relative">
+        <div class="pdf-l-absolute rcs-custom-scroll">
+          <div class="rcs-outer-container">
+            <div class="rcs-inner-container" style="margin-right: -17px;">
+              <div style="overflow-y: visible; margin-right: 0px;">
+                <ul class="rcs-inner--ul">
+                  <li class="embedding-item" :class="is_active == 0?'active':''">
+                    
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- 左侧列表模块 结束 -->
     <!-- pdf 展示区域 开始 -->
@@ -32,7 +53,8 @@
         main_bg:{},
         activeIndex: '',
         uid:'',
-        isColl: false
+        isColl: false,
+        is_active: 0,
       }
     },
     mounted(){
@@ -111,6 +133,97 @@
     margin-left: 10px;
     white-space: nowrap;
     font-size: 14px;
+  }
+  .container{
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  .pdf-list .coll-item{
+    margin-bottom: 16px;
+    transition: all .2s all;
+    border-radius: 32px;
+    font-size: 14px;
+    height: 32px;
+    line-height: 1.16;
+    width: 100%;
+    font-weight: 500;
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
+    outline: none;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #4096ff;
+    color: #4096ff;
+  }
+  .pdf-list .coll-item:hover{
+    background: #e9f4fe;
+  }
+  .pdf-list .coll-item>span {
+    display: inline-block;
+  }
+  .component-icon {
+    text-align: center;
+    display: inline-block;
+    color: inherit;
+    font-style: normal;
+    line-height: 0;
+    text-transform: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .pdf-l-relative{
+    flex: 1;
+    position: relative;
+  }
+  .pdf-l-absolute{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .rcs-custom-scroll {
+    min-height: 0;
+    min-width: 0;
+  }
+  .rcs-outer-container {
+    height: 100%;
+    overflow: hidden;
+  }
+  .rcs-inner-container, .rcs-outer-container {
+    height: 100%;
+}
+  .rcs-custom-scroll .rcs-inner-container {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  .rcs-inner--ul{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+  }
+  .embedding-item{
+    position: relative;
+    width: 234px;
+    padding-: 12px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 12px;
+  }
+  .embedding-item.active {
+    background-color: #e9f4fe;
   }
 </style>
 <style>
