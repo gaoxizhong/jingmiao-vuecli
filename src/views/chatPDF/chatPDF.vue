@@ -28,14 +28,21 @@
       </div>
       <div class="list">
         <div class="pdf-history-item" v-for="(item,index) in historyList" :key="index">
+          <div @click.stop="clickItemChatBtn">
+            <div class="cover-container pointer-events-none">
+              <img src="../../assets/image/c4452524a19945e2ea3563390dfea2e2.svg" alt="" class="cover"/>
+            </div>
+            <div class="name">ACT翻译API(全) .pdf</div>
+          </div>
+          
           <div class="ant-dropdown-trigger action-btn">
             <el-popover placement="bottom-start" width="150" trigger="click">
               <div class="popover-divbox">
-                <div @click="clickItemChatBtn">
+                <div @click.stop="clickItemChatBtn">
                   <i class="el-icon-chat-dot-round"></i>
                   <span style="padding-left: 10px;">聊天</span>
                 </div>
-                <div>
+                <div @click.stop="clickItemDelBtn">
                   <i class="el-icon-delete"></i>
                   <span style="padding-left: 10px;">删除</span>
                 </div>
@@ -43,11 +50,8 @@
               <img src="../../assets/image/icon-move.png" alt="" slot="reference"/>
             </el-popover>
           </div>
-          <div class="cover-container pointer-events-none">
-            <img src="../../assets/image/c4452524a19945e2ea3563390dfea2e2.svg" alt="" class="cover"/>
-          </div>
-          <div class="name">ACT翻译API(全) .pdf</div>
         </div>
+
       </div>
     </div>
     <!-- 历史记录 结束 -->
@@ -91,8 +95,12 @@
           // }
         })
 
+      },
+      // 点击历史记录列表 删除按钮
+      clickItemDelBtn(){
+        console.log(111)
 
-      }
+      },
     },
   }
 </script>
@@ -304,7 +312,6 @@
     position: absolute;
     top: 6px;
     right: 6px;
-    z-index: 1;
     justify-content: space-evenly;
     opacity: 0;
     color: rgb(115, 115, 115);
@@ -341,9 +348,7 @@
   }
   .pdf-history-item:hover .action-btn{
     opacity: 1;
-    z-index: 100;
   }
-
 </style>
 <style>
   @media only screen and (max-width: 1390px){

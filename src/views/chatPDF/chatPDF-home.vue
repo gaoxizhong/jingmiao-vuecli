@@ -144,7 +144,7 @@
   }
   .el-main{
     background: #fafafa;
-    padding: 3.6rem 20px 20px 20px;
+    padding: 3.6rem 0 0;
     box-sizing: border-box;
   }
   .pages-b{
