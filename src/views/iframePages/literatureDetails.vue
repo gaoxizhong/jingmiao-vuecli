@@ -238,7 +238,7 @@
 </template>
 
 <script>
-  import { literatureDetails,getdocRecommend,clickCollection,getTitleOrganization } from "../../api/research/researchData";
+  import { literatureDetails,getdocRecommend,clickCollection,getTitleOrganization } from "../../api/iframe/iframeData";
   export default {
     // inject: ['setsickNess'],
     name: 'litDetails',

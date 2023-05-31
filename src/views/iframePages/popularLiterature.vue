@@ -302,7 +302,7 @@
 
   import Popular from '../../components/iframePages/popular.vue';
   import Search from '../../components/iframePages/search.vue';
-  import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease,getAuthorOrganization  } from "../../api/research/researchData";
+  import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease,getAuthorOrganization  } from "../../api/iframe/iframeData";
   export default {
     name: 'popLiterature',
     components: {

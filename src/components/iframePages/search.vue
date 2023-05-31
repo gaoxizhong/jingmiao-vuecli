@@ -99,6 +99,7 @@
             <div class="classbox-l">
               <!-- <img src="../../assets/image/researchPages/icon-title.png" alt="" /> -->
               <span>研究趋势</span>
+              <span class="span-search" title="放大查看" @click.stop="clickResearchTrends"><i class="el-icon-zoom-in"></i></span>
             </div>
           </div>
           <div class="eacharts-ch-box ResearchTrends">
@@ -148,26 +149,39 @@
       <!-- 右侧文献可视化分析模块 结束 -->
     </div>
 
+    <!-- 点击研究趋势关系图弹窗 开始 -->
+    <div class="casePop-mask" v-show="is_researchTrendsPop"></div>
+    <div class="casePop-module-box r-p" v-show="is_researchTrendsPop">
+      <div class="close-box" @click="clickResearch_close">
+        <i class="el-icon-circle-close"></i>
+      </div>
+      <div class="main-box">
+        <div class="main-box-left">
+          <div class="atlas-box" id='research_id'></div>
+        </div>
+      </div>
+    </div>
+    <!-- 点击研究趋势关系图弹窗 结束 -->
 
-    <!-- 点击图谱弹窗 -->
+    <!-- 点击关联研究图谱弹窗 开始 -->
     <div class="casePop-mask" v-show="is_casePop"></div>
     <div class="casePop-module-box" v-show="is_casePop">
       <div class="close-box" @click="click_close">
         <i class="el-icon-circle-close"></i>
       </div>
       <div class="main-box">
-        <!-- main 右侧图谱 -->
         <div class="main-box-left">
           <div class="atlas-box" id='atlas'></div>
         </div>
       </div>
     </div>
+    <!-- 点击关联研究图谱弹窗 结束 -->
 
   </div>
 
 </template>
 <script>
-  import { literatureDocSearch,clickCollection,getTitleOrganization } from "../../api/research/researchData";
+  import { literatureDocSearch,clickCollection,getTitleOrganization } from "../../api/iframe/iframeData";
   import { getLine_eacharts,getForceRelation_eacharts,getWordCloud_eacharts } from "../../assets/js/getEcharts";
   export default {
     props:{
@@ -179,6 +193,7 @@
     data(){
       return {
         is_casePop:false,
+        is_researchTrendsPop: false,
         uid: '833456199',
         search_type: 'many', // single、普通 many、高级
         is_s:false,
@@ -215,9 +230,20 @@
           that.getForceRelation_pop(this.associationStudy,'atlas',this);
         },100)
       },
+      // 查看关联研究-- 点击放大
+      clickResearchTrends(){
+        let that = this;
+        that.is_researchTrendsPop = true;
+        setTimeout( ()=>{
+          that.getResearchTrends_pop(this.research_trends,'research_id',this);
+        },100)
+      },
     // 点击图谱弹窗关闭按钮
       click_close() {
         this.is_casePop = false;
+      },
+      clickResearch_close() {
+        this.is_researchTrendsPop = false;
       },
       // 点击展开、收起
       clickShow(s){
@@ -528,7 +554,142 @@
       getRelatedScholars_eacharts(){
         this.getForceFloating_eacharts(this.authorsList,'RelatedScholars',this);
       },
-      //
+      //研究趋势弹窗
+      getResearchTrends_pop(d,i,t){
+        let taht = t;
+        let id = i;
+        let newData = d;
+        let myChart = taht.$echarts.init(document.getElementById(id));
+        let data_val = [];
+        let xAxis_val = [];
+        newData.forEach(ele =>{
+          data_val.push(ele.doc_count);
+          xAxis_val.push(ele.key);
+        })
+       
+        let option = {
+          backgroundColor: "#fff",
+          grid: {  // 控制图标在模块内距离边框的距离，不设置会自动居中
+            left: 6,
+            top: 20,
+            bottom: 0,
+            right: 4,
+            containLabel: true,
+          },
+          tooltip: { // 鼠标浮动展示框样式
+            show: true,
+            backgroundColor: "#fff",
+            textStyle: {
+              color: "#333",
+            },
+            formatter: "{b}:{c}",
+            borderWidth:0
+            // borderColor: "rgba(0, 0, 0, 1)",
+            // borderWidth: 0.5,
+            // extraCssText: "box-shadow: 0 0 5px rgba(0, 0, 0, 1)",
+          },
+          toolbox: {
+            show: true,
+            itemSize: 16,
+            right:16,
+            top: -10,
+            feature: {
+              saveAsImage: {}  // 导出图片
+            }
+          },
+          xAxis: {  // X轴
+            data: xAxis_val,
+            boundaryGap: false,
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+            axisLabel: {
+              formatter:function(value) { //X轴的内容
+                var ret = ""; //拼接加\n返回的类目项
+                var max = 10;  //每行显示的文字字数
+                var val = value.length;  //X轴内容的文字字数
+                var rowN = Math.ceil(val / max);  //需要换的行数
+                if(rowN > 1){ //判断 如果字数大于2就换行
+                  for(var i = 0; i<rowN;i++){
+                    var temp = "";  //每次截取的字符串
+                    var start = i * max;  //开始截取的位置
+                    var end = start + max;  //结束截取的位置
+                    temp = value.substring(start,end)+ "\n";
+                    ret += temp;  //最终的字符串
+                  }
+                  return ret;
+                }
+                else {return value}
+              },
+              color: "#999",
+              fontSize: '0.7rem',
+              interval: 1, // 设置斜切
+              rotate: 40 // 设置斜切
+            },
+            axisTick: {
+              show: false,
+            },
+          },
+          yAxis: {
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#999",
+                fontSize: '12px',
+              },
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: "#EFEFEF",
+              },
+            },
+          },
+
+          series: [
+              // 折线
+            { 
+              type: "line", 
+              name: "linedemo",
+              smooth: true,
+              symbolSize: 8, // 节点圆球的直径大小
+              animation: true,// 初始加载时动画
+              lineWidth: 1,
+              hoverAnimation: false,
+              data: data_val,
+              symbol: "circle",
+              itemStyle: { // 圆球及连线样式样式
+                normal: {
+                  color: "#3664D9",
+                  shadowBlur: 0,
+                  label: { // 节点上的字体展示
+                    show: false,
+                    position: "top",
+                    textStyle: {
+                      color: "#000",
+                    },
+                  },
+                },
+              },
+              areaStyle: { // 面积图
+                normal: {
+                  color: "#3664D9",
+                  opacity: 0.07,
+                },
+              },
+            },
+          ],
+        };
+        myChart.setOption(option);
+      },
       // 关联研究弹窗
       getForceRelation_pop(d,i,t){
         let taht = t;
@@ -1256,8 +1417,8 @@
     background: #00000080;
   }
   .casePop-module-box {
-    width: 72%;
-    max-width: 840px;
+    width: 74%;
+    max-width: 880px;
     height: 90%;
     max-height: 580px;
     background: #fff;
@@ -1268,6 +1429,10 @@
     transform: translate(-50%, -50%);
     z-index: 99999;
     padding: 10px;
+  }
+  .casePop-module-box.r-p{
+    width: 90%;
+    max-width: 1000px;
   }
   .results_block {
     border-bottom: 1px solid #ececec;

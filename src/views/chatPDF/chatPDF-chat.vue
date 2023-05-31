@@ -5,7 +5,7 @@
 
       <div class="pdf-l-header" @click="clickHeaderColl">
         <div class="collapse-icon">
-          <img src="../../assets/image/header-icon.png" alt="" >
+          <img src="../../assets/image/isCollapse.png" alt="" >
         </div>
         <div class="l-header-tips" v-if="!isColl">收起侧边栏</div>
       </div>
@@ -18,14 +18,24 @@
           </button>
         </div>
       </div>
+      <!-- 列表记录 开始 -->
       <div class="pdf-l-relative">
         <div class="pdf-l-absolute rcs-custom-scroll">
           <div class="rcs-outer-container">
             <div class="rcs-inner-container" style="margin-right: -17px;">
               <div style="overflow-y: visible; margin-right: 0px;">
                 <ul class="rcs-inner--ul">
-                  <li class="embedding-item" :class="is_active == 0?'active':''">
-                    
+                  <li class="embedding-item" :class="is_active == index?'active':''" v-for="(item,index) in historyList" :key="index">
+                    <div class="collapsed-show" v-if="isColl">科</div>
+                    <div class="full-show" v-else>
+                      <h3>科研灵感发现.pdf</h3>
+                      <p>05/26/2023 17:10 PM</p>
+                      <div class="action-area">
+                        <button type="button" class="ant-btn">
+                          <i class="el-icon-delete"></i>
+                        </button>
+                      </div>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -33,6 +43,7 @@
           </div>
         </div>
       </div>
+      <!-- 列表记录 结束 -->
     </div>
     <!-- 左侧列表模块 结束 -->
     <!-- pdf 展示区域 开始 -->
@@ -55,6 +66,7 @@
         uid:'',
         isColl: false,
         is_active: 0,
+        historyList:[{},{}], // 列表记录
       }
     },
     mounted(){
@@ -75,6 +87,9 @@
   }
 </script>
 <style scoped>
+li::marker {
+  content: '';
+}
   .flex-1 {
     flex: 1;
   }
@@ -135,7 +150,6 @@
     font-size: 14px;
   }
   .container{
-    flex: 1;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -144,7 +158,6 @@
     padding-bottom: 16px;
   }
   .pdf-list .coll-item{
-    margin-bottom: 16px;
     transition: all .2s all;
     border-radius: 32px;
     font-size: 14px;
@@ -216,14 +229,93 @@
   }
   .embedding-item{
     position: relative;
-    width: 234px;
-    padding-: 12px 16px;
+    width: 236px;
+    padding: 12px 10px;
     border-radius: 10px;
     cursor: pointer;
-    margin-left: 12px;
+    margin-left: 10px;
+    text-align: left;
+    margin-top: 10px;
   }
   .embedding-item.active {
     background-color: #e9f4fe;
+  }
+  .collapsed-show{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #333;
+    font-weight: 500;
+    font-size: 16px;
+    opacity: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+  .embedding-item .full-show {
+    display: block;
+  }
+  .embedding-item .full-show h3 {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-bottom: 8px;
+    color: #333333;
+    font-size: 14px;
+    overflow-wrap: break-word;
+  }
+  .full-show p{
+    font-size: 12px;
+    line-height: 14px;
+    color: #737373;
+  }
+  .embedding-item .action-area {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    right: 8px;
+    opacity: 0;
+    bottom: 12px;
+  }
+  .embedding-item:hover{
+    background-color: #f2f2f2;
+  }
+  .embedding-item:hover .action-area{
+    opacity: 1;
+  }
+  .embedding-item .action-area .ant-btn{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    width: 20px;
+    height: 20px;
+    background-image: none;
+    -webkit-appearance: button;
+    line-height: 1.16;
+    font-size: 18px;
+    border-radius: 6px;
+    outline: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    user-select: none;
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: center;
+    padding: 0;
+    color: #4096ff;
   }
 </style>
 <style>

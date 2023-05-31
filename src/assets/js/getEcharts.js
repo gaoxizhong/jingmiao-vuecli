@@ -37,9 +37,9 @@ const getLine_eacharts = (d,i,t) =>{
             itemSize: 16,
             right:14,
             top: -10,
-            feature: {
-              saveAsImage: {}  // 导出图片
-            }
+            // feature: {
+            //   saveAsImage: {}  // 导出图片
+            // }
           },
           xAxis: {  // X轴
             data: xAxis_val,

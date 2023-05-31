@@ -220,7 +220,7 @@
 </template>
 
 <script>
-  import { getAnalysisDetail,getRelationRecommend } from "../../api/research/researchData";
+  import { getAnalysisDetail,getRelationRecommend } from "../../api/iframe/iframeData";
   export default {
     // inject: ['setsickNess'],
     name: 'litAuthor',

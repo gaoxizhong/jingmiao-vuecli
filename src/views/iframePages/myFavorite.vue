@@ -163,7 +163,7 @@
 </template>
 
 <script>
-  import { literatureDetails,getMyCollection,clickCollection,getTitleOrganization,collectionAddTags } from "../../api/research/researchData";
+  import { literatureDetails,getMyCollection,clickCollection,getTitleOrganization,collectionAddTags } from "../../api/iframe/iframeData";
   export default {
     // inject: ['setsickNess'],
     name: 'my_favorite',

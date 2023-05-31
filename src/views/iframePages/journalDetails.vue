@@ -151,7 +151,7 @@
 
 </template>
 <script>
-  import { journalAnalysisDetail,getRelationRecommend } from "../../api/research/researchData";
+  import { journalAnalysisDetail,getRelationRecommend } from "../../api/iframe/iframeData";
   export default {
     provide(){
       return {

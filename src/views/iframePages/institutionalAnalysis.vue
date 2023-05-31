@@ -109,7 +109,7 @@
 
 </template>
 <script>
-  import { getOrganizationDetail } from "../../api/research/researchData";
+  import { getOrganizationDetail } from "../../api/iframe/iframeData";
   export default {
     provide(){
       return {
