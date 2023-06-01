@@ -47,7 +47,12 @@
     </div>
     <!-- 左侧列表模块 结束 -->
     <!-- pdf 展示区域 开始 -->
-    <div style="flex: 1;overflow: hidden;">1</div>
+    <div style="flex: 1;overflow: hidden;">
+      <div class="pdf-viewer-box">
+        <div class="action-panel"></div>
+        <div style="flex: 1;overflow: hidden;"></div>
+      </div>
+    </div>
     <!-- pdf 展示区域 结束 -->
   </div>
 </template>
@@ -316,6 +321,21 @@ li::marker {
     text-align: center;
     padding: 0;
     color: #4096ff;
+  }
+  .pdf-viewer-box{
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .action-panel{
+    background-color: #fafafa;
+    border-bottom-color: #e0e0e0;
+    border-bottom-width: 1px;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 12px;
   }
 </style>
 <style>
