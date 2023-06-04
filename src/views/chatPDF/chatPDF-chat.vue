@@ -92,7 +92,7 @@
   }
 </script>
 <style scoped>
-li::marker {
+::marker {
   content: '';
 }
   .flex-1 {
@@ -146,8 +146,8 @@ li::marker {
     justify-content: center;
   }
   .collapse-icon img{
-    width: 26px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
   .l-header-tips{
     margin-left: 10px;
@@ -250,14 +250,13 @@ li::marker {
     align-items: center;
     justify-content: center;
     width: 32px;
-    height: 32px;
+    height: auto;
     position: absolute;
     top: 0;
     left: 0;
     color: #333;
     font-weight: 500;
     font-size: 16px;
-    opacity: 0;
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
