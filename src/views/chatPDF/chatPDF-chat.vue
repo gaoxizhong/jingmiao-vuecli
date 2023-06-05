@@ -46,14 +46,32 @@
       <!-- 列表记录 结束 -->
     </div>
     <!-- 左侧列表模块 结束 -->
+
     <!-- pdf 展示区域 开始 -->
     <div style="flex: 1;overflow: hidden;">
       <div class="pdf-viewer-box">
-        <div class="action-panel"></div>
-        <div style="flex: 1;overflow: hidden;"></div>
+        <!-- pdf头部区域 开始 -->
+        <div class="action-panel">
+          <button type="button" class="ant-btn ant-btn-text">
+            <img src="../../assets/image/ic_zoom_in.png" alt="" />
+          </button>
+          <button type="button" class="ant-btn ant-btn-text">
+            <img src="../../assets/image/ic_zoom_off.png" alt="" />
+          </button>
+        </div>
+        <!-- pdf头部区域 结束 -->
+
+        <div class="action-centener" style="flex: 1;overflow: hidden;">
+        
+        </div>
       </div>
     </div>
     <!-- pdf 展示区域 结束 -->
+
+    <!-- 聊天区域 开始 -->
+    <div class="chat-resize-container"></div>
+    <!-- 聊天区域 结束 -->
+
   </div>
 </template>
 
@@ -92,9 +110,17 @@
   }
 </script>
 <style scoped>
-::marker {
-  content: '';
-}
+  ::marker {
+    content: '';
+  }
+  audio, canvas, embed, iframe, img, object, svg, video {
+    display: block;
+    vertical-align: middle;
+  }
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
   .flex-1 {
     flex: 1;
   }
@@ -128,6 +154,14 @@
   }
   .pdf-list.is-collapsed{
     width: 56px;
+  }
+  .pdf-list.is-collapsed .embedding-item {
+    width: 32px;
+    height: 32px;
+  }
+  .pdf-list.is-collapsed .embedding-item:not(.active):not(:disabled) {
+    background-color: #f8f8f8;
+    transition: all .3s;
   }
   .pdf-l-header{
     padding-left: 12px;
@@ -244,13 +278,14 @@
   }
   .embedding-item.active {
     background-color: #e9f4fe;
+
   }
   .collapsed-show{
     display: flex;
     align-items: center;
     justify-content: center;
     width: 32px;
-    height: auto;
+    height: 32px;
     position: absolute;
     top: 0;
     left: 0;
@@ -328,13 +363,49 @@
     flex-direction: column;
   }
   .action-panel{
-    background-color: #fafafa;
-    border-bottom-color: #e0e0e0;
-    border-bottom-width: 1px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #fff;
     display: flex;
     align-items: center;
     height: 56px;
     padding: 0 12px;
+
+  }
+  .action-panel .ant-btn{
+    width: 32px;
+    height: 32px;
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-image: none;
+    -webkit-appearance: button;
+    line-height: 1.16;
+    font-size: 14px;
+    border-radius: 6px;
+    outline: none;
+    white-space: nowrap;
+    text-align: center;
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 12px;
+  }
+  .action-panel .ant-btn img{
+    width: 28px;
+    height: 28px;
+  }
+  .action-panel .ant-btn:hover{
+    background: rgb(0, 0, 0, 0.06);
+  }
+  .action-centener{
+    display: flex;
+    background-color: rgb(183 183 183);
+    
   }
 </style>
 <style>

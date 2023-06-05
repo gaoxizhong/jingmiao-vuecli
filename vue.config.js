@@ -59,6 +59,7 @@ module.exports = {
                 '^/api': ''
             }
         },
+
       //   '/pdf': {
       //     target: 'https://repair.qdy0707.top/file/',
       //     changOrigin: true,
