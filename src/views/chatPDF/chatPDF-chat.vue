@@ -61,9 +61,27 @@
         </div>
         <!-- pdf头部区域 结束 -->
 
+        <!-- 文档展示区域 开始 -->
         <div class="action-centener" style="flex: 1;overflow: hidden;">
-        
+          <!-- 缩略图模块 开始 -->
+          <div class="transition-all relative w-0" :class="is_w ? 'w-180':'w-0'"></div>
+          <!-- 缩略图模块 结束 -->
+          <div class="pdf-loader-container h-full relative">
+            <div class="rcs-custom-scroll">
+              <div class="rcs-outer-container">
+                <div class="rcs-inner-container">
+                  <div style="overflow-y: visible; margin-right: 0px;">
+                    <div class="pdf-viewport">
+                      <!-- =====  内容展示  ===== -->
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <!-- 文档展示区域 结束 -->
       </div>
     </div>
     <!-- pdf 展示区域 结束 -->
@@ -90,6 +108,7 @@
         isColl: false,
         is_active: 0,
         historyList:[{},{}], // 列表记录
+        is_w: false, //缩略图展示
       }
     },
     mounted(){
@@ -120,6 +139,23 @@
   img, video {
     max-width: 100%;
     height: auto;
+  }
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-duration: .15s;
+  }
+  .relative {
+    position: relative;
+  }
+  .w-0{
+    width: 0;
+  }
+  .w-180{
+    width: 180px;
+  }
+  .h-full{
+    height: 100%;
   }
   .flex-1 {
     flex: 1;
@@ -406,6 +442,37 @@
     display: flex;
     background-color: rgb(183 183 183);
     
+  }
+  .pdf-loader-container{
+    flex: 1;
+  }
+  .rcs-custom-scroll{
+    padding-left: 16px;
+    padding-right: 16px;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .rcs-custom-scroll .rcs-outer-container {
+    overflow: hidden;
+  }
+  .rcs-inner-container, .rcs-outer-container {
+    height: 100%;
+  }
+  .rcs-custom-scroll .rcs-inner-container {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  .rcs-custom-scroll .rcs-inner-container {
+    overflow-x: auto;
+  }
+  .rcs-custom-scroll .rcs-inner-container>div {
+    height: 100%;
   }
 </style>
 <style>
