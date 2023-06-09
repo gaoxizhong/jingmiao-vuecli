@@ -39,9 +39,9 @@
         <div class="navitems" :class="active_id == '5'?'navitems-active':'' ">
           <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/newQAhome?active_id=5')">智能问答</a>
         </div>
-        <!-- <div class="navitems" :class="active_id == '11'?'navitems-active':'' ">
+        <div class="navitems" :class="active_id == '11'?'navitems-active':'' ">
           <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/chatPDF?active_id=11')">ChatPDF</a>
-        </div> -->
+        </div>
         <div class="navitems" :class="(active_id == '6' || active_id == '7' || active_id == '8' || active_id == '9'  || active_id == '10')?'navitems-active':'' ">
           <el-dropdown  @command="handleCommand">
             <a href="javascript:0;" class="navitems-a el-dropdown-link">

@@ -20,7 +20,7 @@
       </div>
       <!-- 列表记录 开始 -->
       <div class="pdf-l-relative">
-        <div class="pdf-l-absolute rcs-custom-scroll">
+        <div class="pdf-l-absolute">
           <div class="rcs-outer-container">
             <div class="rcs-inner-container" style="margin-right: -17px;">
               <div style="overflow-y: visible; margin-right: 0px;">
@@ -71,9 +71,10 @@
               <div class="rcs-outer-container">
                 <div class="rcs-inner-container">
                   <div style="overflow-y: visible; margin-right: 0px;">
-                    <div class="pdf-viewport" :style="{ width: pdf_div_width, margin: '0 auto' }" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
+                    <div class="pdf-viewport">
                       <!-- =====  内容展示  ===== -->
-                      <canvas v-for="page in pdf_pages" :id="'the_canvas' + page" :key="page"></canvas>
+                      <!-- <canvas v-for="page in pdf_pages" :id="'the_canvas' + page" :key="page"></canvas> -->
+                      <pdf v-for="i in numPages" :key="i" :page="i" :src="src" ></pdf>
                     </div>
                   </div>
                 </div>
@@ -95,30 +96,16 @@
 
 <script>
   import { } from "@/api/data"
-  let PDFJS = require('pdfjs-dist');
-  PDFJS.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker.entry.js');
+  // let PDFJS = require('pdfjs-dist');
+  // PDFJS.GlobalWorkerOptions.workerSrc = require('pdfjs-dist/build/pdf.worker.entry.js');
+  
+  import pdf from 'vue-pdf'
   export default {
     name: 'chatPDFChat',
     components: {
-      
+      pdf
     },
     props: {
-    defaultSacleDelta: {
-      type: Number,
-      default: 1.1,
-    },
-    maxScale: {
-      type: Number,
-      default: 2,
-    },
-    minScale: {
-      type: Number,
-      default: 0.5,
-    },
-    defaultScale: {
-      type: Number,
-      default: 0.5,
-    },
     pdfSrc: {
       type: String,
       default: 'http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf'
@@ -133,29 +120,18 @@
         is_active: 0,
         historyList:[{},{}], // 列表记录
         is_w: false, //缩略图展示
-        currentScale: 0.5, //pdf放大系数
-        pdf_pages: [],
-        pdf_div_width: '',
-        startX: 0,
-        startY: 0,
-        moveX: 0,
-        moveY: 0,
-        eLen: 0,
-        touchDistance: null,
-        startTime: null,
-        previousPinchScale: 1,
-        renderMode: false,
+        numPages: null,
+				src: "",//调完方法返回显示的PDF
       }
     },
     mounted(){
-      this.get_pdfurl();
+      this.getUrlPdf() // pdf 文件地址的预览
     },
     created(){
       this.activeIndex = this.$route.query.active_id;
       this.uid = window.localStorage.getItem('uid');
       // 获取历史记录
 
-      this.currentScale = this.defaultScale;
       
     },
 
@@ -181,61 +157,18 @@
         this.currentScale = this.currentScale - 0.1;
         this._loadFile(this.pdfSrc);
       },
-      //获得pdf教案
-      get_pdfurl() {
-        //加载本地
-        this._loadFile(this.pdfSrc);
-        //线上请求
-        //  this.$axios.get('')
-        //  .then((res)=>{
-        //  	this.pdfSrc = res.url
-        //  	this._loadFile(this.pdfSrc)
-        //  })
-      },
-      _loadFile(url) {
-        console.log('_loadFile', this.currentScale);
-        this.renderMode = false;
-        let loadingTask = PDFJS.getDocument(url);
-        loadingTask.promise.then((pdf) => {
-          this.pdfDoc = pdf;
-          this.pdf_pages = this.pdfDoc.numPages;
-          this.$nextTick(() => {
-            this._renderPage(1);
-          });
-        });
-      },
-      _renderPage(num) {
-        const that = this;
-        this.pdfDoc.getPage(num).then((page) => {
-          let canvas = document.getElementById('the_canvas' + num);
-          let ctx = canvas.getContext('2d');
-          let dpr = window.devicePixelRatio || 1;
-          let bsr =
-            ctx.webkitBackingStorePixelRatio ||
-            ctx.mozBackingStorePixelRatio ||
-            ctx.msBackingStorePixelRatio ||
-            ctx.oBackingStorePixelRatio ||
-            ctx.backingStorePixelRatio ||
-            1;
-          let ratio = dpr / bsr;
-          let viewport = page.getViewport({ scale: this.currentScale });
-          canvas.width = viewport.width * ratio;
-          canvas.height = viewport.height * ratio;
-          canvas.style.width = viewport.width + 'px';
-          that.pdf_div_width = viewport.width + 'px';
-          canvas.style.height = viewport.height + 'px';
-          ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-          let renderContext = {
-            canvasContext: ctx,
-            viewport: viewport,
-          };
-          page.render(renderContext);
-          if (this.pdf_pages > num) {
-            this._renderPage(num + 1);
-          } else {
-            this.renderMode = true;
-          }
-        });
+            
+      getUrlPdf(){
+        this.src = pdf.createLoadingTask({
+            url: this.pdfSrc, //pdf地址
+            withCredentials: false
+            });
+        this.src.promise.then(pdf => {
+            this.numPages = pdf.numPages
+            console.log(this.numPages)
+        }).catch(err => {
+            console.error('pdf 加载失败', err);
+        })
       },
 
 
@@ -587,6 +520,9 @@
   }
   .rcs-custom-scroll .rcs-inner-container>div {
     height: 100%;
+  }
+  .chat-resize-container{
+    width: 560px;
   }
 </style>
 <style>
