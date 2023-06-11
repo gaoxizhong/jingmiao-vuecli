@@ -55,7 +55,7 @@
               <el-dropdown-item :class="active_id == '8'?'navitems-active':'' " command="/VideoHome?active_id=8">视频</el-dropdown-item>
               <a class="el-dropdown-menu__item" href="http://121.36.94.218:8000/zh" target="_blank">标注平台前端</a>
               <a class="el-dropdown-menu__item" href="http://121.36.94.218:8000/admin/login/?next=/admin/" target="_blank">标注平台后端</a>
-              <a class="el-dropdown-menu__item" href="http://121.36.94.218:10090/disease/ner/predict?sentence=" target="_blank">病历结构化</a>
+              <!-- <a class="el-dropdown-menu__item" href="http://121.36.94.218:10090/disease/ner/predict?sentence=" target="_blank">病历结构化</a> -->
             </el-dropdown-menu>
           </el-dropdown>
           <!-- <a href="javascript:0;" @click="clickNavItem('/newQAhome?active_id=9')">更多</a> -->
