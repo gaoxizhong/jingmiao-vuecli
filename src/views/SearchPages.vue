@@ -50,7 +50,7 @@
       </template>
 
       <div class="MedicineTagList-infodiv" v-else>
-        <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway')?'_blank':''" @click="(item.tag == 'ClinicalPathway')?click_file(item.file):click_gotoxq( item.tag,item.name,item.type,item.id )">
+        <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway')?'_blank':''" @click="(item.tag == 'ClinicalPathway')?click_file(item.file):click_gotoxq( item )">
           <span>{{ item.name }}</span>
           <i>( {{item.description}} )</i>
         </a>
@@ -90,6 +90,7 @@ export default {
       getListInfo:[], // 临床试验列表
       pageSize: 10,
       count:0,
+      activeIndex:''
     }
   },
   mounted(){
@@ -103,6 +104,7 @@ export default {
       if(activeIndex == '3'){
         this.tag_pages = 'zyzsk';
       }
+      this.activeIndex = activeIndex;
     }
     
     // 获取分类项
@@ -222,6 +224,7 @@ export default {
                 tag: key,
                 name: ele.name,
                 description: ele.description,
+                dialecticalName: ele.dialecticalName?ele.dialecticalName:'',
                 kgid: ele.kgid?ele.kgid:'',
                 file: ele.file?ele.file:'',
                 type:ele.tag?ele.tag:'',
@@ -239,14 +242,14 @@ export default {
       });
     },
     // 点击跳转详情页
-    click_gotoxq(t,n,y,i){
-      let tag = t;
-      let name = n;
-      let type = y;
-      let t_id = i; // 数据id
+    click_gotoxq(i){
+      let item = i;
+      let tag = item.tag;
+      let name = item.tag == 'zySickNess' ? item.dialecticalName : item.name;
+      let type = item.type;
+      let t_id = item.id; // 数据id
       let tag_pages = this.tag_pages;
-      let id = this.id; // 导航id
-      console.log(tag)
+      let id = this.activeIndex; // 导航id
       if(tag == 'GuideMap'){  //指南结构脑图
         let newUrl = this.$router.resolve({
           path:'/brainMap',
@@ -304,7 +307,7 @@ export default {
             name,
             tag_pages,
             tag,
-            id
+            active_id:id
           }
         });
         window.open(newUrl.href, "_blank");

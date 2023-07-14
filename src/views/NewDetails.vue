@@ -1,69 +1,69 @@
 <template>
-    <div class="pagecontent-box">
-      <div class="yp-position-box">
-        <div class="col-left-title">
-          <p :title="name">{{ name?name:'暂无' }}</p>
-          <a href="javascript:0;" class="cjyp-table-tr-r" style="font-weight: 100;font-size:13px;" @click.stop="clickXyEacharts(name)">
-            <i class="el-icon-share" style="color: #2D5AFA; margin-right: 6px"></i>查看图谱
-          </a>
-        </div>
-        <div class="info-box">
-          <div class="yp-position-nbox" :class="is_nofr ?'':'is-nofr'" id="scrollBox">
-            <div class="yp-info-box applications-content">
-              <div class="activi-1">
-                <div v-for="(item, index) in getinfo" :key="index" class="do-jump">
-                  <div class="item-name">{{ item.name }}</div>
-                  <div class="item-text" v-if="item.tag != '' && item.is_list == 1">
-                    <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
-                    <span class="item-text-a" v-for="(items, index) in item.text" :key="index">{{ items.kgid ? items.name : items }}</span>
-                  </div>
-                  <div class="item-text" style="white-space:pre-line" v-html='item.text ? item.text : "暂无数据"' v-else></div>
-                </div>
-              </div>
-              <div v-if="getinfo.length <= 0" style="color: #999;">暂无数据...</div>
-            </div>
-          </div>
-          <div class="fr" v-if="is_nofr">
-            <div class="src-components-PushItems-DetailsModal-N686B">
-              <div class="src-components-PushItems-DetailsModal-24j2q">
-                <div class="src-components-PushItems-DetailsModal-1SgDc">
-                  <div class="src-components-PushItems-DetailsModal-31MMP" v-for="(item, index) in getinfo" :key="item.id" @click="jump(index)">
-                    <div>
-                      <span class="src-components-PushItems-DetailsModal-2NyER" :class="[index===activeMenu?'active':'']">
-                        <div class="src-components-PushItems-DetailsModal-3KPN8">
-                          <img v-if="index===activeMenu" class="src-components-PushItems-DetailsModal-1xqmn" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAKCAYAAAC5Sw6hAAAAb0lEQVQoU2O0nn9xK8P//14MxABGxv+MDAxrWBj44g4kKv5A1sJoPe/Cf2LMQNHEyLiThYEvANkwsgwCGcqIZhjZBqEbRpFBYO8yMc45mqCfSrFBjIyMs48k6qdRZBByOJFtEFUCG90QcMBTK0ECANYqQAtl57OTAAAAAElFTkSuQmCC" alt="" />
-                          <span v-else class="src-components-PushItems-DetailsModal-2Fz4c"></span>
-                        </div>
-                        {{ item.name }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+  <div class="pagecontent-box">
+    <div class="yp-position-box">
+      <div class="col-left-title">
+        <p :title="name">{{ name?name:'暂无' }}</p>
+        <a href="javascript:0;" class="cjyp-table-tr-r" style="font-weight: 100;font-size:13px;" @click.stop="clickXyEacharts(name)">
+          <i class="el-icon-share" style="color: #2D5AFA; margin-right: 6px"></i>查看图谱
+        </a>
       </div>
-          <!-- 点击图谱弹窗 -->
-      <div class="casePop-mask" v-show="is_casePop"></div>
-      <div class="casePop-module-box" v-show="is_casePop">
-        <div class="close-box" @click="click_close">
-          <i class="el-icon-circle-close"></i>
-        </div>
-        <div class="main-box">
-          <!-- main 右侧图谱 -->
-          <div class="main-box-left">
-            <div class="main-box-left-t">
-              <div style="font-weight: 600;text-align: left;">
-                <i class="el-icon-share"></i> 疾病图谱
+      <div class="info-box">
+        <div class="yp-position-nbox" :class="is_nofr ?'':'is-nofr'" id="scrollBox">
+          <div class="yp-info-box applications-content">
+            <div class="activi-1">
+              <div v-for="(item, index) in getinfo" :key="index" class="do-jump">
+                <div class="item-name">{{ item.name }}</div>
+                <div class="item-text" v-if="item.tag != '' && item.is_list == 1">
+                  <!-- <a class="item-text-a" @click="medicine_click(item.tag,items.kgid?items.name:items,items.kgid?items.kgid:'')" href="javascript:0;" v-for="(items,index) in item.text" :key="index">{{items.kgid?items.name:items}}</a> -->
+                  <span class="item-text-a" v-for="(items, index) in item.text" :key="index">{{ items.kgid ? items.name : items }}</span>
+                </div>
+                <div class="item-text" style="white-space:pre-line" v-html='item.text ? item.text : "暂无数据"' v-else></div>
               </div>
             </div>
-            <div class="atlas-box" id='atlas'></div>
+            <div v-if="getinfo.length <= 0" style="color: #999;">暂无数据...</div>
           </div>
+        </div>
+        <div class="fr" v-if="is_nofr">
+          <div class="src-components-PushItems-DetailsModal-N686B">
+            <div class="src-components-PushItems-DetailsModal-24j2q">
+              <div class="src-components-PushItems-DetailsModal-1SgDc">
+                <div class="src-components-PushItems-DetailsModal-31MMP" v-for="(item, index) in getinfo" :key="item.id" @click="jump(index)">
+                  <div>
+                    <span class="src-components-PushItems-DetailsModal-2NyER" :class="[index===activeMenu?'active':'']">
+                      <div class="src-components-PushItems-DetailsModal-3KPN8">
+                        <img v-if="index===activeMenu" class="src-components-PushItems-DetailsModal-1xqmn" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAKCAYAAAC5Sw6hAAAAb0lEQVQoU2O0nn9xK8P//14MxABGxv+MDAxrWBj44g4kKv5A1sJoPe/Cf2LMQNHEyLiThYEvANkwsgwCGcqIZhjZBqEbRpFBYO8yMc45mqCfSrFBjIyMs48k6qdRZBByOJFtEFUCG90QcMBTK0ECANYqQAtl57OTAAAAAElFTkSuQmCC" alt="" />
+                        <span v-else class="src-components-PushItems-DetailsModal-2Fz4c"></span>
+                      </div>
+                      {{ item.name }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+        <!-- 点击图谱弹窗 -->
+    <div class="casePop-mask" v-show="is_casePop"></div>
+    <div class="casePop-module-box" v-show="is_casePop">
+      <div class="close-box" @click="click_close">
+        <i class="el-icon-circle-close"></i>
+      </div>
+      <div class="main-box">
+        <!-- main 右侧图谱 -->
+        <div class="main-box-left">
+          <div class="main-box-left-t">
+            <div style="font-weight: 600;text-align: left;">
+              <i class="el-icon-share"></i> 疾病图谱
+            </div>
+          </div>
+          <div class="atlas-box" id='atlas'></div>
         </div>
       </div>
     </div>
+  </div>
 
 
 </template>
@@ -131,17 +131,6 @@
       for (let i = 0; i < jump.length; i++) {
         topArr.push(jump.eq(i).position().top)
       }
-      /**
-       * 横向滚动
-       */
-      // 第一种方法
-      // this.$nextTick 是一个异步函数，为了确保 DOM 已经渲染
-      this.$nextTick(() => {
-        // 初始化
-        this._initScroll();
-        // 计算宽度
-        this._calculateWidth();
-      })
     },
     created(){
       let getViewportSize = this.$getViewportSize();
@@ -258,37 +247,6 @@
           }
         });
         window.open(newUrl.href, "_blank");
-      },
-      // 属性模块初始化
-      _initScroll() {
-        if (!this.scroll) {
-          this.scroll = new BScroll(this.$refs.rampage, {
-            startX: 0,
-            click: true,
-            scrollX: true,
-            // 忽略竖直方向的滚动
-            scrollY: false,
-            eventPassthrough: "vertical"
-          });
-        } else {
-          this.scroll.refresh();
-        }
-      },
-
-      // 计算宽度
-      _calculateWidth() {
-        // 获取类名为 rampage-list 的标签
-        let rampageList = this.$refs.rampageChild.getElementsByClassName("chapter");
-        // 设置一个起始宽度
-        let initWidth = 0;
-        // 遍历标签
-        for (let i = 0; i < rampageList.length; i++) {
-          const item = rampageList[i];
-          // 将每一个标签宽度相加
-          initWidth += item.clientWidth;
-        }
-        // 设置可滚动的宽度
-        this.$refs.rampageChild.style.width = `${initWidth}px`;
       },
 
       //获取详情页默认展示
@@ -609,55 +567,11 @@
     display: flex;
     white-space: nowrap;
   }
-  .chapter{
-    font-size: 16px;
-    list-style: none;
-    display: inline-block;
-    padding-left: 10px;
-    padding-bottom: 15px;
-    text-align: center;
-  }
-  .chapter-title{
-    width: 126px;
-    height: 44px;
-    line-height: 44px;
-    text-align: center;
-    font-size: 18px;
-    background: #AFE1D3;
-    border-radius: 7px;
-  }
-  .chapter-li-box{
-    margin-top: 10px;
-    width: 126px;
-    height: auto;
-    background: #afe1d32e;
-    border-radius: 0px 0px 7px 7px;
-    text-align: center;
-    padding: 4px 0;
-  }
-  .chapter-li-box>a{
-    display: inline-block;
-    width: 100%;
-    font-size: 15px;
-    padding: 4px 6px;
-    text-align: center;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    line-clamp: 1;
-    box-orient: vertical;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .chapter-li-a:hover{
-    color: #FA6400;
-  }
+
   .cktp-span:hover{
     color: #20C3A7;
   }
-  .chapterA-active{
-    color: #FA6400;
-  }
+
   .attributeValue-box{
     margin-top:10px;
     padding:10px 0;
@@ -921,18 +835,7 @@
       height: 40px;
       line-height: 40px;
     }
-    .chapter-title{
-      width: 108px;
-      height: 30px;
-      line-height: 30px;
-      font-size: 16px;
-    }
-    .chapter-li-box{
-      width: 108px;
-    }
-    .chapter-li-box>a{
-      font-size: 13px;
-    }
+
     
   }
 
