@@ -2,7 +2,7 @@ export default {
     title:'admin',
     baseURL: {  // 主站
         // 正式环境
-        pro: 'http://jm.jiankangche.cn/jmjk/'
+        pro: 'http://182.43.12.243:8981/jmjk/'
     },
     researchURL: {  // 科研探索
         //测试环境
