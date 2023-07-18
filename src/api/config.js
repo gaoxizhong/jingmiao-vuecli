@@ -9,7 +9,7 @@ export default {
         dev: 'http://182.43.12.243:8981/jmjk/',
     },
     iframeURL: {  // 外部网站内嵌访问--科研探索
-        //正式环境
-        pro: 'https://jm.jiankangche.cn/jmjk/'
+
+        pro: 'https://literature.carecancer.cn/jmjk/'
     }
 }
