@@ -525,23 +525,23 @@ const router = new VueRouter({
   // base: process.env.BASE_URL,
   routes
 })
-const whiteList = ['/login']; // 添加路由白名单
+const whiteList = ['/login','/popLiterature','/use_Tutorial','/jouDetails','/jouAnalysis','/subAnalysis','/schDetails','/schAnalysis','/my_favorite','/insAnalysis','/litAuthor','/litDetails']; // 添加路由白名单
 //路由判断
 router.beforeEach(async (to, from, next) => {
-  // const token = window.localStorage.getItem('token');
-  // // 页面刷新时，重新赋值token
-  // if(token){
-  //   store.dispatch("setToken",token);
-  //   next();
-  // }else{
-  //   if (whiteList.indexOf(to.path) !== -1) {
-  //     // 在白名单内直接放行
-  //     next();
-  //   } else {
-  //     // 其他没有访问权限的页面将被重定向到登录页面。
-  //     next(`/login?redirect=${to.path}`);
-  //   }
-  // }
+  const token = window.localStorage.getItem('token');
+  // 页面刷新时，重新赋值token
+  if(token){
+    store.dispatch("setToken",token);
+    next();
+  }else{
+    if (whiteList.indexOf(to.path) !== -1) {
+      // 在白名单内直接放行
+      next();
+    } else {
+      // 其他没有访问权限的页面将被重定向到登录页面。
+      next(`/login?redirect=${to.path}`);
+    }
+  }
 
   if(to.path == '/popularLiterature' && from.path == '/user-center' ){
     to.meta.keepAlive = false; 
