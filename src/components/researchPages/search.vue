@@ -223,6 +223,15 @@
       }
     },
     created(){
+      if (this.tag == 1){
+        this.sortData = [
+          {name:'相关度',order_field:'_score',order:'desc',is_type:false},
+          {name:'时间',order_field:'year',order:'desc',is_type:true},
+          {name:'被引量',order_field:'citation_relate_count',order:'desc',is_type:false},
+          // {name:'点击量',order_field:'click_count',order:'desc',is_type:false},
+          // {name:'下载量',status:'1'},
+        ]
+      }
        this.literatureDocSearch();
     },
     methods:{
