@@ -990,4 +990,48 @@
   max-width: 100%;
 }
 
+
+@media only screen and (max-width: 758px){
+  .pagecontent-box{
+    padding: 0;
+    margin: 0;
+  }
+  .yp-position-box{
+    padding: 0;
+    margin: 0;
+  }
+  .col-left-title > p{
+    text-align: left;
+  }
+  .fr{
+    display: none;
+  }
+  .yp-position-nbox{
+    padding: 0;
+    height: auto;
+  }
+  .yp-info-box{
+    padding: 0;
+  }
+  .item-name{
+    font-size: 14px;
+  }
+  .item-text{
+    font-size: 14px;
+    opacity: 1;
+    margin: 0;
+  }
+  .casePop-module-box{
+    width: 95%;
+  }
+  .atlas-box {
+    width: 375px;
+    height:500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+  }
+}
+
 </style>

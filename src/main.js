@@ -7,8 +7,9 @@ import axios from 'axios'
 import './assets/js/rem'
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
-import { Tooltip,Tag,Popover,Upload,Result,Footer,DatePicker,Radio,DropdownItem,RadioButton,RadioGroup,CheckboxGroup,Checkbox,Table,TableColumn,Breadcrumb,BreadcrumbItem,TabPane,Tabs,Switch,Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
+import { Drawer,Tooltip,Tag,Popover,Upload,Result,Footer,DatePicker,Radio,DropdownItem,RadioButton,RadioGroup,CheckboxGroup,Checkbox,Table,TableColumn,Breadcrumb,BreadcrumbItem,TabPane,Tabs,Switch,Pagination,Form,FormItem,Dialog,Card,Autocomplete,Empty,Dropdown,Loading,Button, Select,Container,Aside,Header,Main,Menu,MenuItem,MenuItemGroup,Submenu,Input,Message,Option,Row,Col,Collapse,CollapseItem, DropdownMenu   } from 'element-ui';
 Vue.config.productionTip = false
+Vue.use(Drawer);
 Vue.use(Tag);
 Vue.use(Tooltip);
 Vue.use(Popover);

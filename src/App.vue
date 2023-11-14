@@ -150,6 +150,13 @@ button{
     padding: 10px 36px 56px 36px;
   }
 }
+@media only screen and (max-width: 758px){
+  .el-main{
+    background: #fff;
+    padding: 10px 15px;
+    background-image: none !important;
+  }
+}
 </style>
 <script>
 export default {

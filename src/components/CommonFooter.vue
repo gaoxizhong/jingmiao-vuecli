@@ -30,8 +30,12 @@ footer{
   padding: 0px 5px;
 }
 /* 媒体查询 */
-@media only screen and (max-width: 1366px){
-
+@media only screen and (max-width: 758px){
+  .content-box{
+    height: 100%;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
 }  
 
 </style>

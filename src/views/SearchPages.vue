@@ -9,7 +9,7 @@
         </el-input>
         </div>
         <div class="classinfo-box">
-          <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname(all_options,100)">全部</a>
+          <!-- <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname(all_options,100)">全部</a> -->
           <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" @click="clickTagname(item.key,index)">{{item.value}}</a>
         </div>
       </div>
@@ -83,7 +83,8 @@ export default {
       input_name:'',
       options:[],
       all_options:'',   //  全部 tag标识
-      cur_tab:100,
+      // cur_tab:100,
+      cur_tab:0,
       tag:'',
       MedicineIfoList:[], // 搜索结果列表
       page: 1,
@@ -343,9 +344,10 @@ export default {
             tagList.push(ele.key)
           });
           let all_options = tagList.join(",");
-          that.cur_tab = 100;  // 全部 的下标字段
           that.all_options = all_options;  // 全部 的标识字段
-          that.tag = all_options;   // 默认第一次请求的标识字段
+          // that.cur_tab = 100;  // 全部 的下标字段
+          // that.tag = all_options;   // 默认第一次请求的标识字段
+          that.tag = 'Disease';
           that.options = options;  // 所有分类项
 
           if(options.length <= 0){
