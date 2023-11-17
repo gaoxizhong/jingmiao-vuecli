@@ -52,6 +52,7 @@
               </a>
               <el-dropdown-menu slot="dropdown">
                 <a class="el-dropdown-menu__item" href="http://182.43.12.243:8786/" target="_blank">上海长征</a>
+                <a class="el-dropdown-menu__item" href="http://182.43.12.243:8787" target="_blank">滨州医学院科研平台</a>
                 <el-dropdown-item :class="active_id == '10'?'navitems-active':'' " command="/ocrPages?active_id=10">心理健康识别</el-dropdown-item>
                 <el-dropdown-item :class="active_id == '9'?'navitems-active':'' " command="/knowledgeQAhome?active_id=9">人力资源问答</el-dropdown-item>
                 <el-dropdown-item :class="active_id == '6'?'navitems-active':'' " command="/WesternMedicineCdss?active_id=6">西医CDSS</el-dropdown-item>
