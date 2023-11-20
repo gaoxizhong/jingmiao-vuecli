@@ -27,9 +27,9 @@
       <div class="nav-center-box">
         <div class="navitems-box">
 
-          <div class="navitems" :class="active_id == '1'?'navitems-active':'' ">
+          <!-- <div class="navitems" :class="active_id == '1'?'navitems-active':'' ">
             <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/textTranslation?active_id=1')">文字翻译</a>
-          </div>
+          </div> -->
           <div class="navitems" :class="active_id == '2'?'navitems-active':'' ">
             <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/xyzskPages?active_id=2')">西医知识库</a>
           </div>
@@ -39,9 +39,9 @@
           <div class="navitems" :class="active_id == '4'?'navitems-active':'' ">
             <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/popularLiterature?active_id=4')">科研探索</a>
           </div>
-          <div class="navitems" :class="active_id == '5'?'navitems-active':'' ">
+          <!-- <div class="navitems" :class="active_id == '5'?'navitems-active':'' ">
             <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/newQAhome?active_id=5')">智能问答</a>
-          </div>
+          </div> -->
           <!-- <div class="navitems" :class="active_id == '11'?'navitems-active':'' ">
             <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/chatPDF?active_id=11')">ChatPDF</a>
           </div> -->
@@ -54,6 +54,8 @@
                 <a class="el-dropdown-menu__item" href="http://182.43.12.243:8786/" target="_blank">上海长征</a>
                 <a class="el-dropdown-menu__item" href="http://182.43.12.243:8787" target="_blank">滨州医学院科研平台</a>
                 <a class="el-dropdown-menu__item" href="http://182.43.12.243:8788/" target="_blank">智能导诊</a>
+                <a class="el-dropdown-menu__item" href="http://182.43.12.243:8994/admin/auth/login" target="_blank">滨医烟台导诊后台</a>
+                <el-dropdown-item :class="active_id == '5'?'navitems-active':'' " command="/newQAhome?active_id=5">智能问答</el-dropdown-item>
                 <el-dropdown-item :class="active_id == '10'?'navitems-active':'' " command="/ocrPages?active_id=10">心理健康识别</el-dropdown-item>
                 <el-dropdown-item :class="active_id == '9'?'navitems-active':'' " command="/knowledgeQAhome?active_id=9">人力资源问答</el-dropdown-item>
                 <el-dropdown-item :class="active_id == '6'?'navitems-active':'' " command="/WesternMedicineCdss?active_id=6">西医CDSS</el-dropdown-item>
