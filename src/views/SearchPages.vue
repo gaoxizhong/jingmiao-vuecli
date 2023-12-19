@@ -343,11 +343,12 @@ export default {
           options.forEach(ele => {
             tagList.push(ele.key)
           });
+          that.tag = options[0].key;
           let all_options = tagList.join(",");
           that.all_options = all_options;  // 全部 的标识字段
           // that.cur_tab = 100;  // 全部 的下标字段
           // that.tag = all_options;   // 默认第一次请求的标识字段
-          that.tag = 'Disease';
+        
           that.options = options;  // 所有分类项
 
           if(options.length <= 0){
