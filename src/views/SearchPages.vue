@@ -9,8 +9,10 @@
         </el-input>
         </div>
         <div class="classinfo-box">
-          <!-- <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname(all_options,100)">全部</a> -->
-          <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" @click="clickTagname(item.key,index)">{{item.value}}</a>
+          <div class="classinfo-lablebox">
+            <!-- <a href="javascript:0;" :class="cur_tab == 100 ?'cur-tab':'' " @click="clickTagname(all_options,100)">全部</a> -->
+            <a href="javascript:0;" :class="cur_tab == index ?'cur-tab':'' " v-for="(item,index) in options" :key="index" @click="clickTagname(item.key,index)">{{item.value}}</a>
+          </div>
         </div>
       </div>
       <!-- 搜索框模块结束 -->
@@ -412,7 +414,6 @@ export default {
     justify-content: center;
     border-radius: 4px;
     cursor: pointer;
-    
   }
   .input-button-box{
     padding: 8px 24px;
@@ -451,6 +452,8 @@ export default {
     border: 1px solid #fa6502;
     border-radius: 0;
     padding: 12px 36px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
   }
   .header-input-box-i{
     flex: 1;
@@ -458,31 +461,46 @@ export default {
   }
   .classinfo-box{
     width: 100%;
-    padding: 10px 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 20px;
   }
-  .classinfo-box>a{
-    margin: 0 6px;
-    font-size: 15px;
+  .classinfo-lablebox{
+    max-width: 880px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
   }
-  .classinfo-box>a:hover{
-    color: #00C792;
-  }
-  .classinfo-box>a.cur-tab{
-    color: #00C792;
-  }
-  .classinfo-box>a.cur-tab:after {
-    content: '';
+  .classinfo-lablebox>a{
     width: auto;
-    min-width: 44px;
-    height: 2px;
-    background: #00C792;
-    border-radius: 1px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 8px;
+    color: #999;
+    border: none;
+    background-color: #f3f4f9;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
     display: block;
-    margin-top: 1px;
+    margin: 0 5px;
+    margin-bottom: 10px;
   }
+  .classinfo-lablebox>a:hover,.classinfo-lablebox>a.cur-tab{
+    color: #fff;
+    background-color: #27afa1;
+  }
+  // .classinfo-lablebox>a.cur-tab:after {
+  //   content: '';
+  //   width: auto;
+  //   min-width: 44px;
+  //   height: 2px;
+  //   background: #00C792;
+  //   border-radius: 1px;
+  //   display: block;
+  //   margin-top: 1px;
+  // }
   .MedicineTagList-infodiv {
     width: 780px;
     margin: 0 auto;
