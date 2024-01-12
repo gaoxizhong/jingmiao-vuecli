@@ -69,10 +69,7 @@
 </template>
 
 <script>
-  // import DetailsMask from '../components/WesternMedicineCdss/DetailsMask';
-  import References from "../components/References"; // 文献指南
-  import BScroll  from "better-scroll";
-  import { getZskNewDetail,getNewBaseDetail,getNewDetail,getPropertyDetail } from "@/api/data"
+  import { getZskNewDetail } from "@/api/data"
   export default {
     // provide(){
     //   return {
@@ -81,8 +78,7 @@
     // },
     name: 'NewDetails',
     components: {
-      References,
-      // DetailsMask
+
     },
     data(){
       return {
@@ -144,11 +140,6 @@
       this.kgid = this.$route.query.kgid?this.$route.query.kgid:'';
       this.id = Number(this.$route.query.id);
       document.title = this.name;
-      // if(this.tag_pages == 'xyzsk'){
-      //   this.getNewBaseDetail();
-      // }else{
-      //   this.getNewDetail();
-      // }
       this.getNewBaseDetail();
     },
 
@@ -229,133 +220,6 @@
         })
       },
 
-      // =============== 中医功能  ===================
-      goToDetails(_name){
-        let that = this;
-        let name = _name;
-        let tag = that.tag;
-        let tag_pages = that.tag_pages;
-        let id = that.id;
-        // 新页面打开
-        let newUrl = this.$router.resolve({
-          path: '/ImagesListDetails',
-          query:{
-            name,
-            tag,
-            tag_pages,
-            id,
-          }
-        });
-        window.open(newUrl.href, "_blank");
-      },
-
-      //获取详情页默认展示
-      getNewDetail(){
-        let that = this;
-        let params = {
-          label: that.tag
-        };
-        if(that.tag_pages == 'xyzsk'){
-          params.type = '';
-        }
-        if(that.tag_pages == 'zyzsk'){
-          params.type = 'zh';
-          params.name = that.name
-        }
-        getNewDetail(params).then(res =>{
-          if(res.data.code == 0){
-            let dabutes = res.data.data;
-            that.dabutes = dabutes;
-            let li_index= that.li_index;
-            let a_idx= that.a_idx;
-            let name = dabutes[li_index].name;
-            let property_zh_name = dabutes[li_index].DiseaseCategoryProperties[a_idx].property_zh_name;
-            let property_ch_name = dabutes[li_index].DiseaseCategoryProperties[a_idx].property_ch_name;
-            that.clickDiseaseCategoryProperties(li_index,a_idx,name,property_ch_name,property_zh_name);
-          }
-        }).catch( e =>{
-          console.log(e)
-        })
-      },
-      // 点击上面属性名称请求下方属性详情
-      clickDiseaseCategoryProperties(i,ix,na,ch,zh){
-        let that = this;
-        let index = i;
-        let idx = ix;
-        let name = na;
-        let property_zh_name = zh;
-        this.properties_name = property_zh_name;
-        this.li_index = index;
-        this.a_idx = idx;
-        let params = {
-          name: that.name,
-          property_zh_name,
-          property_ch_name: ch,
-          label: that.tag
-        }
-        if(that.tag_pages == 'xyzsk'){
-          params.type = '';
-        }
-        if(that.tag_pages == 'zyzsk'){
-          params.type = 'zh';
-          if(params.label == 'zySickNess'){
-            params.name = name;
-          }else{
-            params.name = that.kgid?that.kgid:that.name;
-          }
-          
-        }
-        getPropertyDetail(params).then(res =>{
-          if(res.data.code == 0){
-            let data_type = res.data.data.data_type;
-            that.data_type = data_type;
-            if(data_type == 'single'){
-              that.infoDetail_text = res.data.data.value; // 字符串状态数据
-            }
-            if(data_type == 'image'){
-              that.infoDetail_image = res.data.data.value; // 图像状态数据
-              that.img_name = res.data.data.img_name;
-            }
-            if(data_type == 'many'){
-              let guide_list = res.data.data.value;  // 指南数组数据
-              let showFull =[];
-              for (var i = 0; i < guide_list.length; i++) {
-                let obj = {};
-                obj.status = false;
-                showFull.push(obj);
-              }
-              that.guide_list = guide_list;
-              that.showFull = showFull;
-            }
-            
-          }
-        }).catch(e =>{
-          console.log(e)
-        })
-      },
-
-      // 点击原文链接
-      goTofullText(event,u){
-        let url = u;
-        event.stopPropagation();
-        if(!url || url == ''){
-          return
-        }
-      },
-      // 点击在线阅读
-      goToyuedu(event,u){
-        let url = u;
-        event.stopPropagation();
-        if(!url || url == ''){
-          return
-        }
-      },
-      //打开全文
-      openFulltxt(idx) {
-        let index = idx;
-        this.showFull[index].status = !this.showFull[index].status
-        this.showFull= this.showFull
-      },
       // 点击图谱弹窗关闭按钮
       click_close() {
         this.is_casePop = false;
