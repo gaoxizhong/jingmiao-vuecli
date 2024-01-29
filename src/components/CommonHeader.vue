@@ -51,10 +51,10 @@
                 更多<i class="el-icon-arrow-down el-icon--right"></i>
               </a>
               <el-dropdown-menu slot="dropdown">
-                <a class="el-dropdown-menu__item" href="http://182.43.12.243:8786/" target="_blank">上海长征</a>
-                <a class="el-dropdown-menu__item" href="http://182.43.12.243:8787" target="_blank">滨州医学院科研平台</a>
-                <a class="el-dropdown-menu__item" href="http://182.43.12.243:8788/" target="_blank">智能导诊</a>
-                <a class="el-dropdown-menu__item" href="http://182.43.12.243:8994/admin/auth/login" target="_blank">滨医烟台导诊后台</a>
+                <a class="el-dropdown-menu__item" href="http://106.225.184.197:8786/" target="_blank">上海长征</a>
+                <a class="el-dropdown-menu__item" href="http://106.225.184.197:8787" target="_blank">滨州医学院科研平台</a>
+                <a class="el-dropdown-menu__item" href="http://106.225.184.197:8788/" target="_blank">智能导诊</a>
+                <a class="el-dropdown-menu__item" href="http://106.225.184.197:8993/admin/auth/login" target="_blank">滨医烟台导诊后台</a>
                 <el-dropdown-item :class="active_id == '5'?'navitems-active':'' " command="/newQAhome?active_id=5">智能问答</el-dropdown-item>
                 <el-dropdown-item :class="active_id == '10'?'navitems-active':'' " command="/ocrPages?active_id=10">心理健康识别</el-dropdown-item>
                 <el-dropdown-item :class="active_id == '9'?'navitems-active':'' " command="/knowledgeQAhome?active_id=9">人力资源问答</el-dropdown-item>
