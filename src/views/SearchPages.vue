@@ -52,7 +52,7 @@
       </template>
 
       <div class="MedicineTagList-infodiv" v-else>
-        <a v-for="(item, index) in MedicineIfoList" :key="index" :href="(item.tag == 'ClinicalPathway')?item.file:'javascript:0;'" :target="(item.tag == 'ClinicalPathway')?'_blank':''" @click="(item.tag == 'ClinicalPathway')?click_file(item.file):click_gotoxq( item )">
+        <a v-for="(item, index) in MedicineIfoList" :key="index" :href="item.file?item.file:'javascript:0;'" :target="item.file?'_blank':''"  @click="item.file?click_file(item.file):click_gotoxq( item )">
           <span>{{ item.name }}</span>
           <i>( {{item.description}} )</i>
         </a>
