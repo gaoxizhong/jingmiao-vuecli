@@ -312,8 +312,16 @@
               that.msgList.push(showMessage);
             }
             if( that.type == 'chatgpt' ){ // 请求chatgpt 接口
-
-              that.getchantGPT(res.data.data.question)
+              let showMessage = { // 页面展示的结果
+                isme: false,
+                content: '暂无信息！',
+                button_list:[],
+                result: [],
+                name:'智能助手',
+                time: this.getCurrentTime(),
+              }
+              that.msgList.push(showMessage);
+              // that.getchantGPT(res.data.data.question)
             }
 
             setTimeout(()=>{
@@ -344,7 +352,7 @@
           result: [],
           name:'智能助手',
           time: this.getCurrentTime(),
-          }
+        }
         that.msgList.push(showMessage);
         // SSE接收 如果跨越 添加第二个参数 { withCredentials: true }
 
