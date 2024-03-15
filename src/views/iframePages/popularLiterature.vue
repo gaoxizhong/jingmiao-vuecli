@@ -23,6 +23,7 @@
                 <el-select class="validate validate-1" placeholder="请选择" :popper-append-to-body="popperAppend" v-model="p_select_value" slot="prepend" @change="selectnChange">
                   <el-option key="theme" label="主题" value="theme"></el-option>
                   <el-option key="title" label="标题" value="title"></el-option>
+                  <el-option key="author" label="作者" value="author"></el-option>
                 </el-select>
               </div>
               <div class="header-input-selectord" ref="sordInput">
@@ -64,7 +65,7 @@
             
             
             <div class="tabslist">
-              <span class="tabslist-span1" @click="goToMyFavorite('/my_Favorite')">我收藏的</span>
+              <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我收藏的</span>
               <span class="tabslist-span2" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
             </div>
             <!-- 弹窗 开始-->
@@ -234,7 +235,7 @@
                   </div>
               
                   <div class="tabslist">
-                    <span class="tabslist-span1" @click="goToMyFavorite('/my_Favorite')">我收藏的</span>
+                    <span class="tabslist-span1" @click="goToMyFavorite('/myFavorite')">我收藏的</span>
                     <span class="tabslist-span2" @click="clickTabslist">检索历史<i style="padding-left:6px;" :class="is_ls?'el-icon-caret-top':'el-icon-caret-bottom'"></i></span>
                   </div>
                 </div>
@@ -302,9 +303,11 @@
 
   import Popular from '../../components/iframePages/popular.vue';
   import Search from '../../components/iframePages/search.vue';
+  // import yearPicker from '../../components/iframePages/yearPicker.vue';
+  import time from "../../assets/js/time";
   import { getliteratureHistory,clearHistory,searchTip,getRecommendDisease,getSingleRecommendDisease,getAuthorOrganization  } from "../../api/iframe/iframeData";
   export default {
-    name: 'popLiterature',
+    name: 'popularLiterature',
     components: {
       Popular,
       Search,
@@ -355,7 +358,7 @@
           ],
         options_2:[{label:'精准',value:'term'},{label:'模糊',value:'match'}],
         is_ls: false,
-        uid: '833456199',
+        uid: 833456199,
         is_pop: '1',  // 1、默认页面； 2、检索结果页面
         is_s:false,
         is_view: true,
@@ -403,6 +406,7 @@
           select_type: 'match',
           select_condition: '',
         })
+        that.p_select_value = 'author';
         that.headerInput = author;
         that.advancedCondition = advancedCondition;
         that.is_pop = '2';
@@ -590,7 +594,20 @@
           location.href = "javascript:history.go(-1);"
         }
         that.setsickNess();
-       
+        return
+        if(retrievalArr){
+          let re = JSON.parse(retrievalArr);
+          console.log(re)
+          let aa = retrievalArr.splice(re.length-1);
+          window.localStorage.setItem('retrievalArr',JSON.stringify(re))
+          let a1 = retrievalArr[re.length-1];
+          this.advancedCondition = a1;
+          this.is_pop = '2';
+          this.setsickNess();
+        }else{
+          location.href = "javascript:history.go(-1);"
+          this.setsickNess();
+        }
       },
       //接收组件方法setReset
       setReset(e){
@@ -1040,7 +1057,7 @@
         arr.forEach((ele,index) =>{
           newArr.splice(select_index + index,0,{
             field_value: advancedOptions[select_index].field_name ? advancedOptions[select_index].field_name:ele,
-            select_condition:select_index == 0?'':'or',
+            select_condition:select_index == 0?'':advancedOptions[select_index].select_condition,
             select_field:advancedOptions[select_index].select_field,
             select_type:'match',
           })
@@ -1138,7 +1155,7 @@
   .literature-titlebox.searchBarFixed{
     position: fixed;
 		background-color: #Fff;
-		top: 0;
+		top: 3.6rem;
     right: 0;
 		z-index: 99;
     margin-top: 0;

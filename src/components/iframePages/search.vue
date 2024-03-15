@@ -149,6 +149,9 @@
       <!-- 右侧文献可视化分析模块 结束 -->
     </div>
 
+
+
+    
     <!-- 点击研究趋势关系图弹窗 开始 -->
     <div class="casePop-mask" v-show="is_researchTrendsPop"></div>
     <div class="casePop-module-box r-p" v-show="is_researchTrendsPop">
@@ -177,6 +180,7 @@
     </div>
     <!-- 点击关联研究图谱弹窗 结束 -->
 
+
   </div>
 
 </template>
@@ -194,7 +198,7 @@
       return {
         is_casePop:false,
         is_researchTrendsPop: false,
-        uid: '833456199',
+        uid: 833456199,
         search_type: 'many', // single、普通 many、高级
         is_s:false,
         pageSize: 25,
@@ -219,6 +223,15 @@
       }
     },
     created(){
+      if (this.tag == 1){
+        this.sortData = [
+          {name:'相关度',order_field:'_score',order:'desc',is_type:false},
+          {name:'时间',order_field:'year',order:'desc',is_type:true},
+          {name:'被引量',order_field:'citation_relate_count',order:'desc',is_type:false},
+          // {name:'点击量',order_field:'click_count',order:'desc',is_type:false},
+          // {name:'下载量',status:'1'},
+        ]
+      }
        this.literatureDocSearch();
     },
     methods:{
@@ -238,6 +251,7 @@
           that.getResearchTrends_pop(this.research_trends,'research_id',this);
         },100)
       },
+      
     // 点击图谱弹窗关闭按钮
       click_close() {
         this.is_casePop = false;
@@ -359,7 +373,7 @@
             }
             that.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
             that.$router.push({
-              path:'/litAuthor', 
+              path:'/literatureAuthor', 
               query:{     
                 author: name,
                 organization: res.data.data.org,
@@ -388,7 +402,7 @@
         that.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
         // 新页面打开
         that.$router.push({  //核心语句
-          path:'/litDetails',   //跳转的路径
+          path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             periodical_md5,
             uniq_id
@@ -944,7 +958,7 @@
         window.scrollTo(0,0);
         that.$emit('setsickNess','');
         that.$router.push({
-          path:'/popLiterature', 
+          path:'/popularLiterature', 
           query:{     
             author:n,
             is_p:'2',

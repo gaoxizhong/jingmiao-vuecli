@@ -140,7 +140,7 @@
   export default {
     data(){
       return {
-        uid: '833456199',
+        uid: 833456199,
         is_s:false,
         is_view: true,
         is_titleTab:'1',
@@ -277,7 +277,7 @@
             }
             that.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
             that.$router.push({
-              path:'/litAuthor', 
+              path:'/literatureAuthor', 
               query:{     
                 author: name,
                 organization: res.data.data.org,
@@ -317,7 +317,7 @@
         this.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
         // 新页面打开
         this.$router.push({  //核心语句
-          path:'/litDetails',   //跳转的路径
+          path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             periodical_md5,
             uniq_id
@@ -332,7 +332,7 @@
         this.$listeners.setsickNess('');  // 孙子组件向爷爷传递方法及数据
         // 新页面打开
         this.$router.push({  //核心语句
-          path:'/litDetails',   //跳转的路径
+          path:'/literatureDetails',   //跳转的路径
           query:{           //路由传参时push和query搭配使用 ，作用时传递参数
             periodical_md5,
             uniq_id
@@ -432,8 +432,7 @@
     justify-content: space-between;
   }
   .listbox-left{
-    /* width: 56.5rem; */
-    flex: 1;
+    width: 56.5rem;
     height: auto;
     background: #FFFFFF;
     box-shadow: 0px 2px 9px 0px rgba(227,227,227,0.5);
@@ -602,7 +601,7 @@
     margin-right: 0;
   }
   .listbox-right{
-    width: 25rem;
+    flex:1;
     padding-left: 1rem;
   }
 
