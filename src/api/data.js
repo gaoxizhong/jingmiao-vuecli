@@ -369,6 +369,14 @@ export const getNewClinicalTrial = (params) =>{
     data: params
   })
 }
+export const getNewInteract = (params) =>{  
+  return axios.request({
+    url:'/new/get-interact',
+    method: 'post',
+    data: params
+  })
+}
+
 export const getZskNewDetail = (params) =>{
   return axios.request({
     url:'/new/detail',
