@@ -74,11 +74,8 @@
       <!-- 导航分类模块 -->
     </div>
     <!-- <div class="template-min-box">
-      <el-button @click="drawer = true" type="primary" style="margin-left: 16px;">
-        点我打开
-      </el-button>
-
-      <el-drawer title="" :visible.sync="drawer" size="50%">
+      <el-button @click="drawer = true" type="primary" style="margin-left: 16px;"> 点我打开</el-button>
+      <el-drawer title="" :visible.sync="drawer" size="80%">
        <div>
         我是外面的 Drawer
        </div>
@@ -467,6 +464,10 @@ export default {
   }
   .template-min-box{ 
     display: block;
+  }
+  .template-min-box /deep/ .el-drawer__header{
+    padding: 10px 14px;
+    margin: 0;
   }
 } */
 </style>
