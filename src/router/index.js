@@ -554,7 +554,7 @@ router.afterEach((to) => {
   if(to.meta.title){
     document.title = to.meta.title
   }else{
-    document.title = '菁苗健康'
+    document.title = '临床辅助决策系统'
   }
   window.scrollTo(0,0);
 

@@ -49,16 +49,15 @@ module.exports = {
 	},
   devServer: {
     proxy: {
-        '/api': {
-            // 此处的写法，目的是为了 将 /api 替换成 域名
-            target: 'http://106.225.184.197:8981',
-            // 允许跨域
-            changeOrigin: true,
-            ws: true,
-            pathRewrite: {
-                '^/api': ''
-            }
-        },
+        // '/api': {
+        //     target: 'http://106.225.184.197:8981',
+        //     // 允许跨域
+        //     changeOrigin: true,
+        //     ws: true,
+        //     pathRewrite: {
+        //         '^/api': ''
+        //     }
+        // },
 
       //   '/pdf': {
       //     target: 'https://repair.qdy0707.top/file/',

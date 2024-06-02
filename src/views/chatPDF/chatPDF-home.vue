@@ -4,7 +4,7 @@
     <!-- 头部 开始  -->
     <el-header>
       <div class="l-content">
-        <div class="l-content-title">菁苗健康</div>
+        <div class="l-content-title">临床辅助决策系统</div>
       </div>
       <div class="headerTitle-box">
         <div class="r-content" v-if="phone">

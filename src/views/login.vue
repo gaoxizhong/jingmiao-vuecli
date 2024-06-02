@@ -68,7 +68,7 @@
                 <button class="ghost" id="signIn"  @click="signIn()">登录</button>
               </div>
               <div class="overlay-panel overlay-right">
-                <h1>菁苗健康</h1>
+                <h1>临床辅助决策系统</h1>
                 <p>输入您的个人详细信息进行注册</p>
                 <button class="ghost" id="signUp" @click="signUp()">注册</button>
               </div>

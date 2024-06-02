@@ -12,7 +12,7 @@
       <img src="../assets/image/logo-5.png" alt="" class="logo-img"/>
     </div>
     <div class="logo-box" v-show="isCollapse">
-      <div style="padding:10px 0;">菁苗健康</div>
+      <div style="padding:10px 0;">临床辅助决策系统</div>
     </div>
 			<!-- 第一层 -->
 			<template v-for="(item,index) in datalist">

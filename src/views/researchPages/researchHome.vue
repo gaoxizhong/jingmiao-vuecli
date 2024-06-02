@@ -5,7 +5,7 @@
     <el-header>
       <div class="l-content">
         <!-- <img src="../../assets/image/researchPages/logo.png" alt=""  @click="clickLoge"/> -->
-        <!-- <div class="l-content-title"  @click="clickLoge">菁苗健康</div> -->
+        <!-- <div class="l-content-title"  @click="clickLoge">临床辅助决策系统</div> -->
       </div>
       <div class="headerTitle-box">
         <div class="headerTitle-home"  @click="clickLoge"><i class="el-icon-s-home"></i>首页</div>

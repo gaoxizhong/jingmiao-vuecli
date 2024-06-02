@@ -7,7 +7,7 @@
         <el-row class="content-box">
           <el-col :span="24" class="content-col-box">
             <div class="l-content">
-              <div class="l-content-title">菁苗健康</div>
+              <div class="l-content-title">临床辅助决策系统</div>
             </div>
             <div class="r-content" v-if="phone">
               <div class="position-relative ms-2 dropdown">

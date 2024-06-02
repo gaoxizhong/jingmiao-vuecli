@@ -3,7 +3,7 @@
     <div class="content-box" :style="`height:${viewHeight}px;`">
       <!-- 头部提示模块 开始 -->
       <header class="header-box">
-        <div class="header-title">菁苗健康科技智能导诊</div>
+        <div class="header-title">临床辅助决策系统智能导诊</div>
         <div class="header-text">温馨提示：本服务会根据您提供的患者信息为您推荐就诊科室，避免因挂错号而浪费就诊时间。</div>
       </header>
       <!-- 头部提示模块 结束 -->
@@ -21,7 +21,7 @@
             </div>
           </div>
         </div>
-        <div class="support-box"><i style="padding:0 6px;font-size:13px;">菁苗健康</i>提供技术支持</div>
+        <div class="support-box"><i style="padding:0 6px;font-size:13px;">临床辅助决策系统</i>提供技术支持</div>
       </div>
       <!-- 聊天区域 结束 -->
 

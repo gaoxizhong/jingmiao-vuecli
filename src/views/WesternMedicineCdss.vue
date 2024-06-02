@@ -636,7 +636,7 @@
         <div class="src-components-PreviewBody-1_yxF" style="margin: 0px auto; max-width: 620px">
           <div>
             <div class="src-components-Information-2Lh0V">
-              菁苗健康医疗健康数字化平台
+              临床辅助决策系统医疗健康数字化平台
             </div>
             <table class="src-components-Information-1euAh">
               <tr>
