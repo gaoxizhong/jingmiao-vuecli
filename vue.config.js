@@ -46,26 +46,5 @@ module.exports = {
 	        }
 	        return options
 	      })
-	},
-  devServer: {
-    proxy: {
-        // '/api': {
-        //     target: 'http://106.225.184.197:8981',
-        //     // 允许跨域
-        //     changeOrigin: true,
-        //     ws: true,
-        //     pathRewrite: {
-        //         '^/api': ''
-        //     }
-        // },
-
-      //   '/pdf': {
-      //     target: 'https://repair.qdy0707.top/file/',
-      //     changOrigin: true,
-      //     pathRewrite: {
-      //         '^/pdf': ''
-      //     }
-      // }
-    }
-  }
+	}
 }

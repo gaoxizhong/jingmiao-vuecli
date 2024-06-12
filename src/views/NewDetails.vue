@@ -188,7 +188,12 @@
         }
         getZskNewDetail(params).then(res =>{
           if(res.data.code == 0){
-            let getinfo = res.data.data;
+            let getinfo = {};
+            if(that.tag == 'Inspection'){
+              getinfo = res.data.data[0];
+            }else{
+              getinfo = res.data.data;
+            }
             that.name = getinfo.name.text;
             let getinfo_arr = [];
             for (let key in getinfo) {
