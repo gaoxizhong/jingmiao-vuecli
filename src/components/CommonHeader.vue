@@ -9,7 +9,7 @@
             <div class="l-content">
               <div class="l-content-title">临床辅助决策系统</div>
             </div>
-            <div class="r-content" v-if="phone">
+            <div class="r-content" v-if="phone && active != '/CDSSPages'">
               <div class="position-relative ms-2 dropdown">
                 <a href="javascript:0;">
                   <img src="../assets/image/img-user1.png" alt="" class="rounded-circle d-lg-inline-block" @click="clickUserset">
@@ -18,26 +18,24 @@
               <div class="s-top-userset-menu c-floating-box c-font-normal" v-if="is_userset">
                 <a href="javascript:;" class="user-menu-item" @click="toLogin">退出登录</a>
               </div>
-
             </div>
           </el-col>
         </el-row>
       </div>
       <!-- 导航分类模块 -->
-      <div class="nav-center-box">
+      <div class="nav-center-box" v-if=" active != '/CDSSPages' ">
         <div class="navitems-box">
-
           <!-- <div class="navitems" :class="active_id == '1'?'navitems-active':'' ">
             <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/textTranslation?active_id=1')">文字翻译</a>
           </div> -->
-          <div class="navitems" :class="active_id == '2'?'navitems-active':'' ">
-            <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/xyzskPages?active_id=2')">西医知识库</a>
+          <div class="navitems" :class="active == '/xyzskPages'?'navitems-active':'' ">
+            <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/xyzskPages')">西医知识库</a>
           </div>
-          <div class="navitems" :class="active_id == '3'?'navitems-active':'' ">
-            <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/zyzskPages?active_id=3')">中医知识库</a>
+          <div class="navitems" :class="active == '/zyzskPages'?'navitems-active':'' ">
+            <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/zyzskPages')">中医知识库</a>
           </div>
-          <div class="navitems" :class="active_id == '4'?'navitems-active':'' ">
-            <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/popularLiterature?active_id=4')">科研探索</a>
+          <div class="navitems">
+            <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/popularLiterature')">科研探索</a>
           </div>
           <!-- <div class="navitems" :class="active_id == '5'?'navitems-active':'' ">
             <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/newQAhome?active_id=5')">智能问答</a>
@@ -45,22 +43,22 @@
           <!-- <div class="navitems" :class="active_id == '11'?'navitems-active':'' ">
             <a class="navitems-a" href="javascript:0;" @click="clickNavItem('/chatPDF?active_id=11')">ChatPDF</a>
           </div> -->
-          <div class="navitems" :class="(active_id == '6' || active_id == '7' || active_id == '8' || active_id == '9'  || active_id == '10')?'navitems-active':'' ">
+          <div class="navitems" :class="(active == '/knowledgeQAhom' || active == '/ocrPages' || active == '/WesternMedicineCdss' || active == '/ImagesList'  || active == '/VideoHome')?'navitems-active':'' ">
             <el-dropdown  @command="handleCommand">
               <a href="javascript:0;" class="navitems-a el-dropdown-link">
                 更多<i class="el-icon-arrow-down el-icon--right"></i>
               </a>
-              <el-dropdown-menu slot="dropdown">
+              <el-dropdown-menu slot="dropdown" :name="active">
                 <a class="el-dropdown-menu__item" href="http://106.225.184.197:8786/" target="_blank">上海长征</a>
                 <a class="el-dropdown-menu__item" href="http://106.225.184.197:8787" target="_blank">滨州医学院科研平台</a>
                 <a class="el-dropdown-menu__item" href="http://106.225.184.197:8788/" target="_blank">智能导诊</a>
                 <a class="el-dropdown-menu__item" href="http://106.225.184.197:8993/admin/auth/login" target="_blank">滨医烟台导诊后台</a>
-                <el-dropdown-item :class="active_id == '5'?'navitems-active':'' " command="/newQAhome?active_id=5">智能问答</el-dropdown-item>
-                <el-dropdown-item :class="active_id == '10'?'navitems-active':'' " command="/ocrPages?active_id=10">心理健康识别</el-dropdown-item>
-                <el-dropdown-item :class="active_id == '9'?'navitems-active':'' " command="/knowledgeQAhome?active_id=9">人力资源问答</el-dropdown-item>
-                <el-dropdown-item :class="active_id == '6'?'navitems-active':'' " command="/WesternMedicineCdss?active_id=6">西医CDSS</el-dropdown-item>
-                <el-dropdown-item :class="active_id == '7'?'navitems-active':'' " command="/ImagesList?active_id=7">疾病图像库</el-dropdown-item>
-                <el-dropdown-item :class="active_id == '8'?'navitems-active':'' " command="/VideoHome?active_id=8">视频</el-dropdown-item>
+                <el-dropdown-item :class="active == '/newQAhome'?'navitems-active':'' " command="/newQAhome">智能问答</el-dropdown-item>
+                <el-dropdown-item :class="active == '/ocrPages'?'navitems-active':'' " command="/ocrPages">心理健康识别</el-dropdown-item>
+                <el-dropdown-item :class="active == '/knowledgeQAhom'?'navitems-active':'' " command="/knowledgeQAhome">人力资源问答</el-dropdown-item>
+                <el-dropdown-item :class="active == '/WesternMedicineCdss'?'navitems-active':'' " command="/WesternMedicineCdss">西医CDSS</el-dropdown-item>
+                <el-dropdown-item :class="active == '/ImagesList'?'navitems-active':'' " command="/ImagesList">疾病图像库</el-dropdown-item>
+                <el-dropdown-item :class="active == '/VideoHome'?'navitems-active':'' " command="/VideoHome">视频</el-dropdown-item>
                 <a class="el-dropdown-menu__item" href="http://121.36.94.218:8000/zh" target="_blank">标注平台前端</a>
                 <a class="el-dropdown-menu__item" href="http://121.36.94.218:8000/admin/login/?next=/admin/" target="_blank">标注平台后端</a>
                 <a class="el-dropdown-menu__item" href="http://106.225.184.197:8993/admin/auth/login" target="_blank">管理后台目录</a>
@@ -125,6 +123,15 @@ export default {
     //   sessionStorage.setItem('headerNavItems', JSON.stringify(this.$store.state.headerNavItems))
     // })
     // ============================================
+  },
+  computed: {
+    active() {
+      const route = this.$route;
+      console.log(route)
+      let { path } = route;
+     
+      return path;
+    },
   },
   mounted(){
     let phone = window.localStorage.getItem('setUser');

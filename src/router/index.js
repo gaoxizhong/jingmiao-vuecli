@@ -88,7 +88,8 @@ const routes = [
         meta:{
           keepAlive: true,
           scollTopPosition: 0,
-          requireAuth:true
+          requireAuth:true,
+          active:'xyzskPages'
         }
       },
       {
@@ -98,7 +99,8 @@ const routes = [
         meta:{
           keepAlive: true,
           scollTopPosition: 0,
-          requireAuth:true
+          requireAuth:true,
+          active:'zyzskPages'
         }
       },
       {
@@ -111,6 +113,17 @@ const routes = [
         path: '/WesternMedicineCdss',
         name: 'WesternMedicineCdss',
         component: () => import('@/views/WesternMedicineCdss'),
+        meta: {
+          title:'西医CDSS',
+          keepAlive: true,
+          scollTopPosition: 0,
+          requireAuth:true
+        }
+      },
+      { 
+        path: '/CDSSPages',
+        name: 'CDSSPages',
+        component: () => import('@/views/CDSSPages'),
         meta: {
           title:'西医CDSS',
           keepAlive: true,
@@ -525,7 +538,7 @@ const router = new VueRouter({
   // base: process.env.BASE_URL,
   routes
 })
-const whiteList = ['/login','/popLiterature','/use_Tutorial','/jouDetails','/jouAnalysis','/subAnalysis','/schDetails','/schAnalysis','/my_favorite','/insAnalysis','/litAuthor','/litDetails']; // 添加路由白名单
+const whiteList = ['/login','/CDSSPages','/popLiterature','/use_Tutorial','/jouDetails','/jouAnalysis','/subAnalysis','/schDetails','/schAnalysis','/my_favorite','/insAnalysis','/litAuthor','/litDetails']; // 添加路由白名单
 //路由判断
 router.beforeEach(async (to, from, next) => {
   const token = window.localStorage.getItem('token');

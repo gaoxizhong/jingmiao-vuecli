@@ -372,9 +372,7 @@
                         <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项,主要诊断项显示" @click.stop="clickYszdIcon(item.name)">+</span>
                         <span>{{ item.name }}</span>
                       </div>
-                      <a href="javascript:0;" class="cjyp-table-tr-r" style="font-weight: 100;font-size:13px;" @click.stop="clickCktp(item.name, index)">
-                       <i class="el-icon-share" style="color: #53bfb4; margin-right: 6px"></i>查看图谱
-                      </a>
+                      <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Disease', item.name)">查看详情</a>
                     </div>
                     <div class="ysblList-items-text">
                       {{ item.pathogenesis ? item.pathogenesis : "暂无" }}
@@ -1894,7 +1892,12 @@ li {
       }
       getNewBaseDetail(pearms).then((res) => {
           if (res.data.code == 0) {
-            let getinfo = res.data.data;
+            let getinfo = {};
+            if( tag == "Inspection"){
+              getinfo = res.data.data[0];
+            }else{
+              getinfo= res.data.data;
+            }
             that.name_1 = getinfo.name.text;
             // let kgid = getinfo.kgid?getinfo.kgid.text:'';
             let getinfo_arr = [];
