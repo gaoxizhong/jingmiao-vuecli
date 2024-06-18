@@ -84,14 +84,13 @@
               </div>
               <!-- 常见检查模块结束 -->
               <!-- 病案首页质控模块开始 -->
-              <div class="src-Items-hlyy">
+              <!-- <div class="src-Items-hlyy">
                 <h1> 
                   <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAmpJREFUOBGNVM9rE0EUntlMVDaNUluUeihU7CWBNGezaXOyUOvRgkgDiaDg1ZtHRSj4D3jpbom/IFAoSBUVsdrEix52C+tJEDx4SMT6G2M2Gd/bOuPsj0DmkHnv+76ZzPvm7RAyaFAkCqbNj42M6UGRYdquhhAnJBOgLr7hSQkYlvNBJEXTnhdxdDYsewXRguU8kyyAyzIJB/N19zBizDCd75ySl4TzhcdLWVqy3h8IiIuWc1UAZ+vuPljwVOQDZ6w7liw95wzquqySBdN5reYEBPUAoCTGmn0dU+b/pFgVzGzDf40rmr2Q09UINhSAFWKlQqw6gJh/dRiAb9ro8YyslBN+EPHYMdASUMsdcSU0zluxQ/gOpRA9a1TzWSGEZWn09n8OETaNuGiVUBvLx4WpqkjE4MY9jBla0v6p38BELYZSstmo5BfBhkXk/MaHg9/inFxCQB0g/sLIoYmtytRvX6iSGBs1d5J43ip4Ows9KS/B11H6h3LoVcYuNMpZ+XGIPYLVC9TzXLKfTjbP53YFpM7G3Z1R0vFws7SKYyztVgmNaBne6a+Diz84h3P+Gxj7GHCoEfjQs2qqWBSHCQ7n2JJLt90TXrf7SqNaThVjnAAMPpkWSyZPbi1n34X5SF5cc27Cu7IRIUIAalAbgvfaAcFTNefIrx63aUI7t13OvQgL4/JibWeO9/r39QTNPynPtFDjG47PVJd8+zqSYhPwbH1GAk6wic8YxpFB6cNmZeY04mcefNR3P7Vb6aP62KOF6Y68wYJl36GE9mlKv7K9NN2ObBIDzNacqZ7HryHVrOYHv7gxa4eG/gKatuNgPCIG8gAAAABJRU5ErkJggg==" alt=""/>
                   病案首页质控
                 </h1>
                 <div style="padding: 6px 0 6px 15px">暂无</div>
-                <!-- 病案首页质控列表结束 -->
-              </div>
+              </div> -->
               <!-- 病案首页质控模块结束 -->
 
 
