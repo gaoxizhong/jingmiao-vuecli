@@ -140,9 +140,11 @@ export default {
     const route = this.$route;
     if(route.path == '/xyzskPages'){
       this.tag_pages = 'xyzsk';
+      this.activeIndex = '2';
     }
     if(route.path == '/zyzskPages'){
       this.tag_pages = 'zyzsk';
+      this.activeIndex = '3';
     }
     // 获取分类项
     this.getExistLabels();
@@ -303,7 +305,7 @@ export default {
       let type = item.type;
       let t_id = item.id; // 数据id
       let tag_pages = this.tag_pages;
-      let id = this.activeIndex; // 导航id
+      let id = this.activeIndex; 
       if(tag == 'GuideMap'){  //指南结构脑图
         let newUrl = this.$router.resolve({
           path:'/brainMap',
