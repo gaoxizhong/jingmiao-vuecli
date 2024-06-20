@@ -2,7 +2,7 @@
   <div class="pages-box">
     <div class="westernmedicin-content-box" style="height: 100%">
       <!-- 左侧模块 -->
-      <div class="grid-leftcontent-box"></div>
+      <!-- <div class="grid-leftcontent-box"></div> -->
       <!-- 右侧智能问诊模块 -->
       <div class="grid-rightcontent-box">
         <div class="grid-rightcontent-title">
@@ -309,11 +309,18 @@
     padding-top: 20px;
   }
   @import "../assets/css/WesternMedicineCdss.css";
+  
   .pages-box{
-    width: 1200px;
+    /* width: 1200px; */
     padding: 20px;
     background: #fff;
     height: 100%;
+  }
+  .grid-rightcontent-box{
+    max-width: 420px;
+  }
+  .westernmedicin-content-box{
+    justify-content: center;
   }
   .el-empty {
     padding: 10px 0;

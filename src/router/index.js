@@ -55,6 +55,17 @@ const routes = [
       requireAuth:true
     }
   },
+  { 
+    path: '/CDSSPages',
+    name: 'CDSSPages',
+    component: () => import('@/views/CDSSPages'),
+    meta: {
+      title:'西医CDSS',
+      keepAlive: true,
+      scollTopPosition: 0,
+      requireAuth:true
+    }
+  },
   {
     path: '/newQAhome',
     name: 'newQAhome',
@@ -113,17 +124,6 @@ const routes = [
         path: '/WesternMedicineCdss',
         name: 'WesternMedicineCdss',
         component: () => import('@/views/WesternMedicineCdss'),
-        meta: {
-          title:'西医CDSS',
-          keepAlive: true,
-          scollTopPosition: 0,
-          requireAuth:true
-        }
-      },
-      { 
-        path: '/CDSSPages',
-        name: 'CDSSPages',
-        component: () => import('@/views/CDSSPages'),
         meta: {
           title:'西医CDSS',
           keepAlive: true,
