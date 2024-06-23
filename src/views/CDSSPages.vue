@@ -83,16 +83,90 @@
                 <!-- 常见检查列表结束 -->
               </div>
               <!-- 常见检查模块结束 -->
-              <!-- 病案首页质控模块开始 -->
-              <!-- <div class="src-Items-hlyy">
-                <h1> 
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAmpJREFUOBGNVM9rE0EUntlMVDaNUluUeihU7CWBNGezaXOyUOvRgkgDiaDg1ZtHRSj4D3jpbom/IFAoSBUVsdrEix52C+tJEDx4SMT6G2M2Gd/bOuPsj0DmkHnv+76ZzPvm7RAyaFAkCqbNj42M6UGRYdquhhAnJBOgLr7hSQkYlvNBJEXTnhdxdDYsewXRguU8kyyAyzIJB/N19zBizDCd75ySl4TzhcdLWVqy3h8IiIuWc1UAZ+vuPljwVOQDZ6w7liw95wzquqySBdN5reYEBPUAoCTGmn0dU+b/pFgVzGzDf40rmr2Q09UINhSAFWKlQqw6gJh/dRiAb9ro8YyslBN+EPHYMdASUMsdcSU0zluxQ/gOpRA9a1TzWSGEZWn09n8OETaNuGiVUBvLx4WpqkjE4MY9jBla0v6p38BELYZSstmo5BfBhkXk/MaHg9/inFxCQB0g/sLIoYmtytRvX6iSGBs1d5J43ip4Ows9KS/B11H6h3LoVcYuNMpZ+XGIPYLVC9TzXLKfTjbP53YFpM7G3Z1R0vFws7SKYyztVgmNaBne6a+Diz84h3P+Gxj7GHCoEfjQs2qqWBSHCQ7n2JJLt90TXrf7SqNaThVjnAAMPpkWSyZPbi1n34X5SF5cc27Cu7IRIUIAalAbgvfaAcFTNefIrx63aUI7t13OvQgL4/JibWeO9/r39QTNPynPtFDjG47PVJd8+zqSYhPwbH1GAk6wic8YxpFB6cNmZeY04mcefNR3P7Vb6aP62KOF6Y68wYJl36GE9mlKv7K9NN2ObBIDzNacqZ7HryHVrOYHv7gxa4eG/gKatuNgPCIG8gAAAABJRU5ErkJggg==" alt=""/>
-                  病案首页质控
-                </h1>
-                <div style="padding: 6px 0 6px 15px">暂无</div>
-              </div> -->
-              <!-- 病案首页质控模块结束 -->
 
+              <!-- 相关症状模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  相关症状
+                </h1>
+                <!-- 相关症状列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 相关症状列表结束 -->
+              </div>
+              <!-- 相关症状模块结束 -->
+
+              <!-- 查体模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  查体
+                </h1>
+                <!-- 查体列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 查体列表结束 -->
+              </div>
+              <!-- 查体模块结束 -->
+
+              <!-- 治疗方案模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  治疗方案
+                </h1>
+                <!-- 治疗方案列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 治疗方案列表结束 -->
+              </div>
+              <!-- 治疗方案模块结束 -->
+
+              <!-- 相关手术模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  相关手术
+                </h1>
+                <!-- 相关手术列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 相关手术列表结束 -->
+              </div>
+              <!-- 相关手术模块结束 -->
 
             </div>
           </div>
