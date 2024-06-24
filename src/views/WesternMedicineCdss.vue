@@ -426,54 +426,86 @@
                 <!-- 常见检查列表结束 -->
               </div>
               <!-- 常见检查模块结束 -->
-              <!-- 鉴别诊断模块开始 -->
-              <!-- <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
-                <h1 style="background: #EAF7FA;"> 
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAk1JREFUOBGNVM1qFEEQrprs+ASevEoIZJ8hQRQ8qAcDmRiyG/CQBCQXfQBhwQfwFASTg5BNiFlBQZODoCz6CllJMLl78AmcZMuvaqbanskmsWHo6q+qvuqpnya6csl8e2qEkWStXwGWbPG2HyoKByu7ZO29AMjC4/FwKIWE8jxVWWZbYnvWPkxI6K4ZMBfuIt/YtJ1OQoPjj8S8z7ubawaaQrn/5O+JaQ7eA2DPYPSQe91bqreFGAcu13cBs8y37jTsyiJNN/CLgW0PbA8svNC9gjFr992wvsvc4qpi4Y560BB0xmskMoHjOr/bWlF85KpkL7IIjDDog+kDdC8Rp4k/36Vr6Qxvv/kZ7C+qklbSS2K/Ts3xG8ErEri3+dVyqxhCHka6UDfHEG1SZdRQJmD8SQ/+IyGXBtLA9ABf69mXG4fzbOupy+RJDUAkwLEfjtrLbuyMVuOomUMe1au8xjLqfERjsso7W1+crWLooDlpOU/pEZymy5Ki4CBAw1KD3sYksV+F0MbuTHrEyQuavPmKO52hkRfDI9Z1APT69OPkCcnwOY1xxjvd7zGpyZoE/+9zyksA9akkUG01J/j+pb9GoIn15NZUdlTfMq/EZihSDI7Ob697350qOgcvs4GuiIB29JZzv3hHdNEvxmJZfRHcWjoxBUqvY2TJji1LGQPL+o1QFQXSEVQOrGBkY5bnqFayYNM0yruGFQ/tcJvSdMrnORC6bUF8uo5+uw5sAyE/l8+fhtcHQR/SJfTkb0oby07k/v+1a3Hw2SRf5fAXDTEdluow+PQAAAAASUVORK5CYII=" alt=""/>
-                  鉴别诊断
-                </h1>
-                <div>
-                  <div class="cjyp-table-tr" style="padding:5px;" v-for="(item, index) in identity_list" :key="index">
-                    <div class="cjyp-table-tr-l" style="-webkit-line-clamp: 3;" :title="item.name">{{ item.name.substring(0,25)+'...' }}</div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_identity(item.name)">查看详情</a>
-                  </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!identity_list || identity_list.length <= 0">暂无数据...</div>
-                </div>
-              </div> -->
-              <!-- 鉴别诊断模块结束 -->
-              <!-- 并发症模块开始 -->
-              <!-- <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+
+              <!-- 相关症状模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
                 <h1> 
                   <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
-                  并发症
+                  相关症状
                 </h1>
+                <!-- 相关症状列表 -->
                 <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in complication_list" :key="index">
-                    <div class="cjyp-table-tr-l">{{ item.name }}</div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Disease', item.name)">查看详情</a>
+                  <div class="cjyp-table-tr" v-for="(item, index) in symptom_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Zztz', item.name)">查看详情</a>
                   </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!complication_list || complication_list.length <= 0">暂无数据...</div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!symptom_list || symptom_list.length <= 0">暂无数据...</div>
                 </div>
-              </div> -->
-              <!-- 并发症模块结束 -->
-
-              <!-- 病案首页质控模块开始 -->
-              <div class="src-Items-hlyy">
-                <h1> 
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAmpJREFUOBGNVM9rE0EUntlMVDaNUluUeihU7CWBNGezaXOyUOvRgkgDiaDg1ZtHRSj4D3jpbom/IFAoSBUVsdrEix52C+tJEDx4SMT6G2M2Gd/bOuPsj0DmkHnv+76ZzPvm7RAyaFAkCqbNj42M6UGRYdquhhAnJBOgLr7hSQkYlvNBJEXTnhdxdDYsewXRguU8kyyAyzIJB/N19zBizDCd75ySl4TzhcdLWVqy3h8IiIuWc1UAZ+vuPljwVOQDZ6w7liw95wzquqySBdN5reYEBPUAoCTGmn0dU+b/pFgVzGzDf40rmr2Q09UINhSAFWKlQqw6gJh/dRiAb9ro8YyslBN+EPHYMdASUMsdcSU0zluxQ/gOpRA9a1TzWSGEZWn09n8OETaNuGiVUBvLx4WpqkjE4MY9jBla0v6p38BELYZSstmo5BfBhkXk/MaHg9/inFxCQB0g/sLIoYmtytRvX6iSGBs1d5J43ip4Ows9KS/B11H6h3LoVcYuNMpZ+XGIPYLVC9TzXLKfTjbP53YFpM7G3Z1R0vFws7SKYyztVgmNaBne6a+Diz84h3P+Gxj7GHCoEfjQs2qqWBSHCQ7n2JJLt90TXrf7SqNaThVjnAAMPpkWSyZPbi1n34X5SF5cc27Cu7IRIUIAalAbgvfaAcFTNefIrx63aUI7t13OvQgL4/JibWeO9/r39QTNPynPtFDjG47PVJd8+zqSYhPwbH1GAk6wic8YxpFB6cNmZeY04mcefNR3P7Vb6aP62KOF6Y68wYJl36GE9mlKv7K9NN2ObBIDzNacqZ7HryHVrOYHv7gxa4eG/gKatuNgPCIG8gAAAABJRU5ErkJggg==" alt=""/>
-                  病案首页质控
-                </h1>
-                <!-- 病案首页质控列表 -->
-                <!-- <div class="basyzkdiv-box" v-if="basyzk_list.length > 0">
-                  <div class="src-components-PushItems-RecommendInspect-1-s8y">提示：</div>
-                  <div class="basyzkdiv-items-box">
-                    <span v-for="(item, index) in basyzk_list" :key="index">{{ item }}</span>
-                  </div>
-                </div> -->
-                <div style="padding: 6px 0 6px 15px">暂无</div>
-                <!-- 病案首页质控列表结束 -->
+                <!-- 相关症状列表结束 -->
               </div>
-              <!-- 病案首页质控模块结束 -->
+              <!-- 相关症状模块结束 -->
+
+              <!-- 相关手术模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  相关手术
+                </h1>
+                <!-- 相关手术列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in relevantOperation_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Operation', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!relevantOperation_list || relevantOperation_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 相关手术列表结束 -->
+              </div>
+              <!-- 相关手术模块结束 -->
+
+              <!-- 查体模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  查体
+                </h1>
+                <!-- 查体列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in examination_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <!-- <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('examination', item.name)">查看详情</a> -->
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!examination_list || examination_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 查体列表结束 -->
+              </div>
+              <!-- 查体模块结束 -->
+
+              <!-- 治疗方案模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  治疗方案
+                </h1>
+                <!-- 治疗方案列表 -->
+                <div>
+                  <div class="cjyp-table-tr">
+                    <div class="cjyp-table-html" v-html="treatment_list"></div>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!treatment_list || treatment_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 治疗方案列表结束 -->
+              </div>
+              <!-- 治疗方案模块结束 -->
 
 
             </div>
@@ -670,6 +702,9 @@ li {
   list-style: none;
 }
 @import "../assets/css/WesternMedicineCdss.css";
+.src-components-PushItems-RKWqd {
+  padding-bottom: 30px;
+}
 
 /* 多选框边框跟样式 */
 .el-checkbox >>> .el-checkbox__input.is-checked .el-checkbox__inner,
@@ -809,7 +844,9 @@ li {
 .src-components-PatInfo-1sipu >>> .el-input__icon{
   line-height: 30px;
 }
-
+.cjyp-table-html{
+  flex: 1;
+}
 /* 媒体查询 */
 @media only screen and (max-width: 1366px) {
   .el-checkbox >>> .el-checkbox__label {
@@ -900,6 +937,10 @@ li {
       inspection_list: [], // 常见检查
       complication_list: [], // 并发症
       identity_list: [], // 鉴别诊断
+      symptom_list: [], // 相关症状
+      examination_list: [], // 查体
+      treatment_list: '', // 治疗方案
+      relevantOperation_list: [], // 相关手术
       data: {
         //  图谱数据
         nodes: [],
@@ -1698,6 +1739,10 @@ li {
             that.inspection_list = res.data.data.inspection_list; //检查列表
             that.complication_list = res.data.data.complication_list; //并发症
             that.identity_list = res.data.data.identity_list; //鉴别诊断
+            that.symptom_list = res.data.data.symptom_list;// 相关症状
+            that.examination_list = res.data.data.examination_list; // 查体
+            that.treatment_list = res.data.data.treatment_list; // 治疗方案
+            that.relevantOperation_list = res.data.data.relevantOperation_list; // 相关手术
           if( typeof(f) == "function"){
             let graph = res.data.data.graph; //图谱
             that.is_casePop = true;
