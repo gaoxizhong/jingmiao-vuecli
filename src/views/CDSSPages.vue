@@ -36,7 +36,7 @@
                     </div>
                   </div>
                 </div>
-                <div style="padding: 6px 0 6px 15px" v-else>暂无</div>
+                <div style="padding: 6px 0 6px 15px" v-else>暂无数据...</div>
                 <!-- 疑似诊断列表结束 -->
               </div>
               <!-- 疑似诊断模块结束 -->
@@ -92,18 +92,39 @@
                 </h1>
                 <!-- 相关症状列表 -->
                 <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+                  <div class="cjyp-table-tr" v-for="(item, index) in symptom_list" :key="index">
                     <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
                       <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
                       <span>{{ item.name }}</span>
                     </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Zztz', item.name)">查看详情</a>
                   </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!symptom_list || symptom_list.length <= 0">暂无数据...</div>
                 </div>
                 <!-- 相关症状列表结束 -->
               </div>
               <!-- 相关症状模块结束 -->
+
+              <!-- 相关手术模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  相关手术
+                </h1>
+                <!-- 相关手术列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in relevantOperation_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Operation', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!relevantOperation_list || relevantOperation_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 相关手术列表结束 -->
+              </div>
+              <!-- 相关手术模块结束 -->
 
               <!-- 查体模块开始 -->
               <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
@@ -113,14 +134,14 @@
                 </h1>
                 <!-- 查体列表 -->
                 <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+                  <div class="cjyp-table-tr" v-for="(item, index) in examination_list" :key="index">
                     <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
                       <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
                       <span>{{ item.name }}</span>
                     </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                    <!-- <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('examination', item.name)">查看详情</a> -->
                   </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!examination_list || examination_list.length <= 0">暂无数据...</div>
                 </div>
                 <!-- 查体列表结束 -->
               </div>
@@ -134,39 +155,14 @@
                 </h1>
                 <!-- 治疗方案列表 -->
                 <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
-                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
-                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
-                      <span>{{ item.name }}</span>
-                    </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                  <div class="cjyp-table-tr">
+                    <div class="cjyp-table-html" v-html="treatment_list"></div>
                   </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!treatment_list || treatment_list.length <= 0">暂无数据...</div>
                 </div>
                 <!-- 治疗方案列表结束 -->
               </div>
               <!-- 治疗方案模块结束 -->
-
-              <!-- 相关手术模块开始 -->
-              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
-                <h1> 
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
-                  相关手术
-                </h1>
-                <!-- 相关手术列表 -->
-                <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
-                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
-                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
-                      <span>{{ item.name }}</span>
-                    </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
-                  </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
-                </div>
-                <!-- 相关手术列表结束 -->
-              </div>
-              <!-- 相关手术模块结束 -->
 
             </div>
           </div>
@@ -220,6 +216,11 @@
         inspection_list: [], // 常见检查
         complication_list: [], // 并发症
         identity_list: [], // 鉴别诊断
+        symptom_list: [], // 相关症状
+        examination_list: [], // 查体
+        treatment_list: '', // 治疗方案
+        relevantOperation_list: [], // 相关手术
+
         activeName: "auxiliary",
       }
     },
@@ -302,6 +303,10 @@
             that.inspection_list = res.data.data.inspection_list; //检查列表
             that.complication_list = res.data.data.complication_list; //并发症
             that.identity_list = res.data.data.identity_list; //鉴别诊断
+            that.symptom_list = res.data.data.symptom_list;// 相关症状
+            that.examination_list = res.data.data.examination_list; // 查体
+            that.treatment_list = res.data.data.treatment_list; // 治疗方案
+            that.relevantOperation_list = res.data.data.relevantOperation_list; // 相关手术
             if( typeof(f) == "function"){
               let graph = res.data.data.graph; //图谱
               that.is_casePop = true;
@@ -383,7 +388,9 @@
     padding-top: 20px;
   }
   @import "../assets/css/WesternMedicineCdss.css";
-  
+  .src-components-PushItems-RKWqd {
+    padding-bottom: 30px;
+  }
   .pages-box{
     /* width: 1200px; */
     padding: 20px;
@@ -539,6 +546,10 @@
 }
 .src-components-PatInfo-1sipu >>> .el-input__icon{
   line-height: 30px;
+}
+.cjyp-table-html{
+  flex: 1;
+
 }
 
   /* 媒体查询 */
