@@ -379,53 +379,10 @@
                     </div>
                   </div>
                 </div>
-                <div style="padding: 6px 0 6px 15px" v-else>暂无</div>
+                <div style="padding: 6px 0 6px 15px" v-else>暂无数据...</div>
                 <!-- 疑似诊断列表结束 -->
               </div>
               <!-- 疑似诊断模块结束 -->
-
-
-              <!-- 常见药品模块开始 -->
-              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
-                <h1 style="background: #EAF7FA;"> 
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAfRJREFUOBGtVDEzxFAQ3ncSBa2CRqdUUPgBFAztxQw5nEZDqzyFK9UajRyOIkpuruEHKCiUOgoKLYWEZ3fz9k2Si4wZMnPv7e1++82+9+0+gL982lupc75ero+VEllkIUqiulp7SvgW/SYZuupr3j3/sAIa1jgqizO4zaakSRVKALSzM45WQbv7ANGNCtuj6TgDpABO8GqXAhBmZtRefViFwYsmgNbzAlLnbROvPYsPKzdHsR4sBa+rsEbCaDwigJoDZ2BcnR28pvJ+Z2ZP7fmPAO4UqGgTHPdInQYPPTT5GtP1WXAaxCc3kQwYQYHNQEN0E582elZAwax1iri4I/MF+1klYljaGMqoYsA2mQ9o/tGlpsEWVCBCr945UPYesQyI3++xoC52zrow054BpgNkU/0Qv+2xpBzUXcCGLZO2kJAb5iO+BqUaKjwOmMssfGatm9DvTBcpnCEsI0qTkv0TMROao90CVHbyFXGykUrmIk2eqPS1i1cxSVeREHo0OM4EDZeA80Mmft6V6qjwZEF8NJgA8R36RpzEiZdNnQ/QEFAmoaTCBP+5RYqTXaGFpccxomEoajQUp4M/+25QDn2E5QFy+1rSPhlRGESP5w8KM4shwjenUOkeQptExFF0hZ3aSp4/jNC10EPqujNFLSO5/7p/A6iJBGKnQxzOAAAAAElFTkSuQmCC" alt=""/>
-                  常见药品
-                </h1>
-                <!-- 常见药品列表 -->
-                <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in medicine_list" :key="index">
-                    <div class="cjyp-table-tr-l" @click="clickMedicineIcon(item.name)">
-                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
-                      <span>{{ item.name }}</span>
-                    </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('MedicineProduction', item.name)">查看详情</a>
-                  </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!medicine_list || medicine_list.length <= 0">暂无数据...</div>
-                </div>
-                <!-- 常见药品列表结束 -->
-              </div>
-              <!-- 常见药品模块结束 -->
-
-              <!-- 常见检查模块开始 -->
-              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
-                <h1> 
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
-                  常见检查
-                </h1>
-                <!-- 常见检查列表 -->
-                <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
-                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
-                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
-                      <span>{{ item.name }}</span>
-                    </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
-                  </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
-                </div>
-                <!-- 常见检查列表结束 -->
-              </div>
-              <!-- 常见检查模块结束 -->
 
               <!-- 相关症状模块开始 -->
               <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
@@ -448,27 +405,6 @@
               </div>
               <!-- 相关症状模块结束 -->
 
-              <!-- 相关手术模块开始 -->
-              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
-                <h1> 
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
-                  相关手术
-                </h1>
-                <!-- 相关手术列表 -->
-                <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in relevantOperation_list" :key="index">
-                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
-                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
-                      <span>{{ item.name }}</span>
-                    </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Operation', item.name)">查看详情</a>
-                  </div>
-                  <div style="padding: 6px 0 6px 15px" v-if="!relevantOperation_list || relevantOperation_list.length <= 0">暂无数据...</div>
-                </div>
-                <!-- 相关手术列表结束 -->
-              </div>
-              <!-- 相关手术模块结束 -->
-
               <!-- 查体模块开始 -->
               <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
                 <h1> 
@@ -490,6 +426,70 @@
               </div>
               <!-- 查体模块结束 -->
 
+
+              <!-- 常见检查模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  常见检查
+                </h1>
+                <!-- 常见检查列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in inspection_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 常见检查列表结束 -->
+              </div>
+              <!-- 常见检查模块结束 -->
+
+              <!-- 常见药品模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1 style="background: #EAF7FA;"> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAfRJREFUOBGtVDEzxFAQ3ncSBa2CRqdUUPgBFAztxQw5nEZDqzyFK9UajRyOIkpuruEHKCiUOgoKLYWEZ3fz9k2Si4wZMnPv7e1++82+9+0+gL982lupc75ero+VEllkIUqiulp7SvgW/SYZuupr3j3/sAIa1jgqizO4zaakSRVKALSzM45WQbv7ANGNCtuj6TgDpABO8GqXAhBmZtRefViFwYsmgNbzAlLnbROvPYsPKzdHsR4sBa+rsEbCaDwigJoDZ2BcnR28pvJ+Z2ZP7fmPAO4UqGgTHPdInQYPPTT5GtP1WXAaxCc3kQwYQYHNQEN0E582elZAwax1iri4I/MF+1klYljaGMqoYsA2mQ9o/tGlpsEWVCBCr945UPYesQyI3++xoC52zrow054BpgNkU/0Qv+2xpBzUXcCGLZO2kJAb5iO+BqUaKjwOmMssfGatm9DvTBcpnCEsI0qTkv0TMROao90CVHbyFXGykUrmIk2eqPS1i1cxSVeREHo0OM4EDZeA80Mmft6V6qjwZEF8NJgA8R36RpzEiZdNnQ/QEFAmoaTCBP+5RYqTXaGFpccxomEoajQUp4M/+25QDn2E5QFy+1rSPhlRGESP5w8KM4shwjenUOkeQptExFF0hZ3aSp4/jNC10EPqujNFLSO5/7p/A6iJBGKnQxzOAAAAAElFTkSuQmCC" alt=""/>
+                  常见药品
+                </h1>
+                <!-- 常见药品列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in medicine_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickMedicineIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('MedicineProduction', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!medicine_list || medicine_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 常见药品列表结束 -->
+              </div>
+              <!-- 常见药品模块结束 -->
+
+              <!-- 相关手术模块开始 -->
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+                <h1> 
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
+                  相关手术
+                </h1>
+                <!-- 相关手术列表 -->
+                <div>
+                  <div class="cjyp-table-tr" v-for="(item, index) in relevantOperation_list" :key="index">
+                    <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
+                      <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Operation', item.name)">查看详情</a>
+                  </div>
+                  <div style="padding: 6px 0 6px 15px" v-if="!relevantOperation_list || relevantOperation_list.length <= 0">暂无数据...</div>
+                </div>
+                <!-- 相关手术列表结束 -->
+              </div>
+              <!-- 相关手术模块结束 -->
+
               <!-- 治疗方案模块开始 -->
               <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
                 <h1> 
@@ -506,7 +506,6 @@
                 <!-- 治疗方案列表结束 -->
               </div>
               <!-- 治疗方案模块结束 -->
-
 
             </div>
           </div>
@@ -703,7 +702,7 @@ li {
 }
 @import "../assets/css/WesternMedicineCdss.css";
 .src-components-PushItems-RKWqd {
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 }
 
 /* 多选框边框跟样式 */
