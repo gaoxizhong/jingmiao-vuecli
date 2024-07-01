@@ -191,7 +191,7 @@
     clickFinishBtn,
     clickYsbl,
     getNewBaseDetail
-  } from "@/api/data";
+  } from "@/api/CDSSiframe/CDSSiframeData";
   export default {
     name: "CDSSPages",
     components: {

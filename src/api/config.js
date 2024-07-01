@@ -14,5 +14,8 @@ export default {
     iframeURL: {  // 外部网站内嵌访问--科研探索
 
         pro: 'https://literature.carecancer.cn/jmjk/'
+    },
+    CDSS_iframeURL: {  // 外部网站内嵌访问--CDSS
+        pro: 'https://106.225.184.197:8443/jmjk/'
     }
 }
