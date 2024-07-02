@@ -49,13 +49,17 @@
                 </h1>
                 <!-- 相关症状列表 -->
                 <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in symptom_list" :key="index">
+                  <div class="cjyp-table-div">
+                    <span class="cjyp-table-span" v-for="(item, index) in symptom_list" :key="index">{{ item.name }}</span>
+                  </div>
+                  
+                  <!-- <div class="cjyp-table-tr" v-for="(item, index) in symptom_list" :key="index">
                     <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
                       <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
                       <span>{{ item.name }}</span>
                     </div>
                     <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Zztz', item.name)">查看详情</a>
-                  </div>
+                  </div> -->
                   <div style="padding: 6px 0 6px 15px" v-if="!symptom_list || symptom_list.length <= 0">暂无数据...</div>
                 </div>
                 <!-- 相关症状列表结束 -->
@@ -70,13 +74,15 @@
                 </h1>
                 <!-- 查体列表 -->
                 <div>
-                  <div class="cjyp-table-tr" v-for="(item, index) in examination_list" :key="index">
+                  <div class="cjyp-table-div">
+                    <span class="cjyp-table-span" v-for="(item, index) in examination_list" :key="index">{{ item.name }}</span>
+                  </div>
+                  <!-- <div class="cjyp-table-tr" v-for="(item, index) in examination_list" :key="index">
                     <div class="cjyp-table-tr-l" @click="clickInspectionIcon(item.name)">
                       <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
                       <span>{{ item.name }}</span>
                     </div>
-                    <!-- <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('examination', item.name)">查看详情</a> -->
-                  </div>
+                  </div> -->
                   <div style="padding: 6px 0 6px 15px" v-if="!examination_list || examination_list.length <= 0">暂无数据...</div>
                 </div>
                 <!-- 查体列表结束 -->
@@ -388,6 +394,16 @@
     padding-top: 20px;
   }
   @import "../assets/css/WesternMedicineCdss.css";
+  .cjyp-table-div{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .cjyp-table-span{
+    padding: 6px 5px;
+    font-size: 14px;
+  }
   .src-components-PushItems-RKWqd {
     padding-bottom: 20px;
   }
