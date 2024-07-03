@@ -29,7 +29,7 @@
                         <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项,主要诊断项显示" @click.stop="clickYszdIcon(item.name)">+</span>
                         <span>{{ item.name }}</span>
                       </div>
-                      <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Disease', item.name)">查看详情</a>
+                      <!-- <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Disease', item.name)">查看详情</a> -->
                     </div>
                     <div class="ysblList-items-text">
                       {{ item.pathogenesis ? item.pathogenesis : "暂无" }}
@@ -42,13 +42,13 @@
               <!-- 疑似诊断模块结束 -->
 
               <!-- 相关症状模块开始 -->
-              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list" style="max-height:132px;">
                 <h1> 
                   <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
                   相关症状
                 </h1>
                 <!-- 相关症状列表 -->
-                <div>
+                <div style="min-height:60px;">
                   <div class="cjyp-table-div">
                     <span class="cjyp-table-span" v-for="(item, index) in symptom_list" :key="index">{{ item.name }}</span>
                   </div>
@@ -67,13 +67,13 @@
               <!-- 相关症状模块结束 -->
 
               <!-- 查体模块开始 -->
-              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list">
+              <div class="src-components-PushItems-1jpJi src-Items-cbzd src-Items-list" style="max-height:132px;">
                 <h1> 
                   <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAAH6ji2bAAAABGdBTUEAALGPC/xhBQAAAa9JREFUOBGtVKFSxDAQfem0CLAIFA6JQdwHgIAPuDIDPeAwGLDIQ3ASjcFwwByI4wPOwAcgMEgcCAwWBC2E7KbpNLm0HAMRSTb79mXzdlvgL0PGG22Ol+vtuVqiAulFGa9stp4132rSLSNlnJwGkNgqHyKc2tfoPMxkIcooPszSTcjoGEjvxKA/W/aDACYBy6GMIiFyyLg9w2szkd41br3QOQ8r0pwpubw5kp+eCIgVhJPz4urkNY8Zf7FfHSdPQNSASHcRRufisvc4QuXmSCqY/AqwCzIOC6xAPePwrTKvZwCBZQLICg11lQiwtjNdVRUm4AfSTo2qEnpzd8EuyNZRpYHs/UHdMVSds63v07MFLDtoT/kjezvikrJTDqlh60rrJeSCfGS3EKIjBhc95sonFkjKLibCRV+FLcI6ojIp7auImTB/2j0QHLgZuUSurUv6daikWCApAgawwFHDkFFzmAYhf52tY1SjMwcQ6huV2NT5QIdscd23pPjJBj73qOIcSxON3+inI/w6WpmMS1xVEIofISxup79ymt4oxFnxYZEs9CONoiVfy5jYf12/AekE+Xpx4MgpAAAAAElFTkSuQmCC" alt=""/>
                   查体
                 </h1>
                 <!-- 查体列表 -->
-                <div>
+                <div style="min-height:60px;">
                   <div class="cjyp-table-div">
                     <span class="cjyp-table-span" v-for="(item, index) in examination_list" :key="index">{{ item.name }}</span>
                   </div>
@@ -103,7 +103,7 @@
                       <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
                       <span>{{ item.name }}</span>
                     </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a>
+                    <!-- <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Inspection', item.name)">查看详情</a> -->
                   </div>
                   <div style="padding: 6px 0 6px 15px" v-if="!inspection_list || inspection_list.length <= 0">暂无数据...</div>
                 </div>
@@ -124,7 +124,7 @@
                       <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
                       <span>{{ item.name }}</span>
                     </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('MedicineProduction', item.name)">查看详情</a>
+                    <!-- <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('MedicineProduction', item.name)">查看详情</a> -->
                   </div>
                   <div style="padding: 6px 0 6px 15px" v-if="!medicine_list || medicine_list.length <= 0">暂无数据...</div>
                 </div>
@@ -145,7 +145,7 @@
                       <span class="icon-outline" style="padding:2px 4px;" title="点击使用此项">+</span>
                       <span>{{ item.name }}</span>
                     </div>
-                    <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Operation', item.name)">查看详情</a>
+                    <!-- <a class="cjyp-table-tr-r" href="javascript:0;" @click="click_ypxq('Operation', item.name)">查看详情</a> -->
                   </div>
                   <div style="padding: 6px 0 6px 15px" v-if="!relevantOperation_list || relevantOperation_list.length <= 0">暂无数据...</div>
                 </div>
