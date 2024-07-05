@@ -240,7 +240,7 @@
         this.age = this.$route.query.age;
       }
       if(this.$route.query.sex){
-        this.sex = this.$route.query.sex;
+        this.sex = Number(this.$route.query.sex);
       }
       this.getManySelect(); //获取主页展示数据
     },
