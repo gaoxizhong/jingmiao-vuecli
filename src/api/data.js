@@ -384,7 +384,13 @@ export const getZskNewDetail = (params) =>{
     data: params
   })
 }
-
+export const getNewDepartment = (params) =>{
+  return axios.request({
+    url:'/get_department',
+    method: 'post',
+    data: params
+  })
+}
 // =================  h5页面方法 ==================
 export const getConfig = (params) =>{  
   return axios.request({

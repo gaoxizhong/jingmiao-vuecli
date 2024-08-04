@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { getMedicineList,getExistLabels,getNewClinicalTrial,getNewInteract } from "@/api/data"
+import { getMedicineList,getExistLabels,getNewClinicalTrial,getNewInteract,getNewDepartment } from "@/api/data"
 export default {
   name: 'SearchPages',
   components: {
@@ -148,8 +148,15 @@ export default {
     }
     // 获取分类项
     this.getExistLabels();
+    this.getDepartment();
   },
-  methods: {     
+  methods: {  
+    getDepartment(){
+      let that = this;
+      getNewDepartment().then( res =>{
+        
+      })
+    },  
     indexMethod(index) {
       return index + 1;
     },
