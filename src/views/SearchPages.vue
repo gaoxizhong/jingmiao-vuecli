@@ -17,8 +17,11 @@
       </div>
       <!-- 搜索框模块结束 -->
       <!-- 搜索结果列表部分 -->
+       <template v-if=" tag == 'Disease'">
+        <div>123</div>
+       </template>
       <!-- 临床试验 -->
-      <template v-if="tag == 'ClinicalTrial'">
+      <template v-else-if="tag == 'ClinicalTrial'">
         <div class="paddingSide15">
           <el-table :data="getListInfo" border stripe style="width: 100%;" >
             <el-table-column type="index" :index="indexMethod" label="序号" align="center" width="60"></el-table-column>
@@ -51,7 +54,7 @@
         </div>
       </template>
       <!-- 药物相互作用 -->
-      <template v-if="tag == 'Interact'">
+      <template v-else-if="tag == 'Interact'">
         <div class="paddingSide15">
           <el-table :data="getListInfo" border stripe style="width: 100%;" >
             <el-table-column type="index" :index="indexMethod" label="序号" align="center" width="60"></el-table-column>
