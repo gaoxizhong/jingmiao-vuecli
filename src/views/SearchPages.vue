@@ -5,7 +5,7 @@
       <div class="classinput-box">
         <div class="header-input-box">
         <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="input_name" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-          <el-button slot="append" @click="getExistLabels">搜索</el-button>
+          <el-button slot="append" @click="inputClick">搜索</el-button>
         </el-input>
         </div>
         <div class="classinfo-box">
@@ -16,9 +16,43 @@
         </div>
       </div>
       <!-- 搜索框模块结束 -->
-      <!-- 搜索结果列表部分 -->
+      <!-- 搜索结果列表部分 --医疗疾病展示 -->
        <template v-if=" tag == 'Disease'">
-        <div>123</div>
+        <div class="Disease-box">
+          <div class="Disease-box-left">
+            <el-menu class="el-menu-vertical-demo"
+              :default-active="defaultActiveIndex"
+              @open="handleOpen">
+              <el-submenu :index="`${index}`" v-for="(item,index) in newDepartmentlist" :key="index">
+                <template slot="title"> 
+                  <i class="el-icon-location"></i>
+                  <span>{{ item.department_1 }}</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item :index="`${index}-${idx}`" v-for="(items,idx) in item.department_2" :key="idx" @click="clcickDepartment(items)">{{ items }}</el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+            </el-menu>
+          </div>
+          <div class="Disease-box-right">
+            <div class="MedicineTagList-infodiv">
+              <a v-for="(item, index) in MedicineIfoList" :key="index" :href="item.file?item.file:'javascript:0;'" :target="item.file?'_blank':''"  @click="item.file?click_file(item.file):click_gotoxq( item )">
+                <span>{{ item.name }}</span>
+                <i>( {{item.description}} )</i>
+              </a>
+              <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
+            </div>
+            <!-- 搜索结果列表部分结束 -->
+            <!-- 分页展示 -->
+            <div class="pagination-box">
+              <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
+              :total="count"
+              :page-size="pageSize"
+              :current-page='page'>
+              </el-pagination>
+            </div>
+          </div>
+        </div>
        </template>
       <!-- 临床试验 -->
       <template v-else-if="tag == 'ClinicalTrial'">
@@ -81,17 +115,18 @@
           </el-table>
         </div>
       </template>
-
-      <div class="MedicineTagList-infodiv" v-else>
-        <a v-for="(item, index) in MedicineIfoList" :key="index" :href="item.file?item.file:'javascript:0;'" :target="item.file?'_blank':''"  @click="item.file?click_file(item.file):click_gotoxq( item )">
-          <span>{{ item.name }}</span>
-          <i>( {{item.description}} )</i>
-        </a>
-        <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
-      </div>
+      <template v-else>
+        <div class="MedicineTagList-infodiv">
+          <a v-for="(item, index) in MedicineIfoList" :key="index" :href="item.file?item.file:'javascript:0;'" :target="item.file?'_blank':''"  @click="item.file?click_file(item.file):click_gotoxq( item )">
+            <span>{{ item.name }}</span>
+            <i>( {{item.description}} )</i>
+          </a>
+          <el-empty description="暂无数据..." v-if="!MedicineIfoList || MedicineIfoList.length <= 0"></el-empty>
+        </div>
+      </template>
       <!-- 搜索结果列表部分结束 -->
       <!-- 分页展示 -->
-      <div class="pagination-box">
+      <div class="pagination-box" v-if=" tag != 'Disease'">
         <el-pagination background @current-change="handleCurrentChange" layout="total, prev, pager, next"
         :total="count"
         :page-size="pageSize"
@@ -124,7 +159,10 @@ export default {
       getListInfo:[], // 临床试验列表
       pageSize: 10,
       count:0,
-      activeIndex:''
+      activeIndex:'',
+      newDepartmentlist: [],
+      defaultActiveIndex: '',
+      defaultActiveName: ''
     }
   },
   mounted(){
@@ -154,10 +192,18 @@ export default {
     this.getDepartment();
   },
   methods: {  
+    handleOpen(e){
+      console.log(e)
+    },
+    clcickDepartment(i){
+      console.log(i)
+      this.input_name = i;
+      this.inputClick();
+    },
     getDepartment(){
       let that = this;
       getNewDepartment().then( res =>{
-        
+        this.newDepartmentlist = res.data.data
       })
     },  
     indexMethod(index) {
@@ -620,6 +666,45 @@ export default {
   }
   .pagination-box{
     margin-top: 20px;
+  }
+  .Disease-box{
+    width: 100%;
+    display: flex;
+    padding: 0 30px;
+  }
+  .Disease-box-left{
+    width: 240px;
+    border-right: 1px solid #e6e6e6;
+    max-height: 500px;
+    padding: 10px 0;
+    overflow: auto;
+  }
+  /* ==============  滚动条样式   ==================== */
+  .Disease-box-left::-webkit-scrollbar { 
+  width:8px; 
+  height:10px; 
+  background-color:#dfdbdb; 
+}
+/* 滚动条上的滚动滑块. */
+.Disease-box-left::-webkit-scrollbar-thumb { 
+  background-color:#27afa1; 
+  border-radius: 50px;
+}
+/* ==============  滚动条样式   ==================== */
+.Disease-box-left /deep/ .el-submenu__title{
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea47;
+}
+.Disease-box-left /deep/ .el-submenu__icon-arrow{
+  margin-top: -4px;
+}
+  .Disease-box-right{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   /* 媒体查询 */
   @media only screen and (max-width: 1366px){
