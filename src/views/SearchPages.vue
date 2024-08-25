@@ -4,9 +4,9 @@
       <!-- 搜索框模块开始 -->
       <div class="classinput-box">
         <div class="header-input-box">
-        <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="input_name" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
-          <el-button slot="append" @click="inputClick">搜索</el-button>
-        </el-input>
+          <el-input :placeholder="tag_pages == 'xyzsk'?'搜索疾病、药品、检查、临床路径等':'搜索证型、方剂、中药、体质等' " v-model="input_name" class="input-with-select" @keydown.enter.native="searchEnterFun($event)">
+            <el-button slot="append" @click="inputClick">搜索</el-button>
+          </el-input>
         </div>
         <div class="classinfo-box">
           <div class="classinfo-lablebox">
@@ -29,7 +29,7 @@
                   <span>{{ item.department_1 }}</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item :index="`${index}-${idx}`" v-for="(items,idx) in item.department_2" :key="idx" @click="clcickDepartment(items)">{{ items }}</el-menu-item>
+                  <el-menu-item :index="`${index}-${idx}`" v-for="(items,idx) in item.department_2" :key="idx" @click="clcickDepartment(item.department_1,items)">{{ items }}</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
             </el-menu>
@@ -162,22 +162,13 @@ export default {
       activeIndex:'',
       newDepartmentlist: [],
       defaultActiveIndex: '',
-      defaultActiveName: ''
+      defaultActiveName: '',
+      department: ''
     }
   },
   mounted(){
   },
   created(){
-    // let activeIndex = this.$route.query.active_id; 
-    // if(activeIndex) {
-    //   if(activeIndex == '2'){
-    //     this.tag_pages = 'xyzsk';
-    //   }
-    //   if(activeIndex == '3'){
-    //     this.tag_pages = 'zyzsk';
-    //   }
-    //   this.activeIndex = activeIndex;
-    // }
     const route = this.$route;
     if(route.path == '/xyzskPages'){
       this.tag_pages = 'xyzsk';
@@ -195,9 +186,10 @@ export default {
     handleOpen(e){
       console.log(e)
     },
-    clcickDepartment(i){
-      console.log(i)
-      this.input_name = i;
+    clcickDepartment(i,is){
+      this.department = i;
+      this.department_2 = is;
+      this.input_name = '';
       this.inputClick();
     },
     getDepartment(){
@@ -312,6 +304,10 @@ export default {
         keyword: that.input_name,
         page: that.page
       };
+      if(pearms.tag == 'Disease'){
+        pearms.department = that.department;
+        pearms.department_2 = that.department_2;
+      }
       if(tag_pages == 'xyzsk'){
         pearms.type = '';
       }
@@ -356,6 +352,7 @@ export default {
     // 点击跳转详情页
     click_gotoxq(i){
       let item = i;
+      console.log(i)
       let tag = item.tag;
       let name = item.tag == 'zySickNess' ? item.dialecticalName : item.name;
       let type = item.type;
